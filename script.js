@@ -115,7 +115,11 @@ const i18nData = {
     engineNamePh: '例如: DuckDuckGo',
     errorEngineNameReq: '请输入搜索引擎名称',
     engineUrl: '搜索 URL (%s 替换搜索关键词)',
-    errorEngineUrlFormat: '请输入搜索 URL，必须包含 %s'
+    errorEngineUrlFormat: '请输入搜索 URL，必须包含 %s',
+    bgSource: '背景来源',
+    bgDefault: '默认',
+    bgDaily: '每日壁纸',
+    bgCustom: '自定义'
   },
   'zh-TW': {
     pageTitle: '新分頁',
@@ -166,7 +170,11 @@ const i18nData = {
     engineNamePh: '例如: DuckDuckGo',
     errorEngineNameReq: '請輸入搜尋引擎名稱',
     engineUrl: '搜尋 URL (%s 替換搜尋關鍵字)',
-    errorEngineUrlFormat: '請輸入搜尋 URL，必須包含 %s'
+    errorEngineUrlFormat: '請輸入搜尋 URL，必須包含 %s',
+    bgSource: '背景來源',
+    bgDefault: '預設',
+    bgDaily: '每日桌布',
+    bgCustom: '自訂'
   },
   'zh-WY': {
     pageTitle: '新標籤頁',
@@ -217,7 +225,11 @@ const i18nData = {
     engineNamePh: '例: DuckDuckGo',
     errorEngineNameReq: '請填搜尋器名',
     engineUrl: '搜尋 URL (%s 換字)',
-    errorEngineUrlFormat: '請填搜尋 URL，必含 %s'
+    errorEngineUrlFormat: '請填搜尋 URL，必含 %s',
+    bgSource: '底景之源',
+    bgDefault: '默認',
+    bgDaily: '日日之壁',
+    bgCustom: '自訂'
   },
   'en': {
     pageTitle: 'New Tab',
@@ -268,7 +280,11 @@ const i18nData = {
     engineNamePh: 'e.g. DuckDuckGo',
     errorEngineNameReq: 'Please enter engine name',
     engineUrl: 'Search URL (%s replacing query)',
-    errorEngineUrlFormat: 'Search URL must contain %s'
+    errorEngineUrlFormat: 'Search URL must contain %s',
+    bgSource: 'Background source',
+    bgDefault: 'Default',
+    bgDaily: 'Daily wallpaper',
+    bgCustom: 'Custom'
   },
   'ja': {
     pageTitle: '新しいタブ',
@@ -319,7 +335,11 @@ const i18nData = {
     engineNamePh: '例: DuckDuckGo',
     errorEngineNameReq: '検索エンジン名を入力してください',
     engineUrl: '検索 URL (%s が検索語に置換されます)',
-    errorEngineUrlFormat: '検索 URL には %s を含める必要があります'
+    errorEngineUrlFormat: '検索 URL には %s を含める必要があります',
+    bgSource: '背景の種類',
+    bgDefault: 'デフォルト',
+    bgDaily: '毎日の壁紙',
+    bgCustom: 'カスタム'
   },
   'ru': {
     pageTitle: 'Новая вкладка',
@@ -370,7 +390,11 @@ const i18nData = {
     engineNamePh: 'Например: DuckDuckGo',
     errorEngineNameReq: 'Введите название',
     engineUrl: 'URL поиска (%s вместо запроса)',
-    errorEngineUrlFormat: 'URL должен содержать %s'
+    errorEngineUrlFormat: 'URL должен содержать %s',
+    bgSource: 'Источник фона',
+    bgDefault: 'По умолчанию',
+    bgDaily: 'Ежедневные обои',
+    bgCustom: 'Своя'
   }
 };
 
@@ -493,10 +517,8 @@ function getFaviconUrl(urlStr) {
 
 document.addEventListener('DOMContentLoaded', () => {
   // DOM 元素引用
-  const btnWaffle = document.getElementById('waffle');
   const btnSettings = document.getElementById('settings');
   const btnCloseSettings = document.getElementById('btn-close-settings');
-  const popoverWaffle = document.getElementById('popover-waffle');
   const popoverSettings = document.getElementById('popover-settings');
 
   const selectEngine = document.getElementById('select-engine');
@@ -562,6 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const bgVideo = document.getElementById('bg-video');
   const bgImage = document.getElementById('bg-image');
+  const bgSourceOptions = document.querySelectorAll('.bg-source-option');
 
   if (searchInput && searchInput.value.trim() !== '') {
   const fakebox = document.getElementById('fakebox');
@@ -583,20 +606,10 @@ document.addEventListener('DOMContentLoaded', () => {
     google: 'https://www.google.com/search?q='
   };
 
-  // 切换弹出层显隐
-  function togglePopover(popoverToToggle, otherPopover) {
-    otherPopover.classList.remove('active');
-    popoverToToggle.classList.toggle('active');
-  }
-
-  btnWaffle?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    togglePopover(popoverWaffle, popoverSettings);
-  });
-
+  // 切换设置面板显隐
   btnSettings?.addEventListener('click', (e) => {
     e.stopPropagation();
-    togglePopover(popoverSettings, popoverWaffle);
+    popoverSettings.classList.toggle('active');
   });
 
   if (btnCloseSettings) {
@@ -606,11 +619,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.addEventListener('click', (e) => {
-    if (!popoverWaffle?.contains(e.target) && !btnWaffle?.contains(e.target)) {
-      popoverWaffle?.classList.remove('active');
-    }
-    if (!popoverSettings?.contains(e.target) && !btnSettings?.contains(e.target)) {
-      popoverSettings?.classList.remove('active');
+    if (popoverSettings && !popoverSettings.contains(e.target) && !btnSettings?.contains(e.target)) {
+      popoverSettings.classList.remove('active');
     }
     if (!searchContainer?.contains(e.target)) {
       closeSuggestions();
@@ -647,6 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   let bgEnabled = Storage.get('ntp_bg_enabled', false);
   let customWallpaperData = Storage.get('ntp_custom_wallpaper', null);
+  let bgMode = Storage.get('ntp_bg_mode', 'default');
 
   if (selectEngine) selectEngine.value = savedEngine;
   if (selectQuicklinks) selectQuicklinks.value = savedQuicklinksRow;
@@ -673,51 +684,83 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function renderWallpaper() {
-    if (!customWallpaperData) {
-      if (bgVideo) bgVideo.style.display = 'none';
-      if (bgImage) {
-        bgImage.style.display = 'block';
-        bgImage.src = 'img/background.webp';
-      }
-      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '选择图片';
-      if (wallpaperPreviewContainer) {
-        wallpaperPreviewContainer.innerHTML = `<span style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>`;
-      }
-      return;
-    }
+  function updateBgSourceUI() {
+    bgSourceOptions.forEach(opt => {
+      opt.classList.toggle('active', opt.dataset.bgMode === bgMode);
+    });
+  }
 
-    if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '上传的背景';
-
-    if (customWallpaperData.type === 'video') {
-      if (bgImage) bgImage.style.display = 'none';
-      if (bgVideo) {
-        bgVideo.style.display = 'block';
-        bgVideo.src = customWallpaperData.url;
-        bgVideo.play().catch(() => {});
-      }
-
-      if (wallpaperPreviewContainer) {
-        wallpaperPreviewContainer.innerHTML = `
-          <video src="${customWallpaperData.url}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>
-        `;
-      }
-    } else {
-      if (bgVideo) bgVideo.style.display = 'none';
-      if (bgImage) {
-        bgImage.style.display = 'block';
-        bgImage.src = customWallpaperData.url;
-      }
-
-      if (wallpaperPreviewContainer) {
-        wallpaperPreviewContainer.innerHTML = `
-          <img src="${customWallpaperData.url}" alt="背景预览" style="width:100%;height:100%;object-fit:cover;" />
-        `;
-      }
+  function applyBgMedia(src, isVideo) {
+    if (bgVideo) bgVideo.style.display = isVideo ? 'block' : 'none';
+    if (bgImage) bgImage.style.display = isVideo ? 'none' : 'block';
+    if (isVideo) {
+      if (bgVideo) { bgVideo.src = src; bgVideo.play().catch(() => {}); }
+    } else if (bgImage) {
+      bgImage.src = src;
     }
   }
 
+  function resetWallpaperPreview() {
+    if (wallpaperPreviewContainer) {
+      wallpaperPreviewContainer.innerHTML = `<span style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>`;
+    }
+  }
+
+  function updateWallpaperPreview(src) {
+    if (wallpaperPreviewContainer) {
+      wallpaperPreviewContainer.innerHTML = `<img src="${src}" alt="背景预览" style="width:100%;height:100%;object-fit:cover;" />`;
+    }
+  }
+
+  // 拉取并应用 Microsoft 每日壁纸（Bing 每日图片）
+  async function applyBingDailyWallpaper() {
+    if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = 'Microsoft 每日壁纸';
+    try {
+      const res = await fetch('https://bing.biturl.top/?resolution=1920&format=json&mkt=zh-CN');
+      const data = await res.json();
+      const url = (data && data.url) ||
+        (data && data.images && data.images[0] && 'https://www.bing.com' + data.images[0].url);
+      if (!url) throw new Error('no image url');
+      const probe = new Image();
+      probe.onload = () => {
+        applyBgMedia(url, false);
+        updateWallpaperPreview(url);
+      };
+      probe.onerror = () => {
+        applyBgMedia('img/background.webp', false);
+        resetWallpaperPreview();
+      };
+      probe.src = url;
+    } catch (e) {
+      console.warn('获取 Microsoft 每日壁纸失败，使用默认背景:', e);
+      applyBgMedia('img/background.webp', false);
+      resetWallpaperPreview();
+    }
+  }
+
+  function renderWallpaper() {
+    if (bgMode === 'bingdaily') {
+      applyBingDailyWallpaper();
+      return;
+    }
+    if (bgMode === 'custom' && customWallpaperData) {
+      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '上传的背景';
+      applyBgMedia(customWallpaperData.url, customWallpaperData.type === 'video');
+      if (wallpaperPreviewContainer) {
+        wallpaperPreviewContainer.innerHTML = (customWallpaperData.type === 'video')
+          ? `<video src="${customWallpaperData.url}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>`
+          : `<img src="${customWallpaperData.url}" alt="背景预览" style="width:100%;height:100%;object-fit:cover;" />`;
+      }
+      return;
+    }
+    // 默认背景（或自定义来源但尚未上传）
+    if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '选择图片';
+    applyBgMedia('img/background.webp', false);
+    resetWallpaperPreview();
+  }
+
   applyBackgroundState();
+  updateBgSourceUI();
 
   // 背景开关同步响应
   toggleBgSwitch?.addEventListener('change', (e) => {
@@ -732,6 +775,23 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.set('ntp_bg_enabled', bgEnabled);
     applyBackgroundState();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+  });
+
+  // 背景来源切换
+  bgSourceOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      bgMode = opt.dataset.bgMode;
+      Storage.set('ntp_bg_mode', bgMode);
+      bgEnabled = true;
+      Storage.set('ntp_bg_enabled', bgEnabled);
+      updateBgSourceUI();
+      applyBackgroundState();
+      if (bgMode === 'custom' && !customWallpaperData) {
+        popoverSettings?.classList.remove('active');
+        modalWallpaper?.classList.add('active');
+      }
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    });
   });
 
   // 壁纸弹窗逻辑
@@ -762,7 +822,10 @@ document.addEventListener('DOMContentLoaded', () => {
         type: isVideo ? 'video' : 'image',
         url: event.target.result
       };
+      bgMode = 'custom';
       Storage.set('ntp_custom_wallpaper', customWallpaperData);
+      Storage.set('ntp_bg_mode', bgMode);
+      updateBgSourceUI();
       applyBackgroundState();
     };
 
@@ -771,7 +834,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnRemoveWallpaper?.addEventListener('click', () => {
     customWallpaperData = null;
+    bgMode = 'default';
     Storage.set('ntp_custom_wallpaper', null);
+    Storage.set('ntp_bg_mode', bgMode);
+    updateBgSourceUI();
     applyBackgroundState();
   });
 
@@ -787,13 +853,30 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   updateLayoutPresetUI(savedLayout);
 
+  // 切换页面布局时，让搜索框平滑滑动过渡
+  function animateLayoutTransition(prevLayout, nextLayout) {
+    const el = document.getElementById('search-container');
+    if (!el) return;
+    const slideDown = prevLayout === 'inspirational' && nextLayout === 'focused';
+    const slideUp = prevLayout === 'focused' && nextLayout === 'inspirational';
+    if (!slideDown && !slideUp) return;
+    el.style.animation = 'none';
+    void el.offsetWidth; // 强制重排以重置动画
+    el.style.animation = slideUp
+      ? 'slideLayoutUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)'
+      : 'slideLayoutDown 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+  }
+
   // 布局卡片点击监听
   document.querySelectorAll('.preset-card').forEach(card => {
     card.addEventListener('click', () => {
+      const prevLayout = document.body.getAttribute('data-layout') || 'focused';
       const layoutVal = card.dataset.layoutVal;
+      if (prevLayout === layoutVal) return;
       document.body.setAttribute('data-layout', layoutVal);
       Storage.set('ntp_layout', layoutVal);
       updateLayoutPresetUI(layoutVal);
+      animateLayoutTransition(prevLayout, layoutVal);
     });
   });
 

@@ -265,7 +265,6 @@
 
     /* 弹出菜单面板通用样式 */
     .popover-panel {
-      display: none;
       position: absolute;
       top: var(--header-height);
       z-index: 100;
@@ -274,16 +273,17 @@
       background-color: var(--fill-popup-color);
       border-radius: 8px;
       box-sizing: border-box;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+      transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.2, 0.8, 0.3, 1), visibility 0s linear 0.18s;
     }
 
     .popover-panel.active {
-      display: block;
-    }
-
-    #popover-waffle {
-      left: 22px;
-      width: 280px;
-      padding: 16px;
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.2, 0.8, 0.3, 1);
     }
 
     /* 设置弹窗样式 */
@@ -377,6 +377,32 @@
 
     .select-box:hover {
       border-color: var(--colorNeutralStroke1Hover);
+    }
+
+    /* 背景来源选择器 */
+    .bg-source-selector {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .bg-source-option {
+      flex: 1;
+      height: 30px;
+      border: 1px solid var(--settings-card-border);
+      background-color: var(--settings-card-bg);
+      color: var(--settings-text-primary);
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+    .bg-source-option:hover {
+      background-color: var(--settings-card-hover);
+    }
+    .bg-source-option.active {
+      background-color: var(--accent-foreground-rest);
+      border-color: var(--accent-foreground-rest);
+      color: #ffffff;
     }
 
     /* 设置行（带开关） */
@@ -750,7 +776,6 @@
     }
 
     #suggestions-box {
-      display: none;
       position: absolute;
       top: 46px;
       left: 0;
@@ -762,10 +787,17 @@
       border-top: 1px solid var(--modal-border);
       overflow: hidden;
       z-index: 100;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
     }
 
     #search-container.suggestions-open #suggestions-box {
-      display: block;
+      visibility: visible;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.18s ease, transform 0.18s ease;
     }
 
     .suggestion-list {
@@ -965,7 +997,6 @@
 
     /* 通用 Modal 模态对话框 */
     .modal-overlay {
-      display: none;
       position: fixed;
       top: 0;
       left: 0;
@@ -973,13 +1004,18 @@
       height: 100vh;
       background-color: var(--modal-mask);
       z-index: 1000;
+      display: flex;
       align-items: center;
       justify-content: center;
-      animation: fadeIn 0.15s ease-out;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.2s ease, visibility 0s linear 0.2s;
     }
 
     .modal-overlay.active {
-      display: flex;
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.2s ease;
     }
 
     @keyframes fadeIn {
@@ -999,6 +1035,14 @@
       color: var(--neutral-foreground-rest);
       font-family: var(--font-family);
       position: relative;
+      transform: scale(0.92) translateY(12px);
+      opacity: 0;
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.3, 1), opacity 0.2s ease;
+    }
+
+    .modal-overlay.active .modal-dialog {
+      transform: scale(1) translateY(0);
+      opacity: 1;
     }
 
     /* 自定义背景弹窗 */
@@ -1237,21 +1281,18 @@
     .header-button:active { transform: scale(0.94); }
     #settings svg { transition: transform 0.4s ease; }
     #settings:hover svg { transform: rotate(120deg); }
-    #waffle:hover svg { transform: rotate(45deg); }
 
-    /* 弹出面板入场 */
-    .popover-panel.active { animation: popIn 0.18s cubic-bezier(0.2, 0.8, 0.3, 1) both; }
-    #popover-waffle { transform-origin: top left; }
+    /* 弹出面板平滑出现/消失（由 transition 驱动） */
     #popover-settings { transform-origin: top right; }
 
-    /* 模态框入场 */
-    .modal-overlay { animation: fadeIn 0.2s ease-out; }
-    .modal-dialog { animation: modalScaleIn 0.25s cubic-bezier(0.2, 0.8, 0.3, 1) both; }
-
-    /* 联想词条面板与悬停动效 */
-    #suggestions-box { animation: slideDown 0.18s ease-out; }
+    /* 联想词条悬停动效 */
     .suggestion-item { transition: background-color 0.12s ease, transform 0.12s ease; }
     .suggestion-item:hover, .suggestion-item.selected { transform: translateX(3px); }
+
+    /* 切换页面布局时搜索框平滑滑动 */
+    @keyframes slideLayoutUp { from { opacity: 0; transform: translateY(48px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideLayoutDown { from { opacity: 0; transform: translateY(-48px); } to { opacity: 1; transform: translateY(0); } }
+    #search-container { will-change: transform, opacity; }
 
     /* 快捷链接悬停动效 */
     .quicklink-item { transition: background-color 0.2s ease, transform 0.2s ease; }
@@ -1298,7 +1339,6 @@
       .wallpaper-preview-box { width: 100%; height: 160px; }
       /* 弹窗防溢出屏幕 */
       #popover-settings { right: 12px; width: min(320px, calc(100vw - 24px)); max-height: 80vh; }
-      #popover-waffle { left: 12px; width: min(280px, calc(100vw - 24px)); }
       .modal-dialog { max-width: calc(100vw - 24px); }
     }
 
@@ -1329,19 +1369,6 @@
     <ntp-shell elementtiming="wallpaper">
       <!-- 顶部导航栏 -->
       <div id="header">
-        <div id="header-left">
-          <button id="waffle" class="header-button" type="button" aria-label="#" title="#">
-            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 17a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 17a2 2 0 110 4 2 2 0 010-4zm7-7a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 10a2 2 0 110 4 2 2 0 010-4zm7-7a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 3a2 2 0 110 4 2 2 0 010-4z">
-              </path>
-            </svg>
-          </button>
-          <!-- 左侧菜单 -->
-          <div id="popover-waffle" class="popover-panel">
-            <div style="padding: 10px; text-align: center;"></div>
-          </div>
-        </div>
-
         <div id="header-right">
           <button id="settings" class="header-button" type="button" aria-label="设置" title="设置" data-i18n-title="settingsTitle">
             <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1437,6 +1464,12 @@
                       <span class="slider"></span>
                     </label>
                   </div>
+                </div>
+                <div class="settings-card-title" style="margin-top: 10px;" data-i18n="bgSource">背景来源</div>
+                <div class="bg-source-selector" role="group" aria-label="背景来源">
+                  <button type="button" class="bg-source-option" data-bg-mode="default" data-i18n="bgDefault">默认</button>
+                  <button type="button" class="bg-source-option" data-bg-mode="bingdaily" data-i18n="bgDaily">每日壁纸</button>
+                  <button type="button" class="bg-source-option" data-bg-mode="custom" data-i18n="bgCustom">自定义</button>
                 </div>
                 <button id="btn-open-bg-modal" class="icon-btn-text" type="button">
                   <span data-i18n="editBackground">编辑背景</span>
