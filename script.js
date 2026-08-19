@@ -118,7 +118,28 @@ const i18nData = {
     bgDefault: '默认',
     bgDaily: '每日壁纸',
     bgCustom: '自定义',
-    quickMenu: '常用网站'
+    quickMenu: '常用网站',
+    skipToContent: '跳到内容',
+    toolbar: '工具栏',
+    pmWork: '工作 25分',
+    pmBreak: '休息 5分',
+    pmStart: '开始',
+    pmReset: '重置',
+    pmHint: '空格 = 开始/暂停',
+    pureMode: '纯净模式',
+    pureModeHint: '禁用全部动画与动态壁纸，零脚本、零追踪，优先保证隐私与专注',
+    highContrast: '高对比模式',
+    snapshot: '配置快照与备份',
+    snapshotHint: '自动每日备份到本地；导出 JSON 即可手动跨设备同步',
+    exportConfig: '导出配置',
+    importConfig: '导入配置',
+    shareConfig: '复制分享链接',
+    pmPause: '暂停',
+    pmCycle: '第 {n} 轮',
+    exported: '配置已导出',
+    imported: '已导入，正在刷新…',
+    importFailed: '导入失败，格式无效',
+    shared: '分享链接已复制'
   },
   'zh-TW': {
     pageTitle: '新分頁',
@@ -174,7 +195,28 @@ const i18nData = {
     bgDefault: '預設',
     bgDaily: '每日桌布',
     bgCustom: '自訂',
-    quickMenu: '常用網站'
+    quickMenu: '常用網站',
+    skipToContent: '跳到主要內容',
+    toolbar: '工具列',
+    pmWork: '工作 25分',
+    pmBreak: '休息 5分',
+    pmStart: '開始',
+    pmReset: '重設',
+    pmHint: '空格 = 開始/暫停',
+    pureMode: '純淨模式',
+    pureModeHint: '停用所有動畫與動態桌布，零腳本、零追蹤，優先保護隱私與專注',
+    highContrast: '高對比模式',
+    snapshot: '設定快照與備份',
+    snapshotHint: '每日自動備份到本機；匯出 JSON 即可手動跨裝置同步',
+    exportConfig: '匯出設定',
+    importConfig: '匯入設定',
+    shareConfig: '複製分享連結',
+    pmPause: '暫停',
+    pmCycle: '第 {n} 輪',
+    exported: '設定已匯出',
+    imported: '已匯入，正在重新整理…',
+    importFailed: '匯入失敗，格式無效',
+    shared: '分享連結已複製'
   },
   'zh-WY': {
     pageTitle: '新標籤頁',
@@ -229,8 +271,29 @@ const i18nData = {
     bgSource: '底景之源',
     bgDefault: '默認',
     bgDaily: '日日之壁',
-    bgCustom: '自訂',
-    quickMenu: '常上之站'
+    bgCustom: '自設',
+    quickMenu: '常上之站',
+    skipToContent: '跳到正文',
+    toolbar: '工具欄',
+    pmWork: '工作 25分',
+    pmBreak: '休息 5分',
+    pmStart: '開始',
+    pmReset: '重設',
+    pmHint: '空格 = 開始/暫停',
+    pureMode: '純淨模式',
+    pureModeHint: '停脱所有動畫與動態壁紙，零腳本、零追蹤，保私隱搭專注',
+    highContrast: '高對比模式',
+    snapshot: '設定快照與備份',
+    snapshotHint: '每日自動備份到本地；導出 JSON 自好手動跨裝置同步',
+    exportConfig: '導出設定',
+    importConfig: '導入設定',
+    shareConfig: '複製分享鏈接',
+    pmPause: '暫停',
+    pmCycle: '第 {n} 輪',
+    exported: '設定已導出',
+    imported: '已導入，正要刷新…',
+    importFailed: '導入失敗，格式無效',
+    shared: '分享鏈接已複製'
   },
   'en': {
     pageTitle: 'New Tab',
@@ -286,7 +349,28 @@ const i18nData = {
     bgDefault: 'Default',
     bgDaily: 'Daily wallpaper',
     bgCustom: 'Custom',
-    quickMenu: 'Quick sites'
+    quickMenu: 'Quick sites',
+    skipToContent: 'Skip to content',
+    toolbar: 'Toolbar',
+    pmWork: 'Work 25 min',
+    pmBreak: 'Break 5 min',
+    pmStart: 'Start',
+    pmReset: 'Reset',
+    pmHint: 'Space = start / pause',
+    pureMode: 'Pure mode',
+    pureModeHint: 'Disable all animations and dynamic wallpapers. Zero scripts, zero tracking — privacy and focus first.',
+    highContrast: 'High contrast',
+    snapshot: 'Config snapshot & backup',
+    snapshotHint: 'Auto daily local backup. Export JSON to sync manually across devices.',
+    exportConfig: 'Export config',
+    importConfig: 'Import config',
+    shareConfig: 'Copy share link',
+    pmPause: 'Pause',
+    pmCycle: 'Round {n}',
+    exported: 'Config exported',
+    imported: 'Imported, reloading…',
+    importFailed: 'Import failed: invalid format',
+    shared: 'Share link copied'
   },
   'ja': {
     pageTitle: '新しいタブ',
@@ -342,7 +426,28 @@ const i18nData = {
     bgDefault: 'デフォルト',
     bgDaily: '毎日の壁紙',
     bgCustom: 'カスタム',
-    quickMenu: 'よく使うサイト'
+    quickMenu: 'よく使うサイト',
+    skipToContent: '本文へスキップ',
+    toolbar: 'ツールバー',
+    pmWork: '作業 25分',
+    pmBreak: '休憩 5分',
+    pmStart: '開始',
+    pmReset: 'リセット',
+    pmHint: 'スペース = 開始/一時停止',
+    pureMode: 'ピュアモード',
+    pureModeHint: 'すべてのアニメーションと動的壁紙を無効化。ゼロスクリプト・ゼロトラッキングでプライバシーと集中を優先。',
+    highContrast: 'ハイコントラスト',
+    snapshot: '設定スナップショットとバックアップ',
+    snapshotHint: '毎日自動でローカルにバックアップ。JSONをエクスポートして手動で同期。',
+    exportConfig: 'エクスポート',
+    importConfig: 'インポート',
+    shareConfig: '共有リンクをコピー',
+    pmPause: '一時停止',
+    pmCycle: '第 {n} 輪',
+    exported: '設定をエクスポートしました',
+    imported: 'インポートしました。更新中…',
+    importFailed: 'インポート失敗：形式が無効',
+    shared: '共有リンクをコピーしました'
   },
   'ru': {
     pageTitle: 'Новая вкладка',
@@ -398,7 +503,28 @@ const i18nData = {
     bgDefault: 'По умолчанию',
     bgDaily: 'Ежедневные обои',
     bgCustom: 'Своя',
-    quickMenu: 'Частые сайты'
+    quickMenu: 'Частые сайты',
+    skipToContent: 'К содержанию',
+    toolbar: 'Панель',
+    pmWork: 'Работа 25 мин',
+    pmBreak: 'Перерыв 5 мин',
+    pmStart: 'Старт',
+    pmReset: 'Сброс',
+    pmHint: 'Пробел = старт/пауза',
+    pureMode: 'Чистый режим',
+    pureModeHint: 'Отключить все анимации и динамические обои. Ноль скриптов, ноль трекинга — приватность и фокус.',
+    highContrast: 'Высокая контрастность',
+    snapshot: 'Снимок и резервная копия',
+    snapshotHint: 'Ежедневная локальная резервная копия. Экспортируйте JSON для ручной синхронизации.',
+    exportConfig: 'Экспорт',
+    importConfig: 'Импорт',
+    shareConfig: 'Скопировать ссылку',
+    pmPause: 'Пауза',
+    pmCycle: 'Круг {n}',
+    exported: 'Конфиг экспортирован',
+    imported: 'Импортировано, обновление…',
+    importFailed: 'Ошибка импорта: неверный формат',
+    shared: 'Ссылка скопирована'
   }
 };
 
@@ -476,6 +602,18 @@ function applyLanguage(langConfig) {
   if (statusBgModal) {
     const isChecked = document.getElementById('toggle-bg-modal-switch').checked;
     statusBgModal.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  const statusPure = document.getElementById('status-pure');
+  if (statusPure) {
+    const isChecked = document.getElementById('toggle-pure-switch').checked;
+    statusPure.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  const statusHc = document.getElementById('status-hc');
+  if (statusHc) {
+    const isChecked = document.getElementById('toggle-hc-switch').checked;
+    statusHc.innerText = isChecked ? dict.on : dict.off;
   }
 }
 
@@ -1432,4 +1570,356 @@ searchInput?.addEventListener('input', () => {
 
   // 初始化应用全页翻译
   applyLanguage(savedLang);
+
+  // 当前生效语言字典（供运行时提示文案使用）
+  const curDictNow = i18nData[getResolvedLanguageCode(savedLang)] || i18nData['zh-CN'];
+
+  // =====================================================================
+  // 功能 A. 纯净模式：一键禁用全部动画与动态壁纸（零脚本零追踪）
+  // =====================================================================
+  const togglePureSwitch = document.getElementById('toggle-pure-switch');
+  const applyPureMode = (on) => document.body.classList.toggle('pure-mode', !!on);
+  if (togglePureSwitch) {
+    togglePureSwitch.checked = !!Storage.get('ntp_pure_mode', false);
+    applyPureMode(togglePureSwitch.checked);
+    togglePureSwitch.addEventListener('change', () => {
+      const on = togglePureSwitch.checked;
+      Storage.set('ntp_pure_mode', on);
+      applyPureMode(on);
+      // 纯净模式下暂停动态壁纸视频
+      if (on && bgVideo && bgVideo.tagName === 'VIDEO') {
+        try { bgVideo.pause(); } catch (e) {}
+      }
+      applyLanguage(savedLang);
+    });
+  } else {
+    applyPureMode(Storage.get('ntp_pure_mode', false));
+  }
+
+  // =====================================================================
+  // 功能 B. 高对比模式（无障碍增强）
+  // =====================================================================
+  const toggleHcSwitch = document.getElementById('toggle-hc-switch');
+  const applyHcMode = (on) => document.body.classList.toggle('high-contrast', !!on);
+  if (toggleHcSwitch) {
+    toggleHcSwitch.checked = !!Storage.get('ntp_high_contrast', false);
+    applyHcMode(toggleHcSwitch.checked);
+    toggleHcSwitch.addEventListener('change', () => {
+      const on = toggleHcSwitch.checked;
+      Storage.set('ntp_high_contrast', on);
+      applyHcMode(on);
+      applyLanguage(savedLang);
+    });
+  } else {
+    applyHcMode(Storage.get('ntp_high_contrast', false));
+  }
+  // 刷新纯净/高对比状态文本
+  applyLanguage(savedLang);
+
+  // =====================================================================
+  // 功能 C. 底部工具栏：番茄钟（环形进度/工作-休息/空格控制/持久化）
+  // =====================================================================
+  const fabBtn = document.getElementById('toolbar-fab-btn');
+  const pmPanel = document.getElementById('pomodoro-panel');
+  const pmClose = document.getElementById('pomodoro-close');
+  const pmStartBtn = document.getElementById('pomodoro-start');
+  const pmResetBtn = document.getElementById('pomodoro-reset');
+  const pmTimeEl = document.getElementById('pomodoro-time');
+  const pmCycleEl = document.getElementById('pomodoro-cycle');
+  const pmRing = document.getElementById('pomodoro-ring');
+  const pmModeBtns = document.querySelectorAll('.pomodoro-mode-btn');
+
+  const PMCONFIG = { work: 25 * 60, break: 5 * 60 };
+  let pmState = Object.assign({ mode: 'work', cycle: 0 }, Storage.get('ntp_pomodoro', {}));
+  if (pmState.mode !== 'work' && pmState.mode !== 'break') pmState.mode = 'work';
+  if (typeof pmState.cycle !== 'number') pmState.cycle = 0;
+  let pmRemaining = PMCONFIG[pmState.mode];
+  let pmRunning = false;
+  let pmTimer = null;
+
+  const pmFmt = (sec) => {
+    const m = String(Math.floor(sec / 60)).padStart(2, '0');
+    const s = String(sec % 60).padStart(2, '0');
+    return m + ':' + s;
+  };
+
+  function pmRender() {
+    const total = PMCONFIG[pmState.mode] || 1;
+    const p = ((total - pmRemaining) / total) * 100;
+    if (pmRing) pmRing.style.setProperty('--p', String(Math.min(100, Math.max(0, p))));
+    if (pmTimeEl) pmTimeEl.textContent = pmFmt(pmRemaining);
+    if (pmCycleEl) pmCycleEl.textContent = (curDictNow.pmCycle || '第 {n} 轮').replace('{n}', String(pmState.cycle));
+    pmModeBtns.forEach(b => b.classList.toggle('active', b.dataset.pmMode === pmState.mode));
+    if (pmStartBtn) pmStartBtn.textContent = pmRunning ? (curDictNow.pmPause || '暂停') : (curDictNow.pmStart || '开始');
+  }
+
+  function pmBeep() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      const ctx = new Ctx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.4);
+    } catch (e) {}
+  }
+
+  function pmStopTimer() {
+    if (pmTimer) { clearInterval(pmTimer); pmTimer = null; }
+    pmRunning = false;
+  }
+
+  function pmTick() {
+    pmRemaining--;
+    if (pmRemaining <= 0) {
+      pmBeep();
+      if (pmState.mode === 'work') {
+        pmState.cycle++;
+        pmState.mode = 'break';
+      } else {
+        pmState.mode = 'work';
+      }
+      Storage.set('ntp_pomodoro', { mode: pmState.mode, cycle: pmState.cycle });
+      pmRemaining = PMCONFIG[pmState.mode];
+    }
+    pmRender();
+  }
+
+  function pmToggle() {
+    if (pmRunning) {
+      pmStopTimer();
+    } else {
+      if (pmRemaining <= 0) pmRemaining = PMCONFIG[pmState.mode];
+      pmRunning = true;
+      pmTimer = setInterval(pmTick, 1000);
+    }
+    pmRender();
+  }
+
+  function pmSetMode(mode) {
+    if (!PMCONFIG[mode]) return;
+    pmState.mode = mode;
+    Storage.set('ntp_pomodoro', { mode: pmState.mode, cycle: pmState.cycle });
+    pmRemaining = PMCONFIG[mode];
+    pmRender();
+  }
+
+  function pmReset() {
+    pmStopTimer();
+    pmRemaining = PMCONFIG[pmState.mode];
+    pmRender();
+  }
+
+  if (pmStartBtn) pmStartBtn.addEventListener('click', pmToggle);
+  if (pmResetBtn) pmResetBtn.addEventListener('click', pmReset);
+  pmModeBtns.forEach(b => b.addEventListener('click', () => pmSetMode(b.dataset.pmMode)));
+
+  if (fabBtn && pmPanel) {
+    fabBtn.addEventListener('click', () => {
+      const close = !pmPanel.hidden;
+      pmPanel.hidden = close;
+      fabBtn.setAttribute('aria-expanded', String(!close));
+      if (!close) pmRender();
+    });
+  }
+  if (pmClose) {
+    pmClose.addEventListener('click', () => {
+      if (pmPanel) pmPanel.hidden = true;
+      if (fabBtn) fabBtn.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  // 键盘控制：空格 = 开始/暂停；Esc = 关闭面板
+  document.addEventListener('keydown', (e) => {
+    if (pmPanel && !pmPanel.hidden) {
+      if (e.code === 'Space') {
+        const tag = (e.target && e.target.tagName || '').toLowerCase();
+        if (!['input', 'textarea', 'select', 'button'].includes(tag)) {
+          e.preventDefault();
+          pmToggle();
+        }
+      } else if (e.key === 'Escape') {
+        pmPanel.hidden = true;
+        if (fabBtn) fabBtn.setAttribute('aria-expanded', 'false');
+      }
+    }
+  });
+
+  pmRender();
+
+  // =====================================================================
+  // 功能 D. 配置快照与同步：导出/导入 JSON、分享链接、每日自动备份
+  // =====================================================================
+  const CONFIG_KEYS = [
+    'liteStart_language',
+    'ntp_custom_engine_config',
+    'ntp_engine',
+    'ntp_layout',
+    'ntp_quicklinks',
+    'ntp_history_enabled',
+    'ntp_search_history',
+    'ntp_bg_enabled',
+    'ntp_custom_wallpaper',
+    'ntp_bg_mode',
+    'ntp_quicklinks_list'
+  ];
+
+  function collectConfig() {
+    const cfg = { version: 1, exportedAt: new Date().toISOString(), data: {} };
+    CONFIG_KEYS.forEach((k) => {
+      try {
+        const raw = localStorage.getItem(k);
+        if (raw !== null) cfg.data[k] = raw;
+      } catch (e) {}
+    });
+    return cfg;
+  }
+
+  function serializeConfig(cfg) {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(cfg))));
+  }
+  function deserializeConfig(str) {
+    try {
+      const json = decodeURIComponent(escape(atob(str)));
+      return JSON.parse(json);
+    } catch (e) {
+      return null;
+    }
+  }
+  function applyConfig(cfg) {
+    if (!cfg || !cfg.data || typeof cfg.data !== 'object') return false;
+    Object.keys(cfg.data).forEach((k) => {
+      try { localStorage.setItem(k, cfg.data[k]); } catch (e) {}
+    });
+    return true;
+  }
+  function downloadFile(filename, content, mime) {
+    const blob = new Blob([content], { type: mime || 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 0);
+  }
+
+  const btnExport = document.getElementById('btn-export-config');
+  const btnImport = document.getElementById('btn-import-config');
+  const btnShare = document.getElementById('btn-share-config');
+  const inputCfg = document.getElementById('input-config-file');
+  const snapshotHint = document.getElementById('snapshot-hint');
+  const flashHint = (() => {
+    let tid = null;
+    return (msg) => {
+      if (!snapshotHint) return;
+      const prev = snapshotHint.innerText;
+      snapshotHint.innerText = msg;
+      if (tid) clearTimeout(tid);
+      tid = setTimeout(() => { snapshotHint.innerText = prev; }, 2600);
+    };
+  })();
+
+  if (btnExport) {
+    btnExport.addEventListener('click', () => {
+      const cfg = collectConfig();
+      downloadFile('lite-start-config.json', JSON.stringify(cfg, null, 2));
+      flashHint(curDictNow.exported || '配置已导出');
+    });
+  }
+
+  if (btnImport && inputCfg) {
+    btnImport.addEventListener('click', () => inputCfg.click());
+    inputCfg.addEventListener('change', () => {
+      const file = inputCfg.files && inputCfg.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const cfg = JSON.parse(e.target.result);
+          if (applyConfig(cfg)) {
+            flashHint(curDictNow.imported || '已导入，正在刷新…');
+            setTimeout(() => location.reload(), 400);
+          } else {
+            flashHint(curDictNow.importFailed || '导入失败，格式无效');
+          }
+        } catch (err) {
+          flashHint(curDictNow.importFailed || '导入失败，格式无效');
+        }
+        inputCfg.value = '';
+      };
+      reader.readAsText(file);
+    });
+  }
+
+  if (btnShare) {
+    btnShare.addEventListener('click', () => {
+      const cfg = collectConfig();
+      const encoded = serializeConfig(cfg);
+      const url = new URL(location.href);
+      url.searchParams.set('config', encoded);
+      const shareUrl = url.toString();
+      const done = () => flashHint(curDictNow.shared || '分享链接已复制');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(done, () => copyFallback(shareUrl, done));
+      } else {
+        copyFallback(shareUrl, done);
+      }
+    });
+  }
+  function copyFallback(text, done) {
+    const tmp = document.createElement('textarea');
+    tmp.value = text;
+    tmp.style.position = 'fixed';
+    tmp.style.opacity = '0';
+    document.body.appendChild(tmp);
+    tmp.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(tmp);
+    done();
+  }
+
+  // 从分享链接 URL 参数恢复配置
+  (function loadFromUrl() {
+    try {
+      const params = new URLSearchParams(location.search);
+      const enc = params.get('config');
+      if (enc) {
+        const cfg = deserializeConfig(enc);
+        if (cfg && applyConfig(cfg)) {
+          const clean = location.pathname + location.search.replace(/[?&]config=[^&]*/, '').replace(/^&/, '?');
+          history.replaceState(null, '', clean.replace(/\?$/, ''));
+          location.reload();
+        }
+      }
+    } catch (e) {}
+  })();
+
+  // 每日自动备份（本地快照，按日期留存）
+  (function dailyBackup() {
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+      const last = Storage.get('ntp_backup_last', '');
+      if (last !== today) {
+        const cfg = collectConfig();
+        localStorage.setItem('ntp_backup_' + today, JSON.stringify(cfg.data));
+        Storage.set('ntp_backup_last', today);
+      }
+    } catch (e) {}
+  })();
+
+  // =====================================================================
+  // 功能 E. PWA：注册 Service Worker（离线缓存）
+  // =====================================================================
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js').catch(() => {});
+    });
+  }
 });
