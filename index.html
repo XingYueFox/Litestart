@@ -633,15 +633,64 @@
       cursor: text;
       position: relative;
       padding: 0 14px 0 11px;
-      transition: border-radius 0.15s ease, box-shadow 0.15s ease;
+      transition: border-radius 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
     }
 
-    #fakebox #searchbutton {
-      fill: var(--neutral-foreground-rest);
+    /* 搜索引擎图标 —— 位于搜索框最前端 */
+    #search-engine-icon {
       flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+      border-radius: 6px;
+      overflow: hidden;
+      opacity: 0.9;
+      transition: transform 0.25s ease, opacity 0.2s ease;
     }
 
-    #fakebox #placeholder {
+    #search-engine-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    #fakebox:hover #search-engine-icon {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+
+    /* 搜索按钮（右侧放大镜） */
+    #search-button {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      color: var(--neutral-foreground-rest);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: -4px;
+      transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+    }
+
+    #search-button svg {
+      fill: currentColor;
+    }
+
+    #search-button:hover {
+      background-color: var(--neutral-fill-hover);
+      transform: scale(1.08);
+      color: var(--accent-foreground-rest);
+    }
+
+    #search-button:active {
+      transform: scale(0.94);
+    }
+
+    #placeholder {
       flex: 1;
       color: var(--placeholder-color);
       font-family: var(--font-family);
@@ -656,8 +705,8 @@
 
     #search-input {
       position: absolute;
-      left: 42px;
-      right: 14px;
+      left: 44px;
+      right: 46px;
       top: 0;
       bottom: 0;
       border: none;
@@ -683,6 +732,14 @@
 
     #fakebox:hover {
       border-color: var(--accent-foreground-rest);
+    }
+
+    /* 搜索框聚焦时轻微上浮并加深阴影 */
+    #search-container:focus-within #fakebox,
+    #fakebox:focus-within {
+      border-color: var(--accent-foreground-rest);
+      box-shadow: var(--shadow16);
+      transform: translateY(-1px);
     }
 
     /* 搜索框展开联想下拉词条面板 */
@@ -1156,39 +1213,106 @@
       display: none;
     }
 
-    /* 响应式适配 */
-    @media (max-width: 1267px) {
-      #search-container { width: 528px; }
-      ntp-quicklinks { width: 674px; }
+    /* ===== 9. 动画与动效 ===== */
+
+    /* 入场动画关键帧 */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInScale { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+    @keyframes popIn { from { opacity: 0; transform: scale(0.96) translateY(-6px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes modalScaleIn { from { opacity: 0; transform: scale(0.94) translateY(12px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* 页面首屏入场 */
+    #logo { animation: fadeInScale 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+    #search-container { animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.05s both; }
+    ntp-quicklinks { animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.12s both; }
+
+    /* 快捷链接子项逐个滑入（延迟由 JS 注入；backwards 使结束时回到常态，保证悬停动效生效） */
+    .quicklink-item { animation: fadeInUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+
+    /* 头部按钮动效 */
+    .header-button { border-radius: 8px; transition: background-color 0.2s ease, transform 0.2s ease; }
+    .header-button:hover { background-color: var(--neutral-fill-hover); transform: scale(1.06); }
+    .header-button:active { transform: scale(0.94); }
+    #settings svg { transition: transform 0.4s ease; }
+    #settings:hover svg { transform: rotate(120deg); }
+    #waffle:hover svg { transform: rotate(45deg); }
+
+    /* 弹出面板入场 */
+    .popover-panel.active { animation: popIn 0.18s cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+    #popover-waffle { transform-origin: top left; }
+    #popover-settings { transform-origin: top right; }
+
+    /* 模态框入场 */
+    .modal-overlay { animation: fadeIn 0.2s ease-out; }
+    .modal-dialog { animation: modalScaleIn 0.25s cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+
+    /* 联想词条面板与悬停动效 */
+    #suggestions-box { animation: slideDown 0.18s ease-out; }
+    .suggestion-item { transition: background-color 0.12s ease, transform 0.12s ease; }
+    .suggestion-item:hover, .suggestion-item.selected { transform: translateX(3px); }
+
+    /* 快捷链接悬停动效 */
+    .quicklink-item { transition: background-color 0.2s ease, transform 0.2s ease; }
+    .quicklink-item:hover { transform: translateY(-3px); }
+    .quicklink-item .quicklink-icon { transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.25s ease; }
+    .quicklink-item:hover .quicklink-icon { transform: scale(1.12); }
+
+    /* Logo 悬停淡入淡出 */
+    #logo svg { transition: opacity 0.25s ease, transform 0.25s ease; }
+    #logo:hover svg { opacity: 0.9; }
+
+    /* 背景遮罩淡入 */
+    #bg-overlay { transition: opacity 0.4s ease; }
+
+    /* 按钮与表单控件统一过渡 */
+    .btn, .select-box, .icon-btn-text { transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease; }
+    .btn:active, .icon-btn-text:active { transform: scale(0.97); }
+
+    /* 尊重系统“减弱动态效果”偏好 */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-delay: 0s !important;
+        transition-duration: 0.001ms !important;
+      }
     }
 
-    @media (max-width: 1097px) {
-      ntp-quicklinks { width: 419px; }
-    }
+    /* ===== 10. 响应式自适应 ===== */
+    /* 流式宽度，随视口自适应收缩，避免横向溢出 */
+    #search-container { width: min(760px, calc(100vw - 40px)); }
+    ntp-quicklinks { width: min(844px, calc(100vw - 40px)); }
 
     @media (max-width: 955px) {
-      #search-container { width: 400px; }
+      ntp-quicklinks { width: min(560px, calc(100vw - 32px)); }
     }
 
     @media (max-width: 643px) {
-      #search-container { width: 343px; }
-      ntp-quicklinks { width: 343px; }
       #header { padding: 0 12px; }
+      ntp-quicklinks { width: calc(100vw - 32px); }
+      #search-container { width: calc(100vw - 32px); }
       #logo-text { width: 100px; }
       #logo-icon { height: 32px; }
       .wallpaper-preview-area { flex-direction: column; align-items: flex-start; }
       .wallpaper-preview-box { width: 100%; height: 160px; }
+      /* 弹窗防溢出屏幕 */
+      #popover-settings { right: 12px; width: min(320px, calc(100vw - 24px)); max-height: 80vh; }
+      #popover-waffle { left: 12px; width: min(280px, calc(100vw - 24px)); }
+      .modal-dialog { max-width: calc(100vw - 24px); }
     }
 
-    @media (max-width: 343px) {
+    @media (max-width: 380px) {
       ntp-shell { min-width: auto; }
       ntp-quicklinks { width: 100%; }
       #search-container { width: 90%; }
-      #fakebox { height: 32px; }
-      #suggestions-box { top: 32px; }
-      #fakebox #placeholder { font-size: 12px; line-height: 16px; }
-      #fakebox svg { width: 16px; height: 16px; }
-      #logo-icon { width: 48px; height: 48px; }
+      #fakebox { height: 40px; }
+      #search-engine-icon { width: 18px; height: 18px; margin-right: 2px; }
+      #search-button { width: 30px; height: 30px; margin-right: 0; }
+      #search-input { left: 38px; right: 46px; }
+      #suggestions-box { top: 40px; }
+      #fakebox #placeholder { font-size: 13px; line-height: 18px; }
+      #logo-icon { width: 40px; height: 40px; }
       #logo-text { display: none; }
     }
     </style>
@@ -1363,14 +1487,17 @@
         <!-- 搜索框容器 -->
         <div id="search-container">
           <div id="fakebox" role="searchbox" tabindex="0" aria-label="搜索或输入 Web 地址" data-i18n-aria="searchPlaceholder">
-            <svg aria-hidden="true" id="searchbutton" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 2.75a7.25 7.25 0 015.63 11.82l4.9 4.9a.75.75 0 01-.98 1.13l-.08-.07-4.9-4.9A7.25 7.25 0 1110 2.75zm0 1.5a5.75 5.75 0 100 11.5 5.75 5.75 0 000-11.5z">
-              </path>
-            </svg>
+            <span id="search-engine-icon" class="engine-icon" aria-hidden="true"></span>
             <div id="placeholder" aria-hidden="true" data-i18n="searchPlaceholder">
               搜索或输入 Web 地址
             </div>
             <input type="text" id="search-input" aria-label="搜索输入框" autocomplete="off" data-i18n-aria="searchInput">
+            <button id="search-button" type="button" aria-label="搜索" title="搜索" data-i18n-title="searchButton">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 2.75a7.25 7.25 0 015.63 11.82l4.9 4.9a.75.75 0 01-.98 1.13l-.08-.07-4.9-4.9A7.25 7.25 0 1110 2.75zm0 1.5a5.75 5.75 0 100 11.5 5.75 5.75 0 000-11.5z">
+                </path>
+              </svg>
+            </button>
           </div>
 
           <!-- 搜索推荐与历史词条下拉菜单 -->

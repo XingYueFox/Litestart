@@ -1,0 +1,7 @@
+# Trae HTML 分享打包目录（由 IDE 自动生成，不应纳入版本库）
+.trae-html-share-packages/
+
+# 系统/编辑器杂项
+.DS_Store
+Thumbs.db
+*.log

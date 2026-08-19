@@ -25,6 +25,45 @@ const logos = {
   custom: ``
 };
 
+// 搜索引擎小图标 —— 展示于搜索框最前端
+const searchEngineIcons = {
+  bing: `
+    <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bing">
+      <rect width="20" height="20" rx="5" fill="#00A4EF"/>
+      <text x="10" y="14.5" font-size="13" font-weight="700" font-family="Segoe UI, Arial, sans-serif" fill="#ffffff" text-anchor="middle">b</text>
+    </svg>
+  `,
+  baidu: `
+    <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Baidu">
+      <rect width="20" height="20" rx="5" fill="#2932E1"/>
+      <g fill="#ffffff">
+        <ellipse cx="10" cy="8" rx="1.9" ry="2.6"/>
+        <ellipse cx="6.6" cy="9.2" rx="1.6" ry="2.4"/>
+        <ellipse cx="13.4" cy="9.2" rx="1.6" ry="2.4"/>
+        <ellipse cx="5.4" cy="13" rx="1.3" ry="1.7"/>
+        <ellipse cx="14.6" cy="13" rx="1.3" ry="1.7"/>
+      </g>
+    </svg>
+  `,
+  google: `
+    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Google">
+      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+      <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+      <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+      <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+    </svg>
+  `,
+  custom: `
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Custom"
+         fill="none" stroke="currentColor">
+      <circle cx="10.5" cy="10.5" r="6.5" stroke-width="2"/>
+      <path d="M15.2 15.2 21 21" stroke-width="2" stroke-linecap="round"/>
+      <path d="M4 10.5h13M10.5 4c2 2 2 15 0 19M16.5 6.5c-1.2 2.2-1.2 10 0 14M4.5 12.5c2.8 1 7 1 12 0"
+            stroke-width="1.6" opacity="0.6"/>
+    </svg>
+  `
+};
+
 // 语言字典
 const i18nData = {
   'zh-CN': {
@@ -56,6 +95,7 @@ const i18nData = {
     disclaimer: '请注意，此网页与 Microsoft 无关。',
     searchPlaceholder: '搜索或输入 Web 地址',
     searchInput: '搜索输入框',
+    searchButton: '搜索',
     clearSearchHistory: '清除搜索历史记录',
     customBackground: '自定义背景',
     usingDefaultBg: '正在使用默认背景',
@@ -106,6 +146,7 @@ const i18nData = {
     disclaimer: '請注意，此網頁與 Microsoft 無關。',
     searchPlaceholder: '搜尋或輸入 Web 地址',
     searchInput: '搜尋輸入框',
+    searchButton: '搜尋',
     clearSearchHistory: '清除搜尋紀錄',
     customBackground: '自訂背景',
     usingDefaultBg: '正在使用預設背景',
@@ -156,6 +197,7 @@ const i18nData = {
     disclaimer: '謹告：此頁與微軟無涉。',
     searchPlaceholder: '或搜或鍵，惟網址依',
     searchInput: '搜尋之框',
+    searchButton: '搜',
     clearSearchHistory: '拭搜尋記',
     customBackground: '自定底景',
     usingDefaultBg: '現用默認底景',
@@ -206,6 +248,7 @@ const i18nData = {
     disclaimer: 'Note: This page is not affiliated with Microsoft.',
     searchPlaceholder: 'Search the web or enter address',
     searchInput: 'Search input',
+    searchButton: 'Search',
     clearSearchHistory: 'Clear search history',
     customBackground: 'Custom Background',
     usingDefaultBg: 'Using default background',
@@ -256,6 +299,7 @@ const i18nData = {
     disclaimer: '注: このページは Microsoft とは関係ありません。',
     searchPlaceholder: 'Web を検索またはアドレスを入力',
     searchInput: '検索入力ボックス',
+    searchButton: '検索',
     clearSearchHistory: '検索履歴を消去',
     customBackground: 'カスタム背景',
     usingDefaultBg: 'デフォルトの背景を使用中',
@@ -306,6 +350,7 @@ const i18nData = {
     disclaimer: 'Примечание: Эта страница не связана с Microsoft.',
     searchPlaceholder: 'Введите поисковый запрос или URL',
     searchInput: 'Поле поиска',
+    searchButton: 'Поиск',
     clearSearchHistory: 'Очистить историю поиска',
     customBackground: 'Пользовательский фон',
     usingDefaultBg: 'Используется стандартный фон',
@@ -466,6 +511,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchContainer = document.getElementById('search-container');
   const fakebox = document.getElementById('fakebox');
   const searchInput = document.getElementById('search-input');
+  const searchEngineIcon = document.getElementById('search-engine-icon');
+  const searchButton = document.getElementById('search-button');
   const suggestionsBox = document.getElementById('suggestions-box');
   const suggestionList = document.getElementById('suggestion-list');
   const suggestionsFooter = document.getElementById('suggestions-footer');
@@ -577,6 +624,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 切换搜索框最前端的搜索引擎图标
+  function updateSearchEngineIcon(engine) {
+    if (searchEngineIcon) {
+      searchEngineIcon.innerHTML = searchEngineIcons[engine] || searchEngineIcons.bing;
+    }
+  }
+
   // 动态管理自定义搜索引擎“编辑”按钮显隐
   function updateEngineEditButton(engine) {
     if (btnEditEngine) {
@@ -600,6 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
+  updateSearchEngineIcon(savedEngine);
   document.body.setAttribute('data-layout', savedLayout);
   quicklinksElem?.setAttribute('rows', savedQuicklinksRow);
 
@@ -747,6 +802,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const val = e.target.value;
     setLogo(val);
     updateEngineEditButton(val);
+    updateSearchEngineIcon(val);
     Storage.set('ntp_engine', val);
     if (val === 'custom' && (!customEngineConfig.url || customEngineConfig.url === 'https://duckduckgo.com/?q=%s')) {
       openCustomEngineModal();
@@ -832,7 +888,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!quicklinksElem) return;
   quicklinksElem.innerHTML = '';
 
-  quicklinksList.forEach(item => {
+  quicklinksList.forEach((item, index) => {
     const linkElem = document.createElement('a');
     linkElem.href = item.url;
     linkElem.className = 'quicklink-item';
@@ -867,6 +923,9 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
       openEditModal(item);
     });
+
+    // 逐项错峰入场，营造更流畅的动画过渡
+    linkElem.style.animationDelay = `${index * 0.04}s`;
 
     quicklinksElem.appendChild(linkElem);
   });
@@ -1153,6 +1212,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fakebox?.addEventListener('click', () => {
     searchInput?.focus();
+  });
+
+  // 点击右侧搜索按钮触发搜索（配合键盘 Enter 使用）
+  searchButton?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    doSearch();
   });
 
   searchInput?.addEventListener('focus', () => {
