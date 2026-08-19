@@ -257,6 +257,60 @@
       justify-content: flex-end;
     }
 
+    #header-left {
+      justify-content: flex-start;
+    }
+
+    /* 左上角常用网站快捷启动菜单 */
+    #popover-menu {
+      left: 22px;
+      width: min(348px, calc(100vw - 24px));
+      padding: 14px;
+    }
+
+    .quick-menu {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .qm-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 4px;
+      border-radius: 10px;
+      color: var(--neutral-foreground-rest);
+      text-decoration: none;
+      transition: background-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .qm-tile:hover {
+      background-color: var(--neutral-fill-hover);
+      transform: translateY(-2px);
+    }
+
+    .qm-tile:active {
+      transform: scale(0.96);
+    }
+
+    .qm-tile .qm-favicon {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    .qm-tile span {
+      font-size: 12px;
+      color: var(--settings-text-secondary);
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     .header-button {
       width: 40px;
       height: 40px;
@@ -732,7 +786,7 @@
     #search-input {
       position: absolute;
       left: 44px;
-      right: 46px;
+      right: 58px;
       top: 0;
       bottom: 0;
       border: none;
@@ -741,7 +795,11 @@
       font-family: var(--font-family);
       font-size: 16px;
       color: var(--neutral-foreground-rest);
-      opacity: 1; 
+      opacity: 1;
+      padding: 0 6px;
+      box-sizing: border-box;
+      min-width: 0;
+      z-index: 1;
     }
     
     #fakebox.has-value #placeholder {
@@ -905,6 +963,7 @@
     }
 
     .quicklink-icon {
+      position: relative;
       width: 38px;
       height: 38px;
       border-radius: 50%;
@@ -919,10 +978,27 @@
       font-size: 14px;
     }
 
-    .quicklink-icon img {
+    .quicklink-icon .ql-fallback {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--neutral-foreground-rest);
+    }
+
+    .quicklink-icon .ql-img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       width: 22px;
       height: 22px;
       object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .quicklink-icon .ql-img.ql-loaded {
+      opacity: 1;
     }
 
     .quicklink-title {
@@ -1294,6 +1370,51 @@
     @keyframes slideLayoutDown { from { opacity: 0; transform: translateY(-48px); } to { opacity: 1; transform: translateY(0); } }
     #search-container { will-change: transform, opacity; }
 
+    /* 引擎图标切换时弹跳出现 */
+    @keyframes iconPop {
+      0% { transform: translateY(4px) scale(0.8); opacity: 0; }
+      60% { transform: translateY(-1px) scale(1.06); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    #search-engine-icon.icon-pop { animation: iconPop 0.3s cubic-bezier(0.2, 0.8, 0.3, 1); }
+
+    /* 设置面板内各卡片错峰入场 */
+    #popover-settings.active .settings-card {
+      animation: fadeInUp 0.35s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+    }
+    #popover-settings.active .settings-card:nth-child(2) { animation-delay: 0.05s; }
+    #popover-settings.active .settings-card:nth-child(3) { animation-delay: 0.1s; }
+    #popover-settings.active .settings-card:nth-child(4) { animation-delay: 0.15s; }
+    #popover-settings.active .settings-card:nth-child(5) { animation-delay: 0.2s; }
+    #popover-settings.active .settings-card:nth-child(6) { animation-delay: 0.25s; }
+
+    /* 联想词条逐条淡入 */
+    #suggestions-box .suggestion-item {
+      animation: fadeIn 0.22s ease both;
+    }
+    #suggestions-box .suggestion-item:nth-child(1) { animation-delay: 0s; }
+    #suggestions-box .suggestion-item:nth-child(2) { animation-delay: 0.04s; }
+    #suggestions-box .suggestion-item:nth-child(3) { animation-delay: 0.08s; }
+    #suggestions-box .suggestion-item:nth-child(4) { animation-delay: 0.12s; }
+    #suggestions-box .suggestion-item:nth-child(5) { animation-delay: 0.16s; }
+    #suggestions-box .suggestion-item:nth-child(6) { animation-delay: 0.2s; }
+
+    /* 布局预设卡片悬停抬升 */
+    .preset-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .preset-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow4);
+    }
+    .preset-thumb-bar, .preset-thumb-box {
+      transition: transform 0.25s ease;
+    }
+    .preset-card:hover .preset-thumb-bar,
+    .preset-card:hover .preset-thumb-box {
+      transform: scale(1.06);
+    }
+
     /* 快捷链接悬停动效 */
     .quicklink-item { transition: background-color 0.2s ease, transform 0.2s ease; }
     .quicklink-item:hover { transform: translateY(-3px); }
@@ -1339,6 +1460,7 @@
       .wallpaper-preview-box { width: 100%; height: 160px; }
       /* 弹窗防溢出屏幕 */
       #popover-settings { right: 12px; width: min(320px, calc(100vw - 24px)); max-height: 80vh; }
+      #popover-menu { left: 12px; width: min(320px, calc(100vw - 24px)); }
       .modal-dialog { max-width: calc(100vw - 24px); }
     }
 
@@ -1349,7 +1471,7 @@
       #fakebox { height: 40px; }
       #search-engine-icon { width: 18px; height: 18px; margin-right: 2px; }
       #search-button { width: 30px; height: 30px; margin-right: 0; }
-      #search-input { left: 38px; right: 46px; }
+      #search-input { left: 38px; right: 58px; }
       #suggestions-box { top: 40px; }
       #fakebox #placeholder { font-size: 13px; line-height: 18px; }
       #logo-icon { width: 40px; height: 40px; }
@@ -1369,6 +1491,34 @@
     <ntp-shell elementtiming="wallpaper">
       <!-- 顶部导航栏 -->
       <div id="header">
+        <div id="header-left">
+          <button id="menu-btn" class="header-button" type="button" aria-label="常用网站" title="常用网站" data-i18n-title="quickMenu">
+            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+              <circle cx="5" cy="5" r="1.6"/><circle cx="12" cy="5" r="1.6"/><circle cx="19" cy="5" r="1.6"/>
+              <circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>
+              <circle cx="5" cy="19" r="1.6"/><circle cx="12" cy="19" r="1.6"/><circle cx="19" cy="19" r="1.6"/>
+            </svg>
+          </button>
+          <!-- 常用网站快捷启动面板 -->
+          <div id="popover-menu" class="popover-panel">
+            <div class="settings-header">
+              <span class="settings-title" data-i18n="quickMenu">常用网站</span>
+              <button class="settings-close-btn" id="btn-close-menu" title="关闭" data-i18n-title="close">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M2.22 2.22a.75.75 0 0 1 1.06 0L8 6.94l4.72-4.72a.75.75 0 1 1 1.06 1.06L9.06 8l4.72 4.72a.75.75 0 1 1-1.06 1.06L8 9.06l-4.72 4.72a.75.75 0 0 1-1.06-1.06L6.94 8 2.22 3.28a.75.75 0 0 1 0-1.06z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="quick-menu" id="quick-menu">
+              <a href="https://github.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=github.com" alt="" class="qm-favicon"><span>GitHub</span></a>
+              <a href="https://www.bilibili.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=bilibili.com" alt="" class="qm-favicon"><span>哔哩哔哩</span></a>
+              <a href="https://www.zhihu.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=zhihu.com" alt="" class="qm-favicon"><span>知乎</span></a>
+              <a href="https://www.weibo.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=weibo.com" alt="" class="qm-favicon"><span>微博</span></a>
+              <a href="https://mail.google.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=mail.google.com" alt="" class="qm-favicon"><span>Gmail</span></a>
+              <a href="https://www.taobao.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=taobao.com" alt="" class="qm-favicon"><span>淘宝</span></a>
+            </div>
+          </div>
+        </div>
         <div id="header-right">
           <button id="settings" class="header-button" type="button" aria-label="设置" title="设置" data-i18n-title="settingsTitle">
             <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

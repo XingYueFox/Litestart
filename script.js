@@ -57,9 +57,7 @@ const searchEngineIcons = {
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Custom"
          fill="none" stroke="currentColor">
       <circle cx="10.5" cy="10.5" r="6.5" stroke-width="2"/>
-      <path d="M15.2 15.2 21 21" stroke-width="2" stroke-linecap="round"/>
-      <path d="M4 10.5h13M10.5 4c2 2 2 15 0 19M16.5 6.5c-1.2 2.2-1.2 10 0 14M4.5 12.5c2.8 1 7 1 12 0"
-            stroke-width="1.6" opacity="0.6"/>
+      <path d="M15.4 15.4 21 21" stroke-width="2" stroke-linecap="round"/>
     </svg>
   `
 };
@@ -119,7 +117,8 @@ const i18nData = {
     bgSource: '背景来源',
     bgDefault: '默认',
     bgDaily: '每日壁纸',
-    bgCustom: '自定义'
+    bgCustom: '自定义',
+    quickMenu: '常用网站'
   },
   'zh-TW': {
     pageTitle: '新分頁',
@@ -174,7 +173,8 @@ const i18nData = {
     bgSource: '背景來源',
     bgDefault: '預設',
     bgDaily: '每日桌布',
-    bgCustom: '自訂'
+    bgCustom: '自訂',
+    quickMenu: '常用網站'
   },
   'zh-WY': {
     pageTitle: '新標籤頁',
@@ -229,7 +229,8 @@ const i18nData = {
     bgSource: '底景之源',
     bgDefault: '默認',
     bgDaily: '日日之壁',
-    bgCustom: '自訂'
+    bgCustom: '自訂',
+    quickMenu: '常上之站'
   },
   'en': {
     pageTitle: 'New Tab',
@@ -284,7 +285,8 @@ const i18nData = {
     bgSource: 'Background source',
     bgDefault: 'Default',
     bgDaily: 'Daily wallpaper',
-    bgCustom: 'Custom'
+    bgCustom: 'Custom',
+    quickMenu: 'Quick sites'
   },
   'ja': {
     pageTitle: '新しいタブ',
@@ -339,7 +341,8 @@ const i18nData = {
     bgSource: '背景の種類',
     bgDefault: 'デフォルト',
     bgDaily: '毎日の壁紙',
-    bgCustom: 'カスタム'
+    bgCustom: 'カスタム',
+    quickMenu: 'よく使うサイト'
   },
   'ru': {
     pageTitle: 'Новая вкладка',
@@ -394,7 +397,8 @@ const i18nData = {
     bgSource: 'Источник фона',
     bgDefault: 'По умолчанию',
     bgDaily: 'Ежедневные обои',
-    bgCustom: 'Своя'
+    bgCustom: 'Своя',
+    quickMenu: 'Частые сайты'
   }
 };
 
@@ -520,6 +524,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSettings = document.getElementById('settings');
   const btnCloseSettings = document.getElementById('btn-close-settings');
   const popoverSettings = document.getElementById('popover-settings');
+  const btnMenu = document.getElementById('menu-btn');
+  const btnCloseMenu = document.getElementById('btn-close-menu');
+  const popoverMenu = document.getElementById('popover-menu');
 
   const selectEngine = document.getElementById('select-engine');
   const btnEditEngine = document.getElementById('btn-edit-engine');
@@ -606,10 +613,26 @@ document.addEventListener('DOMContentLoaded', () => {
     google: 'https://www.google.com/search?q='
   };
 
-  // 切换设置面板显隐
+  // 切换设置面板显隐（与快捷菜单互斥）
   btnSettings?.addEventListener('click', (e) => {
     e.stopPropagation();
+    popoverMenu?.classList.remove('active');
     popoverSettings.classList.toggle('active');
+  });
+
+  // 切换左上角常用网站快捷菜单显隐（与设置面板互斥）
+  btnMenu?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    popoverSettings?.classList.remove('active');
+    popoverMenu.classList.toggle('active');
+  });
+
+  // 关闭按钮
+  btnCloseMenu?.addEventListener('click', () => popoverMenu?.classList.remove('active'));
+
+  // 点击快捷启动面板中的站点后收起面板
+  document.querySelectorAll('#quick-menu a.qm-tile').forEach(tile => {
+    tile.addEventListener('click', () => popoverMenu?.classList.remove('active'));
   });
 
   if (btnCloseSettings) {
@@ -621,6 +644,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', (e) => {
     if (popoverSettings && !popoverSettings.contains(e.target) && !btnSettings?.contains(e.target)) {
       popoverSettings.classList.remove('active');
+    }
+    if (popoverMenu && !popoverMenu.contains(e.target) && !btnMenu?.contains(e.target)) {
+      popoverMenu.classList.remove('active');
     }
     if (!searchContainer?.contains(e.target)) {
       closeSuggestions();
@@ -638,6 +664,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateSearchEngineIcon(engine) {
     if (searchEngineIcon) {
       searchEngineIcon.innerHTML = searchEngineIcons[engine] || searchEngineIcons.bing;
+      // 重新触发弹跳动画，让图标切换更醒目
+      searchEngineIcon.classList.remove('icon-pop');
+      void searchEngineIcon.offsetWidth;
+      searchEngineIcon.classList.add('icon-pop');
     }
   }
 
@@ -981,13 +1011,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialChar = (item.title || 'W').charAt(0).toUpperCase();
     const faviconUrl = getFaviconUrl(item.url);
 
-    // 构建图标内容：如果 faviconUrl 有效则用 img，否则直接显示首字母
+    // 构建图标内容：立即显示首字母，favicon 加载成功后淡入覆盖
     let iconContent = '';
     if (faviconUrl) {
-      iconContent = `<img src="${faviconUrl}" alt="${item.title}" loading="lazy" 
-                        onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
+      iconContent = `<span class="ql-fallback">${initialChar}</span>
+        <img src="${faviconUrl}" alt="${item.title}" class="ql-img"
+             onload="this.classList.add('ql-loaded')" onerror="this.remove()">`;
     } else {
-      iconContent = initialChar;
+      iconContent = `<span class="ql-fallback">${initialChar}</span>`;
     }
 
     linkElem.innerHTML = `
