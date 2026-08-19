@@ -1757,17 +1757,25 @@ searchInput?.addEventListener('input', () => {
   // 功能 D. 配置快照与同步：导出/导入 JSON、分享链接、每日自动备份
   // =====================================================================
   const CONFIG_KEYS = [
+    // 语言
     'liteStart_language',
-    'ntp_custom_engine_config',
+    // 默认搜索引擎 + 自定义引擎配置
     'ntp_engine',
+    'ntp_custom_engine_config',
+    // 其他界面设置（布局 / 行数 / 搜索历史开关）
     'ntp_layout',
     'ntp_quicklinks',
     'ntp_history_enabled',
-    'ntp_search_history',
+    // 纯净模式 / 高对比模式
+    'ntp_pure_mode',
+    'ntp_high_contrast',
+    // 壁纸设置（开关 / 来源模式 / 自定义壁纸数据）
     'ntp_bg_enabled',
-    'ntp_custom_wallpaper',
     'ntp_bg_mode',
-    'ntp_quicklinks_list'
+    'ntp_custom_wallpaper',
+    // 网站快捷方式列表 + 搜索历史
+    'ntp_quicklinks_list',
+    'ntp_search_history'
   ];
 
   function collectConfig() {
