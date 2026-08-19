@@ -69,6 +69,7 @@ const i18nData = {
     settingsTitle: '页面设置',
     close: '关闭',
     quicklinks: '网站导航',
+    quickTools: '常用工具',
     off: '关闭',
     on: '打开',
     rows1: '1 行',
@@ -146,6 +147,7 @@ const i18nData = {
     settingsTitle: '頁面設定',
     close: '關閉',
     quicklinks: '網站導覽',
+    quickTools: '常用工具',
     off: '關閉',
     on: '開啟',
     rows1: '1 行',
@@ -223,6 +225,7 @@ const i18nData = {
     settingsTitle: '頁面之設',
     close: '闔',
     quicklinks: '網要',
+    quickTools: '常用工具',
     off: '罷',
     on: '啟',
     rows1: '一列',
@@ -300,6 +303,7 @@ const i18nData = {
     settingsTitle: 'Page Settings',
     close: 'Close',
     quicklinks: 'Quick Links',
+    quickTools: 'Tools',
     off: 'Off',
     on: 'On',
     rows1: '1 row',
@@ -377,6 +381,7 @@ const i18nData = {
     settingsTitle: '設定',
     close: '閉じる',
     quicklinks: 'クイックリンク',
+    quickTools: '便利ツール',
     off: 'オフ',
     on: 'オン',
     rows1: '1 行',
@@ -454,6 +459,7 @@ const i18nData = {
     settingsTitle: 'Настройки страницы',
     close: 'Закрыть',
     quicklinks: 'Быстрые ссылки',
+    quickTools: 'Инструменты',
     off: 'Выкл',
     on: 'Вкл',
     rows1: '1 строка',
@@ -771,6 +777,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // 点击快捷启动面板中的站点后收起面板
   document.querySelectorAll('#quick-menu a.qm-tile').forEach(tile => {
     tile.addEventListener('click', () => popoverMenu?.classList.remove('active'));
+  });
+
+  // 九宫格常用工具：番茄钟 / 页面设置
+  document.getElementById('qm-tool-pomodoro')?.addEventListener('click', () => {
+    popoverMenu?.classList.remove('active');
+    if (pmPanel) pmPanel.hidden = false;
+    if (fabBtn) fabBtn.setAttribute('aria-expanded', 'true');
+    pmRender();
+  });
+  document.getElementById('qm-tool-settings')?.addEventListener('click', () => {
+    popoverMenu?.classList.remove('active');
+    popoverSettings?.classList.add('active');
   });
 
   if (btnCloseSettings) {

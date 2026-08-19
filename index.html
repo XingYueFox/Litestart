@@ -316,6 +316,30 @@
       white-space: nowrap;
     }
 
+    /* 九宫格内的“常用工具”分组 */
+    .qm-tools {
+      border-top: 1px solid var(--settings-card-border);
+      margin-top: 8px;
+      padding-top: 8px;
+    }
+    .qm-tools-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--settings-text-secondary);
+      margin-bottom: 6px;
+    }
+    .qm-tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .qm-tools-grid button.qm-tile {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: var(--font-family);
+    }
+
     .header-button {
       width: 40px;
       height: 40px;
@@ -747,9 +771,13 @@
       opacity: 1;
     }
 
-    /* 搜索按钮（右侧放大镜） */
+    /* 搜索按钮（右侧放大镜）—— 绝对定位于右缘，始终固定在右侧，不随布局移位 */
     #search-button {
-      flex-shrink: 0;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 6px;
+      z-index: 2;
       width: 34px;
       height: 34px;
       border-radius: 50%;
@@ -757,8 +785,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: -4px;
       transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+    }
+    /* hover/active 的 scale 动画不能覆盖顶部定位 */
+    #search-button:hover,
+    #search-button:active {
+      transform: translateY(-50%) scale(1.08);
+    }
+    #search-button:active {
+      transform: translateY(-50%) scale(0.94);
     }
 
     #search-button svg {
@@ -791,7 +826,7 @@
     #search-input {
       position: absolute;
       left: 44px;
-      right: 58px;
+      right: 56px;
       top: 0;
       bottom: 0;
       border: none;
@@ -805,6 +840,9 @@
       box-sizing: border-box;
       min-width: 0;
       z-index: 1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
     
     #fakebox.has-value #placeholder {
@@ -1004,6 +1042,11 @@
 
     .quicklink-icon .ql-img.ql-loaded {
       opacity: 1;
+    }
+
+    /* 图标加载成功后隐藏首字母，避免“图标+首字母”同时显示 */
+    .quicklink-icon:has(.ql-img.ql-loaded) .ql-fallback {
+      display: none;
     }
 
     .quicklink-title {
@@ -1581,16 +1624,57 @@
     }
     body.pure-mode .pomodoro-panel { animation: none; }
 
-    /* ===== 14. 高对比模式：强化前景/边框对比 ===== */
+    /* ===== 14. 高对比模式：强制纯黑/纯白高对比表面 ===== */
     body.high-contrast {
+      --fill-color: #ffffff;
+      --fill-popup-color: #ffffff;
+      --neutral-layer-floating: #ffffff;
+      --neutral-foreground-rest: #000000;
+      --neutral-foreground-secondary: #000000;
+      --logo-color: #000000;
+      --placeholder-color: #000000;
+      --accent-foreground-rest: #000000;
+      --colorNeutralStroke1Hover: #000000;
+      --neutral-fill-rest: #e6e6e6;
+      --neutral-fill-hover: #cccccc;
+      --modal-bg: #ffffff;
+      --modal-border: #000000;
+      --modal-mask: rgba(0, 0, 0, 0.8);
+      --input-bg: #ffffff;
+      --input-border-bottom: #000000;
+      --settings-panel-bg: #ffffff;
+      --settings-card-bg: #ffffff;
+      --settings-card-border: #000000;
+      --settings-card-hover: #d9d9d9;
       --settings-text-primary: #000000;
       --settings-text-secondary: #000000;
-      --settings-card-border: #000000;
-      --modal-border: #000000;
-      --neutral-foreground-rest: #000000;
+      --settings-thumb-bg: #e0e0e0;
+      --settings-thumb-border: #000000;
+      --suggestion-bg: #ffffff;
+      --suggestion-hover: #d0d0d0;
+      --suggestion-history-color: #000000;
+      --suggestion-footer-color: #000000;
+      --btn-secondary-bg: #ffffff;
+      --shadow2: none;
+      --shadow4: none;
+      --shadow16: none;
     }
+    /* 高对比下隐藏动态壁纸，保证纯色高对比表面 */
+    body.high-contrast #background-container { display: none; }
     body.high-contrast .settings-card,
-    body.high-contrast .pomodoro-panel { border-width: 2px; }
+    body.high-contrast .pomodoro-panel,
+    body.high-contrast #fakebox,
+    body.high-contrast .popover-panel,
+    body.high-contrast .link-card,
+    body.high-contrast .link-tile {
+      border: 2px solid #000000;
+      box-shadow: none;
+    }
+    body.high-contrast .header-button:hover,
+    body.high-contrast .qm-tile:hover,
+    body.high-contrast .pomodoro-mode-btn:hover {
+      outline: 2px solid #000000;
+    }
 
     @media (max-width: 643px) {
       #toolbar { right: 12px; bottom: 12px; }
@@ -1613,8 +1697,8 @@
       #search-container { width: 90%; }
       #fakebox { height: 40px; }
       #search-engine-icon { width: 18px; height: 18px; margin-right: 2px; }
-      #search-button { width: 30px; height: 30px; margin-right: 0; }
-      #search-input { left: 38px; right: 58px; }
+      #search-button { width: 30px; height: 30px; right: 4px; }
+      #search-input { left: 38px; right: 46px; }
       #suggestions-box { top: 40px; }
       #fakebox #placeholder { font-size: 13px; line-height: 18px; }
       #logo-icon { width: 40px; height: 40px; }
@@ -1654,6 +1738,25 @@
                 </svg>
               </button>
             </div>
+            <!-- 常用工具：在九宫格内直接启动本地工具 -->
+            <div class="qm-tools">
+              <div class="qm-tools-title" data-i18n="quickTools">常用工具</div>
+              <div class="qm-tools-grid">
+                <button type="button" class="qm-tile" id="qm-tool-pomodoro" data-i18n-title="toolbar">
+                  <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 3a.75.75 0 0 1 .75.75V5h1.75a6.25 6.25 0 0 1 3.6 11.3.75.75 0 0 1-.35.63l-.24.15-1.1 3.15a.75.75 0 0 1-2.42.41A1 1 0 0 1 14 21.5h-4a1 1 0 0 1-2.24-.38l-1.1-3.15-.24-.15a.75.75 0 0 1-.35-.63A6.25 6.25 0 0 1 9.5 5h1.75V3.75A.75.75 0 0 1 12 3zM9.19 7.2H8.5A4.75 4.75 0 0 0 8.5 21h7a4.75 4.75 0 0 0 1.02-9.4A4.75 4.75 0 0 0 9.19 7.2zm1.31 6.3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM12 12.5a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5zm3 4.5v1.25a.75.75 0 0 1-1.5 0V17zm-3-1.75a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+                  </svg>
+                  <span data-i18n="toolbar">工具栏</span>
+                </button>
+                <button type="button" class="qm-tile" id="qm-tool-settings" data-i18n-title="settingsTitle">
+                  <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12.01 2.25c.74 0 1.47.1 2.18.25.32.07.55.33.59.65l.17 1.53a1.38 1.38 0 0 0 1.92 1.11l1.4-.61c.3-.13.64-.06.85.17a9.8 9.8 0 0 1 2.2 3.8c.1.3 0 .63-.26.82l-1.24.92a1.38 1.38 0 0 0 0 2.22l1.24.92c.26.19.36.52.27.82a9.8 9.8 0 0 1-2.2 3.8.75.75 0 0 1-.85.17l-1.4-.62a1.38 1.38 0 0 0-1.93 1.12l-.17 1.52a.75.75 0 0 1-.58.65 9.52 9.52 0 0 1-4.4 0 .75.75 0 0 1-.57-.65l-.17-1.52a1.38 1.38 0 0 0-1.93-1.11l-1.4.62a.75.75 0 0 1-.85-.18 9.8 9.8 0 0 1-2.2-3.8c-.1-.3 0-.63.27-.82l1.24-.92a1.38 1.38 0 0 0 0-2.22l-1.24-.92a.75.75 0 0 1-.28-.82 9.8 9.8 0 0 1 2.2-3.8c.23-.23.57-.3.86-.17l1.4.62c.4.17.86.15 1.25-.08.38-.22.63-.6.68-1.04l.17-1.53a.75.75 0 0 1 .58-.65c.72-.16 1.45-.24 2.2-.25zm0 1.5c-.45 0-.9.04-1.35.12l-.11.97a2.89 2.89 0 0 1-4.02 2.33l-.9-.4A8.3 8.3 0 0 0 4.28 9.1l.8.59a2.88 2.88 0 0 1 0 4.64l-.8.59a8.3 8.3 0 0 0 1.35 2.32l.9-.4a2.88 2.88 0 0 1 4.02 2.32l.1.99c.9.15 1.8.15 2.7 0l.1-.99a2.88 2.88 0 0 1 4.02-2.32l.9.4a8.3 8.3 0 0 0 1.36-2.32l-.8-.59a2.88 2.88 0 0 1 0-4.64l.8-.59a8.3 8.3 0 0 0-1.35-2.32l-.9.4a2.88 2.88 0 0 1-4.02-2.32l-.11-.98c-.45-.08-.9-.11-1.34-.12zM12 8.25a3.75 3.75 0 1 1 0 7.5 3.75 3.75 0 0 1 0-7.5zm0 1.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5z"/>
+                  </svg>
+                  <span data-i18n="settingsTitle">页面设置</span>
+                </button>
+              </div>
+            </div>
+            <!-- 常用网站 -->
             <div class="quick-menu" id="quick-menu">
               <a href="https://github.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=github.com" alt="" class="qm-favicon"><span>GitHub</span></a>
               <a href="https://www.bilibili.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=bilibili.com" alt="" class="qm-favicon"><span>哔哩哔哩</span></a>
