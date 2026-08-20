@@ -2476,6 +2476,41 @@ searchInput?.addEventListener('input', () => {
       </div>`;
   }
 
+  // 城市名 → 坐标。优先 open-meteo（英文/拼音城市），失败或无结果时回退 Photon/OpenStreetMap（支持中文等原生名称）
+  async function geocodeCity(name) {
+    const q = encodeURIComponent(name);
+    const withTimeout = (p, ms) => {
+      return Promise.race([
+        p,
+        new Promise((_, rej) => setTimeout(() => rej(new Error('geo timeout')), 9000))
+      ]);
+    };
+    // 源1：open-meteo
+    try {
+      const geoRes = await withTimeout(fetch(`https://geocoding-api.open-meteo.com/v1/search?count=5&language=zh&format=json&name=${q}`));
+      if (geoRes.ok) {
+        const geoData = await geoRes.json();
+        const hit = Array.isArray(geoData.results) && geoData.results[0];
+        if (hit) return { latitude: hit.latitude, longitude: hit.longitude, name: hit.name };
+      }
+    } catch (_) { /* 继续尝试下一源 */ }
+    // 源2：Photon (OpenStreetMap)，支持中文城市名
+    try {
+      const phRes = await withTimeout(fetch(`https://photon.komoot.io/api/?q=${q}&limit=1`, { headers: { 'Accept': 'application/json' } }));
+      if (phRes.ok) {
+        const phData = await phRes.json();
+        const feat = Array.isArray(phData.features) && phData.features[0];
+        if (feat && Array.isArray(feat.geometry && feat.geometry.coordinates)) {
+          const [lon, lat] = feat.geometry.coordinates;
+          if (typeof lon === 'number' && typeof lat === 'number') {
+            return { latitude: lat, longitude: lon, name: (feat.properties && feat.properties.name) || name };
+          }
+        }
+      }
+    } catch (_) { /* 两个源均失败 */ }
+    throw new Error('geo not found');
+  }
+
   async function fetchWeather() {
     if (!weatherWidget || weatherWidget.hidden) return;
     if (!weatherCity) {
@@ -2484,11 +2519,7 @@ searchInput?.addEventListener('input', () => {
     }
     if (weatherBody) weatherBody.innerHTML = `<div style="font-size:12px;opacity:.8;">${nowDict().weatherLoading || '加载中…'}</div>`;
     try {
-      const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?count=5&language=en&format=json&name=${encodeURIComponent(weatherCity)}`);
-      if (!geoRes.ok) throw new Error('geo http ' + geoRes.status);
-      const geoData = await geoRes.json();
-      const place = Array.isArray(geoData.results) && geoData.results[0];
-      if (!place) throw new Error('geo not found');
+      const place = await geocodeCity(weatherCity);
       const payload = await fetchWeatherForecast(place);
       weatherCache = payload;
       Storage.set('ntp_weather_cache', payload);
