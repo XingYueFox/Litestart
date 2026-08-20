@@ -1178,7 +1178,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('qm-tool-refresh-wall')?.addEventListener('click', () => {
     popoverMenu?.classList.remove('active');
-    if (bgMode === 'bingdaily') applyBingDailyWallpaper();
+    if (bgMode === 'bingdaily') applyBingNextWallpaper();
     else renderWallpaper();
   });
   document.getElementById('qm-tool-pure')?.addEventListener('click', () => {
@@ -1321,30 +1321,59 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 拉取并应用 Microsoft 每日壁纸（Bing 每日图片）
-  async function applyBingDailyWallpaper() {
+  // --- 每日壁纸：取今日确定性壁纸（biturl，CORS 可靠） ---
+  async function fetchBingDailyUrl() {
+    const res = await fetch('https://bing.biturl.top/?resolution=1920&format=json&mkt=zh-CN');
+    if (!res.ok) throw new Error('daily http ' + res.status);
+    const data = await res.json();
+    const url = (data && data.url) ||
+      (data && data.images && data.images[0] && 'https://www.bing.com' + data.images[0].url);
+    if (!url) throw new Error('no daily image url');
+    return url;
+  }
+
+  // 取下一张每日壁纸：经由 CORS 接口重定向到一张不同的 Bing 每日图
+  async function fetchBingAddUrl() {
+    const res = await fetch('https://api.qqsuu.cn/api/dm-bing', { redirect: 'follow' });
+    let url = res.redirected ? res.url : '';
+    if (url) {
+      // 升级为 https，避免环境下的混合内容限制
+      if (/^http:/i.test(url)) url = 'https:' + url.slice(5);
+      return url;
+    }
+    throw new Error('add image redirect missing');
+  }
+
+  async function applyBingWallpaper(getUrl) {
     if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = 'Microsoft 每日壁纸';
+    let url;
     try {
-      const res = await fetch('https://bing.biturl.top/?resolution=1920&format=json&mkt=zh-CN');
-      const data = await res.json();
-      const url = (data && data.url) ||
-        (data && data.images && data.images[0] && 'https://www.bing.com' + data.images[0].url);
-      if (!url) throw new Error('no image url');
-      const probe = new Image();
-      probe.onload = () => {
-        applyBgMedia(url, false);
-        updateWallpaperPreview(url);
-      };
-      probe.onerror = () => {
-        applyBgMedia('img/background.webp', false);
-        resetWallpaperPreview();
-      };
-      probe.src = url;
+      url = await getUrl();
     } catch (e) {
       console.warn('获取 Microsoft 每日壁纸失败，使用默认背景:', e);
       applyBgMedia('img/background.webp', false);
       resetWallpaperPreview();
+      return;
     }
+    const probe = new Image();
+    probe.onload = () => {
+      applyBgMedia(url, false);
+      updateWallpaperPreview(url);
+    };
+    probe.onerror = () => {
+      applyBgMedia('img/background.webp', false);
+      resetWallpaperPreview();
+    };
+    probe.src = url;
+  }
+
+  function applyBingDailyWallpaper() {
+    applyBingWallpaper(fetchBingDailyUrl);
+  }
+
+  // 切换到下一张每日壁纸（刷新按钮 / 定时自动换壁）
+  function applyBingNextWallpaper() {
+    applyBingWallpaper(fetchBingAddUrl);
   }
 
   function renderWallpaper() {
@@ -1396,7 +1425,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (bgEnabled && bgMode === 'bingdaily' && bgIntervalMin > 0) {
       bgIntervalTimer = setInterval(() => {
-        if (bgEnabled && bgMode === 'bingdaily') applyBingDailyWallpaper();
+        if (bgEnabled && bgMode === 'bingdaily') applyBingNextWallpaper();
       }, bgIntervalMin * 60 * 1000);
     } else {
       updateBgSourceUI();
@@ -1638,6 +1667,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- 2. 快捷方式列表管理 ---
   let quicklinksList = Storage.get('ntp_quicklinks_list', []);
+  // 首次运行预置常用快捷方式（仅当用户从未保存过快捷链接时），便于开箱即用地体验分组拖拽
+  const qlSeeded = Storage.get('ntp_ql_seeded', '');
+  if (!qlSeeded && Array.isArray(quicklinksList) && quicklinksList.length === 0) {
+    quicklinksList = [
+      { id: 'ql-bing', title: 'Bing', url: 'https://www.bing.com', group: 'default' },
+      { id: 'ql-google', title: 'Google', url: 'https://www.google.com', group: 'default' },
+      { id: 'ql-github', title: 'GitHub', url: 'https://github.com', group: 'default' },
+      { id: 'ql-zhihu', title: '知乎', url: 'https://www.zhihu.com', group: 'default' },
+      { id: 'ql-bili', title: '哔哩哔哩', url: 'https://www.bilibili.com', group: 'default' },
+      { id: 'ql-ytb', title: 'YouTube', url: 'https://www.youtube.com', group: 'default' },
+      { id: 'ql-x', title: 'X', url: 'https://x.com', group: 'default' },
+      { id: 'ql-deepseek', title: 'DeepSeek', url: 'https://chat.deepseek.com', group: 'default' }
+    ];
+    Storage.set('ntp_quicklinks_list', quicklinksList);
+    Storage.set('ntp_ql_seeded', '1');
+  }
   let dragLinkId = null;
 
   function renderQuicklinks() {
@@ -1705,7 +1750,7 @@ document.addEventListener('DOMContentLoaded', () => {
         openEditModal(item);
       });
 
-      // 拖拽排序：拖动快捷方式调整位置，松手后持久化排序
+      // 拖拽：同一分组内排序，或拖入其它分组归入该组
       linkElem.draggable = true;
       linkElem.addEventListener('dragstart', (e) => {
         dragLinkId = item.id;
@@ -1726,20 +1771,34 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       linkElem.addEventListener('drop', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         linkElem.classList.remove('ql-drag-over');
-        const from = quicklinksList.findIndex(i => String(i.id) === String(dragLinkId));
-        const to = quicklinksList.findIndex(i => String(i.id) === String(item.id));
-        if (from === -1 || to === -1 || from === to) return;
-        const [moved] = quicklinksList.splice(from, 1);
-        quicklinksList.splice(to, 0, moved);
-        Storage.set('ntp_quicklinks_list', quicklinksList);
-        renderQuicklinks();
+        moveQuicklink(item.id);
       });
 
       // 逐项错峰入场，营造更流畅的动画过渡
       linkElem.style.animationDelay = `${index * 0.04}s`;
 
       grid.appendChild(linkElem);
+    });
+
+    // 分组标题与空白区域可作为拖放目标：将图标拖入该分组
+    groupDiv.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      try { e.dataTransfer.dropEffect = 'move'; } catch (_) {}
+      groupDiv.classList.add('ql-group-over');
+    });
+    groupDiv.addEventListener('dragleave', (e) => {
+      // 离开整个分组容器（而非单个图标）时移除高亮
+      if (!groupDiv.contains(e.relatedTarget)) groupDiv.classList.remove('ql-group-over');
+    });
+    groupDiv.addEventListener('drop', (e) => {
+      // 若落在单个图标上，由该图标的 drop 处理（已 stopPropagation）
+      if (e.target.closest('.quicklink-item')) return;
+      e.preventDefault();
+      e.stopPropagation();
+      groupDiv.classList.remove('ql-group-over');
+      moveQuicklinkToGroup(gName);
     });
 
     groupDiv.appendChild(grid);
@@ -1765,6 +1824,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
   quicklinksElem.appendChild(addBtnElem);
 }
+
+  // 拖放移动快捷方式：拖到单个图标上时，归入其分组并就近放置
+  function normalizeGroup(name) {
+    const g = (name || '').trim();
+    return g || 'default';
+  }
+  function applyQuicklinks() {
+    Storage.set('ntp_quicklinks_list', quicklinksList);
+    renderQuicklinks();
+  }
+  function moveQuicklink(targetItemId) {
+    const from = quicklinksList.findIndex(i => String(i.id) === String(dragLinkId));
+    if (from === -1) return;
+    const [moved] = quicklinksList.splice(from, 1);
+    const targetIdx = quicklinksList.findIndex(i => String(i.id) === String(targetItemId));
+    if (targetIdx === -1) return;
+    // 归入目标图标所在分组，若跨组则刷新目标分组名
+    if (normalizeGroup(moved.group) !== normalizeGroup(quicklinksList[targetIdx].group)) {
+      moved.group = normalizeGroup(quicklinksList[targetIdx].group);
+    }
+    quicklinksList.splice(targetIdx, 0, moved);
+    applyQuicklinks();
+  }
+  function moveQuicklinkToGroup(groupName) {
+    if (!dragLinkId) return;
+    const from = quicklinksList.findIndex(i => String(i.id) === String(dragLinkId));
+    if (from === -1) return;
+    quicklinksList[from].group = normalizeGroup(groupName) === 'default' ? 'default' : normalizeGroup(groupName);
+    // 移动到该分组内末尾
+    const [moved] = quicklinksList.splice(from, 1);
+    const items = quicklinksList;
+    const lastIdx = items.map(i => normalizeGroup(i.group)).lastIndexOf(normalizeGroup(groupName));
+    items.splice(lastIdx + 1, 0, moved);
+    applyQuicklinks();
+  }
 
   // --- 3. 自定义校验与 Modal 对话框逻辑 ---
   function clearErrors() {
@@ -2317,19 +2411,52 @@ searchInput?.addEventListener('input', () => {
     if (weatherBody) weatherBody.innerHTML = `<div style="font-size:12px;opacity:.8;">${nowDict().weatherLoading || '加载中…'}</div>`;
     try {
       const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?count=5&language=en&format=json&name=${encodeURIComponent(weatherCity)}`);
+      if (!geoRes.ok) throw new Error('geo http ' + geoRes.status);
       const geoData = await geoRes.json();
       const place = Array.isArray(geoData.results) && geoData.results[0];
       if (!place) throw new Error('geo not found');
-      const wxRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current_weather=true`);
-      const wxData = await wxRes.json();
-      const cur = wxData && wxData.current_weather;
-      if (!cur) throw new Error('no current weather');
-      const payload = { city: place.name || weatherCity, temp: Math.round(cur.temperature), code: cur.weathercode, time: cur.time };
+      const payload = await fetchWeatherForecast(place);
       weatherCache = payload;
       Storage.set('ntp_weather_cache', payload);
       renderWeather(true, payload);
     } catch (err) {
-      renderWeather(false, null);
+      // 网络失败时回退到上次缓存的天气数据
+      if (weatherCache) {
+        renderWeather(true, weatherCache);
+      } else {
+        renderWeather(false, null);
+      }
+    }
+  }
+
+  // 获取当前天气：优先新版稳定接口，失败时回退旧版 current 接口
+  async function fetchWeatherForecast(place) {
+    const opts = {
+      timeout: 9000,
+      signal: null
+    };
+    const attempts = [
+      `https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,weather_code&timezone=auto`,
+      `https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current_weather=true`
+    ];
+    for (const url of attempts) {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), opts.timeout);
+      try {
+        const wxRes = await fetch(url, { signal: ctrl.signal });
+        clearTimeout(timer);
+        if (!wxRes.ok) throw new Error('wx http ' + wxRes.status);
+        const wxData = await wxRes.json();
+        const cur = wxData && (wxData.current || wxData.current_weather);
+        if (!cur) throw new Error('no current weather');
+        const temp = (cur.temperature_2m != null) ? cur.temperature_2m : cur.temperature;
+        const code = (cur.weather_code != null) ? cur.weather_code : cur.weathercode;
+        return { city: place.name || weatherCity, temp: Math.round(temp), code, time: cur.time };
+      } catch (e) {
+        clearTimeout(timer);
+        if (e.name === 'AbortError') throw new Error('wx timeout');
+        if (url === attempts[attempts.length - 1]) throw e; // 最后一次仍然失败则抛给上层
+      }
     }
   }
 

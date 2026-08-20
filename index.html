@@ -1034,6 +1034,14 @@
       border-radius: 8px;
       background-color: var(--neutral-fill-hover);
     }
+    /* 整组作为拖放目标高亮 */
+    .quicklink-group.ql-group-over {
+      outline: 2px dashed var(--accent-foreground-rest);
+      outline-offset: 6px;
+      border-radius: 12px;
+      background-color: rgba(255,255,255,.06);
+      transition: background-color .12s ease, outline-color .12s ease;
+    }
 
     .quicklink-icon {
       position: relative;
