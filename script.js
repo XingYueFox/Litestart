@@ -122,6 +122,15 @@ const i18nData = {
     quickMenu: '常用网站',
     skipToContent: '跳到内容',
     toolbar: '工具栏',
+    pomodoro: '番茄钟',
+    fullscreen: '全屏',
+    refreshWallpaper: '刷新壁纸',
+    bgInterval: '自动更换间隔',
+    bgIntervalOff: '不更换',
+    bgInterval5: '5 分钟',
+    bgInterval15: '15 分钟',
+    bgInterval30: '30 分钟',
+    bgInterval60: '60 分钟',
     pmWork: '工作 25分',
     pmBreak: '休息 5分',
     pmStart: '开始',
@@ -200,6 +209,15 @@ const i18nData = {
     quickMenu: '常用網站',
     skipToContent: '跳到主要內容',
     toolbar: '工具列',
+    pomodoro: '番茄鐘',
+    fullscreen: '全螢幕',
+    refreshWallpaper: '更新桌布',
+    bgInterval: '自動更換間隔',
+    bgIntervalOff: '不更換',
+    bgInterval5: '5 分鐘',
+    bgInterval15: '15 分鐘',
+    bgInterval30: '30 分鐘',
+    bgInterval60: '60 分鐘',
     pmWork: '工作 25分',
     pmBreak: '休息 5分',
     pmStart: '開始',
@@ -278,6 +296,15 @@ const i18nData = {
     quickMenu: '常上之站',
     skipToContent: '跳到正文',
     toolbar: '工具欄',
+    pomodoro: '番茄鐘',
+    fullscreen: '全屏',
+    refreshWallpaper: '刷新壁紙',
+    bgInterval: '自動換底',
+    bgIntervalOff: '唔換',
+    bgInterval5: '5 分鐘',
+    bgInterval15: '15 分鐘',
+    bgInterval30: '30 分鐘',
+    bgInterval60: '60 分鐘',
     pmWork: '工作 25分',
     pmBreak: '休息 5分',
     pmStart: '開始',
@@ -356,6 +383,15 @@ const i18nData = {
     quickMenu: 'Quick sites',
     skipToContent: 'Skip to content',
     toolbar: 'Toolbar',
+    pomodoro: 'Pomodoro',
+    fullscreen: 'Fullscreen',
+    refreshWallpaper: 'Refresh wallpaper',
+    bgInterval: 'Auto change interval',
+    bgIntervalOff: 'Off',
+    bgInterval5: '5 min',
+    bgInterval15: '15 min',
+    bgInterval30: '30 min',
+    bgInterval60: '60 min',
     pmWork: 'Work 25 min',
     pmBreak: 'Break 5 min',
     pmStart: 'Start',
@@ -434,6 +470,15 @@ const i18nData = {
     quickMenu: 'よく使うサイト',
     skipToContent: '本文へスキップ',
     toolbar: 'ツールバー',
+    pomodoro: 'ポモドーロ',
+    fullscreen: '全画面',
+    refreshWallpaper: '壁紙を更新',
+    bgInterval: '自動切替',
+    bgIntervalOff: '切替なし',
+    bgInterval5: '5 分',
+    bgInterval15: '15 分',
+    bgInterval30: '30 分',
+    bgInterval60: '60 分',
     pmWork: '作業 25分',
     pmBreak: '休憩 5分',
     pmStart: '開始',
@@ -512,6 +557,15 @@ const i18nData = {
     quickMenu: 'Частые сайты',
     skipToContent: 'К содержанию',
     toolbar: 'Панель',
+    pomodoro: 'Помидор',
+    fullscreen: 'Полный экран',
+    refreshWallpaper: 'Обновить обои',
+    bgInterval: 'Интервал смены',
+    bgIntervalOff: 'Не менять',
+    bgInterval5: '5 мин',
+    bgInterval15: '15 мин',
+    bgInterval30: '30 мин',
+    bgInterval60: '60 мин',
     pmWork: 'Работа 25 мин',
     pmBreak: 'Перерыв 5 мин',
     pmStart: 'Старт',
@@ -736,6 +790,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgVideo = document.getElementById('bg-video');
   const bgImage = document.getElementById('bg-image');
   const bgSourceOptions = document.querySelectorAll('.bg-source-option');
+  const bgIntervalRow = document.getElementById('bg-interval-row');
+  const selectBgInterval = document.getElementById('select-bg-interval');
 
   if (searchInput && searchInput.value.trim() !== '') {
   const fakebox = document.getElementById('fakebox');
@@ -774,12 +830,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // 关闭按钮
   btnCloseMenu?.addEventListener('click', () => popoverMenu?.classList.remove('active'));
 
-  // 点击快捷启动面板中的站点后收起面板
-  document.querySelectorAll('#quick-menu a.qm-tile').forEach(tile => {
-    tile.addEventListener('click', () => popoverMenu?.classList.remove('active'));
-  });
+  // 通过真实开关派发 change，复用已有的纯净/高对比开关配置逻辑
+  const clickSwitch = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.checked = !el.checked;
+    el.dispatchEvent(new Event('change'));
+  };
 
-  // 九宫格常用工具：番茄钟 / 页面设置
+  // 九宫格工具栏：番茄钟 / 页面设置 / 全屏 / 刷新壁纸 / 纯净 / 高对比
   document.getElementById('qm-tool-pomodoro')?.addEventListener('click', () => {
     popoverMenu?.classList.remove('active');
     if (pmPanel) pmPanel.hidden = false;
@@ -789,6 +848,24 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('qm-tool-settings')?.addEventListener('click', () => {
     popoverMenu?.classList.remove('active');
     popoverSettings?.classList.add('active');
+  });
+  document.getElementById('qm-tool-fullscreen')?.addEventListener('click', () => {
+    popoverMenu?.classList.remove('active');
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+  });
+  document.getElementById('qm-tool-refresh-wall')?.addEventListener('click', () => {
+    popoverMenu?.classList.remove('active');
+    if (bgMode === 'bingdaily') applyBingDailyWallpaper();
+    else renderWallpaper();
+  });
+  document.getElementById('qm-tool-pure')?.addEventListener('click', () => {
+    clickSwitch('toggle-pure-switch');
+    popoverMenu?.classList.remove('active');
+  });
+  document.getElementById('qm-tool-hc')?.addEventListener('click', () => {
+    clickSwitch('toggle-hc-switch');
+    popoverMenu?.classList.remove('active');
   });
 
   if (btnCloseSettings) {
@@ -844,6 +921,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let bgEnabled = Storage.get('ntp_bg_enabled', false);
   let customWallpaperData = Storage.get('ntp_custom_wallpaper', null);
   let bgMode = Storage.get('ntp_bg_mode', 'default');
+  let bgIntervalMin = Number(Storage.get('ntp_bg_interval', 0)) || 0;
+  let bgIntervalTimer = null;
 
   if (selectEngine) selectEngine.value = savedEngine;
   if (selectQuicklinks) selectQuicklinks.value = savedQuicklinksRow;
@@ -874,6 +953,11 @@ document.addEventListener('DOMContentLoaded', () => {
     bgSourceOptions.forEach(opt => {
       opt.classList.toggle('active', opt.dataset.bgMode === bgMode);
     });
+    if (bgIntervalRow) {
+      const show = bgEnabled && bgMode === 'bingdaily';
+      bgIntervalRow.style.display = show ? 'block' : 'none';
+    }
+    if (selectBgInterval) selectBgInterval.value = String(bgIntervalMin);
   }
 
   function applyBgMedia(src, isVideo) {
@@ -945,14 +1029,31 @@ document.addEventListener('DOMContentLoaded', () => {
     resetWallpaperPreview();
   }
 
+  // 定时自动更换壁纸：仅对每日壁纸且已启用背景时生效
+  function restartBgInterval() {
+    if (bgIntervalTimer) {
+      clearInterval(bgIntervalTimer);
+      bgIntervalTimer = null;
+    }
+    if (bgEnabled && bgMode === 'bingdaily' && bgIntervalMin > 0) {
+      bgIntervalTimer = setInterval(() => {
+        if (bgEnabled && bgMode === 'bingdaily') applyBingDailyWallpaper();
+      }, bgIntervalMin * 60 * 1000);
+    } else {
+      updateBgSourceUI();
+    }
+  }
+
   applyBackgroundState();
   updateBgSourceUI();
+  restartBgInterval();
 
   // 背景开关同步响应
   toggleBgSwitch?.addEventListener('change', (e) => {
     bgEnabled = e.target.checked;
     Storage.set('ntp_bg_enabled', bgEnabled);
     applyBackgroundState();
+    restartBgInterval();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
@@ -960,6 +1061,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bgEnabled = e.target.checked;
     Storage.set('ntp_bg_enabled', bgEnabled);
     applyBackgroundState();
+    restartBgInterval();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
@@ -972,12 +1074,20 @@ document.addEventListener('DOMContentLoaded', () => {
       Storage.set('ntp_bg_enabled', bgEnabled);
       updateBgSourceUI();
       applyBackgroundState();
+      restartBgInterval();
       if (bgMode === 'custom' && !customWallpaperData) {
         popoverSettings?.classList.remove('active');
         modalWallpaper?.classList.add('active');
       }
       applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
     });
+  });
+
+  // 自动更换壁纸间隔选择
+  selectBgInterval?.addEventListener('change', () => {
+    bgIntervalMin = Number(selectBgInterval.value) || 0;
+    Storage.set('ntp_bg_interval', bgIntervalMin);
+    restartBgInterval();
   });
 
   // 壁纸弹窗逻辑
@@ -1152,6 +1262,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- 2. 快捷方式列表管理 ---
   let quicklinksList = Storage.get('ntp_quicklinks_list', []);
+  let dragLinkId = null;
 
   function renderQuicklinks() {
   if (!quicklinksElem) return;
@@ -1192,6 +1303,37 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       e.stopPropagation();
       openEditModal(item);
+    });
+
+    // 拖拽排序：拖动快捷方式调整位置，松手后持久化排序
+    linkElem.draggable = true;
+    linkElem.addEventListener('dragstart', (e) => {
+      dragLinkId = item.id;
+      linkElem.classList.add('ql-dragging');
+      try { e.dataTransfer.effectAllowed = 'move'; } catch (_) {}
+    });
+    linkElem.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      try { e.dataTransfer.dropEffect = 'move'; } catch (_) {}
+      linkElem.classList.add('ql-drag-over');
+    });
+    linkElem.addEventListener('dragleave', () => {
+      linkElem.classList.remove('ql-drag-over');
+    });
+    linkElem.addEventListener('dragend', () => {
+      dragLinkId = null;
+      quicklinksElem.querySelectorAll('.ql-dragging,.ql-drag-over').forEach(el => el.classList.remove('ql-dragging', 'ql-drag-over'));
+    });
+    linkElem.addEventListener('drop', (e) => {
+      e.preventDefault();
+      linkElem.classList.remove('ql-drag-over');
+      const from = quicklinksList.findIndex(i => String(i.id) === String(dragLinkId));
+      const to = quicklinksList.findIndex(i => String(i.id) === String(item.id));
+      if (from === -1 || to === -1 || from === to) return;
+      const [moved] = quicklinksList.splice(from, 1);
+      quicklinksList.splice(to, 0, moved);
+      Storage.set('ntp_quicklinks_list', quicklinksList);
+      renderQuicklinks();
     });
 
     // 逐项错峰入场，营造更流畅的动画过渡

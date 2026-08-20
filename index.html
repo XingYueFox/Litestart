@@ -1005,6 +1005,19 @@
       background-color: var(--neutral-fill-rest);
     }
 
+    .quicklink-item[draggable="true"] {
+      cursor: grab;
+    }
+    .quicklink-item.ql-dragging {
+      opacity: 0.45;
+    }
+    .quicklink-item.ql-drag-over {
+      outline: 2px solid var(--accent-foreground-rest);
+      outline-offset: -2px;
+      border-radius: 8px;
+      background-color: var(--neutral-fill-hover);
+    }
+
     .quicklink-icon {
       position: relative;
       width: 38px;
@@ -1738,15 +1751,15 @@
                 </svg>
               </button>
             </div>
-            <!-- 常用工具：在九宫格内直接启动本地工具 -->
+            <!-- 工具栏：九宫格仅用于启动本地工具 -->
             <div class="qm-tools">
-              <div class="qm-tools-title" data-i18n="quickTools">常用工具</div>
+              <div class="qm-tools-title" data-i18n="toolbar">工具栏</div>
               <div class="qm-tools-grid">
                 <button type="button" class="qm-tile" id="qm-tool-pomodoro" data-i18n-title="toolbar">
                   <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 3a.75.75 0 0 1 .75.75V5h1.75a6.25 6.25 0 0 1 3.6 11.3.75.75 0 0 1-.35.63l-.24.15-1.1 3.15a.75.75 0 0 1-2.42.41A1 1 0 0 1 14 21.5h-4a1 1 0 0 1-2.24-.38l-1.1-3.15-.24-.15a.75.75 0 0 1-.35-.63A6.25 6.25 0 0 1 9.5 5h1.75V3.75A.75.75 0 0 1 12 3zM9.19 7.2H8.5A4.75 4.75 0 0 0 8.5 21h7a4.75 4.75 0 0 0 1.02-9.4A4.75 4.75 0 0 0 9.19 7.2zm1.31 6.3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM12 12.5a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5zm3 4.5v1.25a.75.75 0 0 1-1.5 0V17zm-3-1.75a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
                   </svg>
-                  <span data-i18n="toolbar">工具栏</span>
+                  <span data-i18n="pomodoro">番茄钟</span>
                 </button>
                 <button type="button" class="qm-tile" id="qm-tool-settings" data-i18n-title="settingsTitle">
                   <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
@@ -1754,16 +1767,31 @@
                   </svg>
                   <span data-i18n="settingsTitle">页面设置</span>
                 </button>
+                <button type="button" class="qm-tile" id="qm-tool-fullscreen" data-i18n-title="fullscreen">
+                  <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3.5 9.5v-6h6V5.5H5.5V10H9v1.5H4l-.5-.5v.5H3.5zM14.5 3.5h6v6H20V5.5h-4V10h1.5v9h4V10h1.5zM14.5 21h-6v-1.5l4-.5v-3.5H9v1.5l-6-6V14h4V10h1.5l4 4V20.5h2zM20.5 14.5h1.5v6h-6V20h4v-4H20v-1.5z"/>
+                  </svg>
+                  <span data-i18n="fullscreen">全屏</span>
+                </button>
+                <button type="button" class="qm-tile" id="qm-tool-refresh-wall" data-i18n-title="refreshWallpaper">
+                  <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 3.5a8.5 8.5 0 0 0-8 5.3h2.7L5.2 8.6 3.8 13l-1 2.7A10 10 0 0 1 2 13a10 10 0 0 1 20 0h-2a8 8 0 0 0-8-9.5zm7.2 3.7L20.2 8 21.5 8.8A10 10 0 0 1 22 11h-2a8 8 0 0 0-.8-3.8zM14 6.5l-4 2-4 3.5 4-2 4-3.5zM12 20.5a8.5 8.5 0 0 0 8-5.3h-2.7l1.5 1.2 1.4-4.4 1-2.7A10 10 0 0 1 22 11a10 10 0 0 1-20 0h2a8 8 0 0 0 8 9.5zm-2-3l4-2 4-3.5-4 2-4 3.5z"/>
+                  </svg>
+                  <span data-i18n="refreshWallpaper">刷新壁纸</span>
+                </button>
+                <button type="button" class="qm-tile" id="qm-tool-pure" data-i18n-title="pureMode">
+                  <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.4 19 5.5v5.6a8.6 8.6 0 0 1-5.3 8A8.6 8.6 0 0 1 5 11.1V5.5L12 2.4zm0 2L7 6.8v4.3a6.6 6.6 0 0 0 4.4 6.2A6.6 6.6 0 0 0 17 11.1V6.8L12 4.4z"/>
+                  </svg>
+                  <span data-i18n="pureMode">纯净</span>
+                </button>
+                <button type="button" class="qm-tile" id="qm-tool-hc" data-i18n-title="highContrast">
+                  <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 0 1 0 16V4z"/>
+                  </svg>
+                  <span data-i18n="highContrast">高对比</span>
+                </button>
               </div>
-            </div>
-            <!-- 常用网站 -->
-            <div class="quick-menu" id="quick-menu">
-              <a href="https://github.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=github.com" alt="" class="qm-favicon"><span>GitHub</span></a>
-              <a href="https://www.bilibili.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=bilibili.com" alt="" class="qm-favicon"><span>哔哩哔哩</span></a>
-              <a href="https://www.zhihu.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=zhihu.com" alt="" class="qm-favicon"><span>知乎</span></a>
-              <a href="https://www.weibo.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=weibo.com" alt="" class="qm-favicon"><span>微博</span></a>
-              <a href="https://mail.google.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=mail.google.com" alt="" class="qm-favicon"><span>Gmail</span></a>
-              <a href="https://www.taobao.com" target="_blank" rel="noopener" class="qm-tile"><img src="https://api.xinac.net/icon/?url=taobao.com" alt="" class="qm-favicon"><span>淘宝</span></a>
             </div>
           </div>
         </div>
@@ -1868,6 +1896,16 @@
                   <button type="button" class="bg-source-option" data-bg-mode="default" data-i18n="bgDefault">默认</button>
                   <button type="button" class="bg-source-option" data-bg-mode="bingdaily" data-i18n="bgDaily">每日壁纸</button>
                   <button type="button" class="bg-source-option" data-bg-mode="custom" data-i18n="bgCustom">自定义</button>
+                </div>
+                <div class="bg-interval-row" id="bg-interval-row" style="display: none;">
+                  <label class="setting-label-group" for="select-bg-interval" data-i18n="bgInterval">自动更换间隔</label>
+                  <select id="select-bg-interval" class="select-box" style="margin-top: 8px; width: 100%;">
+                    <option value="0" data-i18n="bgIntervalOff">不更换</option>
+                    <option value="5" data-i18n="bgInterval5">5 分钟</option>
+                    <option value="15" data-i18n="bgInterval15">15 分钟</option>
+                    <option value="30" data-i18n="bgInterval30">30 分钟</option>
+                    <option value="60" data-i18n="bgInterval60">60 分钟</option>
+                  </select>
                 </div>
                 <button id="btn-open-bg-modal" class="icon-btn-text" type="button">
                   <span data-i18n="editBackground">编辑背景</span>
