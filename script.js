@@ -95,6 +95,7 @@ const i18nData = {
     searchPlaceholder: '搜索或输入 Web 地址',
     searchInput: '搜索输入框',
     searchButton: '搜索',
+    switchEngine: '切换搜索引擎',
     clearSearchHistory: '清除搜索历史记录',
     customBackground: '自定义背景',
     usingDefaultBg: '正在使用默认背景',
@@ -234,6 +235,7 @@ const i18nData = {
     searchPlaceholder: '搜尋或輸入 Web 地址',
     searchInput: '搜尋輸入框',
     searchButton: '搜尋',
+    switchEngine: '切換搜尋引擎',
     clearSearchHistory: '清除搜尋紀錄',
     customBackground: '自訂背景',
     usingDefaultBg: '正在使用預設背景',
@@ -373,6 +375,7 @@ const i18nData = {
     searchPlaceholder: '或搜或鍵，惟網址依',
     searchInput: '搜尋之框',
     searchButton: '搜',
+    switchEngine: '切换搜索引擎',
     clearSearchHistory: '拭搜尋記',
     customBackground: '自定底景',
     usingDefaultBg: '現用默認底景',
@@ -512,6 +515,7 @@ const i18nData = {
     searchPlaceholder: 'Search the web or enter address',
     searchInput: 'Search input',
     searchButton: 'Search',
+    switchEngine: 'Switch search engine',
     clearSearchHistory: 'Clear search history',
     customBackground: 'Custom Background',
     usingDefaultBg: 'Using default background',
@@ -651,6 +655,7 @@ const i18nData = {
     searchPlaceholder: 'Web を検索またはアドレスを入力',
     searchInput: '検索入力ボックス',
     searchButton: '検索',
+    switchEngine: '検索エンジンを切り替え',
     clearSearchHistory: '検索履歴を消去',
     customBackground: 'カスタム背景',
     usingDefaultBg: 'デフォルトの背景を使用中',
@@ -790,6 +795,7 @@ const i18nData = {
     searchPlaceholder: 'Введите поисковый запрос или URL',
     searchInput: 'Поле поиска',
     searchButton: 'Поиск',
+    switchEngine: 'Переключить поисковую систему',
     clearSearchHistory: 'Очистить историю поиска',
     customBackground: 'Пользовательский фон',
     usingDefaultBg: 'Используется стандартный фон',
@@ -1197,9 +1203,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.addEventListener('click', (e) => {
-    // 点击发生在工具栏内（popoverMenu 中）不算“外部”，避免打断从中打开的设置面板
+    // 点击发生在工具栏内（popoverMenu 中）或天气“设置”按钮上不算“外部”，避免打断从中打开的设置面板
     const insideToolbar = popoverMenu?.contains(e.target);
-    if (popoverSettings && !popoverSettings.contains(e.target) && !btnSettings?.contains(e.target) && !insideToolbar) {
+    const insideWeatherEdit = weatherEditBtn?.contains(e.target);
+    if (popoverSettings && !popoverSettings.contains(e.target) && !btnSettings?.contains(e.target) && !insideToolbar && !insideWeatherEdit) {
       popoverSettings.classList.remove('active');
     }
     if (popoverMenu && !popoverMenu.contains(e.target) && !btnMenu?.contains(e.target)) {
@@ -1332,16 +1339,23 @@ document.addEventListener('DOMContentLoaded', () => {
     return url;
   }
 
-  // 取下一张每日壁纸：经由 CORS 接口重定向到一张不同的 Bing 每日图
+  // 取一张不同的每日壁纸：优先 CORS 重定向源，失败时依次回退到其它随机 Bing 图源
   async function fetchBingAddUrl() {
-    const res = await fetch('https://api.qqsuu.cn/api/dm-bing', { redirect: 'follow' });
-    let url = res.redirected ? res.url : '';
-    if (url) {
-      // 升级为 https，避免环境下的混合内容限制
-      if (/^http:/i.test(url)) url = 'https:' + url.slice(5);
-      return url;
+    const sources = [
+      async () => {
+        const res = await fetch('https://api.qqsuu.cn/api/dm-bing', { redirect: 'follow' });
+        if (!res.redirected || !res.url) throw new Error('qqsuu no redirect');
+        return 'https:' + res.url.replace(/^http:\/\//i, '//');
+      },
+      async () => {
+        // 图片源：直接作为 <img> 加载（无需 CORS），加时间戳避免缓存导致重复
+        return 'https://bing.img.run/1920x1080.php?t=' + Date.now();
+      }
+    ];
+    for (const src of sources) {
+      try { return await src(); } catch (e) { /* 继续尝试下一源 */ }
     }
-    throw new Error('add image redirect missing');
+    throw new Error('all add sources failed');
   }
 
   async function applyBingWallpaper(getUrl) {
@@ -1350,10 +1364,14 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       url = await getUrl();
     } catch (e) {
-      console.warn('获取 Microsoft 每日壁纸失败，使用默认背景:', e);
-      applyBgMedia('img/background.webp', false);
-      resetWallpaperPreview();
-      return;
+      // 取“下一张”失败时，回退到当日壁纸，而不是直接重置为默认背景
+      console.warn('获取 Microsoft 每日壁纸失败，回退当日壁纸:', e);
+      try { url = await fetchBingDailyUrl(); }
+      catch (_) {
+        applyBgMedia('img/background.webp', false);
+        resetWallpaperPreview();
+        return;
+      }
     }
     const probe = new Image();
     probe.onload = () => {
@@ -1361,8 +1379,14 @@ document.addEventListener('DOMContentLoaded', () => {
       updateWallpaperPreview(url);
     };
     probe.onerror = () => {
-      applyBgMedia('img/background.webp', false);
-      resetWallpaperPreview();
+      // 目标图加载失败时回退到当日壁纸
+      fetchBingDailyUrl().then((u) => {
+        applyBgMedia(u, false);
+        updateWallpaperPreview(u);
+      }).catch(() => {
+        applyBgMedia('img/background.webp', false);
+        resetWallpaperPreview();
+      });
     };
     probe.src = url;
   }
@@ -1684,6 +1708,78 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.set('ntp_ql_seeded', '1');
   }
   let dragLinkId = null;
+  // 指针式拖拽状态
+  let qlDrag = null;            // { id, el, startX, startY, active }
+  let qlGhost = null;           // 跟随鼠标的拖拽示意块
+  let qlBound = false;          // 是否已绑定全局 mousemove/mouseup
+
+  function clearQlGroupOver() {
+    quicklinksElem?.querySelectorAll('.ql-group-over').forEach(g => g.classList.remove('ql-group-over'));
+  }
+
+  function beginQuicklinkDrag(id, x, y, el) {
+    qlDrag = { id, el, startX: x, startY: y, active: false };
+    if (!qlBound) {
+      qlBound = true;
+      document.addEventListener('mousemove', onQlMouseMove);
+      document.addEventListener('mouseup', onQlMouseUp);
+    }
+  }
+
+  function onQlMouseMove(e) {
+    if (!qlDrag) return;
+    const dx = e.clientX - qlDrag.startX;
+    const dy = e.clientY - qlDrag.startY;
+    if (!qlDrag.active && Math.hypot(dx, dy) > 5) {
+      qlDrag.active = true;
+      dragLinkId = qlDrag.id;
+      qlDrag.el.classList.add('ql-dragging');
+      qlDrag.el.style.pointerEvents = 'none';
+      document.body.classList.add('ql-dragging-active');
+      qlGhost = document.createElement('div');
+      qlGhost.className = 'ql-drag-ghost';
+      qlGhost.textContent = qlDrag.el.querySelector('.quicklink-title')?.textContent || '';
+      document.body.appendChild(qlGhost);
+    }
+    if (!qlDrag.active) return;
+    if (qlGhost) {
+      const size = Math.max(qlDrag.el.offsetWidth, 72);
+      qlGhost.style.width = size + 'px';
+      qlGhost.style.transform = `translate(${e.clientX - size / 2}px, ${e.clientY - 26}px)`;
+    }
+    // 高亮鼠标经过的分组容器
+    clearQlGroupOver();
+    const over = document.elementFromPoint(e.clientX, e.clientY);
+    const groupEl = over && over.closest('.quicklink-group');
+    if (groupEl) groupEl.classList.add('ql-group-over');
+  }
+
+  function onQlMouseUp(e) {
+    if (!qlDrag) return;
+    if (qlDrag.active) {
+      const over = document.elementFromPoint(e.clientX, e.clientY);
+      const groupEl = over && over.closest('.quicklink-group');
+      if (groupEl) {
+        const gName = groupEl.getAttribute('data-group') || 'default';
+        const targetItem = over.closest('.quicklink-item');
+        if (targetItem && targetItem !== qlDrag.el) {
+          moveQuicklink(targetItem.getAttribute('data-id'));
+        } else if (gName) {
+          moveQuicklinkToGroup(gName);
+        }
+      }
+    }
+    document.body.classList.remove('ql-dragging-active');
+    clearQlGroupOver();
+    if (qlDrag.el) {
+      qlDrag.el.classList.remove('ql-dragging');
+      qlDrag.el.style.pointerEvents = '';
+    }
+    if (qlGhost && qlGhost.parentNode) qlGhost.parentNode.removeChild(qlGhost);
+    qlGhost = null;
+    qlDrag = null;
+    dragLinkId = null;
+  }
 
   function renderQuicklinks() {
   if (!quicklinksElem) return;
@@ -1750,30 +1846,12 @@ document.addEventListener('DOMContentLoaded', () => {
         openEditModal(item);
       });
 
-      // 拖拽：同一分组内排序，或拖入其它分组归入该组
-      linkElem.draggable = true;
-      linkElem.addEventListener('dragstart', (e) => {
-        dragLinkId = item.id;
-        linkElem.classList.add('ql-dragging');
-        try { e.dataTransfer.effectAllowed = 'move'; } catch (_) {}
-      });
-      linkElem.addEventListener('dragover', (e) => {
+      // 拖拽：同一分组内排序，或拖入其它分组归入该组（指针式拖动，更稳定）
+      linkElem.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        if (e.target.closest('.quicklink-edit-btn')) return;
         e.preventDefault();
-        try { e.dataTransfer.dropEffect = 'move'; } catch (_) {}
-        linkElem.classList.add('ql-drag-over');
-      });
-      linkElem.addEventListener('dragleave', () => {
-        linkElem.classList.remove('ql-drag-over');
-      });
-      linkElem.addEventListener('dragend', () => {
-        dragLinkId = null;
-        quicklinksElem.querySelectorAll('.ql-dragging,.ql-drag-over').forEach(el => el.classList.remove('ql-dragging', 'ql-drag-over'));
-      });
-      linkElem.addEventListener('drop', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        linkElem.classList.remove('ql-drag-over');
-        moveQuicklink(item.id);
+        beginQuicklinkDrag(item.id, e.clientX, e.clientY, linkElem);
       });
 
       // 逐项错峰入场，营造更流畅的动画过渡
@@ -1782,25 +1860,7 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.appendChild(linkElem);
     });
 
-    // 分组标题与空白区域可作为拖放目标：将图标拖入该分组
-    groupDiv.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      try { e.dataTransfer.dropEffect = 'move'; } catch (_) {}
-      groupDiv.classList.add('ql-group-over');
-    });
-    groupDiv.addEventListener('dragleave', (e) => {
-      // 离开整个分组容器（而非单个图标）时移除高亮
-      if (!groupDiv.contains(e.relatedTarget)) groupDiv.classList.remove('ql-group-over');
-    });
-    groupDiv.addEventListener('drop', (e) => {
-      // 若落在单个图标上，由该图标的 drop 处理（已 stopPropagation）
-      if (e.target.closest('.quicklink-item')) return;
-      e.preventDefault();
-      e.stopPropagation();
-      groupDiv.classList.remove('ql-group-over');
-      moveQuicklinkToGroup(gName);
-    });
-
+    groupDiv.setAttribute('data-group', gName);
     groupDiv.appendChild(grid);
     quicklinksElem.appendChild(groupDiv);
   });
@@ -2143,6 +2203,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fakebox?.addEventListener('click', () => {
     searchInput?.focus();
+  });
+
+  // 点击搜索框最前端的搜索引擎图标，循环切换搜索引擎（bing → baidu → google）
+  searchEngineIcon?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const CYCLABLE = ['bing', 'baidu', 'google'];
+    const current = selectEngine ? selectEngine.value : 'bing';
+    const idx = CYCLABLE.indexOf(current);
+    const next = CYCLABLE[(idx + 1) % CYCLABLE.length];
+    if (selectEngine) selectEngine.value = next;
+    Storage.set('ntp_engine', next);
+    setLogo(next);
+    updateSearchEngineIcon(next);
+    updateEngineEditButton(next);
   });
 
   // 点击右侧搜索按钮触发搜索（配合键盘 Enter 使用）

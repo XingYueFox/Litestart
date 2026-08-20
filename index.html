@@ -773,7 +773,8 @@
       border-radius: 6px;
       overflow: hidden;
       opacity: 0.9;
-      transition: transform 0.25s ease, opacity 0.2s ease;
+      cursor: pointer;
+      transition: transform 0.25s ease, opacity 0.2s ease, box-shadow 0.2s ease;
     }
 
     #search-engine-icon svg {
@@ -785,6 +786,9 @@
     #fakebox:hover #search-engine-icon {
       transform: scale(1.1);
       opacity: 1;
+    }
+    #search-engine-icon:hover {
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-foreground-rest) 35%, transparent);
     }
 
     /* 搜索按钮（右侧放大镜）—— 绝对定位于右缘，始终固定在右侧，不随布局移位 */
@@ -1022,11 +1026,32 @@
       background-color: var(--neutral-fill-rest);
     }
 
-    .quicklink-item[draggable="true"] {
+    .quicklink-item {
+      -webkit-user-select: none; user-select: none;
+    }
+    .quicklink-item, .quicklink-add-btn {
       cursor: grab;
     }
+    body.ql-dragging-active,
+    body.ql-dragging-active * {
+      cursor: grabbing !important;
+    }
     .quicklink-item.ql-dragging {
-      opacity: 0.45;
+      opacity: 0.35;
+      transform: scale(.92);
+    }
+    .ql-drag-ghost {
+      position: fixed; top: 0; left: 0; z-index: 2147483000;
+      pointer-events: none;
+      max-width: 260px; padding: 10px 14px;
+      border-radius: 10px;
+      color: var(--neutral-foreground-rest, #fff);
+      background: color-mix(in srgb, var(--settings-panel-bg, #1f1f1f) 92%, transparent);
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+      border: 1px solid var(--settings-thumb-border, rgba(255,255,255,.14));
+      font-size: 13px; font-weight: 600;
+      display: flex; align-items: center; gap: 8px;
+      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
     }
     .quicklink-item.ql-drag-over {
       outline: 2px solid var(--accent-foreground-rest);
@@ -2179,7 +2204,7 @@
         <!-- 搜索框容器 -->
         <div id="search-container">
           <div id="fakebox" role="searchbox" tabindex="0" aria-label="搜索或输入 Web 地址" data-i18n-aria="searchPlaceholder">
-            <span id="search-engine-icon" class="engine-icon" aria-hidden="true"></span>
+            <span id="search-engine-icon" class="engine-icon" role="button" tabindex="0" title="切换搜索引擎" data-i18n-title="switchEngine"></span>
             <div id="placeholder" aria-hidden="true" data-i18n="searchPlaceholder">
               搜索或输入 Web 地址
             </div>
