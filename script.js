@@ -171,6 +171,9 @@ const i18nData = {
     linkIcon: '图标 URL（可选）',
     linkIconPh: '图标地址，如 https://example.com/icon.png',
     greetMorning: '早上好',
+    clockFontSize: '时钟字号',
+    customGreeting: '自定义问候',
+    customGreetingPh: '例如：今天也要加油',
     greetAfternoon: '下午好',
     greetEvening: '晚上好',
     greetNight: '夜深了',
@@ -307,6 +310,9 @@ const i18nData = {
     linkIcon: '圖示 URL（可選）',
     linkIconPh: '圖示網址，如 https://example.com/icon.png',
     greetMorning: '早安',
+    clockFontSize: '時鐘字體',
+    customGreeting: '自訂問候',
+    customGreetingPh: '例如：今天也要加油',
     greetAfternoon: '午安',
     greetEvening: '晚安',
     greetNight: '夜深了',
@@ -443,6 +449,9 @@ const i18nData = {
     linkIcon: '圖示網址（或）',
     linkIconPh: '圖示之址',
     greetMorning: '晨安',
+    clockFontSize: '鐘文大小',
+    customGreeting: '自定問候',
+    customGreetingPh: '如：今日亦當奮進',
     greetAfternoon: '日安',
     greetEvening: '暮安',
     greetNight: '夜深矣',
@@ -579,6 +588,9 @@ const i18nData = {
     linkIcon: 'Icon URL (optional)',
     linkIconPh: 'e.g. https://example.com/icon.png',
     greetMorning: 'Good morning',
+    clockFontSize: 'Clock size',
+    customGreeting: 'Custom greeting',
+    customGreetingPh: 'e.g. Have a great day',
     greetAfternoon: 'Good afternoon',
     greetEvening: 'Good evening',
     greetNight: 'Late night',
@@ -715,6 +727,9 @@ const i18nData = {
     linkIcon: 'アイコンURL（任意）',
     linkIconPh: '例：https://example.com/icon.png',
     greetMorning: 'おはようございます',
+    clockFontSize: '時計の文字サイズ',
+    customGreeting: 'カスタム挨拶',
+    customGreetingPh: '例：今日もがんばろう',
     greetAfternoon: 'こんにちは',
     greetEvening: 'こんばんは',
     greetNight: '深夜ですね',
@@ -851,6 +866,9 @@ const i18nData = {
     linkIcon: 'URL иконки (опц.)',
     linkIconPh: 'например: https://example.com/icon.png',
     greetMorning: 'Доброе утро',
+    clockFontSize: 'Размер часов',
+    customGreeting: 'Своё приветствие',
+    customGreetingPh: 'напр. Хорошего дня',
     greetAfternoon: 'Добрый день',
     greetEvening: 'Добрый вечер',
     greetNight: 'Поздняя ночь',
@@ -1179,7 +1197,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.addEventListener('click', (e) => {
-    if (popoverSettings && !popoverSettings.contains(e.target) && !btnSettings?.contains(e.target)) {
+    // 点击发生在工具栏内（popoverMenu 中）不算“外部”，避免打断从中打开的设置面板
+    const insideToolbar = popoverMenu?.contains(e.target);
+    if (popoverSettings && !popoverSettings.contains(e.target) && !btnSettings?.contains(e.target) && !insideToolbar) {
       popoverSettings.classList.remove('active');
     }
     if (popoverMenu && !popoverMenu.contains(e.target) && !btnMenu?.contains(e.target)) {
@@ -2211,12 +2231,39 @@ searchInput?.addEventListener('input', () => {
     if (clockTimeEl) {
       clockTimeEl.textContent = now.toLocaleTimeString(langCode, { hour: '2-digit', minute: '2-digit', hour12: false });
     }
-    if (clockGreeting) clockGreeting.textContent = greetingForHour(now.getHours());
+    const custom = (Storage.get('ntp_custom_greeting', '') || '').trim();
+    if (clockGreeting) clockGreeting.textContent = custom ? custom : greetingForHour(now.getHours());
     if (clockDateEl) {
       clockDateEl.textContent = now.toLocaleDateString(langCode, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
   }
   setInterval(() => { if (widgetClock) updateClock(); }, 1000);
+
+  // --- 时钟偏好：字号（百分比） + 自定义问候语 ---
+  const clockFontSizeInput = document.getElementById('clock-font-size');
+  const clockFontValueEl = document.getElementById('clock-font-value');
+  const clockGreetingInput = document.getElementById('input-custom-greeting');
+  const applyClockPrefs = () => {
+    const pct = Number(Storage.get('ntp_clock_font_size', 100));
+    if (!(pct >= 50 && pct <= 160)) Storage.set('ntp_clock_font_size', 100);
+    const p = Number(Storage.get('ntp_clock_font_size', 100));
+    if (clockWidget) clockWidget.style.setProperty('--clock-size', String(p / 100));
+    if (clockFontSizeInput) clockFontSizeInput.value = p;
+    if (clockFontValueEl) clockFontValueEl.textContent = p + '%';
+    if (clockGreetingInput) clockGreetingInput.value = Storage.get('ntp_custom_greeting', '') || '';
+    if (widgetClock) updateClock();
+  };
+  clockFontSizeInput?.addEventListener('input', () => {
+    const pct = Number(clockFontSizeInput.value) || 100;
+    Storage.set('ntp_clock_font_size', pct);
+    if (clockFontValueEl) clockFontValueEl.textContent = pct + '%';
+    if (clockWidget) clockWidget.style.setProperty('--clock-size', String(pct / 100));
+  });
+  clockGreetingInput?.addEventListener('change', () => {
+    Storage.set('ntp_custom_greeting', (clockGreetingInput.value || '').trim());
+    if (widgetClock) updateClock();
+  });
+  applyClockPrefs();
 
   // --- 天气：open-meteo 地理编码 + 当前天气（无需密钥） ---
   let weatherCity = Storage.get('ntp_weather_city', '') || '';
@@ -2816,6 +2863,8 @@ searchInput?.addEventListener('input', () => {
     'ntp_accent_color',
     // 小组件显隐 / 待办 / 天气
     'ntp_widget_clock',
+    'ntp_clock_font_size',
+    'ntp_custom_greeting',
     'ntp_widget_weather',
     'ntp_widget_todo',
     'ntp_todo_list',
