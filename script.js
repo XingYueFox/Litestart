@@ -174,7 +174,31 @@ const i18nData = {
     greetAfternoon: '下午好',
     greetEvening: '晚上好',
     greetNight: '夜深了',
-    qlGroupDefault: '常用'
+    qlGroupDefault: '常用',
+    weatherCondClear: '晴',
+    weatherCondPartly: '多云',
+    weatherCondOvercast: '阴',
+    weatherCondFog: '雾',
+    weatherCondDrizzle: '毛毛雨',
+    weatherCondRain: '雨',
+    weatherCondFreezing: '冻雨',
+    weatherCondSnow: '雪',
+    weatherCondShower: '阵雨',
+    weatherCondSnowShower: '阵雪',
+    weatherCondThunder: '雷雨',
+    themeLabel: '主题',
+    themeSystem: '跟随系统',
+    themeLight: '浅色',
+    themeDark: '深色',
+    accentColor: '强调色',
+    bgSolid: '纯色',
+    bgGradient: '渐变',
+    bgSolidColor: '纯色背景',
+    bgGradientStart: '渐变起始色',
+    bgGradientEnd: '渐变结束色',
+    tbGroupRename: '重命名分类',
+    tbGroupDeleteConfirm: '确定删除该分类？该分类下的工具栏项目将归入"常用"。',
+    tbGroupDefault: '常用'
   },
   'zh-TW': {
     pageTitle: '新分頁',
@@ -286,7 +310,31 @@ const i18nData = {
     greetAfternoon: '午安',
     greetEvening: '晚安',
     greetNight: '夜深了',
-    qlGroupDefault: '常用'
+    qlGroupDefault: '常用',
+    weatherCondClear: '晴',
+    weatherCondPartly: '多雲',
+    weatherCondOvercast: '陰',
+    weatherCondFog: '霧',
+    weatherCondDrizzle: '毛毛雨',
+    weatherCondRain: '雨',
+    weatherCondFreezing: '凍雨',
+    weatherCondSnow: '雪',
+    weatherCondShower: '陣雨',
+    weatherCondSnowShower: '陣雪',
+    weatherCondThunder: '雷雨',
+    themeLabel: '主題',
+    themeSystem: '跟隨系統',
+    themeLight: '淺色',
+    themeDark: '深色',
+    accentColor: '強調色',
+    bgSolid: '純色',
+    bgGradient: '漸層',
+    bgSolidColor: '純色背景',
+    bgGradientStart: '漸層起始色',
+    bgGradientEnd: '漸層結束色',
+    tbGroupRename: '重新命名分類',
+    tbGroupDeleteConfirm: '確定刪除此分類？該分類下的工具列項目將歸入「常用」。',
+    tbGroupDefault: '常用'
   },
   'zh-WY': {
     pageTitle: '新標籤頁',
@@ -398,7 +446,31 @@ const i18nData = {
     greetAfternoon: '日安',
     greetEvening: '暮安',
     greetNight: '夜深矣',
-    qlGroupDefault: '常用'
+    qlGroupDefault: '常用',
+    weatherCondClear: '晴',
+    weatherCondPartly: '多云',
+    weatherCondOvercast: '阴',
+    weatherCondFog: '雾',
+    weatherCondDrizzle: '微雨',
+    weatherCondRain: '雨',
+    weatherCondFreezing: '冻雨',
+    weatherCondSnow: '雪',
+    weatherCondShower: '阵雨',
+    weatherCondSnowShower: '阵雪',
+    weatherCondThunder: '雷雨',
+    themeLabel: '题式',
+    themeSystem: '随系统',
+    themeLight: '白昼',
+    themeDark: '永夜',
+    accentColor: '主色',
+    bgSolid: '纯色',
+    bgGradient: '渐染',
+    bgSolidColor: '底色',
+    bgGradientStart: '渐起之色',
+    bgGradientEnd: '渐终之色',
+    tbGroupRename: '易类名',
+    tbGroupDeleteConfirm: '确欲削是类乎？其下工具并入「常用」。',
+    tbGroupDefault: '常用'
   },
   'en': {
     pageTitle: 'New Tab',
@@ -510,7 +582,31 @@ const i18nData = {
     greetAfternoon: 'Good afternoon',
     greetEvening: 'Good evening',
     greetNight: 'Late night',
-    qlGroupDefault: 'Favorites'
+    qlGroupDefault: 'Favorites',
+    weatherCondClear: 'Clear',
+    weatherCondPartly: 'Partly cloudy',
+    weatherCondOvercast: 'Overcast',
+    weatherCondFog: 'Fog',
+    weatherCondDrizzle: 'Drizzle',
+    weatherCondRain: 'Rain',
+    weatherCondFreezing: 'Freezing rain',
+    weatherCondSnow: 'Snow',
+    weatherCondShower: 'Showers',
+    weatherCondSnowShower: 'Snow showers',
+    weatherCondThunder: 'Thunderstorms',
+    themeLabel: 'Theme',
+    themeSystem: 'Follow system',
+    themeLight: 'Light',
+    themeDark: 'Dark',
+    accentColor: 'Accent color',
+    bgSolid: 'Solid color',
+    bgGradient: 'Gradient',
+    bgSolidColor: 'Solid background',
+    bgGradientStart: 'Gradient start color',
+    bgGradientEnd: 'Gradient end color',
+    tbGroupRename: 'Rename category',
+    tbGroupDeleteConfirm: 'Delete this category? Toolbar items in it will move to "Favorites".',
+    tbGroupDefault: 'Favorites'
   },
   'ja': {
     pageTitle: '新しいタブ',
@@ -622,7 +718,31 @@ const i18nData = {
     greetAfternoon: 'こんにちは',
     greetEvening: 'こんばんは',
     greetNight: '深夜ですね',
-    qlGroupDefault: 'お気に入り'
+    qlGroupDefault: 'お気に入り',
+    weatherCondClear: '晴れ',
+    weatherCondPartly: '晴れ時々曇り',
+    weatherCondOvercast: '曇り',
+    weatherCondFog: '霧',
+    weatherCondDrizzle: '霧雨',
+    weatherCondRain: '雨',
+    weatherCondFreezing: '着氷性の雨',
+    weatherCondSnow: '雪',
+    weatherCondShower: 'にわか雨',
+    weatherCondSnowShower: 'にわか雪',
+    weatherCondThunder: '雷雨',
+    themeLabel: 'テーマ',
+    themeSystem: 'システムに従う',
+    themeLight: 'ライト',
+    themeDark: 'ダーク',
+    accentColor: 'アクセントカラー',
+    bgSolid: '単色',
+    bgGradient: 'グラデーション',
+    bgSolidColor: '単色の背景',
+    bgGradientStart: 'グラデーション開始色',
+    bgGradientEnd: 'グラデーション終了色',
+    tbGroupRename: 'カテゴリ名を変更',
+    tbGroupDeleteConfirm: 'このカテゴリを削除しますか？（配下の項目は「お気に入り」に移動します）',
+    tbGroupDefault: 'お気に入り'
   },
   'ru': {
     pageTitle: 'Новая вкладка',
@@ -734,7 +854,31 @@ const i18nData = {
     greetAfternoon: 'Добрый день',
     greetEvening: 'Добрый вечер',
     greetNight: 'Поздняя ночь',
-    qlGroupDefault: 'Избранное'
+    qlGroupDefault: 'Избранное',
+    weatherCondClear: 'Ясно',
+    weatherCondPartly: 'Переменная облачность',
+    weatherCondOvercast: 'Пасмурно',
+    weatherCondFog: 'Туман',
+    weatherCondDrizzle: 'Морось',
+    weatherCondRain: 'Дождь',
+    weatherCondFreezing: 'Ледяной дождь',
+    weatherCondSnow: 'Снег',
+    weatherCondShower: 'Ливень',
+    weatherCondSnowShower: 'Снегопад',
+    weatherCondThunder: 'Гроза',
+    themeLabel: 'Тема',
+    themeSystem: 'Как в системе',
+    themeLight: 'Светлая',
+    themeDark: 'Тёмная',
+    accentColor: 'Акцентный цвет',
+    bgSolid: 'Сплошной цвет',
+    bgGradient: 'Градиент',
+    bgSolidColor: 'Фон и цвет',
+    bgGradientStart: 'Начальный цвет',
+    bgGradientEnd: 'Конечный цвет',
+    tbGroupRename: 'Переименовать категорию',
+    tbGroupDeleteConfirm: 'Удалить категорию? Элементы в ней будут перенесены в «Избранное».',
+    tbGroupDefault: 'Избранное'
   }
 };
 
@@ -825,6 +969,13 @@ function applyLanguage(langConfig) {
     const isChecked = document.getElementById('toggle-hc-switch').checked;
     statusHc.innerText = isChecked ? dict.on : dict.off;
   }
+
+  // 主页面小部件（时钟/天气/待办）开关状态文案
+  ['clock', 'weather', 'todo'].forEach(k => {
+    const el = document.getElementById('status-' + k);
+    const sw = document.getElementById('toggle-' + k + '-switch');
+    if (el && sw) el.innerText = sw.checked ? dict.on : dict.off;
+  });
 }
 
 // LocalStorage 持久化辅助对象
@@ -895,6 +1046,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const suggestionsFooter = document.getElementById('suggestions-footer');
   const clearHistoryBtn = document.getElementById('clear-history-btn');
 
+  // 语言与当前生效字典（提前定义，避免早于出现的动态渲染调用触发 TDZ）
+  const savedLang = localStorage.getItem('liteStart_language') || 'auto';
+  const curDictNow = i18nData[getResolvedLanguageCode(savedLang)] || i18nData['zh-CN'];
+  const nowDict = () => i18nData[getResolvedLanguageCode(localStorage.getItem('liteStart_language') || 'auto')] || i18nData['zh-CN'];
+
   // Modal 相关 DOM 元素 (快捷方式)
   const modalOverlay = document.getElementById('modal');
   const modalTitle = document.getElementById('modal-title');
@@ -906,6 +1062,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const tipName = document.getElementById('tip-name');
   const tipUrl = document.getElementById('tip-url');
   const textUrlError = document.getElementById('text-url-error');
+
+  const inputGroup = document.getElementById('input-group');
+  const inputIcon = document.getElementById('input-icon');
+  const groupListDatalist = document.getElementById('group-list');
 
   const btnDelete = document.getElementById('btn-delete');
   const btnCancel = document.getElementById('btn-cancel');
@@ -989,12 +1149,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // 九宫格工具栏：番茄钟 / 页面设置 / 全屏 / 刷新壁纸 / 纯净 / 高对比
-  document.getElementById('qm-tool-pomodoro')?.addEventListener('click', () => {
-    popoverMenu?.classList.remove('active');
-    if (pmPanel) pmPanel.hidden = false;
-    if (fabBtn) fabBtn.setAttribute('aria-expanded', 'true');
-    pmRender();
-  });
   document.getElementById('qm-tool-settings')?.addEventListener('click', () => {
     popoverMenu?.classList.remove('active');
     popoverSettings?.classList.add('active');
@@ -1073,6 +1227,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let bgMode = Storage.get('ntp_bg_mode', 'default');
   let bgIntervalMin = Number(Storage.get('ntp_bg_interval', 0)) || 0;
   let bgIntervalTimer = null;
+  let bgSolidColor = Storage.get('ntp_bg_solid_color', '#235ccf');
+  let bgGradStart = Storage.get('ntp_bg_gradient_start', '#235ccf');
+  let bgGradEnd = Storage.get('ntp_bg_gradient_end', '#7a3cf0');
+  const inputBgSolidColor = document.getElementById('input-bg-solid-color');
+  const inputBgGradStart = document.getElementById('input-bg-gradient-start');
+  const inputBgGradEnd = document.getElementById('input-bg-gradient-end');
+  const bgSolidColorRow = document.getElementById('bg-solid-color-row');
+  const bgGradientRow = document.getElementById('bg-gradient-row');
 
   if (selectEngine) selectEngine.value = savedEngine;
   if (selectQuicklinks) selectQuicklinks.value = savedQuicklinksRow;
@@ -1094,6 +1256,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renderWallpaper();
     } else {
       document.body.classList.remove('bg-enabled');
+      document.body.style.background = '';
       if (bgVideo) bgVideo.style.display = 'none';
       if (bgImage) bgImage.style.display = 'none';
     }
@@ -1107,10 +1270,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const show = bgEnabled && bgMode === 'bingdaily';
       bgIntervalRow.style.display = show ? 'block' : 'none';
     }
+    if (bgSolidColorRow) bgSolidColorRow.style.display = (bgEnabled && bgMode === 'solid') ? 'block' : 'none';
+    if (bgGradientRow) bgGradientRow.style.display = (bgEnabled && bgMode === 'gradient') ? 'block' : 'none';
+    if (inputBgSolidColor) inputBgSolidColor.value = bgSolidColor;
+    if (inputBgGradStart) inputBgGradStart.value = bgGradStart;
+    if (inputBgGradEnd) inputBgGradEnd.value = bgGradEnd;
     if (selectBgInterval) selectBgInterval.value = String(bgIntervalMin);
   }
 
   function applyBgMedia(src, isVideo) {
+    document.body.style.background = '';
     if (bgVideo) bgVideo.style.display = isVideo ? 'block' : 'none';
     if (bgImage) bgImage.style.display = isVideo ? 'none' : 'block';
     if (isVideo) {
@@ -1159,6 +1328,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderWallpaper() {
+    if (bgMode === 'solid') {
+      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = (curDictNow.bgSolidColor || '纯色背景');
+      if (bgVideo) { bgVideo.style.display = 'none'; bgVideo.src = ''; }
+      if (bgImage) { bgImage.style.display = 'none'; bgImage.src = ''; }
+      document.body.style.background = bgSolidColor;
+      if (wallpaperPreviewContainer) {
+        wallpaperPreviewContainer.innerHTML = `<div style="width:100%;height:100%;background:${bgSolidColor};"></div>`;
+      }
+      return;
+    }
+    if (bgMode === 'gradient') {
+      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = (curDictNow.bgGradient || '渐变');
+      if (bgVideo) { bgVideo.style.display = 'none'; bgVideo.src = ''; }
+      if (bgImage) { bgImage.style.display = 'none'; bgImage.src = ''; }
+      document.body.style.background = `linear-gradient(135deg, ${bgGradStart} 0%, ${bgGradEnd} 100%)`;
+      if (wallpaperPreviewContainer) {
+        wallpaperPreviewContainer.innerHTML = `<div style="width:100%;height:100%;background:linear-gradient(135deg, ${bgGradStart} 0%, ${bgGradEnd} 100%);"></div>`;
+      }
+      return;
+    }
     if (bgMode === 'bingdaily') {
       applyBingDailyWallpaper();
       return;
@@ -1231,6 +1420,23 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
     });
+  });
+
+  // 纯色 / 渐变背景色设置
+  inputBgSolidColor?.addEventListener('input', (e) => {
+    bgSolidColor = e.target.value;
+    Storage.set('ntp_bg_solid_color', bgSolidColor);
+    if (bgMode === 'solid' && bgEnabled) renderWallpaper();
+  });
+  inputBgGradStart?.addEventListener('input', (e) => {
+    bgGradStart = e.target.value;
+    Storage.set('ntp_bg_gradient_start', bgGradStart);
+    if (bgMode === 'gradient' && bgEnabled) renderWallpaper();
+  });
+  inputBgGradEnd?.addEventListener('input', (e) => {
+    bgGradEnd = e.target.value;
+    Storage.set('ntp_bg_gradient_end', bgGradEnd);
+    if (bgMode === 'gradient' && bgEnabled) renderWallpaper();
   });
 
   // 自动更换壁纸间隔选择
@@ -1418,91 +1624,119 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!quicklinksElem) return;
   quicklinksElem.innerHTML = '';
 
-  quicklinksList.forEach((item, index) => {
-    const linkElem = document.createElement('a');
-    linkElem.href = item.url;
-    linkElem.className = 'quicklink-item';
-    linkElem.target = '_blank';
-    linkElem.setAttribute('data-id', item.id);
+  const defaultGroupName = curDictNow.qlGroupDefault || '常用';
 
-    const initialChar = (item.title || 'W').charAt(0).toUpperCase();
-    const faviconUrl = getFaviconUrl(item.url);
+  // 按 group 分组渲染，缺省归入 'default'（显示为“常用”）分组
+  const groups = {};
+  quicklinksList.forEach((item) => {
+    const g = (item.group || '').trim() || 'default';
+    (groups[g] = groups[g] || []).push(item);
+  });
 
-    // 构建图标内容：立即显示首字母，favicon 加载成功后淡入覆盖
-    let iconContent = '';
-    if (faviconUrl) {
-      iconContent = `<span class="ql-fallback">${initialChar}</span>
-        <img src="${faviconUrl}" alt="${item.title}" class="ql-img"
-             onload="this.classList.add('ql-loaded')" onerror="this.remove()">`;
-    } else {
-      iconContent = `<span class="ql-fallback">${initialChar}</span>`;
-    }
+  const groupNames = Object.keys(groups);
 
-    linkElem.innerHTML = `
-      <div class="quicklink-icon">${iconContent}</div>
-      <span class="quicklink-title">${item.title}</span>
-      <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
-        <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
-        </svg>
-      </button>
-    `;
+  groupNames.forEach((gName) => {
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'quicklink-group';
 
-    const editBtn = linkElem.querySelector('.quicklink-edit-btn');
-    editBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openEditModal(item);
+    const title = document.createElement('div');
+    title.className = 'quicklink-group-title';
+    title.textContent = gName === 'default' ? defaultGroupName : gName;
+    groupDiv.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'quicklink-group-grid';
+
+    groups[gName].forEach((item, index) => {
+      const linkElem = document.createElement('a');
+      linkElem.href = item.url;
+      linkElem.className = 'quicklink-item';
+      linkElem.target = '_blank';
+      linkElem.setAttribute('data-id', item.id);
+
+      const initialChar = (item.title || 'W').charAt(0).toUpperCase();
+      // 若 item 提供自定义 icon 字段则优先使用，否则回退到 favicon
+      let iconUrl = (item.icon && item.icon.trim()) ? item.icon.trim() : getFaviconUrl(item.url);
+
+      // 构建图标内容：立即显示首字母，远程图标加载成功后淡入覆盖
+      let iconContent = '';
+      if (iconUrl) {
+        iconContent = `<span class="ql-fallback">${initialChar}</span>
+          <img src="${iconUrl}" alt="${item.title}" class="ql-img"
+               onload="this.classList.add('ql-loaded')" onerror="this.remove()">`;
+      } else {
+        iconContent = `<span class="ql-fallback">${initialChar}</span>`;
+      }
+
+      linkElem.innerHTML = `
+        <div class="quicklink-icon">${iconContent}</div>
+        <span class="quicklink-title">${item.title}</span>
+        <button type="button" class="quicklink-edit-btn" title="${curDictNow.editShortcut || '编辑快捷方式'}">
+          <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
+          </svg>
+        </button>
+      `;
+
+      const editBtn = linkElem.querySelector('.quicklink-edit-btn');
+      editBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openEditModal(item);
+      });
+
+      // 拖拽排序：拖动快捷方式调整位置，松手后持久化排序
+      linkElem.draggable = true;
+      linkElem.addEventListener('dragstart', (e) => {
+        dragLinkId = item.id;
+        linkElem.classList.add('ql-dragging');
+        try { e.dataTransfer.effectAllowed = 'move'; } catch (_) {}
+      });
+      linkElem.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        try { e.dataTransfer.dropEffect = 'move'; } catch (_) {}
+        linkElem.classList.add('ql-drag-over');
+      });
+      linkElem.addEventListener('dragleave', () => {
+        linkElem.classList.remove('ql-drag-over');
+      });
+      linkElem.addEventListener('dragend', () => {
+        dragLinkId = null;
+        quicklinksElem.querySelectorAll('.ql-dragging,.ql-drag-over').forEach(el => el.classList.remove('ql-dragging', 'ql-drag-over'));
+      });
+      linkElem.addEventListener('drop', (e) => {
+        e.preventDefault();
+        linkElem.classList.remove('ql-drag-over');
+        const from = quicklinksList.findIndex(i => String(i.id) === String(dragLinkId));
+        const to = quicklinksList.findIndex(i => String(i.id) === String(item.id));
+        if (from === -1 || to === -1 || from === to) return;
+        const [moved] = quicklinksList.splice(from, 1);
+        quicklinksList.splice(to, 0, moved);
+        Storage.set('ntp_quicklinks_list', quicklinksList);
+        renderQuicklinks();
+      });
+
+      // 逐项错峰入场，营造更流畅的动画过渡
+      linkElem.style.animationDelay = `${index * 0.04}s`;
+
+      grid.appendChild(linkElem);
     });
 
-    // 拖拽排序：拖动快捷方式调整位置，松手后持久化排序
-    linkElem.draggable = true;
-    linkElem.addEventListener('dragstart', (e) => {
-      dragLinkId = item.id;
-      linkElem.classList.add('ql-dragging');
-      try { e.dataTransfer.effectAllowed = 'move'; } catch (_) {}
-    });
-    linkElem.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      try { e.dataTransfer.dropEffect = 'move'; } catch (_) {}
-      linkElem.classList.add('ql-drag-over');
-    });
-    linkElem.addEventListener('dragleave', () => {
-      linkElem.classList.remove('ql-drag-over');
-    });
-    linkElem.addEventListener('dragend', () => {
-      dragLinkId = null;
-      quicklinksElem.querySelectorAll('.ql-dragging,.ql-drag-over').forEach(el => el.classList.remove('ql-dragging', 'ql-drag-over'));
-    });
-    linkElem.addEventListener('drop', (e) => {
-      e.preventDefault();
-      linkElem.classList.remove('ql-drag-over');
-      const from = quicklinksList.findIndex(i => String(i.id) === String(dragLinkId));
-      const to = quicklinksList.findIndex(i => String(i.id) === String(item.id));
-      if (from === -1 || to === -1 || from === to) return;
-      const [moved] = quicklinksList.splice(from, 1);
-      quicklinksList.splice(to, 0, moved);
-      Storage.set('ntp_quicklinks_list', quicklinksList);
-      renderQuicklinks();
-    });
-
-    // 逐项错峰入场，营造更流畅的动画过渡
-    linkElem.style.animationDelay = `${index * 0.04}s`;
-
-    quicklinksElem.appendChild(linkElem);
+    groupDiv.appendChild(grid);
+    quicklinksElem.appendChild(groupDiv);
   });
 
   // 添加“添加”按钮（保持不变）
   const addBtnElem = document.createElement('div');
   addBtnElem.className = 'quicklink-item quicklink-add-btn';
-  addBtnElem.title = '添加快捷方式';
+  addBtnElem.title = curDictNow.quicklinks || '添加';
   addBtnElem.innerHTML = `
     <div class="quicklink-icon quicklink-add-icon">
       <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
       </svg>
     </div>
-    <span class="quicklink-title">添加</span>
+    <span class="quicklink-title">${curDictNow.quickTools || '添加'}</span>
   `;
 
   addBtnElem.addEventListener('click', () => {
@@ -1544,8 +1778,11 @@ document.addEventListener('DOMContentLoaded', () => {
     currentEditingId = null;
     if (inputName) inputName.value = '';
     if (inputUrl) inputUrl.value = '';
+    if (inputGroup) inputGroup.value = '';
+    if (inputIcon) inputIcon.value = '';
     clearErrors();
     if (btnDelete) btnDelete.style.display = 'none';
+    populateGroupDatalist();
     modalOverlay?.classList.add('active');
     setTimeout(() => inputName?.focus(), 50);
   }
@@ -1554,10 +1791,26 @@ document.addEventListener('DOMContentLoaded', () => {
     currentEditingId = item.id;
     if (inputName) inputName.value = item.title;
     if (inputUrl) inputUrl.value = item.url;
+    if (inputGroup) inputGroup.value = (item.group || '');
+    if (inputIcon) inputIcon.value = (item.icon || '');
     clearErrors();
+    populateGroupDatalist();
     if (btnDelete) btnDelete.style.display = 'inline-flex';
     modalOverlay?.classList.add('active');
     setTimeout(() => inputName?.focus(), 50);
+  }
+
+  // 将已有快捷方式的分组并入“分组”输入框的下拉建议
+  function populateGroupDatalist() {
+    if (!groupListDatalist) return;
+    const groups = new Set();
+    quicklinksList.forEach(it => { if (it.group && it.group.trim()) groups.add(it.group.trim()); });
+    groupListDatalist.innerHTML = '';
+    groups.forEach(g => {
+      const opt = document.createElement('option');
+      opt.value = g;
+      groupListDatalist.appendChild(opt);
+    });
   }
 
   function closeModal() {
@@ -1619,13 +1872,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentEditingId) {
       const itemIndex = quicklinksList.findIndex(item => item.id === currentEditingId);
       if (itemIndex !== -1) {
-        quicklinksList[itemIndex] = { ...quicklinksList[itemIndex], title, url };
+        quicklinksList[itemIndex] = { ...quicklinksList[itemIndex], title, url, group: (inputGroup?.value || '').trim(), icon: (inputIcon?.value || '').trim() };
       }
     } else {
       const newItem = {
         id: Date.now().toString(),
         title,
-        url
+        url,
+        group: (inputGroup?.value || '').trim(),
+        icon: (inputIcon?.value || '').trim()
       };
       quicklinksList.push(newItem);
     }
@@ -1868,7 +2123,6 @@ searchInput?.addEventListener('input', () => {
   }
 
   // --- 6. 语言选择与应用初始化 ---
-  const savedLang = localStorage.getItem('liteStart_language') || 'auto';
   if (selectLanguage) {
     selectLanguage.value = savedLang;
     selectLanguage.addEventListener('change', (e) => {
@@ -1881,8 +2135,477 @@ searchInput?.addEventListener('input', () => {
   // 初始化应用全页翻译
   applyLanguage(savedLang);
 
-  // 当前生效语言字典（供运行时提示文案使用）
-  const curDictNow = i18nData[getResolvedLanguageCode(savedLang)] || i18nData['zh-CN'];
+  // =====================================================================
+  // 功能 W. 主页面小部件：时钟/问候 / 天气 / 待办
+  // =====================================================================
+  const clockWidget = document.getElementById('clock-widget');
+  const clockGreeting = document.getElementById('clock-greeting');
+  const clockTimeEl = document.getElementById('clock-time');
+  const clockDateEl = document.getElementById('clock-date');
+  const toggleClockSwitch = document.getElementById('toggle-clock-switch');
+
+  const widgetsStrip = document.getElementById('widgets-strip');
+  const weatherWidget = document.getElementById('weather-widget');
+  const toggleWeatherSwitch = document.getElementById('toggle-weather-switch');
+  const toggleTodoSwitch = document.getElementById('toggle-todo-switch');
+  const weatherEditBtn = document.getElementById('weather-edit-btn');
+  const weatherRefreshBtn = document.getElementById('weather-refresh');
+  const weatherBody = document.getElementById('weather-body');
+  const weatherPlaceholder = document.getElementById('weather-placeholder');
+  const inputWeatherCity = document.getElementById('input-weather-city');
+  const weatherCityRow = document.getElementById('weather-city-row');
+  const todoWidget = document.getElementById('todo-widget');
+  const todoList = document.getElementById('todo-list');
+  const todoInput = document.getElementById('todo-input');
+  const todoClearDone = document.getElementById('todo-clear-done');
+
+  let widgetClock = Storage.get('ntp_widget_clock', false);
+  let widgetWeather = Storage.get('ntp_widget_weather', false);
+  let widgetTodo = Storage.get('ntp_widget_todo', false);
+
+  // 小部件显隐与设置开关保持同步
+  function syncWidgetsVisibility() {
+    if (clockWidget) clockWidget.hidden = !widgetClock;
+    if (weatherWidget) weatherWidget.hidden = !widgetWeather;
+    if (todoWidget) todoWidget.hidden = !widgetTodo;
+    if (widgetsStrip) widgetsStrip.hidden = !(widgetWeather || widgetTodo);
+    if (toggleClockSwitch) toggleClockSwitch.checked = widgetClock;
+    if (toggleWeatherSwitch) toggleWeatherSwitch.checked = widgetWeather;
+    if (toggleTodoSwitch) toggleTodoSwitch.checked = widgetTodo;
+    applyLanguage(savedLang);
+    if (widgetClock) updateClock();
+  }
+
+  toggleClockSwitch?.addEventListener('change', (e) => {
+    widgetClock = e.target.checked;
+    Storage.set('ntp_widget_clock', widgetClock);
+    syncWidgetsVisibility();
+  });
+
+  toggleWeatherSwitch?.addEventListener('change', (e) => {
+    widgetWeather = e.target.checked;
+    Storage.set('ntp_widget_weather', widgetWeather);
+    syncWidgetsVisibility();
+    if (widgetWeather) fetchWeather();
+  });
+
+  toggleTodoSwitch?.addEventListener('change', (e) => {
+    widgetTodo = e.target.checked;
+    Storage.set('ntp_widget_todo', widgetTodo);
+    syncWidgetsVisibility();
+  });
+
+  // --- 时钟：时间 / 日期+星期 / 按时段问候语，每秒刷新 ---
+  function greetingForHour(hour) {
+    const d = nowDict();
+    if (hour >= 5 && hour < 12) return d.greetMorning || '早上好';
+    if (hour >= 12 && hour < 18) return d.greetAfternoon || '下午好';
+    if (hour >= 18 && hour < 23) return d.greetEvening || '晚上好';
+    return d.greetNight || '夜深了';
+  }
+
+  function updateClock() {
+    if (!clockWidget || clockWidget.hidden) return;
+    const now = new Date();
+    const langCode = getResolvedLanguageCode(localStorage.getItem('liteStart_language') || 'auto');
+    if (clockTimeEl) {
+      clockTimeEl.textContent = now.toLocaleTimeString(langCode, { hour: '2-digit', minute: '2-digit', hour12: false });
+    }
+    if (clockGreeting) clockGreeting.textContent = greetingForHour(now.getHours());
+    if (clockDateEl) {
+      clockDateEl.textContent = now.toLocaleDateString(langCode, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+  }
+  setInterval(() => { if (widgetClock) updateClock(); }, 1000);
+
+  // --- 天气：open-meteo 地理编码 + 当前天气（无需密钥） ---
+  let weatherCity = Storage.get('ntp_weather_city', '') || '';
+  let weatherCache = Storage.get('ntp_weather_cache', null);
+
+  function weatherCondInfo(code) {
+    if (code === 0) return { key: 'weatherCondClear', icon: '☀️' };
+    if (code === 1 || code === 2) return { key: 'weatherCondPartly', icon: '⛅' };
+    if (code === 3) return { key: 'weatherCondOvercast', icon: '☁️' };
+    if (code === 45 || code === 48) return { key: 'weatherCondFog', icon: '🌫️' };
+    if (code >= 51 && code <= 57) return { key: 'weatherCondDrizzle', icon: '🌦️' };
+    if (code === 66 || code === 67) return { key: 'weatherCondFreezing', icon: '🌧️' };
+    if (code >= 61 && code <= 65) return { key: 'weatherCondRain', icon: '🌧️' };
+    if (code === 71 || code === 73 || code === 75 || code === 77) return { key: 'weatherCondSnow', icon: '❄️' };
+    if (code >= 80 && code <= 82) return { key: 'weatherCondShower', icon: '🌧️' };
+    if (code === 85 || code === 86) return { key: 'weatherCondSnowShower', icon: '🌨️' };
+    if (code >= 95) return { key: 'weatherCondThunder', icon: '⛈️' };
+    return { key: '', icon: '🌡️' };
+  }
+
+  function renderWeather(ok, payload) {
+    if (!weatherBody) return;
+    const dict = nowDict();
+    if (!ok) {
+      weatherBody.innerHTML = `<div id="weather-error" style="font-size:12px;opacity:.85;">${dict.weatherError || '天气获取失败'}</div>`;
+      return;
+    }
+    if (!weatherPlaceholder) {
+      weatherBody.style.display = '';
+    }
+    const info = weatherCondInfo(payload.code);
+    const condText = info.key ? (dict[info.key] || '') : '';
+    const cityLine = payload.city ? `<div class="weather-city">${payload.city}</div>` : '';
+    weatherBody.innerHTML = `
+      <div class="weather-info">
+        <span style="font-size:34px;line-height:1;">${info.icon}</span>
+        <div>
+          <div class="weather-temp">${payload.temp}°</div>
+          <div class="weather-desc">${condText}</div>
+          ${cityLine}
+        </div>
+      </div>`;
+  }
+
+  async function fetchWeather() {
+    if (!weatherWidget || weatherWidget.hidden) return;
+    if (!weatherCity) {
+      if (weatherBody) weatherBody.innerHTML = `<div id="weather-placeholder">${nowDict().weatherUnset || '未设置城市'}</div>`;
+      return;
+    }
+    if (weatherBody) weatherBody.innerHTML = `<div style="font-size:12px;opacity:.8;">${nowDict().weatherLoading || '加载中…'}</div>`;
+    try {
+      const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?count=5&language=en&format=json&name=${encodeURIComponent(weatherCity)}`);
+      const geoData = await geoRes.json();
+      const place = Array.isArray(geoData.results) && geoData.results[0];
+      if (!place) throw new Error('geo not found');
+      const wxRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current_weather=true`);
+      const wxData = await wxRes.json();
+      const cur = wxData && wxData.current_weather;
+      if (!cur) throw new Error('no current weather');
+      const payload = { city: place.name || weatherCity, temp: Math.round(cur.temperature), code: cur.weathercode, time: cur.time };
+      weatherCache = payload;
+      Storage.set('ntp_weather_cache', payload);
+      renderWeather(true, payload);
+    } catch (err) {
+      renderWeather(false, null);
+    }
+  }
+
+  weatherEditBtn?.addEventListener('click', () => {
+    popoverSettings?.classList.add('active');
+    if (weatherCityRow) weatherCityRow.style.display = 'flex';
+    if (inputWeatherCity) { inputWeatherCity.value = weatherCity; inputWeatherCity.focus(); }
+  });
+  weatherRefreshBtn?.addEventListener('click', () => { if (widgetWeather) fetchWeather(); });
+  inputWeatherCity?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const v = inputWeatherCity.value.trim();
+      if (!v) return;
+      weatherCity = v;
+      Storage.set('ntp_weather_city', weatherCity);
+      if (weatherCityRow) weatherCityRow.style.display = 'none';
+      fetchWeather();
+    }
+  });
+  inputWeatherCity?.addEventListener('blur', () => {
+    const v = inputWeatherCity.value.trim();
+    if (v && v !== weatherCity) {
+      weatherCity = v;
+      Storage.set('ntp_weather_city', weatherCity);
+      if (weatherCityRow) weatherCityRow.style.display = 'none';
+      fetchWeather();
+    }
+  });
+
+  // --- 待办：添加 / 勾选 / 删除 / 清除已完成，持久化 ---
+  let todoListData = Storage.get('ntp_todo_list', []);
+  function renderTodo() {
+    if (!todoList) return;
+    todoList.innerHTML = '';
+    todoListData.forEach((item, i) => {
+      const row = document.createElement('div');
+      row.className = 'todo-item' + (item.done ? ' done' : '');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = !!item.done;
+      cb.addEventListener('change', () => {
+        todoListData[i].done = cb.checked;
+        Storage.set('ntp_todo_list', todoListData);
+        renderTodo();
+      });
+      const txt = document.createElement('span');
+      txt.className = 'todo-text';
+      txt.textContent = item.text;
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'todo-del';
+      del.textContent = '✕';
+      del.addEventListener('click', () => {
+        todoListData.splice(i, 1);
+        Storage.set('ntp_todo_list', todoListData);
+        renderTodo();
+      });
+      row.append(cb, txt, del);
+      todoList.appendChild(row);
+    });
+  }
+  todoInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const v = todoInput.value.trim();
+      if (!v) return;
+      todoListData.push({ text: v, done: false });
+      Storage.set('ntp_todo_list', todoListData);
+      todoInput.value = '';
+      renderTodo();
+    }
+  });
+  todoClearDone?.addEventListener('click', () => {
+    todoListData = todoListData.filter(i => !i.done);
+    Storage.set('ntp_todo_list', todoListData);
+    renderTodo();
+  });
+  renderTodo();
+
+  // 初始化小部件显隐与数据
+  syncWidgetsVisibility();
+  if (weatherCache) {
+    renderWeather(true, weatherCache);
+  } else if (widgetWeather) {
+    fetchWeather();
+  }
+
+  // =====================================================================
+  // 功能 F. 工具栏：九宫格分类与显隐管理
+  // =====================================================================
+  const TOOLBAR_ITEMS = [
+    { id: 'pomodoro', btnId: 'qm-tool-pomodoro', labelKey: 'pomodoro' },
+    { id: 'settings', btnId: 'qm-tool-settings', labelKey: 'settingsTitle' },
+    { id: 'fullscreen', btnId: 'qm-tool-fullscreen', labelKey: 'fullscreen' },
+    { id: 'refreshwall', btnId: 'qm-tool-refresh-wall', labelKey: 'refreshWallpaper' },
+    { id: 'pure', btnId: 'qm-tool-pure', labelKey: 'pureMode' },
+    { id: 'hc', btnId: 'qm-tool-hc', labelKey: 'highContrast' }
+  ];
+
+  let toolbarCfg = Object.assign({ visibility: {}, groups: [], itemGroup: {} }, Storage.get('ntp_toolbar_cfg', {}));
+  const defaultGroupName = () => nowDict().tbGroupDefault || '常用';
+  if (!Array.isArray(toolbarCfg.groups) || toolbarCfg.groups.length === 0) toolbarCfg.groups = [defaultGroupName()];
+  function saveToolbarCfg() { Storage.set('ntp_toolbar_cfg', toolbarCfg); }
+
+  // 渲染九宫格工具栏：按分类分组 + 按显隐过滤
+  function applyToolbar() {
+    const container = document.querySelector('.qm-tools');
+    if (!container) return;
+    const grouped = {};
+    TOOLBAR_ITEMS.forEach((it) => {
+      if (toolbarCfg.visibility[it.id] === false) return;
+      const gName = toolbarCfg.itemGroup[it.id] && toolbarCfg.groups.includes(toolbarCfg.itemGroup[it.id]) ? toolbarCfg.itemGroup[it.id] : defaultGroupName();
+      (grouped[gName] = grouped[gName] || []).push(it);
+    });
+
+    const rebuilt = document.createElement('div');
+    rebuilt.className = 'qm-tools';
+    const titleEl = document.createElement('div');
+    titleEl.className = 'qm-tools-title';
+    titleEl.setAttribute('data-i18n', 'toolbar');
+    rebuilt.appendChild(titleEl);
+
+    Object.keys(grouped).forEach((gName) => {
+      const g = document.createElement('div');
+      g.className = 'qm-tools-group';
+      const gt = document.createElement('div');
+      gt.className = 'qm-tools-group-title';
+      gt.textContent = gName;
+      g.appendChild(gt);
+      const gg = document.createElement('div');
+      gg.className = 'qm-tools-grid';
+      grouped[gName].forEach((it) => {
+        const btn = document.getElementById(it.btnId);
+        if (btn) gg.appendChild(btn);
+      });
+      g.appendChild(gg);
+      rebuilt.appendChild(g);
+    });
+
+    container.replaceWith(rebuilt);
+    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+  }
+
+  // 设置面板：工具栏项显隐 + 所在分类
+  const toolbarCfgList = document.getElementById('toolbar-cfg-list');
+  const toolbarGroupsEdit = document.getElementById('toolbar-groups-edit');
+  const inputToolbarGroup = document.getElementById('input-toolbar-group');
+  const btnToolbarAddGroup = document.getElementById('btn-toolbar-add-group');
+
+  function renderToolbarCfgList() {
+    if (!toolbarCfgList) return;
+    toolbarCfgList.innerHTML = '';
+    TOOLBAR_ITEMS.forEach((it) => {
+      const row = document.createElement('div');
+      row.className = 'toolbar-cfg-row';
+      const lbl = document.createElement('div');
+      lbl.className = 'lbl';
+      const chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.checked = toolbarCfg.visibility[it.id] !== false;
+      chk.addEventListener('change', () => {
+        toolbarCfg.visibility[it.id] = !!chk.checked;
+        saveToolbarCfg();
+        applyToolbar();
+      });
+      const name = document.createElement('span');
+      name.className = 'tb-name';
+      name.textContent = nowDict()[it.labelKey] || it.id;
+      lbl.append(chk, name);
+      const sel = document.createElement('select');
+      toolbarCfg.groups.forEach((gName) => {
+        const opt = document.createElement('option');
+        opt.value = gName;
+        opt.textContent = gName;
+        sel.appendChild(opt);
+      });
+      sel.value = toolbarCfg.itemGroup[it.id] && toolbarCfg.groups.includes(toolbarCfg.itemGroup[it.id]) ? toolbarCfg.itemGroup[it.id] : defaultGroupName();
+      sel.addEventListener('change', () => {
+        toolbarCfg.itemGroup[it.id] = sel.value;
+        saveToolbarCfg();
+        applyToolbar();
+      });
+      row.append(lbl, sel);
+      toolbarCfgList.appendChild(row);
+    });
+  }
+
+  // 设置面板：分类列表（重命名 / 删除）
+  function renderToolbarGroups() {
+    if (!toolbarGroupsEdit) return;
+    toolbarGroupsEdit.innerHTML = '';
+    toolbarCfg.groups.forEach((gName, idx) => {
+      const chip = document.createElement('span');
+      chip.className = 'toolbar-group-chip';
+      const label = document.createElement('span');
+      label.textContent = gName;
+      const rename = document.createElement('span');
+      rename.className = 'x';
+      rename.textContent = '✎';
+      rename.title = nowDict().tbGroupRename || '重命名分类';
+      rename.addEventListener('click', () => {
+        const nn = prompt(nowDict().tbGroupRename || '重命名分类', gName);
+        if (nn && nn.trim() && nn.trim() !== gName) {
+          const clean = nn.trim();
+          toolbarCfg.groups[idx] = clean;
+          Object.keys(toolbarCfg.itemGroup).forEach((id) => {
+            if (toolbarCfg.itemGroup[id] === gName) toolbarCfg.itemGroup[id] = clean;
+          });
+          saveToolbarCfg();
+          renderToolbarCfgList();
+          renderToolbarGroups();
+          applyToolbar();
+        }
+      });
+      const del = document.createElement('span');
+      del.className = 'x';
+      del.textContent = '×';
+      del.title = 'delete';
+      del.addEventListener('click', () => {
+        if (toolbarCfg.groups.length <= 1) return;
+        if (!confirm(nowDict().tbGroupDeleteConfirm || '确定删除该分类？')) return;
+        toolbarCfg.groups.splice(idx, 1);
+        Object.keys(toolbarCfg.itemGroup).forEach((id) => {
+          if (toolbarCfg.itemGroup[id] === gName) delete toolbarCfg.itemGroup[id];
+        });
+        saveToolbarCfg();
+        renderToolbarCfgList();
+        renderToolbarGroups();
+        applyToolbar();
+      });
+      chip.append(label, rename, del);
+      toolbarGroupsEdit.appendChild(chip);
+    });
+  }
+
+  // 新增分类（复用设置面板里已有的输入框与按钮）
+  function addToolbarGroup() {
+    if (!inputToolbarGroup) return;
+    const v = inputToolbarGroup.value.trim();
+    if (!v) return;
+    if (!toolbarCfg.groups.includes(v)) toolbarCfg.groups.push(v);
+    saveToolbarCfg();
+    renderToolbarCfgList();
+    renderToolbarGroups();
+    inputToolbarGroup.value = '';
+  }
+  btnToolbarAddGroup?.addEventListener('click', addToolbarGroup);
+  inputToolbarGroup?.addEventListener('keydown', (e) => { if (e.key === 'Enter') addToolbarGroup(); });
+
+  applyToolbar();
+  renderToolbarCfgList();
+  renderToolbarGroups();
+
+  // =====================================================================
+  // 功能 G. 主题：跟随系统(明/暗) + 自定义强调色
+  // =====================================================================
+  const THEME_VARS = {
+    light: {
+      '--fill-color': '#f7f7f7', '--fill-popup-color': '#ffffff', '--neutral-layer-floating': '#ffffff',
+      '--neutral-foreground-rest': '#262626', '--neutral-foreground-secondary': '#616161', '--logo-color': '#737373', '--placeholder-color': '#737373',
+      '--neutral-fill-rest': 'rgba(0, 0, 0, 0.04)', '--neutral-fill-hover': 'rgba(0, 0, 0, 0.08)', '--colorNeutralStroke1Hover': '#c7c7c7',
+      '--btn-secondary-bg': '#ffffff', '--btn-danger-color': '#d13438', '--btn-danger-hover': '#fde8e8',
+      '--shadow2': '0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14)',
+      '--shadow4': '0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14)',
+      '--shadow16': '0 0 2px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14)',
+      '--modal-bg': '#ffffff', '--modal-border': '#e0e0e0', '--modal-mask': 'rgba(0, 0, 0, 0.4)', '--input-bg': '#f7f7f7', '--input-border-bottom': '#8a8a8a',
+      '--settings-panel-bg': '#f3f3f3', '--settings-card-bg': '#ffffff', '--settings-card-border': '#e5e5e5', '--settings-card-hover': '#f9f9f9',
+      '--settings-text-primary': '#1b1b1b', '--settings-text-secondary': '#707070', '--settings-thumb-bg': '#e1e4e8', '--settings-thumb-border': '#c8c8c8',
+      '--suggestion-bg': '#ffffff', '--suggestion-hover': '#f0f0f0', '--suggestion-history-color': '#5c2d91', '--suggestion-footer-color': '#0078d4'
+    },
+    dark: {
+      '--fill-color': '#1f1f1f', '--fill-popup-color': '#2b2b2b', '--neutral-layer-floating': '#2b2b2b',
+      '--neutral-foreground-rest': '#f5f5f5', '--neutral-foreground-secondary': '#adadad', '--logo-color': '#f5f5f5', '--placeholder-color': '#adadad',
+      '--neutral-fill-rest': 'rgba(255, 255, 255, 0.06)', '--neutral-fill-hover': 'rgba(255, 255, 255, 0.12)', '--colorNeutralStroke1Hover': '#757575',
+      '--btn-secondary-bg': '#2b2b2b', '--btn-danger-color': '#ff6b6b', '--btn-danger-hover': '#3d1a1a',
+      '--shadow2': '0 0 2px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28)',
+      '--shadow4': '0 0 2px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.3)',
+      '--shadow16': '0 0 2px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.28)',
+      '--modal-bg': '#2b2b2b', '--modal-border': '#444444', '--modal-mask': 'rgba(0, 0, 0, 0.65)', '--input-bg': '#1f1f1f', '--input-border-bottom': '#666666',
+      '--settings-panel-bg': '#1e1e1e', '--settings-card-bg': '#2b2b2b', '--settings-card-border': '#383838', '--settings-card-hover': '#353535',
+      '--settings-text-primary': '#e3e3e3', '--settings-text-secondary': '#9e9e9e', '--settings-thumb-bg': '#212121', '--settings-thumb-border': '#3d3d3d',
+      '--suggestion-bg': '#2b2b2b', '--suggestion-hover': '#3d3d3d', '--suggestion-history-color': '#b182e6', '--suggestion-footer-color': '#4f8cf6'
+    }
+  };
+
+  const selectTheme = document.getElementById('select-theme');
+  const inputAccent = document.getElementById('input-accent');
+  const sysDarkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  let themeMode = Storage.get('ntp_theme', 'system');
+  let accentColorValue = Storage.get('ntp_accent_color', '');
+
+  function effectiveScheme() {
+    if (themeMode === 'light' || themeMode === 'dark') return themeMode;
+    return sysDarkMedia.matches ? 'dark' : 'light';
+  }
+
+  function applyTheme() {
+    const scheme = effectiveScheme();
+    const root = document.documentElement;
+    const vars = THEME_VARS[scheme] || THEME_VARS.light;
+    Object.keys(vars).forEach(k => root.style.setProperty(k, vars[k]));
+    root.style.colorScheme = scheme;
+    if (accentColorValue) root.style.setProperty('--accent-foreground-rest', accentColorValue);
+    else root.style.removeProperty('--accent-foreground-rest');
+  }
+
+  if (selectTheme) {
+    selectTheme.value = themeMode;
+    selectTheme.addEventListener('change', (e) => {
+      themeMode = e.target.value;
+      Storage.set('ntp_theme', themeMode);
+      applyTheme();
+    });
+  }
+  if (inputAccent) {
+    inputAccent.value = accentColorValue || '#235ccf';
+    inputAccent.addEventListener('input', (e) => {
+      accentColorValue = e.target.value;
+      Storage.set('ntp_accent_color', accentColorValue);
+      applyTheme();
+    });
+  }
+  sysDarkMedia.addEventListener('change', () => { if (themeMode === 'system') applyTheme(); });
+  applyTheme();
 
   // =====================================================================
   // 功能 A. 纯净模式：一键禁用全部动画与动态壁纸（零脚本零追踪）
@@ -1929,7 +2652,7 @@ searchInput?.addEventListener('input', () => {
   // =====================================================================
   // 功能 C. 底部工具栏：番茄钟（环形进度/工作-休息/空格控制/持久化）
   // =====================================================================
-  const fabBtn = document.getElementById('toolbar-fab-btn');
+  const pmOpenBtn = document.getElementById('qm-tool-pomodoro');
   const pmPanel = document.getElementById('pomodoro-panel');
   const pmClose = document.getElementById('pomodoro-close');
   const pmStartBtn = document.getElementById('pomodoro-start');
@@ -2030,18 +2753,19 @@ searchInput?.addEventListener('input', () => {
   if (pmResetBtn) pmResetBtn.addEventListener('click', pmReset);
   pmModeBtns.forEach(b => b.addEventListener('click', () => pmSetMode(b.dataset.pmMode)));
 
-  if (fabBtn && pmPanel) {
-    fabBtn.addEventListener('click', () => {
+  if (pmOpenBtn && pmPanel) {
+    pmOpenBtn.addEventListener('click', () => {
+      popoverMenu?.classList.remove('active');
       const close = !pmPanel.hidden;
       pmPanel.hidden = close;
-      fabBtn.setAttribute('aria-expanded', String(!close));
+      pmOpenBtn.setAttribute('aria-expanded', String(!close));
       if (!close) pmRender();
     });
   }
   if (pmClose) {
     pmClose.addEventListener('click', () => {
       if (pmPanel) pmPanel.hidden = true;
-      if (fabBtn) fabBtn.setAttribute('aria-expanded', 'false');
+      if (pmOpenBtn) pmOpenBtn.setAttribute('aria-expanded', 'false');
     });
   }
 
@@ -2056,7 +2780,7 @@ searchInput?.addEventListener('input', () => {
         }
       } else if (e.key === 'Escape') {
         pmPanel.hidden = true;
-        if (fabBtn) fabBtn.setAttribute('aria-expanded', 'false');
+        if (pmOpenBtn) pmOpenBtn.setAttribute('aria-expanded', 'false');
       }
     }
   });
@@ -2083,6 +2807,23 @@ searchInput?.addEventListener('input', () => {
     'ntp_bg_enabled',
     'ntp_bg_mode',
     'ntp_custom_wallpaper',
+    'ntp_bg_interval',
+    'ntp_bg_solid_color',
+    'ntp_bg_gradient_start',
+    'ntp_bg_gradient_end',
+    // 主题：模式与强调色
+    'ntp_theme',
+    'ntp_accent_color',
+    // 小组件显隐 / 待办 / 天气
+    'ntp_widget_clock',
+    'ntp_widget_weather',
+    'ntp_widget_todo',
+    'ntp_todo_list',
+    'ntp_weather_city',
+    'ntp_weather_cache',
+    // 工具栏配置 / 番茄钟状态
+    'ntp_toolbar_cfg',
+    'ntp_pomodoro',
     // 网站快捷方式列表 + 搜索历史
     'ntp_quicklinks_list',
     'ntp_search_history'

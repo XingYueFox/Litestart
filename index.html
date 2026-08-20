@@ -487,6 +487,19 @@
       border-color: var(--accent-foreground-rest);
       color: #ffffff;
     }
+    .bg-extra-row {
+      margin-top: 12px;
+    }
+    .color-input {
+      width: 34px;
+      height: 30px;
+      padding: 0;
+      border: 1px solid var(--settings-card-border);
+      border-radius: 6px;
+      background: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
 
     /* 设置行（带开关） */
     .setting-row {
@@ -1553,22 +1566,6 @@
       align-items: flex-end;
       gap: 10px;
     }
-    .toolbar-fab-btn {
-      width: 48px;
-      height: 48px;
-      border: none;
-      border-radius: 50%;
-      background-color: var(--accent-foreground-rest);
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: var(--shadow16);
-      transition: transform 0.3s ease, background-color 0.2s ease;
-    }
-    .toolbar-fab-btn:hover { transform: scale(1.08); }
-    .toolbar-fab-btn:active { transform: scale(0.94); }
 
     .pomodoro-panel {
       width: 236px;
@@ -1751,6 +1748,8 @@
       .weather-desc { font-size: 13px; opacity: .9; }
       .weather-city { font-size: 12px; opacity: .75; margin-top: 2px; }
       .weather-btn { font-size: 12px; opacity: .85; cursor: pointer; background: none; border: none; color: #fff; padding: 0; }
+      .widget-head-btns { display: flex; align-items: center; gap: 10px; }
+      .weather-btn:hover { opacity: 1; }
       .weather-row { display: flex; gap: 6px; margin-top: 6px; }
       .weather-row input { flex: 1; min-width: 0; }
 
@@ -2014,6 +2013,25 @@
                   <button type="button" class="bg-source-option" data-bg-mode="default" data-i18n="bgDefault">默认</button>
                   <button type="button" class="bg-source-option" data-bg-mode="bingdaily" data-i18n="bgDaily">每日壁纸</button>
                   <button type="button" class="bg-source-option" data-bg-mode="custom" data-i18n="bgCustom">自定义</button>
+                  <button type="button" class="bg-source-option" data-bg-mode="solid" data-i18n="bgSolid">纯色</button>
+                  <button type="button" class="bg-source-option" data-bg-mode="gradient" data-i18n="bgGradient">渐变</button>
+                </div>
+                <div class="bg-extra-row" id="bg-solid-color-row" style="display: none;">
+                  <label class="setting-label-group" for="input-bg-solid-color" data-i18n="bgSolidColor">纯色背景</label>
+                  <input type="color" id="input-bg-solid-color" class="color-input" value="#235ccf">
+                </div>
+                <div class="bg-extra-row" id="bg-gradient-row" style="display: none;">
+                  <div class="setting-label-group" data-i18n="bgGradient">渐变</div>
+                  <div style="display:flex; align-items:center; gap:10px; margin-top:8px;">
+                    <label style="display:flex; align-items:center; gap:6px;">
+                      <input type="color" id="input-bg-gradient-start" class="color-input" value="#235ccf">
+                      <span data-i18n="bgGradientStart">渐变起始色</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px;">
+                      <input type="color" id="input-bg-gradient-end" class="color-input" value="#7a3cf0">
+                      <span data-i18n="bgGradientEnd">渐变结束色</span>
+                    </label>
+                  </div>
                 </div>
                 <div class="bg-interval-row" id="bg-interval-row" style="display: none;">
                   <label class="setting-label-group" for="select-bg-interval" data-i18n="bgInterval">自动更换间隔</label>
@@ -2152,7 +2170,10 @@
           <div id="weather-widget" class="widget" hidden>
             <div class="widget-head">
               <span class="widget-title" data-i18n="weather">天气</span>
-              <button type="button" class="weather-btn" id="weather-edit-btn" data-i18n="weatherEdit">设置</button>
+              <div class="widget-head-btns">
+                <button type="button" class="weather-btn" id="weather-refresh" title="刷新天气">⟳</button>
+                <button type="button" class="weather-btn" id="weather-edit-btn" data-i18n="weatherEdit">设置</button>
+              </div>
             </div>
             <div id="weather-body">
               <div id="weather-placeholder" data-i18n="weatherUnset">未设置城市</div>
