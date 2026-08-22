@@ -60,6 +60,10 @@
       --settings-thumb-bg: #e1e4e8;
       --settings-thumb-border: #c8c8c8;
 
+      --enhanced-visibility-bg: rgba(255, 255, 255, 0.3);
+      --enhanced-visibility-bg-hover: rgba(255, 255, 255, 0.5);
+      --enhanced-visibility-logo-bg: rgba(255, 255, 255, 0.6);
+
       /* 8. 搜索建议面板颜色 */
       --suggestion-bg: #ffffff;
       --suggestion-hover: #f0f0f0;
@@ -104,6 +108,10 @@
         --settings-text-secondary: #9e9e9e;
         --settings-thumb-bg: #212121;
         --settings-thumb-border: #3d3d3d;
+
+        --enhanced-visibility-bg: rgba(0, 0, 0, 0.3);
+        --enhanced-visibility-bg-hover: rgba(0, 0, 0, 0.5);
+        --enhanced-visibility-logo-bg: rgba(0, 0, 0, 0.6);
 
         --suggestion-bg: #2b2b2b;
         --suggestion-hover: #3d3d3d;
@@ -182,6 +190,44 @@
       body.bg-enabled {
         --logo-color: #ffffff;
       }
+    }
+
+    body.bg-enabled[data-enhanced-visibility="true"] .header-button {
+      background-color: var(--enhanced-visibility-bg);
+      border-radius: 8px;
+      transition: background-color 0.15s ease;
+    }
+
+    body.bg-enabled[data-enhanced-visibility="true"] .header-button:hover {
+      background-color: var(--enhanced-visibility-bg-hover);
+    }
+
+    body.bg-enabled[data-enhanced-visibility="true"] #logo {
+      padding: 16px;
+      border-radius: 12px;
+      background-color: var(--enhanced-visibility-logo-bg);
+    }
+
+    body.bg-enabled[data-enhanced-visibility="true"] #time-display {
+      background-color: var(--enhanced-visibility-bg);
+      border-radius: 8px;
+      padding: 4px 10px;
+      transition: background-color 0.15s ease;
+    }
+
+    body.bg-enabled[data-enhanced-visibility="true"] #time-display:hover {
+      background-color: var(--enhanced-visibility-bg-hover);
+    }
+
+    body.bg-enabled[data-enhanced-visibility="true"] .quicklink-title {
+      background-color: var(--enhanced-visibility-bg);
+      border-radius: 4px;
+      padding: 1px 4px;
+      transition: background-color 0.15s ease;
+    }
+
+    body.bg-enabled[data-enhanced-visibility="true"] .quicklink-title:hover {
+      background-color: var(--enhanced-visibility-bg-hover);
     }
 
     /* 开启背景时将外层容器背景设为透明，避免遮挡背景壁纸 */
@@ -802,7 +848,8 @@
       align-items: center;
       justify-content: center;
       width: 80px;
-      height: 68px;
+      padding: 6px 2px;
+      box-sizing: border-box;
       border-radius: 8px;
       text-decoration: none;
       color: var(--neutral-foreground-rest);
@@ -1192,26 +1239,38 @@
       #logo-text { display: none; }
     }
 
-    /* 以下为时间胶囊布局样式-前半部分用于占位，防止与其他东西撞车 */
-      #time-capsule {
-        width: 110px;
-        border-radius: 34px;
-        background-color: rgba(255, 255, 255, 0); 
-        transition: background-color 0.2s;
+    /* 独立时间显示模块 - 与左上角菜单按钮同一行 */
+    #time-display {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 2px;
+      margin-left: 6px;
+      padding: 0 4px;
+      color: var(--neutral-foreground-rest);
+      user-select: none;
+      white-space: nowrap;
+      height: 40px;
+      box-sizing: border-box;
     }
 
-      @media (prefers-color-scheme: dark) {
-      #time-capsule {
-        background-color: rgba(255, 255, 255, 0);
-      }
+    #time-display.active {
+      display: inline-flex;
     }
 
-      #time-capsule .quicklink-icon {
-        width: 64px;
-        height: 38px;/*默认高度38px*/
-        border-radius: 24px;
-        font-size: 20px;
-        font-weight: 700;
+    #time-display .time-value {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: 0.3px;
+    }
+
+    #time-display .time-date {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--neutral-foreground-rest);
+      line-height: 1;
     }
 
     /* ===== 拖拽排序样式 ===== */
@@ -1232,6 +1291,63 @@
   box-shadow: 0 0 0 2px var(--accent-foreground-rest);
   transition: box-shadow 0.12s ease;
 }
+
+    .tooltip-icon {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      color: var(--settings-text-secondary);
+      cursor: help;
+      outline: none;
+    }
+
+    .tooltip-icon:hover,
+    .tooltip-icon:focus {
+      color: var(--settings-text-primary);
+    }
+
+    .tooltip-icon .tooltip-content {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--settings-card-bg);
+      color: var(--settings-text-primary);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.5;
+      padding: 8px 12px;
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      width: 260px;
+      white-space: normal;
+      word-break: normal;
+      z-index: 1000;
+      transition: opacity 0.15s ease, visibility 0.15s ease;
+      pointer-events: none;
+    }
+
+    .tooltip-icon .tooltip-content::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--settings-card-bg);
+    }
+
+    .tooltip-icon:hover .tooltip-content,
+    .tooltip-icon:focus .tooltip-content {
+      visibility: visible;
+      opacity: 1;
+    }
     </style>
 </head>
 
@@ -1243,6 +1359,8 @@
       <div id="bg-overlay"></div>
     </div>
 
+    <!-- 左上角独立时间显示模块 -->
+
     <ntp-shell elementtiming="wallpaper">
       <!-- 顶部导航栏 -->
       <div id="header">
@@ -1253,6 +1371,11 @@
               </path>
             </svg>
           </button>
+          <!-- 时间显示：与菜单按钮同一行 -->
+          <div id="time-display">
+            <span class="time-value"></span>
+            <span class="time-date"></span>
+          </div>
           <!-- 左侧菜单 -->
           <div id="popover-waffle" class="popover-panel">
             <div style="padding: 10px; text-align: center;"></div>
@@ -1287,28 +1410,12 @@
                       <option value="1" data-i18n="rows1">1 行</option>
                       <option value="2" data-i18n="rows2">2 行</option>
                     </select>
-
-                  <!-- 显示时间开关 -->
-                  <div class="setting-row" style="margin-top: 10px;">
-                    <div class="setting-label-group" data-i18n="showTimeCapsule">显示时间</div>
-                      <div class="switch-container">
-                        <span class="setting-status-text" id="status-time-capsule" data-i18n="off">关闭</span>
-                          <label class="switch">
-                            <input type="checkbox" id="toggle-time-capsule-switch">
-                            <span class="slider"></span>
-                          </label>
-                      </div>
-                    </div>
-                  </div>
-              
-
-
-              <!-- 搜索引擎设置 -->
+              </div>
               <div class="settings-card">
                 <div class="settings-card-title" data-i18n="searchEngine">搜索引擎</div>
                 <select id="select-engine" class="select-box">
-                  <option value="bing" data-i18n="bingCN">Bing</option>
-                  <option value="baidu">Baidu</option>
+                  <option value="bing" data-i18n="bing">Bing</option>
+                  <option value="baidu" data-i18n="baidu">Baidu</option>
                   <option value="google">Google</option>
                   <option value="custom" data-i18n="custom">自定义</option>
                 </select>
@@ -1316,6 +1423,23 @@
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.93-3.25a1.75 1.75 0 0 1 .445-.758l8.61-8.609z"/></svg>
                   <span data-i18n="editCustomEngine">编辑自定义搜索引擎</span>
                 </button>
+                <div id="force-bing-cn-row" class="setting-row" style="display:none; margin-top: 8px;">
+                  <div class="setting-label-group">
+                    <span data-i18n="forceBingCN">强制使用必应中国版</span>
+                    <span class="tooltip-icon" tabindex="0">
+                      <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
+                        <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
+                      </svg>
+                      <span class="tooltip-content" data-i18n="forceBingCNDesc">强制使用必应中国版，避免代理设置导致的 www.bing.com 无法自动跳转到 cn.bing.com</span>
+                    </span>
+                  </div>
+                  <div class="switch-container">
+                    <label class="switch">
+                      <input type="checkbox" id="toggle-force-bing-cn">
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <!-- 搜索历史记录开关 -->
@@ -1369,6 +1493,15 @@
                 <button id="btn-open-bg-modal" class="icon-btn-text" type="button">
                   <span data-i18n="editBackground">编辑背景</span>
                 </button>
+                <div id="enhanced-visibility-row" class="setting-row" style="display:none; margin-top: 8px;">
+                  <div class="setting-label-group" data-i18n="enhancedVisibility">增强元素可见性</div>
+                  <div class="switch-container">
+                    <label class="switch">
+                      <input type="checkbox" id="toggle-enhanced-visibility">
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <!-- 页面语言选择卡片 -->
@@ -1385,6 +1518,33 @@
                 </select>
                 
               </div>
+
+              <!-- 其他元素 / 时间与菜单 -->
+              <div class="settings-card">
+
+                  <div class="setting-row">
+                    <div class="setting-label-group" data-i18n="showMenuButton">显示菜单按钮</div>
+                      <div class="switch-container">
+                        <span class="setting-status-text" id="status-menu-button" data-i18n="on">打开</span>
+                          <label class="switch">
+                            <input type="checkbox" id="toggle-menu-button-switch" checked>
+                            <span class="slider"></span>
+                          </label>
+                      </div>
+                    </div>
+
+                  <div class="setting-row" style="margin-top: 10px;">
+                    <div class="setting-label-group" data-i18n="showTimeCapsule">显示时间</div>
+                      <div class="switch-container">
+                        <span class="setting-status-text" id="status-time-capsule" data-i18n="off">关闭</span>
+                          <label class="switch">
+                            <input type="checkbox" id="toggle-time-capsule-switch">
+                            <span class="slider"></span>
+                          </label>
+                      </div>
+                    </div>
+                  </div>
+
             </div>
 
             <!-- 底部版权/链接区域 -->

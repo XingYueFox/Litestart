@@ -37,6 +37,7 @@ const i18nData = {
     rows1: '1 行',
     rows2: '2 行',
     showTimeCapsule: '显示时间',
+    showMenuButton: '显示菜单按钮',
     searchEngine: '搜索引擎',
     custom: '自定义',
     editCustomEngine: '编辑自定义搜索引擎',
@@ -84,7 +85,12 @@ const i18nData = {
     customOnlineWallpaper: '自定义在线壁纸',
     imageOrVideoUrl: '图片或视频URL',
     enterUrl: '输入图片或视频URL',
-    bingCN: '必应'
+    bing: 'Bing',
+    baidu: '百度',
+    forceBingCN: '强制使用必应中国版',
+    forceBingCNDesc: '强制使用必应中国版，避免代理设置导致的 www.bing.com 无法自动跳转到 cn.bing.com',
+    enhancedVisibility: '增强元素可见性',
+    enhancedVisibilityDesc: '开启背景时给Logo和顶部按钮添加半透明背景，使其在背景图上更清晰'
   },
   'zh-TW': {
     pageTitle: '新分頁',
@@ -96,6 +102,7 @@ const i18nData = {
     rows1: '1 行',
     rows2: '2 行',
     showTimeCapsule: '顯示時間',
+    showMenuButton: '顯示菜單按鈕',
     searchEngine: '搜尋引擎',
     custom: '自訂',
     editCustomEngine: '編輯自訂搜尋引擎',
@@ -143,7 +150,12 @@ const i18nData = {
     customOnlineWallpaper: '自訂線上桌布',
     imageOrVideoUrl: '圖片或影片網址',
     enterUrl: '輸入圖片或影片網址',
-    bingCN: 'Bing'
+    bingCN: 'Bing',
+    baidu: '百度',
+    forceBingCN: '強制使用必應中國版',
+    forceBingCNDesc: '強制使用必應中國版，避免代理設定導致的 www.bing.com 無法自動跳轉到 cn.bing.com',
+    enhancedVisibility: '增強元素可見性',
+    enhancedVisibilityDesc: '開啟背景時給Logo和頂部按鈕添加半透明背景，使其在背景圖上更清晰'
   },
   'zh-WY': {
     pageTitle: '新標籤頁',
@@ -155,6 +167,7 @@ const i18nData = {
     rows1: '一列',
     rows2: '二列',
     showTimeCapsule: '顯時',
+    showMenuButton: '顯菜按鈕',
     searchEngine: '搜尋器',
     custom: '自訂',
     editCustomEngine: '輯自訂搜尋器',
@@ -202,7 +215,12 @@ const i18nData = {
     customOnlineWallpaper: '自訂網圖',
     imageOrVideoUrl: '圖影鏈',
     enterUrl: '輸圖影鏈',
-    bingCN: '必應'
+    bingCN: '必應',
+    baidu: '百度',
+    forceBingCN: '強制使用必應中國版',
+    forceBingCNDesc: '強制使用必應中國版，避免代理設定導致的 www.bing.com 無法自動跳轉到 cn.bing.com',
+    enhancedVisibility: '增強元素可見性',
+    enhancedVisibilityDesc: '開啟背景時給Logo和頂部按鈕添加半透明背景，使其在背景圖上更清晰'
   },
   'en': {
     pageTitle: 'New Tab',
@@ -214,6 +232,7 @@ const i18nData = {
     rows1: '1 row',
     rows2: '2 rows',
     showTimeCapsule: 'Show Time',
+    showMenuButton: 'Show Menu Button',
     searchEngine: 'Search Engine',
     custom: 'Custom',
     editCustomEngine: 'Edit custom search engine',
@@ -261,7 +280,11 @@ const i18nData = {
     customOnlineWallpaper: 'Custom online wallpaper',
     imageOrVideoUrl: 'Image or video URL',
     enterUrl: 'Enter image or video URL',
-    bingCN: 'Bing'
+    bingCN: 'Bing',
+    forceBingCN: 'Force Bing China',
+    forceBingCNDesc: 'Force www.bing.com to redirect to cn.bing.com, avoiding proxy issues that prevent automatic redirection',
+    enhancedVisibility: 'Enhance Element Visibility',
+    enhancedVisibilityDesc: 'Adds semi-transparent backgrounds to Logo and header buttons when background is enabled for better clarity'
   },
   'ja': {
     pageTitle: '新しいタブ',
@@ -273,6 +296,7 @@ const i18nData = {
     rows1: '1 行',
     rows2: '2 行',
     showTimeCapsule: '時間を表示',
+    showMenuButton: 'メニューボタンを表示',
     searchEngine: '検索エンジン',
     custom: 'カスタム',
     editCustomEngine: 'カスタム検索エンジンを編集',
@@ -320,7 +344,11 @@ const i18nData = {
     customOnlineWallpaper: 'カスタムオンライン壁紙',
     imageOrVideoUrl: '画像または動画のURL',
     enterUrl: '画像または動画のURLを入力',
-    bingCN: 'Bing'
+    bingCN: 'Bing',
+    forceBingCN: 'Bing中国版を強制使用',
+    forceBingCNDesc: 'プロキシ設定により www.bing.com から cn.bing.com への自動リダイレクトが妨げられる場合に、中国版Bingを強制使用します',
+    enhancedVisibility: '要素の視認性を向上',
+    enhancedVisibilityDesc: '背景有効時にロゴとヘッダーボタンに半透明の背景を追加し、見やすくします'
   },
   'ru': {
     pageTitle: 'Новая вкладка',
@@ -332,6 +360,7 @@ const i18nData = {
     rows1: '1 строка',
     rows2: '2 строки',
     showTimeCapsule: 'Показать время',
+    showMenuButton: 'Показать кнопку меню',
     searchEngine: 'Поисковая система',
     custom: 'Пользовательская',
     editCustomEngine: 'Изменить поисковую систему',
@@ -379,7 +408,11 @@ const i18nData = {
     customOnlineWallpaper: 'Пользовательские онлайн-обои',
     imageOrVideoUrl: 'URL изображения или видео',
     enterUrl: 'Введите URL изображения или видео',
-    bingCN: 'Bing'
+    bingCN: 'Bing',
+    forceBingCN: 'Принудительно использовать Bing China',
+    forceBingCNDesc: 'Принудительно использовать cn.bing.com, чтобы избежать проблем с прокси, из-за которых www.bing.com не может автоматически перенаправлять на cn.bing.com',
+    enhancedVisibility: 'Повысить видимость элементов',
+    enhancedVisibilityDesc: 'Добавляет полупрозрачный фон к логотипу и кнопкам заголовка при включенном фоне для лучшей читаемости'
   }
 };
 
@@ -465,6 +498,13 @@ function applyLanguage(langConfig) {
     const isChecked = document.getElementById('toggle-time-capsule-switch')?.checked || false;
     statusTimeCapsule.innerText = isChecked ? dict.on : dict.off;
   }
+
+  // 7.刷新菜单按钮状态文本
+  const statusMenuBtn = document.getElementById('status-menu-button');
+  if (statusMenuBtn) {
+    const isChecked = document.getElementById('toggle-menu-button-switch')?.checked ?? true;
+    statusMenuBtn.innerText = isChecked ? dict.on : dict.off;
+  }
 }
 
 // LocalStorage持久化辅助对象
@@ -516,6 +556,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const selectEngine = document.getElementById('select-engine');
   const btnEditEngine = document.getElementById('btn-edit-engine');
+  const forceBingCNRow = document.getElementById('force-bing-cn-row');
+  const toggleForceBingCN = document.getElementById('toggle-force-bing-cn');
   const toggleHistorySwitch = document.getElementById('toggle-history-switch');
   const statusHistoryText = document.getElementById('status-history');
   const selectQuicklinks = document.getElementById('select-quicklinks');
@@ -562,6 +604,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleBgSwitch = document.getElementById('toggle-bg-switch');
   const statusBgText = document.getElementById('status-bg');
   const btnOpenBgModal = document.getElementById('btn-open-bg-modal');
+  const enhancedVisibilityRow = document.getElementById('enhanced-visibility-row');
+  const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
   
   const modalWallpaper = document.getElementById('modal-wallpaper');
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
@@ -596,6 +640,8 @@ document.addEventListener('DOMContentLoaded', () => {
     baidu: 'https://www.baidu.com/s?wd=',
     google: 'https://www.google.com/search?q='
   };
+
+  const bingCNSearchUrl = 'https://cn.bing.com/search?q=';
 
   // 切换弹出层动画
   function togglePopover(popoverToToggle, otherPopover) {
@@ -645,12 +691,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function updateForceBingCNRow(engine) {
+    if (forceBingCNRow) {
+      forceBingCNRow.style.display = engine === 'bing' ? 'flex' : 'none';
+    }
+  }
+
     // 时间开关相关函数
   let timeCapsuleTimer = null;
 
   function updateTimeCapsule() {
-    const capsule = document.getElementById('time-capsule');
-    if (!capsule) return;
+    const display = document.getElementById('time-display');
+    if (!display) return;
+    if (!display.classList.contains('active')) return;
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
@@ -660,10 +713,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const day = String(now.getDate()).padStart(2, '0');
     const dateStr = year + '/' + month + '/' + day;
 
-    const icon = capsule.querySelector('.quicklink-icon');
-    const title = capsule.querySelector('.quicklink-title');
-    if (icon) icon.innerText = timeStr;
-    if (title) title.innerText = dateStr;
+    const timeValue = display.querySelector('.time-value');
+    const timeDate = display.querySelector('.time-date');
+    if (timeValue) timeValue.innerText = timeStr;
+    if (timeDate) timeDate.innerText = dateStr;
+  }
+
+  function applyTimeCapsuleVisibility() {
+    const display = document.getElementById('time-display');
+    if (!display) return;
+    if (showTimeCapsule) {
+      display.classList.add('active');
+      updateTimeCapsule();
+      startTimeCapsuleTimer();
+    } else {
+      display.classList.remove('active');
+      stopTimeCapsuleTimer();
+    }
+  }
+
+  function applyMenuButtonVisibility() {
+    const btn = document.getElementById('waffle');
+    const popover = document.getElementById('popover-waffle');
+    if (!btn) return;
+    if (showMenuButton) {
+      btn.style.display = '';
+      if (popover) popover.style.display = '';
+    } else {
+      btn.style.display = 'none';
+      if (popover) popover.classList.remove('active');
+    }
   }
 
   function startTimeCapsuleTimer() {
@@ -680,22 +759,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
     // B1.读取并应用保存的页面设置/此为默认配置值
-  const savedEngine = Storage.get('ntp_engine', 'bing');
+  let savedEngine = Storage.get('ntp_engine', 'bing');
+  if (savedEngine === 'bingCN') {
+    savedEngine = 'bing';
+    Storage.set('ntp_engine', 'bing');
+    Storage.set('ntp_force_bing_cn', true);
+  }
   const savedLayout = Storage.get('ntp_layout', 'focused');
   const savedQuicklinksRow = Storage.get('ntp_quicklinks', '0');
   let historyEnabled = Storage.get('ntp_history_enabled', true);
   let searchHistory = Storage.get('ntp_search_history', []);
   let showTimeCapsule = Storage.get('ntp_show_time_capsule', false);
+  let showMenuButton = Storage.get('ntp_show_menu_button', true);
+  let forceBingCN = Storage.get('ntp_force_bing_cn', false);
   
   let bgEnabled = Storage.get('ntp_bg_enabled', false);
   let customWallpaperData = Storage.get('ntp_custom_wallpaper', null);
+  let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
 
   if (selectEngine) selectEngine.value = savedEngine;
   if (selectQuicklinks) selectQuicklinks.value = savedQuicklinksRow;
   if (toggleHistorySwitch) toggleHistorySwitch.checked = historyEnabled;
+  if (toggleForceBingCN) toggleForceBingCN.checked = forceBingCN;
+  if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = enhancedVisibility;
 
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
+  updateForceBingCNRow(savedEngine);
   document.body.setAttribute('data-layout', savedLayout);
   quicklinksElem?.setAttribute('rows', savedQuicklinksRow);
 
@@ -711,6 +801,24 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.remove('bg-enabled');
       if (bgVideo) bgVideo.style.display = 'none';
       if (bgImage) bgImage.style.display = 'none';
+      if (enhancedVisibility) {
+        enhancedVisibility = false;
+        Storage.set('ntp_enhanced_visibility', false);
+        if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = false;
+      }
+    }
+
+    if (enhancedVisibilityRow) {
+      enhancedVisibilityRow.style.display = bgEnabled ? 'flex' : 'none';
+    }
+    applyEnhancedVisibility();
+  }
+
+  function applyEnhancedVisibility() {
+    if (enhancedVisibility && bgEnabled) {
+      document.body.setAttribute('data-enhanced-visibility', 'true');
+    } else {
+      document.body.removeAttribute('data-enhanced-visibility');
     }
   }
 
@@ -773,6 +881,12 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.set('ntp_bg_enabled', bgEnabled);
     applyBackgroundState();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+  });
+
+  toggleEnhancedVisibility?.addEventListener('change', (e) => {
+    enhancedVisibility = e.target.checked;
+    Storage.set('ntp_enhanced_visibility', enhancedVisibility);
+    applyEnhancedVisibility();
   });
 
   // 壁纸弹窗逻辑
@@ -954,10 +1068,16 @@ inputOnlineUrl?.addEventListener('input', () => {
     const val = e.target.value;
     setLogo(val);
     updateEngineEditButton(val);
+    updateForceBingCNRow(val);
     Storage.set('ntp_engine', val);
     if (val === 'custom' && (!customEngineConfig.url || customEngineConfig.url === 'https://duckduckgo.com/?q=%s')) {
       openCustomEngineModal();
     }
+  });
+
+  toggleForceBingCN?.addEventListener('change', (e) => {
+    forceBingCN = e.target.checked;
+    Storage.set('ntp_force_bing_cn', forceBingCN);
   });
 
   btnEditEngine?.addEventListener('click', () => {
@@ -994,19 +1114,36 @@ inputOnlineUrl?.addEventListener('input', () => {
       showTimeCapsule = e.target.checked;
       Storage.set('ntp_show_time_capsule', showTimeCapsule);
       applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
-      renderQuicklinks();
-      if (showTimeCapsule) {
-        startTimeCapsuleTimer();
-      } else {
-        stopTimeCapsuleTimer();
-      }
+      applyTimeCapsuleVisibility();
     });
   }
 
-  // 如果初始状态是开启，启动定时器
-  if (showTimeCapsule) {
-    startTimeCapsuleTimer();
+  // 菜单按钮开关事件
+  const toggleMenuButtonSwitch = document.getElementById('toggle-menu-button-switch');
+  const statusMenuButtonText = document.getElementById('status-menu-button');
+
+  if (toggleMenuButtonSwitch) {
+    toggleMenuButtonSwitch.checked = showMenuButton;
+    const savedLang = localStorage.getItem('liteStart_language') || 'auto';
+    const dict = i18nData[getResolvedLanguageCode(savedLang)] || i18nData['zh-CN'];
+    if (statusMenuButtonText) {
+      statusMenuButtonText.innerText = showMenuButton ? dict.on : dict.off;
+    }
+
+    toggleMenuButtonSwitch.addEventListener('change', (e) => {
+      showMenuButton = e.target.checked;
+      Storage.set('ntp_show_menu_button', showMenuButton);
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      applyMenuButtonVisibility();
+    });
   }
+
+  // 如果初始状态是开启，启动定时器并显示
+  if (showTimeCapsule) {
+    applyTimeCapsuleVisibility();
+  }
+  // 应用菜单按钮初始可见性
+  applyMenuButtonVisibility();
   
   // 自定义搜索引擎对话框逻辑
   function openCustomEngineModal() {
@@ -1076,21 +1213,7 @@ inputOnlineUrl?.addEventListener('input', () => {
 
     quicklinksElem.innerHTML = '';
 
-    // C1.如果时间胶囊开启，则创建并添加到开头
-    if (showTimeCapsule) {
-      const capsule = document.createElement('div');
-      capsule.className = 'quicklink-item';
-      capsule.id = 'time-capsule';
-      capsule.style.cursor = 'default';
-      capsule.innerHTML = `
-        <div class="quicklink-icon" style="font-size: 16px; font-weight: 600; color: var(--neutral-foreground-rest);"></div>
-        <span class="quicklink-title" style="font-size: 12px;"></span>
-      `;
-      quicklinksElem.appendChild(capsule);
-      updateTimeCapsule(); // 立即更新时间
-    }
-
-    // C2. 渲染已有的快捷方式
+    // C1. 渲染已有的快捷方式
 quicklinksList.forEach(item => {
   const linkElem = document.createElement('a');
   linkElem.href = item.url;
@@ -1574,7 +1697,10 @@ searchInput?.addEventListener('input', () => {
       if (engine === 'custom' && customEngineConfig.url) {
         targetUrl = customEngineConfig.url.replace('%s', encodeURIComponent(query));
       } else {
-        const baseUrl = engineSearchUrls[engine] || engineSearchUrls.bing;
+        let baseUrl = engineSearchUrls[engine] || engineSearchUrls.bing;
+        if (engine === 'bing' && forceBingCN) {
+          baseUrl = bingCNSearchUrl;
+        }
         targetUrl = baseUrl + encodeURIComponent(query);
       }
 
