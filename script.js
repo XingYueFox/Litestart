@@ -62,8 +62,11 @@ const i18nData = {
     clearSearchHistory: '清除搜索历史记录',
     customBackground: '自定义背景',
     usingDefaultBg: '正在使用默认背景',
-    selectImage: '选择图片或视频',
-    uploadFile: '上传文件',
+    sourceLocal: '来自本地图片',
+    sourceBingDaily: '来自 Bing 每日壁纸',
+    sourceCustomUrl: '来自自定义链接',
+    selectImage: '选择本地图片或视频',
+    uploadFile: '选择文件',
     restoreDefault: '恢复默认',
     editShortcut: '编辑快速链接',
     name: '名称',
@@ -100,7 +103,7 @@ const i18nData = {
    // 编辑个人资料弹窗
     editProfile: '编辑个人资料',
     profileAvatar: '头像',
-    uploadAvatar: '上传头像',
+    uploadAvatar: '选择头像',
     removeAvatar: '删除头像',
     description: '描述',
 
@@ -154,8 +157,11 @@ const i18nData = {
     clearSearchHistory: '清除搜尋紀錄',
     customBackground: '自訂背景',
     usingDefaultBg: '正在使用預設背景',
-    selectImage: '選擇圖片或影片',
-    uploadFile: '上傳檔案',
+    sourceLocal: '來自本機圖片',
+    sourceBingDaily: '來自 Bing 每日桌布',
+    sourceCustomUrl: '來自自訂連結',
+    selectImage: '選擇本機圖片或影片',
+    uploadFile: '選擇檔案',
     restoreDefault: '恢復預設',
     editShortcut: '編輯快速連結',
     name: '名稱',
@@ -187,7 +193,7 @@ const i18nData = {
     initConfig: '初始化設定',
     editProfile: '編輯個人資料',
     profileAvatar: '頭像',
-    uploadAvatar: '上傳頭像',
+    uploadAvatar: '選擇頭像',
     removeAvatar: '刪除頭像',
     description: '描述',
     manageProfilesTitle: '管理設定檔',
@@ -235,8 +241,11 @@ const i18nData = {
     clearSearchHistory: '拭搜尋記',
     customBackground: '自定底景',
     usingDefaultBg: '現用默認底景',
-    selectImage: '擇圖或影',
-    uploadFile: '上傳檔案',
+    sourceLocal: '來自本機圖',
+    sourceBingDaily: '來自 Bing 日圖',
+    sourceCustomUrl: '來自自訂之鏈',
+    selectImage: '擇本機圖或影',
+    uploadFile: '擇檔案',
     restoreDefault: '復初',
     editShortcut: '修快速連結',
     name: '名',
@@ -268,7 +277,7 @@ const i18nData = {
     initConfig: '初設',
     editProfile: '修飾名帖',
     profileAvatar: '首像',
-    uploadAvatar: '傳首像',
+    uploadAvatar: '擇首像',
     removeAvatar: '去首像',
     description: '描述',
     manageProfilesTitle: '掌檔',
@@ -316,8 +325,11 @@ const i18nData = {
     clearSearchHistory: 'Clear search history',
     customBackground: 'Custom Background',
     usingDefaultBg: 'Using default background',
-    selectImage: 'Select image or video',
-    uploadFile: 'Upload file',
+    sourceLocal: 'From local image',
+    sourceBingDaily: 'From Bing Daily Wallpaper',
+    sourceCustomUrl: 'From custom URL',
+    selectImage: 'Select local image or video',
+    uploadFile: 'Select file',
     restoreDefault: 'Restore default',
     editShortcut: 'Edit quick link',
     name: 'Name',
@@ -350,7 +362,7 @@ const i18nData = {
     initConfig: 'Init Config',
     editProfile: 'Edit Profile',
     profileAvatar: 'Avatar',
-    uploadAvatar: 'Upload Avatar',
+    uploadAvatar: 'Select Avatar',
     removeAvatar: 'Remove Avatar',
     description: 'Description',
     manageProfilesTitle: 'Manage Profiles',
@@ -398,8 +410,11 @@ const i18nData = {
     clearSearchHistory: '検索履歴を消去',
     customBackground: 'カスタム背景',
     usingDefaultBg: 'デフォルトの背景を使用中',
-    selectImage: '画像または動画を選択',
-    uploadFile: 'ファイルをアップロード',
+    sourceLocal: 'ローカル画像より',
+    sourceBingDaily: 'Bing 今日の壁紙より',
+    sourceCustomUrl: 'カスタムURLより',
+    selectImage: 'ローカル画像または動画を選択',
+    uploadFile: 'ファイルを選択',
     restoreDefault: 'デフォルトに戻す',
     editShortcut: 'クイックリンクを編集',
     name: '名前',
@@ -432,7 +447,7 @@ const i18nData = {
     initConfig: '初期設定',
     editProfile: 'プロファイル編集',
     profileAvatar: 'アバター',
-    uploadAvatar: 'アップロード',
+    uploadAvatar: 'アバターを選択',
     removeAvatar: '削除',
     description: '説明',
     manageProfilesTitle: 'プロファイル管理',
@@ -480,8 +495,11 @@ const i18nData = {
     clearSearchHistory: 'Очистить историю поиска',
     customBackground: 'Пользовательский фон',
     usingDefaultBg: 'Используется стандартный фон',
-    selectImage: 'Выберите фото или видео',
-    uploadFile: 'Загрузить файл',
+    sourceLocal: 'Из локального изображения',
+    sourceBingDaily: 'Из ежедневных обоев Bing',
+    sourceCustomUrl: 'Из пользовательской ссылки',
+    selectImage: 'Выберите локальное фото или видео',
+    uploadFile: 'Выбрать файл',
     restoreDefault: 'Сбросить',
     editShortcut: 'Изменить быструю ссылку',
     name: 'Название',
@@ -514,7 +532,7 @@ const i18nData = {
     initConfig: 'Инициализация',
     editProfile: 'Редактировать профиль',
     profileAvatar: 'Аватар',
-    uploadAvatar: 'Загрузить',
+    uploadAvatar: 'Выбрать аватар',
     removeAvatar: 'Удалить',
     description: 'Описание',
     manageProfilesTitle: 'Управление профилями',
@@ -551,6 +569,7 @@ function getResolvedLanguageCode(langConfig) {
 function applyLanguage(langConfig) {
   const langCode = getResolvedLanguageCode(langConfig);
   const dict = i18nData[langCode] || i18nData['zh-CN'];
+  window._i18nDict = dict; // 暴露翻译表给外部作用域使用
 
   document.documentElement.lang = langCode.startsWith('zh') ? (langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN') : langCode;
 
@@ -1114,6 +1133,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnRemoveWallpaper = document.getElementById('btn-remove-wallpaper');
   const inputWallpaperFile = document.getElementById('input-wallpaper-file');
   const wallpaperTypeTitle = document.getElementById('wallpaper-type-title');
+  const wallpaperSourceLabel = document.getElementById('wallpaper-source-label');
 
   const bgVideo = document.getElementById('bg-video');
   const bgImage = document.getElementById('bg-image');
@@ -1294,6 +1314,53 @@ document.addEventListener('DOMContentLoaded', () => {
   let customWallpaperData = Storage.get('ntp_custom_wallpaper', null);
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
 
+  // 获取今天的日期字符串，如 "2026-09-03"，用于判断壁纸是否过期
+  function getTodayStr() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
+  // 从必应壁纸 API 拉取图片 URL、标题、版权信息
+  async function fetchBingWallpaper() {
+    try {
+      const response = await fetch('https://bing.biturl.top/?resolution=1920x1080&format=json', { cache: 'no-store' });
+      if (!response.ok) throw new Error('网络请求失败');
+      const data = await response.json();
+      let url = data.url;
+      if (url && url.startsWith('http')) {
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          url = 'https://' + url;
+        }
+        return { url, title: data.title || '', copyright: data.copyright || '' };
+      }
+      throw new Error('返回数据无效');
+    } catch (e) {
+      console.error('自动获取必应壁纸失败:', e);
+      return null;
+    }
+  }
+
+  // 如果当前壁纸是必应每日壁纸且缓存日期不是今天，自动拉取新图替换
+  async function ensureBingDailyFresh() {
+    if (!customWallpaperData || customWallpaperData.type !== 'bing_daily') return;
+    const today = getTodayStr();
+    if (customWallpaperData.fetchDate === today) return; // 今天已拉取过，跳过
+    const result = await fetchBingWallpaper();
+    if (result) {
+      customWallpaperData = {
+        type: 'bing_daily',
+        url: result.url,
+        title: result.title,
+        copyright: result.copyright,
+        fetchDate: today // 记录拉取日期，避免同一天重复请求
+      };
+      Storage.set('ntp_custom_wallpaper', customWallpaperData);
+      if (bgEnabled) {
+        renderWallpaper();
+      }
+    }
+  }
+
   if (selectEngine) selectEngine.value = savedEngine;
   if (selectQuicklinks) selectQuicklinks.value = savedQuicklinksRow;
   if (toggleHistorySwitch) toggleHistorySwitch.checked = historyEnabled;
@@ -1316,8 +1383,15 @@ document.addEventListener('DOMContentLoaded', () => {
       renderWallpaper();
     } else {
       document.body.classList.remove('bg-enabled');
-      if (bgVideo) bgVideo.style.display = 'none';
-      if (bgImage) bgImage.style.display = 'none';
+      // 关闭背景时清除 .loaded，确保下次开启能从透明渐入
+      if (bgVideo) {
+        bgVideo.classList.remove('loaded');
+        bgVideo.style.display = 'none';
+      }
+      if (bgImage) {
+        bgImage.classList.remove('loaded');
+        bgImage.style.display = 'none';
+      }
       if (enhancedVisibility) {
         enhancedVisibility = false;
         Storage.set('ntp_enhanced_visibility', false);
@@ -1340,29 +1414,76 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 根据当前壁纸类型返回对应的翻译 key 名
+  function getWallpaperSourceLabel() {
+    if (!customWallpaperData) return '';
+    if (customWallpaperData.type === 'bing_daily') return 'sourceBingDaily';
+    const url = customWallpaperData.url || '';
+    if (url.startsWith('data:')) return 'sourceLocal';
+    if (url.startsWith('http://') || url.startsWith('https://')) return 'sourceCustomUrl';
+    return '';
+  }
+
+  // 用当前语言的翻译表，把来源标签渲染到页面上
+  function translateSourceLabel() {
+    if (!wallpaperSourceLabel) return;
+    const key = getWallpaperSourceLabel();
+    const d = window._i18nDict || {};
+    wallpaperSourceLabel.textContent = key ? (d[key] || '') : '';
+  }
+
   // 根据自定义壁纸数据，渲染视频/图片背景到页面和预览容器
+  // 渐入逻辑：先移除 .loaded 让元素透明 → 设置 src → 监听加载事件 → 加载完成后加 .loaded 触发 transition
   function renderWallpaper() {
     if (!customWallpaperData) {
-      if (bgVideo) bgVideo.style.display = 'none';
+      if (bgVideo) {
+        bgVideo.style.display = 'none';
+        bgVideo.classList.remove('loaded');
+      }
       if (bgImage) {
+        bgImage.classList.remove('loaded');
         bgImage.style.display = 'block';
         bgImage.src = 'img/background.webp';
+        // 默认背景加载完成后渐入
+        bgImage.addEventListener('load', function onDefLoad() {
+          bgImage.classList.add('loaded');
+          bgImage.removeEventListener('load', onDefLoad);
+        });
       }
       if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '选择图片';
+      translateSourceLabel();
       if (wallpaperPreviewContainer) {
         wallpaperPreviewContainer.innerHTML = `<span style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>`;
       }
       return;
     }
 
-    if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '上传的背景';
+    if (customWallpaperData.type === 'bing_daily') {
+      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '必应每日壁纸';
+    } else if (customWallpaperData.type === 'video') {
+      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '上传的背景';
+    } else {
+      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '上传的背景';
+    }
+
+    translateSourceLabel();
 
     if (customWallpaperData.type === 'video') {
-      if (bgImage) bgImage.style.display = 'none';
+      if (bgImage) {
+        bgImage.style.display = 'none';
+        bgImage.classList.remove('loaded');
+      }
       if (bgVideo) {
+        bgVideo.classList.remove('loaded');
         bgVideo.style.display = 'block';
         bgVideo.src = customWallpaperData.url;
-        bgVideo.play().catch(() => {});
+        // 视频缓冲到可播放时再渐入
+        const onCanPlay = () => {
+          bgVideo.classList.add('loaded');
+          bgVideo.removeEventListener('canplay', onCanPlay);
+          bgVideo.play().catch(() => {});
+        };
+        bgVideo.addEventListener('canplay', onCanPlay);
       }
 
       if (wallpaperPreviewContainer) {
@@ -1371,16 +1492,44 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
       }
     } else {
-      if (bgVideo) bgVideo.style.display = 'none';
+      if (bgVideo) {
+        bgVideo.style.display = 'none';
+        bgVideo.classList.remove('loaded');
+      }
       if (bgImage) {
+        bgImage.classList.remove('loaded');
         bgImage.style.display = 'block';
         bgImage.src = customWallpaperData.url;
+        // 图片加载完成后渐入；complete 为 true 表示浏览器缓存已命中，直接显示
+        const onLoad = () => {
+          bgImage.classList.add('loaded');
+          bgImage.removeEventListener('load', onLoad);
+        };
+        if (bgImage.complete && bgImage.naturalWidth > 0) {
+          bgImage.classList.add('loaded');
+        } else {
+          bgImage.addEventListener('load', onLoad);
+        }
       }
 
       if (wallpaperPreviewContainer) {
         wallpaperPreviewContainer.innerHTML = `
           <img src="${customWallpaperData.url}" alt="背景预览" style="width:100%;height:100%;object-fit:cover;" />
         `;
+        const previewImg = wallpaperPreviewContainer.querySelector('img');
+        previewImg.addEventListener('error', () => {
+          const errWrap = document.createElement('div');
+          errWrap.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:-4px;color:rgba(112,112,112,0.25);';
+          const errIcon = document.createElement('div');
+          errIcon.textContent = '×';
+          errIcon.style.cssText = 'font-size:80px;font-weight:700;line-height:1;margin-top:-8px;';
+          const errLabel = document.createElement('div');
+          errLabel.textContent = 'ERROR';
+          errLabel.style.cssText = 'font-size:14px;font-weight:600;letter-spacing:2px;margin-top:4px;color:rgba(112,112,112,0.4);';
+          errWrap.appendChild(errIcon);
+          errWrap.appendChild(errLabel);
+          previewImg.replaceWith(errWrap);
+        });
       }
     }
   }
@@ -1661,12 +1810,14 @@ fileInputRestore?.addEventListener('change', (e) => {
 });
   
   applyBackgroundState();
+  ensureBingDailyFresh();
 
   // 背景开关同步响应
   toggleBgSwitch?.addEventListener('change', (e) => {
     bgEnabled = e.target.checked;
     Storage.set('ntp_bg_enabled', bgEnabled);
     applyBackgroundState();
+    if (bgEnabled) ensureBingDailyFresh();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
@@ -1674,6 +1825,7 @@ fileInputRestore?.addEventListener('change', (e) => {
     bgEnabled = e.target.checked;
     Storage.set('ntp_bg_enabled', bgEnabled);
     applyBackgroundState();
+    if (bgEnabled) ensureBingDailyFresh();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
@@ -1738,30 +1890,25 @@ fileInputRestore?.addEventListener('change', (e) => {
 
   // 必应每日壁纸
   btnBingWallpaper?.addEventListener('click', async () => {
-    try {
-      const response = await fetch('https://bing.biturl.top/?resolution=1920x1080&format=json');
-      if (!response.ok) throw new Error('网络请求失败');
-      const data = await response.json();
-      let url = data.url;
-      if (url && url.startsWith('http')) {
-        if (!url.startsWith('http://') && !url.startsWith('https://')) {
-          url = 'https://' + url;
-        }
-        customWallpaperData = { type: 'image', url: url };
-        Storage.set('ntp_custom_wallpaper', customWallpaperData);
-        if (!bgEnabled) {
-          bgEnabled = true;
-          Storage.set('ntp_bg_enabled', true);
-        }
-        applyBackgroundState();
-        if (toggleBgSwitch) toggleBgSwitch.checked = true;
-        if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
-        applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
-      } else {
-        alert('获取必应壁纸失败，请稍后重试。');
+    const result = await fetchBingWallpaper();
+    if (result) {
+      customWallpaperData = {
+        type: 'bing_daily',
+        url: result.url,
+        title: result.title,
+        copyright: result.copyright,
+        fetchDate: getTodayStr()
+      };
+      Storage.set('ntp_custom_wallpaper', customWallpaperData);
+      if (!bgEnabled) {
+        bgEnabled = true;
+        Storage.set('ntp_bg_enabled', true);
       }
-    } catch (e) {
-      console.error('获取必应壁纸错误:', e);
+      applyBackgroundState();
+      if (toggleBgSwitch) toggleBgSwitch.checked = true;
+      if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    } else {
       alert('获取必应壁纸失败，请检查网络。');
     }
   });
@@ -1769,7 +1916,12 @@ fileInputRestore?.addEventListener('change', (e) => {
 
   // 自定义URL - 打开弹窗
   btnCustomUrlWallpaper?.addEventListener('click', () => {
-    inputOnlineUrl.value = '';
+    // 如果当前正在使用自定义链接背景（非 Bing、非本地 data URL），预填当前链接
+    const curUrl = customWallpaperData?.url || '';
+    // 排除必应壁纸 + 排除本地上传的 data: URL，剩下的 http(s) 链接即为自定义链接
+    const isCustomUrl = customWallpaperData?.type !== 'bing_daily' &&
+      (curUrl.startsWith('http://') || curUrl.startsWith('https://'));
+    inputOnlineUrl.value = isCustomUrl ? curUrl : '';
     containerOnlineUrl?.classList.remove('error');
     tipOnlineUrl?.classList.remove('active');
     modalOnlineWallpaper?.classList.add('active');
@@ -1784,11 +1936,6 @@ fileInputRestore?.addEventListener('change', (e) => {
   }
 
   btnOnlineCancel?.addEventListener('click', closeOnlineModal);
-
-  // 点击遮罩关闭
-  modalOnlineWallpaper?.addEventListener('click', (e) => {
-    if (e.target === modalOnlineWallpaper) closeOnlineModal();
-  });
 
   // 表单提交
   onlineWallpaperForm?.addEventListener('submit', (e) => {
@@ -2532,11 +2679,13 @@ searchInput?.addEventListener('input', () => {
       const val = e.target.value;
       localStorage.setItem('liteStart_language', val);
       applyLanguage(val);
+      translateSourceLabel(); // 语言切换后同步翻译来源标签
     });
   }
 
   // 初始化应用全页翻译
   applyLanguage(savedLang);
+  translateSourceLabel(); // 初始化时翻译来源标签
 
   // 初始化自定义下拉组件
   initCustomSelects();

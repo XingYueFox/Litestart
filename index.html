@@ -159,6 +159,7 @@
       pointer-events: none;
     }
 
+    /* 背景图/视频 —— 默认透明，加载完成后通过 .loaded 触发渐入 */
     #bg-video, #bg-image {
       position: absolute;
       top: 0;
@@ -167,6 +168,12 @@
       height: 100%;
       object-fit: cover;
       display: none;
+      opacity: 0;
+      transition: opacity 0.4s ease-in;
+    }
+
+    #bg-video.loaded, #bg-image.loaded {
+      opacity: 1;
     }
 
     /* 基础暗角遮罩 */
@@ -1394,6 +1401,13 @@
       object-fit: cover;
     }
 
+    /* 预览图 + 来源标签的纵向包裹容器 */
+    .wallpaper-preview-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .wallpaper-actions {
       display: flex;
       flex-direction: column;
@@ -1937,15 +1951,19 @@
     </div>
 
     <div class="wallpaper-preview-area">
+    <div class="wallpaper-preview-wrap">
     <div class="wallpaper-preview-box" id="wallpaper-preview-container">
       <!-- 预览渲染图片或视频 -->
         <span id="preview-placeholder-text" style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>
     </div>
+      <!-- 壁纸来源标签（本地图片 / Bing 每日壁纸 / 自定义链接） -->
+      <span id="wallpaper-source-label" style="font-size:11px;color:var(--settings-text-tertiary);text-align:center;margin-top:6px;display:block;"></span>
+    </div>
     <div class="wallpaper-actions">
-      <span class="wallpaper-actions-title" id="wallpaper-type-title" data-i18n="selectImage">选择图片或视频</span>
+      <span class="wallpaper-actions-title" id="wallpaper-type-title" data-i18n="selectImage">选择本地图片或视频</span>
       <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
       <div style="display: flex; gap: 8px;">
-        <button type="button" class="btn btn-secondary" id="btn-upload-wallpaper" data-i18n="uploadFile">上传文件</button>
+        <button type="button" class="btn btn-secondary" id="btn-upload-wallpaper" data-i18n="uploadFile">选择文件</button>
         <button type="button" class="btn btn-secondary" id="btn-remove-wallpaper" data-i18n="restoreDefault">恢复默认</button>
       </div>
     <!-- 使用在线内容  -->
@@ -2071,7 +2089,7 @@
             <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
               <img id="profile-avatar-preview" src="img/profiles.png" alt="头像预览" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background-color: var(--settings-thumb-bg); border: 1px solid var(--settings-card-border);">
               <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn btn-secondary" id="btn-upload-avatar" data-i18n="uploadAvatar">上传头像</button>
+                <button type="button" class="btn btn-secondary" id="btn-upload-avatar" data-i18n="uploadAvatar">选择头像</button>
                 <button type="button" class="btn btn-secondary" id="btn-remove-avatar" data-i18n="removeAvatar" style="display: none;">删除头像</button>
               </div>
               <input type="file" id="input-avatar-file" class="file-input-hidden" accept="image/*">
