@@ -823,7 +823,13 @@ function getFaviconUrl(urlStr) {
 
 // 对用户输入进行 HTML 转义，防止 XSS
 function sanitizeInput(str) {
-  return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/`/g, '&#96;');
 }
 
 // 反转 HTML 转义（仅还原 <>），用于显示原始文本
