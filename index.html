@@ -248,14 +248,9 @@
     }
 
     body.bg-enabled[data-enhanced-visibility="true"] .quicklink-title {
-      background-color: var(--enhanced-visibility-bg);
+      background-color: var(--enhanced-visibility-logo-bg);
       border-radius: 4px;
-      padding: 1px 4px;
-      transition: background-color 0.08s ease;
-    }
-
-    body.bg-enabled[data-enhanced-visibility="true"] .quicklink-title:hover {
-      background-color: var(--enhanced-visibility-bg-hover);
+      padding: 3px 5px;
     }
 
     body.bg-enabled[data-enhanced-visibility="true"] #fakebox:hover {
@@ -1322,14 +1317,14 @@
 
     .modal-footer-right {
       display: flex;
-      gap: 8px;
+      gap: 12px;
       margin-left: auto;
     }
 
     .btn {
       height: 32px;
-      padding: 0 16px;
-      border-radius: 4px;
+      padding: 0 20px;
+      border-radius: 5px;
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
@@ -1343,7 +1338,7 @@
       background-color: var(--accent-foreground-rest);
       color: #ffffff;
       border: 1px solid transparent;
-      border-bottom: 2px solid #004684; 
+      border-bottom: 2px solid #005cb0; 
     }
 
     .btn-primary:hover {
@@ -1355,13 +1350,23 @@
     .btn-secondary {
       background-color: var(--btn-secondary-bg);
       color: var(--neutral-foreground-rest);
-      border: 1px solid var(--modal-border);
-      border-bottom: 2px solid var(--neutral-fill-hover); 
+      border-width: 1px;
+      border-bottom-width: 2px;
+      border-style: solid;
+      border-color: var(--modal-border);
     }
 
     .btn-secondary:hover {
       background-color: var(--neutral-fill-hover);
-      border-bottom-color: transparent;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .btn-secondary {
+        background-color: #3b3b3b;
+        border-width: 1px;
+        border-top-width: 2px;
+        padding: 0 20px 1px 20px;
+      }
     }
 
     .btn-danger {
@@ -1630,18 +1635,15 @@
             <div style="padding: 12px;">
 
             <!-- 下方菜单项 -->
-             <!-- 关于 -->
-            <div class="waffle-menu-item" id="btn-about" style="margin-bottom: 4px;">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="128" height="128"><path d="M8.499 7.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm.25-2a.749.749 0 1 1-1.499 0a.749.749 0 0 1 1.498 0M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1M2 8a6 6 0 1 1 12 0A6 6 0 0 1 2 8"/></svg>
-              <span data-i18n="aboutTitle">关于 Litestart</span>
-            </div>
+             <!-- 管理配置文件 -->
             <div class="waffle-menu-item" id="btn-manage-profiles" style="margin-bottom: 4px;">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="128" height="128"><path d="M1 3.25C1 2.56 1.56 2 2.249 2h.5c.69 0 1.248.56 1.248 1.25v9.495c0 .69-.559 1.25-1.248 1.25h-.5A1.25 1.25 0 0 1 1 12.744zM2.249 3a.25.25 0 0 0-.25.25v9.495c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25V3.249a.25.25 0 0 0-.25-.25zm2.748.25c0-.69.559-1.25 1.249-1.25h.5c.689 0 1.248.56 1.248 1.25v9.495c0 .69-.56 1.25-1.249 1.25h-.5a1.25 1.25 0 0 1-1.248-1.25zM6.246 3a.25.25 0 0 0-.25.25v9.495c0 .138.112.25.25.25h.5a.25.25 0 0 0 .249-.25V3.249a.25.25 0 0 0-.25-.25zm5.726 1.777a1.25 1.25 0 0 0-1.57-.713l-.583.204a1.25 1.25 0 0 0-.746 1.645l2.937 7.304c.249.62.94.933 1.571.713l.582-.204a1.25 1.25 0 0 0 .746-1.646zm-1.24.23a.25.25 0 0 1 .313.143l2.937 7.303a.25.25 0 0 1-.149.33l-.582.203a.25.25 0 0 1-.314-.142L10 5.54a.25.25 0 0 1 .149-.329z"/></svg>
               <span data-i18n="manageProfiles">管理配置文件</span>
             </div>
-            <div class="waffle-menu-item" id="btn-init-config">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="128" height="128"><path d="M13 8a5 5 0 0 0-9.001-3h2a.5.5 0 1 1 0 1H3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 1 0v1.531a6 6 0 1 1-1.476 4.513a.5.5 0 0 1 .997-.089A5 5 0 0 0 13 8"/></svg>
-              <span data-i18n="initConfig">初始化配置</span>
+             <!-- 关于 -->
+            <div class="waffle-menu-item" id="btn-about">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="128" height="128"><path d="M8.499 7.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm.25-2a.749.749 0 1 1-1.499 0a.749.749 0 0 1 1.498 0M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1M2 8a6 6 0 1 1 12 0A6 6 0 0 1 2 8"/></svg>
+              <span data-i18n="aboutTitle">关于 Litestart</span>
             </div>
             </div>
           </div>
@@ -2154,6 +2156,7 @@
         </div>
         <div class="modal-footer">
           <div class="modal-footer-right">
+            <button type="button" id="btn-init-config" class="btn btn-danger" data-i18n="initConfig">初始化配置</button>
             <button type="button" id="btn-manage-profiles-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
           </div>
         </div>
