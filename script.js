@@ -1183,6 +1183,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-about-close')?.addEventListener('click', () => {
     document.getElementById('modal-about')?.classList.remove('active');
   });
+  // 在GitHub中查看按钮跳转
+  document.getElementById('btn-github')?.addEventListener('click', () => {
+    const url = 'https://github.com/XingYueFox/Litestart';
+    if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.create) {
+      chrome.tabs.create({ url });
+    } else {
+      window.open(url, '_blank');
+    }
+  });
 
   // 点击遮罩层关闭
   const modalAbout = document.getElementById('modal-about');

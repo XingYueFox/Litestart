@@ -175,18 +175,19 @@
       opacity: 1;
     }
 
-    /* 基础暗角遮罩 */
+    /* 暗角遮罩层：让壁纸中心明亮、四周变暗，提升前景文字可读性 */
     #bg-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      /* 从中心向外：透明 → 半透明黑，柔化壁纸边缘 */
       background: radial-gradient(circle at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.45) 100%);
       display: none;
     }
 
-    /* 暗色模式遮罩 */
+    /* 暗色模式下叠加一层轻微的纵向渐变，让整体画面偏暗更协调 */
     @media (prefers-color-scheme: dark) {
       body.bg-enabled #bg-overlay {
         background: 
@@ -195,17 +196,18 @@
       }
     }
 
+    /* 仅在开启壁纸(body.bg-enabled)时，才显示壁纸容器和遮罩 */
     body.bg-enabled #background-container,
     body.bg-enabled #bg-overlay {
       display: block;
     }
 
-    /* 浅色模式下，开启壁纸时微软Logo */
+    /* 浅色模式 + 有壁纸时，Logo 用深灰色，避免白底白字看不清 */
     body.bg-enabled {
       --logo-color: #737373;
     }
 
-    /* 深色模式下开启壁纸时，Logo 文字保持白色适应深色底 */
+    /* 暗色模式 + 有壁纸时，Logo 保持白色，与深色底形成对比 */
     @media (prefers-color-scheme: dark) {
       body.bg-enabled {
         --logo-color: #ffffff;
@@ -2123,7 +2125,7 @@
           </div>
         <div class="modal-footer">
           <div class="modal-footer-right">
-              <button type="button" class="btn btn-secondary" onclick="window.open('https://github.com/XingYueFox/Litestart', '_blank')" data-i18n="github">在 GitHub 查看</button>
+              <button type="button" id="btn-github" class="btn btn-secondary" data-i18n="github">在 GitHub 查看</button>
             <button type="button" id="btn-about-close" class="btn btn-secondary" data-i18n="close">关闭</button>
           </div>
         </div>
