@@ -168,31 +168,34 @@
       object-fit: cover;
       display: none;
       opacity: 0;
-      transition: opacity 0.3s ease-in;
+      transition: opacity 0.2s ease-in;
     }
 
     #bg-video.loaded, #bg-image.loaded {
       opacity: 1;
     }
 
-    /* 暗角遮罩层：让壁纸中心明亮、四周变暗，提升前景文字可读性 */
+    /* 浅色模式下：中心透明、外围叠半透明白，柔化壁纸边缘让中心文字更清晰 */
     #bg-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      /* 从中心向外：透明 → 半透明黑，柔化壁纸边缘 */
-      background: radial-gradient(circle at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.45) 100%);
+      background: radial-gradient(circle at center, rgba(255,255,255,0) 30%, rgba(255,255,255,0.40) 100%);
       display: none;
+      opacity: 0;
+      transition: opacity 0.2s ease-in;
     }
 
-    /* 暗色模式下叠加一层轻微的纵向渐变，让整体画面偏暗更协调 */
+    #bg-overlay.loaded {
+      opacity: 1;
+    }
+
+    /* 暗色模式下：中心透明、外围叠半透明黑，让整体画面偏暗更协调 */
     @media (prefers-color-scheme: dark) {
       body.bg-enabled #bg-overlay {
-        background: 
-          linear-gradient(rgba(0, 0, 0, 0.20), rgba(0, 0, 0, 0.15)),
-          radial-gradient(circle at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.45) 100%);
+        background: radial-gradient(circle at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.45) 100%);
       }
     }
 
