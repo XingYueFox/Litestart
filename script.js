@@ -1187,11 +1187,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 在GitHub中查看按钮跳转
   document.getElementById('btn-github')?.addEventListener('click', () => {
     const url = 'https://github.com/XingYueFox/Litestart';
-    if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.create) {
-      chrome.tabs.create({ url });
-    } else {
-      window.open(url, '_blank');
-    }
+    window.location.href = url;
   });
 
   // 点击遮罩层关闭
@@ -2139,7 +2135,6 @@ inputOnlineUrl?.addEventListener('input', () => {
     const linkElem = document.createElement('a');
     linkElem.href = item.url;
     linkElem.className = 'quicklink-item';
-    linkElem.target = '_blank';
     linkElem.setAttribute('data-id', item.id);
 
     const safeTitle = sanitizeInput(item.title);
