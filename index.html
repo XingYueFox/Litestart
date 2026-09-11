@@ -182,7 +182,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at center, rgba(255,255,255,0) 55%, rgba(255,255,255,0.40) 100%);
+      background: radial-gradient(circle at center, rgba(255,255,255,0) 60%, rgba(255,255,255,0.40) 100%);
       display: none;
       opacity: 0;
       transition: opacity 0.2s ease-in;
@@ -195,7 +195,7 @@
     /* 暗色模式下：中心透明、外围叠半透明黑，让整体画面偏暗更协调 */
     @media (prefers-color-scheme: dark) {
       body.bg-enabled #bg-overlay {
-        background: radial-gradient(circle at center, rgba(0,0,0,0) 55%, rgba(0,0,0,0.45) 100%);
+        background: radial-gradient(circle at center, rgba(0,0,0,0) 45%, rgba(0,0,0,0.60) 100%);
       }
     }
 

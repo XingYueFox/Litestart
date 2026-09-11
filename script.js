@@ -1573,8 +1573,12 @@ document.addEventListener('DOMContentLoaded', () => {
           bgImage.removeEventListener('load', onLoad);
         };
         if (bgImage.complete && bgImage.naturalWidth > 0) {
-          bgImage.classList.add('loaded');
-          bgOverlay?.classList.add('loaded');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              bgImage.classList.add('loaded');
+              bgOverlay?.classList.add('loaded');
+            });
+          });
         } else {
           bgImage.addEventListener('load', onLoad);
         }
