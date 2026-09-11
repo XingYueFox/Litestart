@@ -1173,6 +1173,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const bgVideo = document.getElementById('bg-video');
   const bgImage = document.getElementById('bg-image');
+  const bgOverlay = document.getElementById('bg-overlay');
 
   // 关于弹窗
   document.getElementById('btn-about')?.addEventListener('click', () => {
@@ -1186,11 +1187,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 在GitHub中查看按钮跳转
   document.getElementById('btn-github')?.addEventListener('click', () => {
     const url = 'https://github.com/XingYueFox/Litestart';
-    if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.create) {
-      chrome.tabs.create({ url });
-    } else {
-      window.open(url, '_blank');
-    }
+    window.location.href = url;
   });
 
   // 点击遮罩层关闭
@@ -1456,6 +1453,9 @@ document.addEventListener('DOMContentLoaded', () => {
         bgImage.classList.remove('loaded');
         bgImage.style.display = 'none';
       }
+      if (bgOverlay) {
+        bgOverlay.classList.remove('loaded');
+      }
       if (enhancedVisibility) {
         enhancedVisibility = false;
         Storage.set('ntp_enhanced_visibility', false);
@@ -1511,6 +1511,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 默认背景加载完成后渐入
         bgImage.addEventListener('load', function onDefLoad() {
           bgImage.classList.add('loaded');
+          bgOverlay?.classList.add('loaded');
           bgImage.removeEventListener('load', onDefLoad);
         });
       }
@@ -1544,6 +1545,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 视频缓冲到可播放时再渐入
         const onCanPlay = () => {
           bgVideo.classList.add('loaded');
+          bgOverlay?.classList.add('loaded');
           bgVideo.removeEventListener('canplay', onCanPlay);
           bgVideo.play().catch(() => {});
         };
@@ -1567,10 +1569,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // 图片加载完成后渐入；complete 为 true 表示浏览器缓存已命中，直接显示
         const onLoad = () => {
           bgImage.classList.add('loaded');
+          bgOverlay?.classList.add('loaded');
           bgImage.removeEventListener('load', onLoad);
         };
         if (bgImage.complete && bgImage.naturalWidth > 0) {
           bgImage.classList.add('loaded');
+          bgOverlay?.classList.add('loaded');
         } else {
           bgImage.addEventListener('load', onLoad);
         }
@@ -2131,7 +2135,6 @@ inputOnlineUrl?.addEventListener('input', () => {
     const linkElem = document.createElement('a');
     linkElem.href = item.url;
     linkElem.className = 'quicklink-item';
-    linkElem.target = '_blank';
     linkElem.setAttribute('data-id', item.id);
 
     const safeTitle = sanitizeInput(item.title);
