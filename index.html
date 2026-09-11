@@ -273,7 +273,7 @@
       min-width: 343px;
       position: relative;
       display: block;
-      font-family: var(--font-family);
+      font-family: var(--font-family), Segoe UI, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       align-items: center;
       background-color: var(--fill-color);
@@ -287,7 +287,7 @@
     }
 
     button {
-      border: none;
+      border: 1px solid transparent;
       background: none;
       box-shadow: none;
       outline: none;
@@ -298,7 +298,6 @@
       align-items: center;
       padding: 0;
       margin: 0;
-      border: 1px solid transparent;
       transition: background-color 0.08s ease;
     }
 
@@ -314,7 +313,7 @@
       height: var(--header-height);
       display: flex;
       align-items: center;
-      padding: 0px 26px 0 22px;
+      padding: 0 26px 0 22px;
       box-sizing: border-box;
       position: absolute;
       inset-inline-start: 0;
@@ -880,7 +879,7 @@
     #fakebox #placeholder {
       flex: 1;
       color: var(--placeholder-color);
-      font-family: var(--font-family);
+      font-family: var(--font-family), Segoe UI, Arial, sans-serif;
       font-size: 16px;
       font-weight: 400;
       line-height: 24px;
@@ -899,7 +898,7 @@
       border: none;
       outline: none;
       background: transparent;
-      font-family: var(--font-family);
+      font-family: var(--font-family), Segoe UI, Arial, sans-serif;
       font-size: 16px;
       color: var(--neutral-foreground-rest);
       opacity: 1; 
@@ -1187,7 +1186,7 @@
       box-sizing: border-box;
       box-shadow: var(--shadow16);
       color: var(--neutral-foreground-rest);
-      font-family: var(--font-family);
+      font-family: var(--font-family), Segoe UI, Arial, sans-serif;
       position: relative;
     }
 
@@ -1676,7 +1675,7 @@
               <div class="settings-card">
                   <div class="settings-card-title" data-i18n="quicklinks">快速链接</div>
                   <div class="custom-select-wrapper">
-                    <select id="select-quicklinks" class="select-box" tabindex="-1">
+                    <select id="select-quicklinks" class="select-box" tabindex="-1" aria-label="快速链接数量">
                       <option value="0" data-i18n="off">关闭</option>
                       <option value="1" data-i18n="rows1">1 行</option>
                       <option value="2" data-i18n="rows2">2 行</option>
@@ -1692,7 +1691,7 @@
               <div class="settings-card">
                 <div class="settings-card-title" data-i18n="searchEngine">搜索引擎</div>
                 <div class="custom-select-wrapper">
-                  <select id="select-engine" class="select-box" tabindex="-1">
+                  <select id="select-engine" class="select-box" tabindex="-1" aria-label="搜索引擎">
                     <option value="bing" data-i18n="bing">Bing</option>
                     <option value="baidu" data-i18n="baidu">Baidu</option>
                     <option value="google">Google</option>
@@ -1796,7 +1795,7 @@
               <div class="settings-card">
                 <div class="settings-card-title" data-i18n="language">页面语言</div>
                 <div class="custom-select-wrapper">
-                  <select id="select-language" class="select-box" tabindex="-1">
+                  <select id="select-language" class="select-box" tabindex="-1" aria-label="界面语言">
                     <option value="auto" data-i18n="langAuto">默认（跟随设备）</option>
                     <option value="en">English</option>
                     <option value="ja">日本語</option>
