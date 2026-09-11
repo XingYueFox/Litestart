@@ -175,14 +175,16 @@
       opacity: 1;
     }
 
-    /* 浅色模式下：中心透明、外围叠半透明白，柔化壁纸边缘让中心文字更清晰 */
+    /* 浅色模式下遮罩 */
     #bg-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at center, rgba(255,255,255,0) 60%, rgba(255,255,255,0.40) 100%);
+      background: 
+        linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+        radial-gradient(circle at center, rgba(255,255,255,0) 60%, rgba(255,255,255,0.20) 100%);
       display: none;
       opacity: 0;
       transition: opacity 0.2s ease-in;
@@ -192,10 +194,12 @@
       opacity: 1;
     }
 
-    /* 暗色模式下：中心透明、外围叠半透明黑，让整体画面偏暗更协调 */
+    /* 暗色模式下遮罩 */
     @media (prefers-color-scheme: dark) {
       body.bg-enabled #bg-overlay {
-        background: radial-gradient(circle at center, rgba(0,0,0,0) 45%, rgba(0,0,0,0.60) 100%);
+        background:
+          linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+          radial-gradient(circle at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.5) 100%);
       }
     }
 
@@ -205,12 +209,12 @@
       display: block;
     }
 
-    /* 浅色模式 + 有壁纸时，Logo 用深灰色，避免白底白字看不清 */
+    /* 浅色模式 + 有壁纸时，Logo 用深灰色 */
     body.bg-enabled {
       --logo-color: #737373;
     }
 
-    /* 暗色模式 + 有壁纸时，Logo 保持白色，与深色底形成对比 */
+    /* 暗色模式 + 有壁纸时，Logo 保持白色 */
     @media (prefers-color-scheme: dark) {
       body.bg-enabled {
         --logo-color: #ffffff;
@@ -1852,7 +1856,7 @@
                 
               </div>
               <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.5.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.5.1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
@@ -2122,7 +2126,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.5.0 | 更新时间：2026-9-6</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.5.1 | 更新时间：2026-9-11</p><br>
         <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.8;">
           <p style="margin: 0 0 8px 0;" data-i18n="aboutDesc">一个简洁、快速的浏览器起始页。</p>
 
