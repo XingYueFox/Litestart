@@ -795,11 +795,57 @@ const Storage = {
   set(key, value) {
     try {
       localStorage.setItem(key, JSON.stringify(value));
+      return true;
     } catch (e) {
-      console.warn('无法保存设置到 LocalStorage:', e);
+      if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+        console.warn('LocalStorage 配额已满:', e);
+      } else {
+        console.warn('无法保存设置到 LocalStorage:', e);
+      }
+      return false;
     }
   }
 };
+
+// 通过 Canvas 将图片压缩/重编码为 JPEG，支持限制最大宽度和质量
+// 用于解决 localStorage 5MB 配额导致大图壁纸无法保存的问题
+function compressImage(file, options = {}) {
+  const { maxWidth = 2560, quality = 0.85 } = options;
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = Math.round(height * (maxWidth / width));
+          width = maxWidth;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const mime = file.type === 'image/webp' ? 'image/webp' : 'image/jpeg';
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) return reject(new Error('图片压缩失败'));
+            const urlReader = new FileReader();
+            urlReader.onload = () => resolve(urlReader.result);
+            urlReader.onerror = () => reject(urlReader.error);
+            urlReader.readAsDataURL(blob);
+          },
+          mime,
+          quality
+        );
+      };
+      img.onerror = () => reject(new Error('图片加载失败'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
 
 // 解析Hostname域名
 function getDomain(urlStr) {
@@ -1803,23 +1849,53 @@ document.addEventListener('DOMContentLoaded', () => {
     inputWallpaperFile?.click();
   });
 
-  inputWallpaperFile?.addEventListener('change', (e) => {
+  inputWallpaperFile?.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const isVideo = file.type.startsWith('video/');
-    const reader = new FileReader();
 
-    reader.onload = (event) => {
-      customWallpaperData = {
-        type: isVideo ? 'video' : 'image',
-        url: event.target.result
+    if (isVideo) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        customWallpaperData = {
+          type: 'video',
+          url: event.target.result
+        };
+        const ok = Storage.set('ntp_custom_wallpaper', customWallpaperData);
+        if (!ok) alert('壁纸太大，无法保存。请选择一个较小的视频文件。');
+        else applyBackgroundState();
       };
-      Storage.set('ntp_custom_wallpaper', customWallpaperData);
-      applyBackgroundState();
-    };
+      reader.readAsDataURL(file);
+      return;
+    }
 
-    reader.readAsDataURL(file);
+    try {
+      let dataUrl = await compressImage(file, { maxWidth: 2560, quality: 0.85 });
+      customWallpaperData = { type: 'image', url: dataUrl };
+      let ok = Storage.set('ntp_custom_wallpaper', customWallpaperData);
+
+      if (!ok) {
+        dataUrl = await compressImage(file, { maxWidth: 1920, quality: 0.75 });
+        customWallpaperData = { type: 'image', url: dataUrl };
+        ok = Storage.set('ntp_custom_wallpaper', customWallpaperData);
+      }
+
+      if (!ok) {
+        dataUrl = await compressImage(file, { maxWidth: 1280, quality: 0.65 });
+        customWallpaperData = { type: 'image', url: dataUrl };
+        ok = Storage.set('ntp_custom_wallpaper', customWallpaperData);
+      }
+
+      if (!ok) {
+        alert('壁纸文件过大，多次压缩后仍无法保存。请尝试选择更小的图片。');
+      } else {
+        applyBackgroundState();
+      }
+    } catch (err) {
+      console.error('壁纸处理失败:', err);
+      alert('壁纸处理失败，请重试或选择其他图片。');
+    }
   });
 
   btnRemoveWallpaper?.addEventListener('click', () => {
