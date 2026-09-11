@@ -795,11 +795,184 @@ const Storage = {
   set(key, value) {
     try {
       localStorage.setItem(key, JSON.stringify(value));
+      return true;
     } catch (e) {
-      console.warn('无法保存设置到 LocalStorage:', e);
+      if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+        console.warn('LocalStorage 配额已满:', e);
+      } else {
+        console.warn('无法保存设置到 LocalStorage:', e);
+      }
+      return false;
     }
   }
 };
+
+// 通过 Canvas 将图片压缩/重编码为 JPEG Blob（限制最大宽度，避免 IndexedDB 占用过大）
+function compressImage(file, options = {}) {
+  const { maxWidth = 2560, quality = 0.85 } = options;
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = Math.round(height * (maxWidth / width));
+          width = maxWidth;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const mime = file.type === 'image/webp' ? 'image/webp' : 'image/jpeg';
+        canvas.toBlob(
+          (blob) => blob ? resolve(blob) : reject(new Error('图片压缩失败')),
+          mime,
+          quality
+        );
+      };
+      img.onerror = () => reject(new Error('图片加载失败'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+// IndexedDB 封装：用 Blob 直接存壁纸二进制（配额远大于 localStorage 的 5MB，且无 base64 膨胀）
+const WallpaperDB = {
+  _db: null,
+  _initPromise: null,
+
+  init() {
+    if (this._db) return Promise.resolve(this._db);
+    if (this._initPromise) return this._initPromise;
+    this._initPromise = new Promise((resolve, reject) => {
+      const req = indexedDB.open('LitestartWallpaper', 1);
+      req.onupgradeneeded = (e) => {
+        e.target.result.createObjectStore('blob', { keyPath: 'key' });
+      };
+      req.onsuccess = (e) => {
+        this._db = e.target.result;
+        resolve(this._db);
+      };
+      req.onerror = () => reject(req.error);
+    });
+    return this._initPromise;
+  },
+
+  async save(blob) {
+    await this.init();
+    return new Promise((resolve, reject) => {
+      const tx = this._db.transaction('blob', 'readwrite');
+      tx.objectStore('blob').put({ key: 'current', blob });
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  },
+
+  async load() {
+    await this.init();
+    return new Promise((resolve, reject) => {
+      const tx = this._db.transaction('blob', 'readonly');
+      const req = tx.objectStore('blob').get('current');
+      req.onsuccess = () => resolve(req.result ? req.result.blob : null);
+      req.onerror = () => reject(req.error);
+    });
+  },
+
+  async remove() {
+    if (!this._db) {
+      try { await this.init(); } catch { return; }
+    }
+    return new Promise((resolve, reject) => {
+      const tx = this._db.transaction('blob', 'readwrite');
+      tx.objectStore('blob').delete('current');
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+};
+
+// 判断壁纸是否为远程资源（必应每日壁纸 或 http(s) URL）
+function isRemoteWallpaper(data) {
+  if (!data) return false;
+  return data.type === 'bing_daily' || (data.url && data.url.startsWith('http'));
+}
+
+// 释放旧的 blob: URL，避免内存泄漏（每次生成新 blob URL 前调用）
+function revokeBlobUrl(url) {
+  if (url && url.startsWith('blob:')) {
+    try { URL.revokeObjectURL(url); } catch (e) {}
+  }
+}
+
+// 壁纸统一保存入口：远程资源存 localStorage，本地 Blob 存 IndexedDB
+async function saveWallpaperData(data) {
+  if (!data) {
+    await WallpaperDB.remove().catch(() => {});
+    Storage.set('ntp_custom_wallpaper', null);
+    return true;
+  }
+
+  if (isRemoteWallpaper(data)) {
+    await WallpaperDB.remove().catch(() => {});
+    Storage.set('ntp_custom_wallpaper', data);
+    return true;
+  }
+
+  let blob;
+  if (data.blob instanceof Blob) {
+    blob = data.blob;
+  } else if (data.url && data.url.startsWith('data:')) {
+    const [meta, base64] = data.url.split(',');
+    const mime = meta.match(/:(.*?);/)[1];
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    blob = new Blob([bytes], { type: mime });
+  } else {
+    Storage.set('ntp_custom_wallpaper', data);
+    return true;
+  }
+
+  try {
+    await WallpaperDB.save(blob);
+    const meta = {
+      type: data.type,
+      source: data.source
+    };
+    Storage.set('ntp_custom_wallpaper', meta);
+    return true;
+  } catch (e) {
+    console.error('壁纸存储失败:', e);
+    return false;
+  }
+}
+
+// 壁纸统一加载入口：从 IndexedDB 取回 Blob，生成 blob: URL 给渲染层使用
+async function loadWallpaperData() {
+  const meta = Storage.get('ntp_custom_wallpaper', null);
+  if (!meta) return null;
+
+  if (isRemoteWallpaper(meta)) {
+    return meta;
+  }
+
+  try {
+    const blob = await WallpaperDB.load();
+    if (!blob) return meta;
+    return {
+      type: meta.type,
+      url: URL.createObjectURL(blob),
+      source: meta.source
+    };
+  } catch (e) {
+    console.error('壁纸读取失败:', e);
+    return meta;
+  }
+}
 
 // 解析Hostname域名
 function getDomain(urlStr) {
@@ -1112,7 +1285,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const forceBingCNRow = document.getElementById('force-bing-cn-row');
   const toggleForceBingCN = document.getElementById('toggle-force-bing-cn');
   const toggleHistorySwitch = document.getElementById('toggle-history-switch');
-  const statusHistoryText = document.getElementById('status-history');
   const selectQuicklinks = document.getElementById('select-quicklinks');
   const quicklinksElem = document.getElementById('quicklinks');
   const logoContainer = document.getElementById('logo');
@@ -1121,14 +1293,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchContainer = document.getElementById('search-container');
   const fakebox = document.getElementById('fakebox');
   const searchInput = document.getElementById('search-input');
-  const suggestionsBox = document.getElementById('suggestions-box');
   const suggestionList = document.getElementById('suggestion-list');
   const suggestionsFooter = document.getElementById('suggestions-footer');
   const clearHistoryBtn = document.getElementById('clear-history-btn');
 
   // Modal相关DOM元素(快速链接
   const modalOverlay = document.getElementById('modal');
-  const modalTitle = document.getElementById('modal-title');
   const modalForm = document.getElementById('modal-form');
   const inputName = document.getElementById('input-name');
   const inputUrl = document.getElementById('input-url');
@@ -1136,7 +1306,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const containerUrl = document.getElementById('container-url');
   const tipName = document.getElementById('tip-name');
   const tipUrl = document.getElementById('tip-url');
-  const textUrlError = document.getElementById('text-url-error');
 
   const btnDelete = document.getElementById('btn-delete');
   const btnCancel = document.getElementById('btn-cancel');
@@ -1150,12 +1319,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const containerEngineUrl = document.getElementById('container-engine-url');
   const tipEngineName = document.getElementById('tip-engine-name');
   const tipEngineUrl = document.getElementById('tip-engine-url');
-  const textEngineUrlError = document.getElementById('text-engine-url-error');
   const btnEngineCancel = document.getElementById('btn-engine-cancel');
 
   // 背景/壁纸控制DOM元素
   const toggleBgSwitch = document.getElementById('toggle-bg-switch');
-  const statusBgText = document.getElementById('status-bg');
   const btnOpenBgModal = document.getElementById('btn-open-bg-modal');
   const enhancedVisibilityRow = document.getElementById('enhanced-visibility-row');
   const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
@@ -1163,7 +1330,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalWallpaper = document.getElementById('modal-wallpaper');
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
   const toggleBgModalSwitch = document.getElementById('toggle-bg-modal-switch');
-  const statusBgModalText = document.getElementById('status-bg-modal');
   const wallpaperPreviewContainer = document.getElementById('wallpaper-preview-container');
   const btnUploadWallpaper = document.getElementById('btn-upload-wallpaper');
   const btnRemoveWallpaper = document.getElementById('btn-remove-wallpaper');
@@ -1186,8 +1352,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   // 在GitHub中查看按钮跳转
   document.getElementById('btn-github')?.addEventListener('click', () => {
-    const url = 'https://github.com/XingYueFox/Litestart';
-    window.location.href = url;
+    window.location.href = 'https://github.com/XingYueFox/Litestart';
   });
 
   // 点击遮罩层关闭
@@ -1209,9 +1374,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedSuggestionIndex = -1;
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-    var link = document.getElementById('favicon');
+    const link = document.getElementById('favicon');
     if (link) {
-      var icon = e.matches ? 'img/icon_d.png' : 'img/icon_l.png';
+      const icon = e.matches ? 'img/icon_d.png' : 'img/icon_l.png';
       link.href = icon + '?r=' + Math.random();
     }
   });
@@ -1372,7 +1537,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let forceBingCN = Storage.get('ntp_force_bing_cn', false);
   
   let bgEnabled = Storage.get('ntp_bg_enabled', false);
-  let customWallpaperData = Storage.get('ntp_custom_wallpaper', null);
+  let customWallpaperData = null;
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
 
   // 获取今天的日期字符串，如 "2026-09-03"，用于判断壁纸是否过期
@@ -1405,17 +1570,18 @@ document.addEventListener('DOMContentLoaded', () => {
   async function ensureBingDailyFresh() {
     if (!customWallpaperData || customWallpaperData.type !== 'bing_daily') return;
     const today = getTodayStr();
-    if (customWallpaperData.fetchDate === today) return; // 今天已拉取过，跳过
+    if (customWallpaperData.fetchDate === today) return;
     const result = await fetchBingWallpaper();
     if (result) {
+      revokeBlobUrl(customWallpaperData?.url);
       customWallpaperData = {
         type: 'bing_daily',
         url: result.url,
         title: result.title,
         copyright: result.copyright,
-        fetchDate: today // 记录拉取日期，避免同一天重复请求
+        fetchDate: today
       };
-      Storage.set('ntp_custom_wallpaper', customWallpaperData);
+      await saveWallpaperData(customWallpaperData);
       if (bgEnabled) {
         renderWallpaper();
       }
@@ -1483,7 +1649,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!customWallpaperData) return '';
     if (customWallpaperData.type === 'bing_daily') return 'sourceBingDaily';
     const url = customWallpaperData.url || '';
-    if (url.startsWith('data:')) return 'sourceLocal';
+    if (url.startsWith('data:') || url.startsWith('blob:')) return 'sourceLocal';
     if (url.startsWith('http://') || url.startsWith('https://')) return 'sourceCustomUrl';
     return '';
   }
@@ -1573,8 +1739,12 @@ document.addEventListener('DOMContentLoaded', () => {
           bgImage.removeEventListener('load', onLoad);
         };
         if (bgImage.complete && bgImage.naturalWidth > 0) {
-          bgImage.classList.add('loaded');
-          bgOverlay?.classList.add('loaded');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              bgImage.classList.add('loaded');
+              bgOverlay?.classList.add('loaded');
+            });
+          });
         } else {
           bgImage.addEventListener('load', onLoad);
         }
@@ -1756,8 +1926,12 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInputRestore.value = '';
   });
   
-  applyBackgroundState();
-  ensureBingDailyFresh();
+  // 初始化：异步加载壁纸（可能需要从 IndexedDB 取 Blob），再渲染
+  (async () => {
+    customWallpaperData = await loadWallpaperData();
+    applyBackgroundState();
+    ensureBingDailyFresh();
+  })();
 
   // 背景开关同步响应
   toggleBgSwitch?.addEventListener('change', (e) => {
@@ -1799,28 +1973,41 @@ document.addEventListener('DOMContentLoaded', () => {
     inputWallpaperFile?.click();
   });
 
-  inputWallpaperFile?.addEventListener('change', (e) => {
+  inputWallpaperFile?.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const isVideo = file.type.startsWith('video/');
-    const reader = new FileReader();
 
-    reader.onload = (event) => {
-      customWallpaperData = {
-        type: isVideo ? 'video' : 'image',
-        url: event.target.result
-      };
-      Storage.set('ntp_custom_wallpaper', customWallpaperData);
-      applyBackgroundState();
-    };
+    try {
+      // 图片先压缩，视频直接用原文件（不做压缩）
+      let blob = file;
+      if (!isVideo) {
+        blob = await compressImage(file, { maxWidth: 2560, quality: 0.85 });
+      }
 
-    reader.readAsDataURL(file);
+      const ok = await saveWallpaperData({ type: isVideo ? 'video' : 'image', blob });
+      if (ok) {
+        // 释放旧 blob URL，生成新的 blob URL 供当前会话渲染
+        revokeBlobUrl(customWallpaperData?.url);
+        customWallpaperData = {
+          type: isVideo ? 'video' : 'image',
+          url: URL.createObjectURL(blob)
+        };
+        applyBackgroundState();
+      } else {
+        alert('壁纸保存失败，请重试。');
+      }
+    } catch (err) {
+      console.error('壁纸处理失败:', err);
+      alert('壁纸处理失败，请重试或选择其他图片。');
+    }
   });
 
-  btnRemoveWallpaper?.addEventListener('click', () => {
+  btnRemoveWallpaper?.addEventListener('click', async () => {
+    revokeBlobUrl(customWallpaperData?.url);
     customWallpaperData = null;
-    Storage.set('ntp_custom_wallpaper', null);
+    await saveWallpaperData(null);
     applyBackgroundState();
   });
 
@@ -1839,6 +2026,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btnBingWallpaper?.addEventListener('click', async () => {
     const result = await fetchBingWallpaper();
     if (result) {
+      revokeBlobUrl(customWallpaperData?.url);
       customWallpaperData = {
         type: 'bing_daily',
         url: result.url,
@@ -1846,7 +2034,7 @@ document.addEventListener('DOMContentLoaded', () => {
         copyright: result.copyright,
         fetchDate: getTodayStr()
       };
-      Storage.set('ntp_custom_wallpaper', customWallpaperData);
+      saveWallpaperData(customWallpaperData);
       if (!bgEnabled) {
         bgEnabled = true;
         Storage.set('ntp_bg_enabled', true);
@@ -1910,8 +2098,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 判断类型（根据文件扩展名）
   const isVideo = /\.(mp4|webm|ogg|mov|avi|mkv)$/i.test(url);
+  revokeBlobUrl(customWallpaperData?.url);
   customWallpaperData = { type: isVideo ? 'video' : 'image', url: url };
-  Storage.set('ntp_custom_wallpaper', customWallpaperData);
+  saveWallpaperData(customWallpaperData);
   if (!bgEnabled) {
     bgEnabled = true;
     Storage.set('ntp_bg_enabled', true);
@@ -2595,14 +2784,14 @@ searchInput?.addEventListener('input', () => {
   }
 
   // 执行搜索逻辑
-  function doSearch(queryText) {
-    const query = queryText !== undefined ? queryText : (searchInput ? searchInput.value.trim() : '');
+  function doSearch(queryText = searchInput ? searchInput.value.trim() : '') {
+    const query = queryText;
     if (query) {
       saveSearchHistory(query);
       closeSuggestions();
 
       const engine = selectEngine ? selectEngine.value : 'bing';
-      let targetUrl = '';
+      let targetUrl;
 
       if (engine === 'custom' && customEngineConfig.url) {
         targetUrl = customEngineConfig.url.replace('%s', encodeURIComponent(query));
@@ -2612,8 +2801,8 @@ searchInput?.addEventListener('input', () => {
           baseUrl = bingCNSearchUrl;
         }
         targetUrl = baseUrl + encodeURIComponent(query);
-        window.location.href = targetUrl;
       }
+      window.location.href = targetUrl;
     }
   }
 
