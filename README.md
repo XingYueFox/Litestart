@@ -13,12 +13,7 @@
 
 从商店下载Litestart
 
-<a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc">
-    <img src="docs/get/GET_MSE_ZH.png" alt="Get it from Microsoft Edge" height="48">
-</a>
-<a href="https://addons.mozilla.org/firefox/addon/litestart/">
-    <img src="docs/get/GET_FX_EN.png" alt="Get it from Microsoft Edge" height="48">
-</a>
+<a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc"><img src="docs/get/GET_MSE_ZH.png" alt="Get it from Microsoft Edge" height="48"></a>&nbsp;&nbsp;<a href="https://addons.mozilla.org/firefox/addon/litestart/"><img src="docs/get/GET_FX_EN.png" alt="Get it from Microsoft Edge" height="48"></a>
 
 ***
 
