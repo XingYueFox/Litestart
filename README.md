@@ -16,12 +16,15 @@
 <a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc">
     <img src="docs/get/GET_MSE_ZH.png" alt="Get it from Microsoft Edge" height="48">
 </a>
+<a href="https://addons.mozilla.org/firefox/addon/litestart/">
+    <img src="docs/get/GET_FX_EN.png" alt="Get it from Microsoft Edge" height="48">
+</a>
 
 ***
 
 或者使用文件导入
 
-1. 从 [Releases](https://github.com/XingYueFox/Litestart/releases) 下载最新的.zip文件（不再推荐使用.crx）
+1. 从 [Releases](https://github.com/XingYueFox/Litestart/releases) 下载最新的.zip文件（Firefox请使用.xpi）
 2. 打开浏览器的扩展或者插件管理界面，然后启用开发人员模式
 3. 将你下载的.crx或者.zip文件托入插件界面导入
 4. 在插件列表找到LiteStart启用
