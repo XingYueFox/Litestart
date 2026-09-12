@@ -55,8 +55,8 @@
 
 - **系统**：Windows7以上 / MacOS10.15以上 / Linux至少支持现代 GTK 3 的发行版
 - **浏览器**：
-  - Chrome/edge：109以上
-  - Firefox：109及以上
+  - Chrome/edge：109及以上
+  - Firefox：142以上
 - **支持语言**：简体中文 / 繁體中文 / English / Русский / 日本語
 
 
