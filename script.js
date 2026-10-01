@@ -2457,18 +2457,85 @@ inputOnlineUrl?.addEventListener('input', () => {
   // B2.快速链接列表管理
   let quicklinksList = Storage.get('ntp_quicklinks_list', []);
 
-  function renderQuicklinks() {
-  // 根据当前行数计算最大显示的快捷方式数量
-  function getMaxQuicklinks(rows) {
-    const r = parseInt(rows, 10);
-    if (r === 1) return 8;
-    if (r === 2) return 16;
-    return Infinity;
+
+  //=====快捷方式自适应计算--开始=====
+
+  // 单个快捷方式项默认宽度
+  const QUICKLINK_ITEM_DEFAULT_WIDTH = 80;
+  // 默认间距
+  const QUICKLINK_DEFAULT_GAP = 16;
+  const QUICKLINK_MAX_PER_ROW_CONFIG = [
+    { minWidth: 1200, max: 8 }, // 1244px
+    { minWidth: 800, max: 8 },  // 844px
+    { minWidth: 640, max: 6 },  // 674px
+    { minWidth: 400, max: 4 },  // 419px
+    { minWidth: 0,   max: 3 }   // 343px（兼容性）
+  ];
+
+  // 根据容器宽度查表得到当前档位下允许的最大数量
+  function getMaxPerRowForWidth(width) {
+    for (const rule of QUICKLINK_MAX_PER_ROW_CONFIG) {
+      if (width >= rule.minWidth) return rule.max;
+    }
+    return QUICKLINK_MAX_PER_ROW_CONFIG[QUICKLINK_MAX_PER_ROW_CONFIG.length - 1].max;
   }
 
+  // 计算 ntp-quicklinks 单行可容纳的快捷方式数量（含"添加"按钮占位）
+  function getQuicklinksCapacityPerRow() {
+    if (!quicklinksElem) return 8;
+
+    const containerWidth = quicklinksElem.clientWidth;
+    // 容器尚未完成布局（例如 rows=0 时 display:none）时回退到默认值
+    if (!containerWidth) return 8;
+
+    // 读取实际列间距，便于以后调整 CSS 时自动同步
+    const computed = getComputedStyle(quicklinksElem);
+    let gap = parseFloat(computed.columnGap);
+    if (isNaN(gap)) gap = parseFloat(computed.gap);
+    if (isNaN(gap)) gap = QUICKLINK_DEFAULT_GAP;
+
+    // 优先取已渲染项的真实宽度，兼容媒体查询下的尺寸变化
+    let itemWidth = QUICKLINK_ITEM_DEFAULT_WIDTH;
+    const sampleItem = quicklinksElem.querySelector('.quicklink-item');
+    if (sampleItem && sampleItem.offsetWidth > 0) {
+      itemWidth = sampleItem.offsetWidth;
+    }
+
+    // 物理能放下的数量
+    const physicalCapacity = Math.floor((containerWidth + gap) / (itemWidth + gap));
+
+    // 再套上"当前档位允许的最大数量"上限
+    const maxAllowed = getMaxPerRowForWidth(containerWidth);
+
+    // 物理容量与上限取小值，且至少为 1（上限起"限制"作用，不会溢出）
+    return Math.max(1, Math.min(physicalCapacity, maxAllowed));
+  }
+
+  // 根据行数与容器实际宽度计算最多可显示的快捷方式数量
+  function getMaxQuicklinks(rows) {
+    const r = parseInt(rows, 10);
+    if (!r) return 0;
+    const perRow = getQuicklinksCapacityPerRow();
+    return r === 1 ? perRow : perRow * 2;
+  }
+  //=====快捷方式自适应计算--结束=====
+
+
+  function renderQuicklinks() {
   if (!quicklinksElem) return;
   const rows = quicklinksElem.getAttribute('rows');
   const maxItems = getMaxQuicklinks(rows);
+
+  // 窗口尺寸变化时，重新计算单行可显示的快捷方式数量
+  let quicklinksResizeTimer = null;
+  window.addEventListener('resize', () => {
+    if (quicklinksResizeTimer) clearTimeout(quicklinksResizeTimer);
+    quicklinksResizeTimer = setTimeout(() => {
+      // 关闭状态下不渲染
+      if (quicklinksElem?.getAttribute('rows') === '0') return;
+      renderQuicklinks();
+    }, 120);
+  });
 
   // 获取静态添加按钮（如果不存在则创建）
   let addBtnStatic = quicklinksElem.querySelector('.quicklink-add-static');

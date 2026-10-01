@@ -1032,8 +1032,8 @@
 
     /* 快速链接列表 */
     ntp-quicklinks {
-      grid-row: 7;
-      width: 844px;
+      grid-row: 7; /* 宽度随窗口自适应 */
+      width: min(844px, calc(100% - 32px));
       min-height: 60px;
       display: flex;
       flex-direction: row;
