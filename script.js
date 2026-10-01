@@ -231,7 +231,18 @@ const i18nData = {
     confirmReset: '確定',
     resetDoneTitle: '重設完成',
     resetDoneDesc: '所有設定已重設為初始狀態，頁面即將重新整理。',
-    refreshNow: '立即重新整理'
+    refreshNow: '立即重新整理',
+    layout: '頁面佈局',
+    editLayout: '編輯頁面佈局',
+    searchBoxPosition: '搜尋框位置',
+    layoutHanging: '懸掛',
+    layoutCentered: '居中',
+    layoutHidden: '關閉',
+    showLogo: '顯示標題',
+    customTitleImage: '自訂標題圖片',
+    selectImageFile: '選擇圖片',
+    removeImage: '刪除圖片',
+    noImageSelected: '未選擇圖片',
  },
   'zh-WY': {
     pageTitle: '新籤頁',
@@ -408,7 +419,19 @@ const i18nData = {
     confirmReset: 'Confirm',
     resetDoneTitle: 'Reset Complete',
     resetDoneDesc: 'All settings have been reset to initial state. The page will refresh.',
-    refreshNow: 'Refresh Now'
+    refreshNow: 'Refresh Now',
+    layout: 'Layout',
+    editLayout: 'Edit Layout',
+    searchBoxPosition: 'Search Box Position',
+    layoutHanging: 'Hanging',
+    layoutCentered: 'Centered',
+    layoutHidden: 'Hidden',
+    showLogo: 'Show Title',
+    customTitleImage: 'Custom Title Image',
+    selectImageFile: 'Select Image',
+    removeImage: 'Remove Image',
+    noImageSelected: 'No Image Selected',
+
   },
   'ja': {
     pageTitle: '新しいタブ',
@@ -498,7 +521,18 @@ const i18nData = {
     confirmReset: 'リセット',
     resetDoneTitle: 'リセット完了',
     resetDoneDesc: 'すべての設定が初期状態にリセットされました。ページが更新されます。',
-    refreshNow: '今すぐ更新'
+    refreshNow: '今すぐ更新',
+    layout: 'レイアウト',
+    editLayout: 'レイアウトを編集',
+    searchBoxPosition: '検索ボックスの位置',
+    layoutHanging: 'ハンギング',
+    layoutCentered: '中央',
+    layoutHidden: '非表示',
+    showLogo: 'タイトルを表示',
+    customTitleImage: 'カスタムタイトル画像',
+    selectImageFile: '画像を選択',
+    removeImage: '画像を削除',
+    noImageSelected: '画像が選択されていません',
   },
   'ru': {
     pageTitle: 'Новая вкладка',
@@ -588,7 +622,21 @@ const i18nData = {
     confirmReset: 'Подтвердить',
     resetDoneTitle: 'Сброс завершён',
     resetDoneDesc: 'Все настройки сброшены до исходного состояния. Страница будет обновлена.',
-    refreshNow: 'Обновить сейчас'
+    refreshNow: 'Обновить сейчас',
+        layout: 'Макет',
+    editLayout: 'Изменить макет',
+    searchBoxPosition: 'Положение поисковой строки',
+    layoutHanging: 'Подвесной',
+    layoutCentered: 'По центру',
+    layoutHidden: 'Скрыто',
+    showLogo: 'Показать заголовок',
+    // ...
+    bing: 'Bing',
+    customTitleImage: 'Пользовательское изображение заголовка',
+    selectImageFile: 'Выбрать изображение',
+    removeImage: 'Удалить изображение',
+    noImageSelected: 'Изображение не выбрано',
+
   }
 };
 
