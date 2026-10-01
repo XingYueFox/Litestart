@@ -7,7 +7,7 @@ const logos = {
       <path fill="#F25022" d="M22.7.1H0v22.7h22.7V.1Z"></path>
     </svg>
     <svg aria-hidden="true" id="logo-text" width="163" height="48" viewBox="0 0 163 48">
-      <path id="logo-text-path" d="M31.19 9.66v28.68H26.2v-22.5h-.1l-8.86 22.5h-3.29L4.9 15.84h-.1v22.5H.22V9.66H7.4l8.26 21.2h.1l8.67-21.2h6.77Zm4.08 2.2c0-.8.3-1.5.9-2 .6-.5 1.29-.8 2.08-.8.9 0 1.6.3 2.1.9.5.5.9 1.2.9 2 0 .79-.3 1.49-.9 1.98-.6.5-1.3.8-2.1.8-.9 0-1.49-.3-2.09-.8-.5-.7-.9-1.39-.9-2.09Zm5.37 5.87v20.6h-4.87v-20.6h4.87Zm14.74 17.12a9.16 9.16 0 0 0 4.78-1.79v4.48c-.8.5-1.7.8-2.7 1-.99.2-2.08.3-3.28.3-3.08 0-5.47-.9-7.36-2.9a9.98 9.98 0 0 1-2.9-7.26c0-3.29 1-6.07 2.9-8.16 1.89-2.1 4.68-3.19 8.26-3.19.9 0 1.8.1 2.69.3.9.3 1.69.5 2.19.8v4.67c-.7-.5-1.5-1-2.3-1.29-.79-.3-1.58-.5-2.38-.5-1.9 0-3.49.6-4.68 1.9-1.2 1.29-1.8 2.88-1.8 5.07 0 2.1.5 3.68 1.7 4.88a7.45 7.45 0 0 0 4.88 1.7ZM73.9 17.43c.4 0 .7 0 1.1.1.29.1.59.1.79.2v4.88c-.3-.2-.6-.3-1.1-.5-.5-.2-1.1-.3-1.79-.3-1.2 0-2.19.5-2.99 1.5-.8.99-1.29 2.48-1.29 4.67v10.36h-4.88V17.73h4.88V21h.1c.5-1.1 1.1-1.99 1.99-2.68.8-.6 1.9-.9 3.19-.9Zm2.09 10.95c0-3.38.9-6.07 2.88-8.06 1.9-2 4.58-2.99 8.07-2.99 3.18 0 5.67.9 7.46 2.89 1.8 1.89 2.7 4.48 2.7 7.76 0 3.29-.9 5.98-2.9 7.97-1.89 1.99-4.47 2.98-7.86 2.98-3.19 0-5.67-.9-7.57-2.78-1.89-2-2.78-4.58-2.78-7.77Zm5.07-.2c0 2.1.5 3.78 1.5 4.88a5.4 5.4 0 0 0 4.18 1.7c1.8 0 3.09-.6 4.08-1.7.9-1.1 1.4-2.79 1.4-5.08 0-2.19-.5-3.88-1.5-4.98a4.97 4.97 0 0 0-3.98-1.69c-1.8 0-3.09.6-4.08 1.8-1.2 1.19-1.6 2.88-1.6 5.07Zm23.2-4.98c0 .7.2 1.3.7 1.7.5.4 1.4.9 2.89 1.49 1.89.8 3.28 1.7 4.08 2.59.8 1 1.2 2.09 1.2 3.48 0 1.9-.7 3.49-2.3 4.68-1.5 1.2-3.48 1.8-6.07 1.8a15.8 15.8 0 0 1-5.58-1.1v-4.88c.9.6 1.9 1.1 2.9 1.5.99.3 1.88.5 2.78.5 1.1 0 1.89-.1 2.39-.5.5-.3.8-.8.8-1.5s-.3-1.3-.8-1.7c-.5-.49-1.6-.99-3.09-1.59a8.89 8.89 0 0 1-3.78-2.48 5.7 5.7 0 0 1-1.1-3.59c0-1.89.7-3.38 2.2-4.58a8.8 8.8 0 0 1 5.67-1.79c.7 0 1.5.1 2.39.3.9.1 1.69.4 2.29.6v4.58c-.7-.4-1.4-.8-2.3-1.1-.89-.3-1.69-.5-2.48-.5-.9 0-1.7.2-2.1.5-.39.5-.69.9-.69 1.6Zm10.85 5.18c0-3.38.9-6.07 2.89-8.06 2-2 4.58-2.99 8.06-2.99 3.19 0 5.68.9 7.47 2.89 1.8 1.89 2.69 4.48 2.69 7.76 0 3.29-.9 5.98-2.89 7.97-1.89 1.99-4.48 2.98-7.86 2.98-3.19 0-5.68-.9-7.57-2.78-1.8-2-2.79-4.58-2.79-7.77Zm5.08-.2c0 2.1.5 3.78 1.5 4.88a5.4 5.4 0 0 0 4.17 1.7c1.8 0 3.1-.6 4.09-1.7.9-1.1 1.4-2.79 1.4-5.08 0-2.19-.5-3.88-1.5-4.98a4.96 4.96 0 0 0-3.98-1.69c-1.8 0-3.1.6-4.09 1.8-1.1 1.19-1.59 2.88-1.59 5.07Zm32.16-6.47h-7.27v16.63h-4.88V21.7h-3.48v-3.98h3.48v-2.89c0-2.19.7-3.88 2.1-5.28a7.28 7.28 0 0 1 5.37-2.09c.6 0 1.1 0 1.6.1.49.1.89.1 1.19.3v4.18c-.1-.1-.5-.2-.9-.3-.4-.1-.9-.2-1.4-.2-.99 0-1.79.3-2.28.9-.5.7-.8 1.6-.8 2.79v2.49h7.27v-4.68l4.88-1.5v6.08h4.87v3.98h-4.87v9.66c0 1.3.2 2.19.7 2.69.49.5 1.19.8 2.18.8.3 0 .6-.1 1-.2s.7-.3 1.1-.5v3.98c-.3.2-.8.3-1.5.5-.7.1-1.4.2-2.1.2-2.08 0-3.58-.5-4.57-1.7-1-1.1-1.5-2.69-1.5-4.88V21.71h-.2Z"></path>
+      <path id="logo-text-path" d="M31.19 9.66v28.68H26.2v-22.5h-.1l-8.86 22.5h-3.29L4.9 15.84h-.1v22.5H.22V9.66H7.4l8.26 21.2h.1l8.67-21.2h6.77Zm4.08 2.2c0-.8.3-1.5.9-2 .6-.5 1.29-.8 2.08-.8.9 0 1.6.3 2.1.9.5.5.9 1.2.9 2 0 .79-.3 1.49-.9 1.98-.6.5-1.3.8-2.1.8-.9 0-1.49-.3-2.09-.8-.5-.7-.9-1.39-.9-2.09Zm5.37 5.87v20.6h-4.87v-20.6h4.87Zm14.74 17.12a9.16 9.16 0 0 0 4.78-1.79v4.48c-.8.5-1.7.8-2.7 1-.99.2-2.08.3-3.28.3-3.08 0-5.47-.9-7.36-2.9a9.98 9.98 0 0 1-2.9-7.26c0-3.29 1-6.07 2.9-8.16 1.89-2.1 4.68-3.19 8.26-3.19.9 0 1.8.1 2.69.3.9.3 1.69.5 2.19.8v4.67c-.7-.5-1.5-1-2.3-1.29-.79-.3-1.58-.5-2.38-.5-1.9 0-3.49.6-4.68 1.9-1.2 1.29-1.8 2.88-1.8 5.07 0 2.1.5 3.68 1.7 4.88a7.45 7.45 0 0 0 4.88 1.7ZM73.9 17.43c.4 0 .7 0 1.1.1.29.1.59.1.79.2v4.88c-.3-.2-.6-.3-1.1-.5-.5-.2-1.1-.3-1.79-.3-1.2 0-2.19.5-2.99 1.5-.8.99-1.29 2.48-1.29 4.67v10.36h-4.88V17.73h4.88V21h.1c.5-1.1 1.1-1.99 1.99-2.68.8-.6 1.9-.9 3.19-.9Zm2.09 10.95c0-3.38.9-6.07 2.88-8.06 1.9-2 4.58-2.99 8.07-2.99 3.18 0 5.67.9 7.46 2.89 1.8 1.89 2.7 4.48 2.7 7.76 0 3.29-.9 5.98-2.9 7.97-1.89 1.99-4.47 2.98-7.86 2.98-3.19 0-5.67-.9-7.57-2.78-1.89-2-2.78-4.58-2.78-7.77Zm5.07-.2c0 2.1.5 3.78 1.5 4.88a5.4 5.4 0 0 0 4.18 1.7c1.8 0 3.09-.6 4.08-1.7.9-1.1 1.4-2.79 1.4-5.08 0-2.19-.5-3.88-1.5-4.98a4.97 4.97 0 0 0-3.98-1.69c-1.8 0-3.09.6-4.08 1.8-1.2 1.19-1.6 2.88-1.6 5.07Zm23.2-4.98c0 .7.2 1.3.7 1.7.5.4 1.4.9 2.89 1.49 1.89.8 3.28 1.7 4.08 2.59.8 1 1.2 2.09 1.2 3.48 0 1.9-.7 3.49-2.3 4.68-1.5 1.2-3.48 1.8-6.07 1.8a15.8 15.8 0 0 1-5.58-1.1v-4.88c.9.6 1.9 1.1 2.9 1.5.99.3 1.88.5 2.78.5 1.1 0 1.89-.1 2.39-.5.5-.3.8-.8.8-1.5s-.3-1.3-.8-1.7c-.5-.49-1.6-.99-3.09-1.59a8.89 8.89 0 0 1-3.78-2.48 5.7 5.7 0 0 1-1.1-3.59c0-1.89.7-3.38 2.2-4.58a8.8 8.8 0 0 1 5.67-1.79c.7 0 1.6.0 2.39.3.9.1 1.69.4 2.29.6v4.58c-.7-.4-1.4-.8-2.3-1.1-.89-.3-1.69-.5-2.48-.5-.9 0-1.7.2-2.1.5-.39.5-.69.9-.69 1.6Zm10.85 5.18c0-3.38.9-6.07 2.89-8.06 2-2 4.58-2.99 8.06-2.99 3.19 0 5.68.9 7.47 2.89 1.8 1.89 2.69 4.48 2.69 7.76 0 3.29-.9 5.98-2.89 7.97-1.89 1.99-4.48 2.98-7.86 2.98-3.19 0-5.68-.9-7.57-2.78-1.8-2-2.79-4.58-2.79-7.77Zm5.08-.2c0 2.1.5 3.78 1.5 4.88a5.4 5.4 0 0 0 4.17 1.7c1.8 0 3.1-.6 4.09-1.7.9-1.1 1.4-2.79 1.4-5.08 0-2.19-.5-3.88-1.5-4.98a4.96 4.96 0 0 0-3.98-1.69c-1.8 0-3.1.6-4.09 1.8-1.1 1.19-1.59 2.88-1.59 5.07Zm32.16-6.47h-7.27v16.63h-4.88V21.7h-3.48v-3.98h3.48v-2.89c0-2.19.7-3.88 2.1-5.28a7.28 7.28 0 0 1 5.37-2.09c.6 0 1.1 0 1.6.1.49.1.89.1 1.19.3v4.18c-.1-.1-.5-.2-.9-.3-.4-.1-.9-.2-1.4-.2-.99 0-1.79.3-2.28.9-.5.7-.8 1.6-.8 2.79v2.49h7.27v-4.68l4.88-1.5v6.08h4.87v3.98h-4.87v9.66c0 1.3.2 2.19.7 2.69.49.5 1.19.8 2.18.8.3 0 .6-.1 1-.2s.7-.3 1.1-.5v3.98c-.3.2-.8.3-1.5.5-.7.1-1.4.2-2.1.2-2.08 0-3.58-.5-4.57-1.7-1-1.1-1.5-2.69-1.5-4.88V21.71h-.2Z"></path>
     </svg>
   `,
   baidu: `
@@ -60,7 +60,7 @@ const i18nData = {
     disclaimer: '请注意，此网页与 Microsoft 无关。',
     aboutTitle: '关于 Litestart',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.5.1 | 更新时间：2026-9-11',
+    litever: '版本 1.6.0 | 更新时间：2026-10-1',
     github: '在 GitHub 查看',
     and: '和',
     searchPlaceholder: '搜索或输入 Web 地址',
@@ -132,6 +132,10 @@ const i18nData = {
     layout: '页面布局',
     editLayout: '编辑页面布局',
     searchBoxPosition: '搜索框位置',
+    layoutHanging: '悬挂',
+    layoutCentered: '居中',
+    layoutHidden: '关闭',
+    showLogo: '显示标题',
 
     //自定义搜索引擎图片部分
     customTitleImage: '自定义标题图片',
@@ -172,7 +176,7 @@ const i18nData = {
     disclaimer: '請注意，此網頁與 Microsoft 無關。',
     aboutTitle: '關於 Litestart',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.5.1 | 更新時間：2026-9-11',
+    litever: '版本 1.6.0 | 更新時間：2026-10-1',
     github: '在 GitHub 檢視',
     and: '與',
     searchPlaceholder: '搜尋或輸入 Web 地址',
@@ -348,7 +352,7 @@ const i18nData = {
     disclaimer: 'Note: This page is not affiliated with Microsoft.',
     aboutTitle: 'About Litestart',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.5.1 | Updated: 2026-9-11',
+    litever: 'Version 1.6.0 | Updated: 2026-10-1',
     github: 'View on GitHub',
     and: '&',
     searchPlaceholder: 'Search the web or enter address',
@@ -438,7 +442,7 @@ const i18nData = {
     disclaimer: '注: このページは Microsoft とは関係ありません。',
     aboutTitle: 'Litestart について',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.5.1 | 更新日: 2026-9-11',
+    litever: 'バージョン 1.6.0 | 更新日: 2026-10-1',
     github: 'GitHub で見る',
     and: 'と',
     searchPlaceholder: 'Web を検索またはアドレスを入力',
@@ -528,7 +532,7 @@ const i18nData = {
     disclaimer: 'Примечание: Эта страница не связана с Microsoft.',
     aboutTitle: 'О Litestart',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.5.1 | Обновлено: 2026-9-11',
+    litever: 'Версия 1.6.0 | Обновлено: 2026-10-1',
     github: 'Смотреть на GitHub',
     and: 'и',
     searchPlaceholder: 'Введите поисковый запрос или URL',
@@ -690,21 +694,28 @@ function applyLanguage(langConfig) {
     statusMenuBtn.innerText = isChecked ? dict.on : dict.off;
   }
 
-  // 8.强制使用必应中国版开关状态文本
+  // 8.刷新显示标题开关状态文本
+  const statusLogo = document.getElementById('status-logo');
+  if (statusLogo) {
+    const isChecked = document.getElementById('toggle-logo-switch')?.checked ?? true;
+    statusLogo.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  // 9.强制使用必应中国版开关状态文本
   const statusForceBingCN = document.getElementById('status-force-bing-cn');
   if (statusForceBingCN) {
     const isChecked = document.getElementById('toggle-force-bing-cn')?.checked || false;
     statusForceBingCN.innerText = isChecked ? dict.on : dict.off;
   }
 
-  // 9.刷新增强元素可见性状态文本
+  // 10.刷新增强元素可见性状态文本
   const statusEnhancedVisibility = document.getElementById('status-enhanced-visibility');
   if (statusEnhancedVisibility) {
     const isChecked = document.getElementById('toggle-enhanced-visibility')?.checked || false;
     statusEnhancedVisibility.innerText = isChecked ? dict.on : dict.off;
   }
 
-  // 10.刷新自定义下拉选项文本
+  // 11.刷新自定义下拉选项文本
   refreshCustomSelects();
 
   // ===== 工具提示(Tooltip) 初始化 =====
@@ -1334,8 +1345,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoContainer = document.getElementById('logo');
   const selectLanguage = document.getElementById('select-language');
 
-    // 编辑页面布局弹窗相关 DOM
+  // 编辑页面布局弹窗相关 DOM
   const modalLayout = document.getElementById('modal-layout');
+  const toggleLogoSwitch = document.getElementById('toggle-logo-switch');
   const selectLayout = document.getElementById('select-layout');
   const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
   const btnCloseLayoutModal = document.getElementById('btn-close-layout-modal');
@@ -1612,6 +1624,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let bgEnabled = Storage.get('ntp_bg_enabled', false);
   let customWallpaperData = null;
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
+  let searchVisible = Storage.get('ntp_search_visible', true);
+  let showLogo = Storage.get('ntp_show_logo', true);
 
   // 获取今天的日期字符串，如 "2026-09-03"，用于判断壁纸是否过期
   function getTodayStr() {
@@ -2192,21 +2206,59 @@ inputOnlineUrl?.addEventListener('input', () => {
 });
 
 
-  // 统一的布局切换入口：同步 body 属性、localStorage、预设卡片与下拉框
+  // 布局切换-------------
   function applyLayout(layoutVal) {
     if (!layoutVal) return;
+
+    // 「关闭」：只隐藏搜索栏，不改动 data-layout 与预设卡片
+    if (layoutVal === 'hidden') {
+      searchVisible = false;
+      Storage.set('ntp_search_visible', false);
+      applySearchVisibility();
+      return;
+    }
+
+    // 正常切换布局；如果之前是隐藏状态，则顺手把搜索栏恢复
     document.body.setAttribute('data-layout', layoutVal);
     Storage.set('ntp_layout', layoutVal);
     updateLayoutPresetUI(layoutVal);
-    if (selectLayout && selectLayout.value !== layoutVal) {
-      selectLayout.value = layoutVal;
+
+    if (!searchVisible) {
+      searchVisible = true;
+      Storage.set('ntp_search_visible', true);
     }
-    // 同步自定义下拉显示文本
+    applySearchVisibility();
     refreshCustomSelects();
+  }
+
+  // 应用搜索栏可见性（使用 visibility，保留网格占位，避免其他元素位移）
+  function applySearchVisibility() {
+    if (searchVisible) {
+      document.body.removeAttribute('data-search-hidden');
+    } else {
+      document.body.setAttribute('data-search-hidden', 'true');
+    }
+    // 同步下拉显示文本
+    if (selectLayout) {
+      selectLayout.value = searchVisible
+        ? (document.body.getAttribute('data-layout') || 'focused')
+        : 'hidden';
+    }
+    refreshCustomSelects();
+  }
+
+  // 应用标题（Logo）显示
+  function applyLogoVisibility() {
+    if (logoContainer) {
+      logoContainer.style.display = showLogo ? '' : 'none';
+    }
   }
 
   if (selectLayout) selectLayout.value = savedLayout;
 
+  // 初始化搜索栏可见性与标题显示
+  applySearchVisibility();
+  applyLogoVisibility();
 
   // 初始化更新布局预设卡片选中状态
   function updateLayoutPresetUI(currentLayout) {
@@ -2253,7 +2305,9 @@ inputOnlineUrl?.addEventListener('input', () => {
     closeLayoutDropdowns();
     // 同步为当前实际布局
     if (selectLayout) {
-      selectLayout.value = document.body.getAttribute('data-layout') || 'focused';
+      selectLayout.value = searchVisible
+        ? (document.body.getAttribute('data-layout') || 'focused')
+        : 'hidden';
     }
     modalLayout?.classList.add('active');
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
@@ -2339,6 +2393,19 @@ inputOnlineUrl?.addEventListener('input', () => {
       applyMenuButtonVisibility();
     });
   }
+
+    // 显示标题开关事件
+  if (toggleLogoSwitch) {
+    toggleLogoSwitch.checked = showLogo;
+
+    toggleLogoSwitch.addEventListener('change', (e) => {
+      showLogo = e.target.checked;
+      Storage.set('ntp_show_logo', showLogo);
+      applyLogoVisibility();
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    });
+  }
+
 
   // 如果初始状态是开启，启动定时器并显示
   if (showTimeCapsule) {
@@ -2465,11 +2532,10 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 默认间距
   const QUICKLINK_DEFAULT_GAP = 16;
   const QUICKLINK_MAX_PER_ROW_CONFIG = [
-    { minWidth: 1200, max: 8 }, // 1244px
     { minWidth: 800, max: 8 },  // 844px
-    { minWidth: 640, max: 6 },  // 674px
-    { minWidth: 400, max: 4 },  // 419px
-    { minWidth: 0,   max: 3 }   // 343px（兼容性）
+    { minWidth: 640, max: 7 },  // 674px
+    { minWidth: 300, max: 5 },  // 419px
+    { minWidth: 0,   max: 4 }   // 343px（兼容性）
   ];
 
   // 根据容器宽度查表得到当前档位下允许的最大数量
@@ -2505,7 +2571,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     const physicalCapacity = Math.floor((containerWidth + gap) / (itemWidth + gap));
 
     // 再套上"当前档位允许的最大数量"上限
-    const maxAllowed = getMaxPerRowForWidth(containerWidth);
+    const maxAllowed = getMaxPerRowForWidth(window.innerWidth);
 
     // 物理容量与上限取小值，且至少为 1（上限起"限制"作用，不会溢出）
     return Math.max(1, Math.min(physicalCapacity, maxAllowed));

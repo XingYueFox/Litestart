@@ -1059,7 +1059,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 80px;
+      width: var(--quicklink-item-width, 80px);
       flex-shrink: 0;              /* 防止被 flex 压缩宽度*/
       padding: 6px 2px;
       box-sizing: border-box;
@@ -1612,6 +1612,13 @@
     width: 20px;
     height: 20px;
     }
+
+    /* 关闭搜索栏时，隐藏搜索框但保留其在网格中的占位，但同时避免其他元素发生位移（ */
+    body[data-search-hidden="true"] #search-container {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
     </style>
 </head>
 
@@ -1840,7 +1847,7 @@
                 
               </div>
               <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.5.1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.6.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
@@ -1993,8 +2000,9 @@
           <label class="form-label" data-i18n="searchBoxPosition">搜索框位置</label>
           <div class="custom-select-wrapper">
             <select id="select-layout" class="select-box" tabindex="-1" aria-label="搜索框位置">
-              <option value="inspirational" data-i18n="inspirational">展望</option>
-              <option value="focused" data-i18n="focused">聚焦</option>
+              <option value="inspirational" data-i18n="layoutHanging">悬挂</option>
+              <option value="focused" data-i18n="layoutCentered">居中</option>
+              <option value="hidden" data-i18n="layoutHidden">关闭</option>
             </select>
             <div class="custom-select-display" data-for="select-layout">
               <span class="custom-select-text"></span>
@@ -2002,6 +2010,18 @@
                 <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
               </svg>
             </div>
+          </div>
+        </div>
+
+        <!-- 显示标题 -->
+        <div class="setting-row" style="margin-bottom: 12px;">
+          <div class="setting-label-group" data-i18n="showLogo">显示标题</div>
+          <div class="switch-container">
+            <span class="setting-status-text" id="status-logo" data-i18n="on">打开</span>
+            <label class="switch">
+              <input type="checkbox" id="toggle-logo-switch" checked>
+              <span class="slider"></span>
+            </label>
           </div>
         </div>
 
@@ -2188,7 +2208,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.5.1 | 更新时间：2026-9-11</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.6.0 | 更新时间：2026-10-1</p><br>
         <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.8;">
           <p style="margin: 0 0 8px 0;" data-i18n="aboutDesc">一个简洁、快速的浏览器起始页。</p>
 
