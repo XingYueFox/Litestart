@@ -13,12 +13,7 @@
 
 从商店下载Litestart
 
-<a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc">
-    <img src="docs/get/GET_MSE_ZH.png" alt="Get it from Microsoft Edge" height="48">
-</a>
-<a href="https://addons.mozilla.org/firefox/addon/litestart/">
-    <img src="docs/get/GET_FX_EN.png" alt="Get it from Microsoft Edge" height="48">
-</a>
+<a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc"><img src="docs/get/GET_MSE_ZH.png" alt="Get it from Microsoft Edge" height="48"></a>&nbsp;&nbsp;<a href="https://addons.mozilla.org/firefox/addon/litestart/"><img src="docs/get/GET_FX_EN.png" alt="Get it from Microsoft Edge" height="48"></a>
 
 ***
 
@@ -56,7 +51,7 @@
 - **系统**：Windows7以上 / MacOS10.15以上 / Linux至少支持现代 GTK 3 的发行版
 - **浏览器**：
   - Chrome/edge：109及以上
-  - Firefox：142以上
+  - Firefox：145以上
 - **支持语言**：简体中文 / 繁體中文 / English / Русский / 日本語
 
 

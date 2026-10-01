@@ -15,12 +15,7 @@ Cutting out the clutter, Litestart aims to provide you with a seamless, fast, an
 
 Get Litestart from browser store
 
-<a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc">
-    <img src="docs/get/GET_MSE_EN.png" alt="Get it from Microsoft Edge" height="48">
-</a>
-<a href="https://addons.mozilla.org/firefox/addon/litestart/">
-    <img src="docs/get/GET_FX_EN.png" alt="Get it from Microsoft Edge" height="48">
-</a>
+<a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc"><img src="docs/get/GET_MSE_EN.png" alt="Get it from Microsoft Edge" height="48"></a>&nbsp;&nbsp;<a href="https://addons.mozilla.org/firefox/addon/litestart/"><img src="docs/get/GET_FX_EN.png" alt="Get it from Microsoft Edge" height="48"></a>
 
 ***
 Or use file import
@@ -56,7 +51,7 @@ Or use file import
 - **OS**: Windows 7+ / macOS 10.15+ / Linux distributions with modern GTK 3 support.
 - **Browsers**:
   - Chrome/Edge: 109+
-  - Firefox: 142+
+  - Firefox: 145+
 - **Supported Languages**: Simplified Chinese / Traditional Chinese / English / Русский / 日本語
 
 
