@@ -126,7 +126,18 @@ const i18nData = {
     // 重置完成弹窗
     resetDoneTitle: '重置完成',
     resetDoneDesc: '所有设置已重置为初始状态，页面即将刷新。',
-    refreshNow: '立即刷新'
+    refreshNow: '立即刷新',
+
+    // 编辑页面布局弹窗
+    layout: '页面布局',
+    editLayout: '编辑页面布局',
+    searchBoxPosition: '搜索框位置',
+
+    //自定义搜索引擎图片部分
+    customTitleImage: '自定义标题图片',
+    selectImageFile: '选择图片',
+    removeImage: '删除图片',
+    noImageSelected: '未选择图片',
   },
   'zh-TW': {
     pageTitle: '新分頁',
@@ -840,6 +851,39 @@ function compressImage(file, options = {}) {
   });
 }
 
+// 压缩自定义标题图片为 PNG DataURL（保留透明通道，适合 Logo 类图片）
+function compressLogoImage(file, options = {}) {
+  const { maxWidth = 600 } = options;
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = Math.round(height * (maxWidth / width));
+          width = maxWidth;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        try {
+          resolve(canvas.toDataURL('image/png'));
+        } catch (err) {
+          reject(err);
+        }
+      };
+      img.onerror = () => reject(new Error('图片加载失败'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+
 // IndexedDB 封装：用 Blob 直接存壁纸二进制（配额远大于 localStorage 的 5MB，且无 base64 膨胀）
 const WallpaperDB = {
   _db: null,
@@ -1289,6 +1333,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const quicklinksElem = document.getElementById('quicklinks');
   const logoContainer = document.getElementById('logo');
   const selectLanguage = document.getElementById('select-language');
+
+    // 编辑页面布局弹窗相关 DOM
+  const modalLayout = document.getElementById('modal-layout');
+  const selectLayout = document.getElementById('select-layout');
+  const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
+  const btnCloseLayoutModal = document.getElementById('btn-close-layout-modal');
+  const btnLayoutClose = document.getElementById('btn-layout-close');
   
   const searchContainer = document.getElementById('search-container');
   const fakebox = document.getElementById('fakebox');
@@ -1320,6 +1371,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const tipEngineName = document.getElementById('tip-engine-name');
   const tipEngineUrl = document.getElementById('tip-engine-url');
   const btnEngineCancel = document.getElementById('btn-engine-cancel');
+
+  // 自定义标题图片相关 DOM
+  const engineLogoImg = document.getElementById('engine-logo-img');
+  const engineLogoEmpty = document.getElementById('engine-logo-empty');
+  const btnUploadEngineLogo = document.getElementById('btn-upload-engine-logo');
+  const btnRemoveEngineLogo = document.getElementById('btn-remove-engine-logo');
+  const inputEngineLogoFile = document.getElementById('input-engine-logo-file');
+  let tempEngineLogo = ''; // 弹窗内的临时标题图片（DataURL）
 
   // 背景/壁纸控制DOM元素
   const toggleBgSwitch = document.getElementById('toggle-bg-switch');
@@ -1434,9 +1493,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 切换Logo
+  // 切换Logo（自定义引擎支持显示自定义标题图片）
   function setLogo(engine) {
-    if (logos[engine] !== undefined && logoContainer) {
+    if (!logoContainer) return;
+    if (engine === 'custom') {
+      logoContainer.innerHTML = '';
+      if (customEngineConfig.logo) {
+        const img = document.createElement('img');
+        img.src = customEngineConfig.logo;
+        img.alt = '';
+        img.className = 'custom-engine-logo';
+        // 加载失败时静默清空，避免显示破图
+        img.onerror = () => { logoContainer.innerHTML = ''; };
+        logoContainer.appendChild(img);
+      }
+      return;
+    }
+    if (logos[engine] !== undefined) {
       logoContainer.innerHTML = logos[engine];
     }
   }
@@ -2119,6 +2192,22 @@ inputOnlineUrl?.addEventListener('input', () => {
 });
 
 
+  // 统一的布局切换入口：同步 body 属性、localStorage、预设卡片与下拉框
+  function applyLayout(layoutVal) {
+    if (!layoutVal) return;
+    document.body.setAttribute('data-layout', layoutVal);
+    Storage.set('ntp_layout', layoutVal);
+    updateLayoutPresetUI(layoutVal);
+    if (selectLayout && selectLayout.value !== layoutVal) {
+      selectLayout.value = layoutVal;
+    }
+    // 同步自定义下拉显示文本
+    refreshCustomSelects();
+  }
+
+  if (selectLayout) selectLayout.value = savedLayout;
+
+
   // 初始化更新布局预设卡片选中状态
   function updateLayoutPresetUI(currentLayout) {
     document.querySelectorAll('.preset-card').forEach(card => {
@@ -2134,12 +2223,45 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 布局卡片点击监听
   document.querySelectorAll('.preset-card').forEach(card => {
     card.addEventListener('click', () => {
-      const layoutVal = card.dataset.layoutVal;
-      document.body.setAttribute('data-layout', layoutVal);
-      Storage.set('ntp_layout', layoutVal);
-      updateLayoutPresetUI(layoutVal);
+      applyLayout(card.dataset.layoutVal);
     });
   });
+
+  // 弹窗内「搜索框位置」下拉框监听
+  selectLayout?.addEventListener('change', (e) => {
+    applyLayout(e.target.value);
+  });
+
+  // 关闭弹窗内所有已展开的自定义下拉
+  function closeLayoutDropdowns() {
+    document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
+      dd.classList.remove('active');
+      clearDropdownInlineStyles(dd);
+      if (dd._display) dd._display.classList.remove('active');
+    });
+  }
+
+  // 关闭编辑页面布局弹窗
+  function closeLayoutModal() {
+    modalLayout?.classList.remove('active');
+    closeLayoutDropdowns();
+  }
+
+  // 打开编辑页面布局弹窗
+  btnOpenLayoutModal?.addEventListener('click', () => {
+    popoverSettings?.classList.remove('active');
+    closeLayoutDropdowns();
+    // 同步为当前实际布局
+    if (selectLayout) {
+      selectLayout.value = document.body.getAttribute('data-layout') || 'focused';
+    }
+    modalLayout?.classList.add('active');
+    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+  });
+
+  btnCloseLayoutModal?.addEventListener('click', closeLayoutModal);
+  btnLayoutClose?.addEventListener('click', closeLayoutModal);
+
 
   // 设置面板切换监听
   selectEngine?.addEventListener('change', (e) => {
@@ -2226,10 +2348,29 @@ inputOnlineUrl?.addEventListener('input', () => {
   applyMenuButtonVisibility();
   
   // 自定义搜索引擎对话框逻辑
+  // 刷新弹窗内标题图片预览区
+  function updateEngineLogoPreview() {
+    if (!engineLogoImg || !engineLogoEmpty) return;
+    if (tempEngineLogo) {
+      engineLogoImg.src = tempEngineLogo;
+      engineLogoImg.style.display = 'block';
+      engineLogoEmpty.style.display = 'none';
+      if (btnRemoveEngineLogo) btnRemoveEngineLogo.style.display = 'inline-flex';
+    } else {
+      engineLogoImg.removeAttribute('src');
+      engineLogoImg.style.display = 'none';
+      engineLogoEmpty.style.display = 'block';
+      if (btnRemoveEngineLogo) btnRemoveEngineLogo.style.display = 'none';
+    }
+  }
+
   // 打开/重置自定义搜索引擎编辑弹窗
   function openCustomEngineModal() {
     if (inputEngineName) inputEngineName.value = customEngineConfig.name || '';
     if (inputEngineUrl) inputEngineUrl.value = customEngineConfig.url || '';
+    // 恢复已保存的标题图片到临时变量
+    tempEngineLogo = customEngineConfig.logo || '';
+    updateEngineLogoPreview();
     containerEngineName?.classList.remove('error');
     containerEngineUrl?.classList.remove('error');
     tipEngineName?.classList.remove('active');
@@ -2244,6 +2385,33 @@ inputOnlineUrl?.addEventListener('input', () => {
   }
 
   btnEngineCancel?.addEventListener('click', closeCustomEngineModal);
+
+  // ===== 自定义标题图片：选择 / 删除 =====
+  btnUploadEngineLogo?.addEventListener('click', () => {
+    inputEngineLogoFile?.click();
+  });
+
+  inputEngineLogoFile?.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      inputEngineLogoFile.value = '';
+      return;
+    }
+    try {
+      const dataUrl = await compressLogoImage(file, { maxWidth: 600 });
+      tempEngineLogo = dataUrl;
+      updateEngineLogoPreview();
+    } catch (err) {
+      console.error('标题图片处理失败:', err);
+    }
+    inputEngineLogoFile.value = '';
+  });
+
+  btnRemoveEngineLogo?.addEventListener('click', () => {
+    tempEngineLogo = '';
+    updateEngineLogoPreview();
+  });
 
   customEngineForm?.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -2277,8 +2445,12 @@ inputOnlineUrl?.addEventListener('input', () => {
 
     if (hasError) return;
 
-    customEngineConfig = { name, url };
+    customEngineConfig = { name, url, logo: tempEngineLogo || '' };
     Storage.set('ntp_custom_engine_config', customEngineConfig);
+    // 如果当前选中的就是自定义引擎，立即刷新首页 Logo
+    if (selectEngine && selectEngine.value === 'custom') {
+      setLogo('custom');
+    }
     closeCustomEngineModal();
   });
 
@@ -2286,8 +2458,17 @@ inputOnlineUrl?.addEventListener('input', () => {
   let quicklinksList = Storage.get('ntp_quicklinks_list', []);
 
   function renderQuicklinks() {
+  // 根据当前行数计算最大显示的快捷方式数量
+  function getMaxQuicklinks(rows) {
+    const r = parseInt(rows, 10);
+    if (r === 1) return 8;
+    if (r === 2) return 16;
+    return Infinity;
+  }
+
   if (!quicklinksElem) return;
   const rows = quicklinksElem.getAttribute('rows');
+  const maxItems = getMaxQuicklinks(rows);
 
   // 获取静态添加按钮（如果不存在则创建）
   let addBtnStatic = quicklinksElem.querySelector('.quicklink-add-static');
@@ -2320,7 +2501,7 @@ inputOnlineUrl?.addEventListener('input', () => {
   }
 
   // 渲染已有的快速链接
-  quicklinksList.forEach(item => {
+  quicklinksList.slice(0, maxItems).forEach(item => {
     const linkElem = document.createElement('a');
     linkElem.href = item.url;
     linkElem.className = 'quicklink-item';
@@ -2367,8 +2548,13 @@ inputOnlineUrl?.addEventListener('input', () => {
     quicklinksElem.insertBefore(linkElem, addBtnStatic);
   });
 
-  addBtnStatic.style.display = 'flex';
-  quicklinksElem.appendChild(addBtnStatic);
+  // 当已达到最大显示数量时，隐藏"添加"按钮
+  if (quicklinksList.length >= maxItems) {
+    addBtnStatic.style.display = 'none';
+  } else {
+    addBtnStatic.style.display = 'flex';
+    quicklinksElem.appendChild(addBtnStatic);
+  }
 
   // 重新应用语言确保“添加”按钮文本更新
   applyLanguage(localStorage.getItem('liteStart_language') || 'auto');

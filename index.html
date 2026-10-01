@@ -842,6 +842,12 @@
       object-fit: contain;
     }
 
+    .custom-engine-logo {
+      height: 90px;
+      max-width: 400px;
+      object-fit: contain;
+    }
+
     /* 搜索容器包装 */
     #search-container {
       grid-row: 4;
@@ -1054,6 +1060,7 @@
       align-items: center;
       justify-content: center;
       width: 80px;
+      flex-shrink: 0;              /* 防止被 flex 压缩宽度*/
       padding: 6px 2px;
       box-sizing: border-box;
       border-radius: 8px;
@@ -1766,6 +1773,9 @@
                     <span class="preset-card-label" data-i18n="focused">聚焦</span>
                   </div>
                 </div>
+                <button id="btn-open-layout-modal" class="icon-btn-text" type="button">
+                  <span data-i18n="editLayout">编辑页面布局</span>
+                </button>
               </div>
 
               <!-- 背景设置卡片 -->
@@ -1817,32 +1827,6 @@
                 </div>
                 
               </div>
-
-              <!-- 其他元素 / 时间与菜单 -->
-              <div class="settings-card">
-
-                  <div class="setting-row">
-                    <div class="setting-label-group" data-i18n="showMenuButton">显示菜单按钮</div>
-                      <div class="switch-container">
-                        <span class="setting-status-text" id="status-menu-button" data-i18n="on">打开</span>
-                          <label class="switch">
-                            <input type="checkbox" id="toggle-menu-button-switch" checked>
-                            <span class="slider"></span>
-                          </label>
-                      </div>
-                    </div>
-
-                  <div class="setting-row" style="margin-top: 10px;">
-                    <div class="setting-label-group" data-i18n="showTimeCapsule">显示时间</div>
-                      <div class="switch-container">
-                        <span class="setting-status-text" id="status-time-capsule" data-i18n="off">关闭</span>
-                          <label class="switch">
-                            <input type="checkbox" id="toggle-time-capsule-switch">
-                            <span class="slider"></span>
-                          </label>
-                      </div>
-                    </div>
-                  </div>
 
             </div>
 
@@ -1992,7 +1976,69 @@
       </div>
     </div>
 
-    <!-- 添加快速链接弹窗 -->
+        <!-- ------编辑页面布局弹窗------ -->
+    <div id="modal-layout" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <span data-i18n="editLayout">编辑页面布局</span>
+          <div class="modal-close-icon" id="btn-close-layout-modal" data-i18n-title="close">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M2.22 2.22a.75.75 0 0 1 1.06 0L8 6.94l4.72-4.72a.75.75 0 1 1 1.06 1.06L9.06 8l4.72 4.72a.75.75 0 1 1-1.06 1.06L8 9.06l-4.72 4.72a.75.75 0 0 1-1.06-1.06L6.94 8 2.22 3.28a.75.75 0 0 1 0-1.06z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 搜索框位置 -->
+        <div class="form-group" style="margin-bottom: 18px;">
+          <label class="form-label" data-i18n="searchBoxPosition">搜索框位置</label>
+          <div class="custom-select-wrapper">
+            <select id="select-layout" class="select-box" tabindex="-1" aria-label="搜索框位置">
+              <option value="inspirational" data-i18n="inspirational">展望</option>
+              <option value="focused" data-i18n="focused">聚焦</option>
+            </select>
+            <div class="custom-select-display" data-for="select-layout">
+              <span class="custom-select-text"></span>
+              <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 显示菜单按钮 -->
+        <div class="setting-row" style="margin-bottom: 12px;">
+          <div class="setting-label-group" data-i18n="showMenuButton">显示菜单按钮</div>
+          <div class="switch-container">
+            <span class="setting-status-text" id="status-menu-button" data-i18n="on">打开</span>
+            <label class="switch">
+              <input type="checkbox" id="toggle-menu-button-switch" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 显示时间 -->
+        <div class="setting-row">
+          <div class="setting-label-group" data-i18n="showTimeCapsule">显示时间</div>
+          <div class="switch-container">
+            <span class="setting-status-text" id="status-time-capsule" data-i18n="off">关闭</span>
+            <label class="switch">
+              <input type="checkbox" id="toggle-time-capsule-switch">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="modal-footer-right">
+            <button type="button" id="btn-layout-close" class="btn btn-secondary" data-i18n="close">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ------添加快速链接弹窗------ -->
     <div id="modal" class="modal-overlay">
       <div class="modal-dialog">
         <div id="modal-title" class="modal-header" data-i18n="editShortcut">编辑快速链接</div>
@@ -2039,6 +2085,22 @@
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="customEngineTitle">自定义搜索引擎</div>
         <form id="custom-engine-form" novalidate>
+          <!-- 自定义标题图片 -->
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label" data-i18n="customTitleImage">自定义标题图片</label>
+            <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+              <div id="engine-logo-preview" style="min-width: 120px; height: 56px; border-radius: 6px; background-color: var(--settings-thumb-bg); border: 1px solid var(--settings-card-border); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px; box-sizing: border-box;">
+                <span id="engine-logo-empty" style="font-size: 11px; color: var(--settings-text-secondary); text-align: center;" data-i18n="noImageSelected">未选择图片</span>
+                <img id="engine-logo-img" src="" alt="" style="max-height: 100%; max-width: 200px; object-fit: contain; display: none;">
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-secondary" id="btn-upload-engine-logo" data-i18n="selectImageFile">选择图片</button>
+                <button type="button" class="btn btn-secondary" id="btn-remove-engine-logo" data-i18n="removeImage" style="display: none;">删除图片</button>
+              </div>
+              <input type="file" id="input-engine-logo-file" class="file-input-hidden" accept="image/*">
+            </div>
+          </div>
+
           <div class="form-group">
             <label class="form-label" for="input-engine-name" data-i18n="engineName">搜索引擎名称</label>
             <div class="input-container" id="container-engine-name">
