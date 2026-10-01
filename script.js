@@ -61,7 +61,7 @@ const i18nData = {
     aboutTitle: '关于 Litestart',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
     litever: '版本 1.6.0 | 更新时间：2026-10-1',
-    github: '在 GitHub 查看',
+    versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '搜索或输入 Web 地址',
     searchInput: '搜索输入框',
@@ -177,7 +177,7 @@ const i18nData = {
     aboutTitle: '關於 Litestart',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
     litever: '版本 1.6.0 | 更新時間：2026-10-1',
-    github: '在 GitHub 檢視',
+    versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '搜尋或輸入 Web 地址',
     searchInput: '搜尋輸入框',
@@ -364,7 +364,7 @@ const i18nData = {
     aboutTitle: 'About Litestart',
     aboutDesc: 'A simple and fast browser start page.',
     litever: 'Version 1.6.0 | Updated: 2026-10-1',
-    github: 'View on GitHub',
+    versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'Search the web or enter address',
     searchInput: 'Search input',
@@ -466,7 +466,7 @@ const i18nData = {
     aboutTitle: 'Litestart について',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
     litever: 'バージョン 1.6.0 | 更新日: 2026-10-1',
-    github: 'GitHub で見る',
+    versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: 'Web を検索またはアドレスを入力',
     searchInput: '検索入力ボックス',
@@ -567,7 +567,7 @@ const i18nData = {
     aboutTitle: 'О Litestart',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
     litever: 'Версия 1.6.0 | Обновлено: 2026-10-1',
-    github: 'Смотреть на GitHub',
+    versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Введите поисковый запрос или URL',
     searchInput: 'Поле поиска',
@@ -1469,9 +1469,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-about-close')?.addEventListener('click', () => {
     document.getElementById('modal-about')?.classList.remove('active');
   });
-  // 在GitHub中查看按钮跳转
-  document.getElementById('btn-github')?.addEventListener('click', () => {
-    window.location.href = 'https://github.com/XingYueFox/Litestart';
+  // 版本信息按钮跳转
+  document.getElementById('btn-versioninfo')?.addEventListener('click', () => {
+    window.location.href = 'https://github.com/XingYueFox/Litestart/releases/tag/v1.6.0';
   });
 
   // 点击遮罩层关闭
