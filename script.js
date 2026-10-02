@@ -1466,6 +1466,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('modal-about')?.classList.add('active');
   });
 
+  // 设置页脚版本号点击打开关于弹窗
+  document.getElementById('btn-footer-version')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    popoverSettings?.classList.remove('active'); // 关闭设置面板
+    document.getElementById('modal-about')?.classList.add('active');
+  });
+
   document.getElementById('btn-about-close')?.addEventListener('click', () => {
     document.getElementById('modal-about')?.classList.remove('active');
   });
