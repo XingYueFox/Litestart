@@ -1624,6 +1624,85 @@
     height: 20px;
     }
 
+    /* ===== 管理配置文件：操作选择列表 ===== */
+    .manage-list-hint {
+      margin: 0 0 10px 0;
+      font-size: 13px;
+      color: var(--settings-text-secondary);
+    }
+
+    .manage-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .manage-option {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px 11px 22px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background-color: transparent;
+      color: var(--settings-text-primary);
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+      outline: none;
+      transition: background-color 0.08s ease, border-color 0.08s ease;
+    }
+
+    .manage-option:hover {
+      background-color: var(--neutral-fill-hover);
+    }
+
+    /* 选中态 */
+    .manage-option[aria-selected="true"] {
+      background-color: var(--neutral-fill-rest);
+    }
+
+    /* 左侧选中指示条 */
+    .manage-option::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 50%;
+      width: 3px;
+      height: 18px;
+      border-radius: 2px;
+      background-color: var(--accent-foreground-rest);
+      transform: translateY(-50%) scaleY(0);
+      transition: transform 0.1s ease;
+    }
+
+    .manage-option[aria-selected="true"]::before {
+      transform: translateY(-50%) scaleY(1);
+    }
+
+    /* 键盘聚焦时使用外描边，避免与“选中不描边”的样式冲突 */
+    .manage-option:focus-visible {
+      outline: 2px solid var(--accent-foreground-rest);
+      outline-offset: -2px;
+    }
+
+    .manage-option svg {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--settings-text-secondary);
+    }
+
+    /* 初始化（危险操作）使用警示色图标 */
+    .manage-option[data-action="init"] svg {
+      color: var(--btn-danger-color);
+    }
+
+    .manage-option-label {
+      line-height: 1.25;
+    }
+
     /* 关闭搜索栏时，隐藏搜索框但保留其在网格中的占位，但同时避免其他元素发生位移（ */
     body[data-search-hidden="true"] #search-container {
       visibility: hidden;
@@ -2245,26 +2324,26 @@
     <div id="modal-manage-profiles" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="manageProfilesTitle">管理配置文件</div>
-        <div style="display: flex; flex-direction: column; gap: 12px; padding: 8px 0 16px 0;">
-          <!-- 导出配置按钮 -->
-          <button id="btn-export-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M1.5 3a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V3.5a.5.5 0 0 1 .5-.5m9.146.646a.5.5 0 0 1 .708 0l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8H4.5a.5.5 0 0 1 0-1h8.793l-2.647-2.646a.5.5 0 0 1 0-.708"/>
-            </svg>
-            <span data-i18n="exportConfig">导出配置</span>
-          </button>
-          <!-- 恢复配置按钮 -->
-          <button id="btn-import-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M13 12.5v-9a.5.5 0 0 1 .992-.09L14 3.5v9a.5.5 0 0 1-.992.09zM1.008 8.09L1 8a.5.5 0 0 1 .41-.492L1.5 7.5h8.792L7.611 4.818a.5.5 0 0 1-.058-.638l.058-.069a.5.5 0 0 1 .638-.058l.069.058l3.536 3.535a.5.5 0 0 1 .057.638l-.057.07l-3.536 3.535a.5.5 0 0 1-.765-.638l.058-.069L10.292 8.5H1.5a.5.5 0 0 1-.492-.41L1 8z"/>
-            </svg>
-            <span data-i18n="importConfig">恢复配置</span>
-          </button>
+        <!-- 第一步：选择要执行的操作 -->
+        <p class="manage-list-hint" data-i18n="selectOperation">选择要执行的操作</p>
+        <div class="manage-list" id="manage-profile-options" role="listbox" aria-label="管理配置文件" data-i18n-aria="manageProfilesTitle">
+          <!-- 导出配置 -->
+          <div class="manage-option" role="option" tabindex="0" data-action="export" aria-selected="true">
+            <span class="manage-option-label" data-i18n="exportConfig">导出配置</span>
+          </div>
+          <!-- 恢复配置 -->
+          <div class="manage-option" role="option" tabindex="-1" data-action="import" aria-selected="false">
+            <span class="manage-option-label" data-i18n="importConfig">恢复配置</span>
+          </div>
+          <!-- 初始化配置 -->
+          <div class="manage-option" role="option" tabindex="-1" data-action="init" aria-selected="false">
+            <span class="manage-option-label" data-i18n="initConfigOption">初始化</span>
+          </div>
         </div>
         <div class="modal-footer">
           <div class="modal-footer-right">
-            <button type="button" id="btn-init-config" class="btn btn-danger" data-i18n="initConfig">初始化配置</button>
             <button type="button" id="btn-manage-profiles-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+            <button type="button" id="btn-manage-profiles-next" class="btn btn-primary" data-i18n="next">下一步</button>
           </div>
         </div>
       </div>
@@ -2300,6 +2379,21 @@
         <div class="modal-footer">
           <div class="modal-footer-right">
             <button type="button" id="btn-reset-done-confirm" class="btn btn-primary" data-i18n="refreshNow">立即刷新</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 恢复完成提示弹窗 -->
+    <div id="modal-restore-done" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header" data-i18n="restoreDoneTitle">配置恢复完成</div>
+        <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.6;">
+          <p style="margin: 0;" data-i18n="restoreDoneDesc">配置已恢复，页面即将刷新以应用所有设置。</p>
+        </div>
+        <div class="modal-footer">
+          <div class="modal-footer-right">
+            <button type="button" id="btn-restore-done-confirm" class="btn btn-primary" data-i18n="refreshNow">立即刷新</button>
           </div>
         </div>
       </div>
