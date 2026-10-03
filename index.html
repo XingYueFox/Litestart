@@ -1681,7 +1681,7 @@
       transform: translateY(-50%) scaleY(1);
     }
 
-    /* 键盘聚焦时使用外描边，避免与“选中不描边”的样式冲突 */
+    /* 聚焦时使用外描边 */
     .manage-option:focus-visible {
       outline: 2px solid var(--accent-foreground-rest);
       outline-offset: -2px;
@@ -1691,12 +1691,7 @@
       flex-shrink: 0;
       width: 20px;
       height: 20px;
-      color: var(--settings-text-secondary);
-    }
-
-    /* 初始化（危险操作）使用警示色图标 */
-    .manage-option[data-action="init"] svg {
-      color: var(--btn-danger-color);
+      color: var(--settings-text-primary);
     }
 
     .manage-option-label {
@@ -1709,6 +1704,44 @@
       pointer-events: none;
     }
 
+    /* 可用更新提示框 */
+    .update-notice {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      margin: 0 0 16px 0;
+      border: 1px solid var(--settings-card-border);
+      border-radius: 8px;
+      background-color: var(--neutral-fill-rest);
+    }
+
+    .update-notice-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .update-notice-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--neutral-foreground-rest);
+    }
+
+    .update-notice-version {
+      font-size: 12px;
+      color: var(--settings-text-secondary);
+    }
+
+    .update-notice .btn {
+      flex-shrink: 0;
+      height: 28px;
+      padding: 0 16px;
+      font-size: 13px;
+      text-decoration: none;
+    }
     </style>
 </head>
 
@@ -1930,14 +1963,14 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私与 Cookie</a> · 
-                <a href="https://github.com/XingYueFox/Litestart/blob/main/LICENSE" data-i18n="license">开源协议</a> ·  
+                <a href="PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私与 Cookie</a> · 
+                <a href="LICENSE" data-i18n="license">开源协议</a> ·  
                 <a href="https://github.com/XingYueFox/Litestart/graphs/contributors?from=2026%2F5%2F23" data-i18n="contributor">贡献名单</a> · 
                 <a href="https://github.com/XingYueFox/Litestart/issues" data-i18n="helpFeedback">帮助&反馈</a>
                 
               </div>
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.7.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.7.1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
@@ -2039,7 +2072,7 @@
       <span id="wallpaper-source-label" style="font-size:11px;color:var(--settings-text-secondary);text-align:center;margin-top:6px;display:block;"></span>
     </div>
     <div class="wallpaper-actions">
-      <span class="wallpaper-actions-title" id="wallpaper-type-title" data-i18n="selectImage">选择本地图片或视频</span>
+      <span class="wallpaper-actions-title" id="wallpaper-type-title" data-i18n="localImage">选择图片</span>
       <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
       <div style="display: flex; gap: 8px;">
         <button type="button" class="btn btn-secondary" id="btn-upload-wallpaper" data-i18n="uploadFile">选择文件</button>
@@ -2298,7 +2331,19 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.7.0 | 更新时间：2026-10-3</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.7.1 | 更新时间：2026-10-4</p><br>
+        
+        <!-- 可用更新提示框 -->
+        <div id="update-notice" class="update-notice" style="display: none;">
+          <div class="update-notice-info">
+            <div class="update-notice-title" data-i18n="updateAvailable">可用更新</div>
+            <div class="update-notice-version">
+              <span>Litestart <span id="update-version-text"></span></span>
+            </div>
+          </div>
+          <a id="update-download-btn" class="btn btn-primary" href="#" target="_blank" rel="noopener" data-i18n="download">下载</a>
+        </div>
+
         <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.8;">
           <p style="margin: 0 0 8px 0;" data-i18n="aboutDesc">一个简洁、快速的浏览器起始页。</p>
             <p style="margin: 0 0 4px 0;">
@@ -2329,14 +2374,23 @@
         <div class="manage-list" id="manage-profile-options" role="listbox" aria-label="管理配置文件" data-i18n-aria="manageProfilesTitle">
           <!-- 导出配置 -->
           <div class="manage-option" role="option" tabindex="0" data-action="export" aria-selected="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path d="M1.5 3a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V3.5a.5.5 0 0 1 .5-.5m9.146.646a.5.5 0 0 1 .708 0l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8H4.5a.5.5 0 0 1 0-1h8.793l-2.647-2.646a.5.5 0 0 1 0-.708"/>
+            </svg>
             <span class="manage-option-label" data-i18n="exportConfig">导出配置</span>
           </div>
           <!-- 恢复配置 -->
           <div class="manage-option" role="option" tabindex="-1" data-action="import" aria-selected="false">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <path d="M13 12.5v-9a.5.5 0 0 1 .992-.09L14 3.5v9a.5.5 0 0 1-.992.09zM1.008 8.09L1 8a.5.5 0 0 1 .41-.492L1.5 7.5h8.792L7.611 4.818a.5.5 0 0 1-.058-.638l.058-.069a.5.5 0 0 1 .638-.058l.069.058l3.536 3.535a.5.5 0 0 1 .057.638l-.057.07l-3.536 3.535a.5.5 0 0 1-.765-.638l.058-.069L10.292 8.5H1.5a.5.5 0 0 1-.492-.41L1 8z"/>
+            </svg>
             <span class="manage-option-label" data-i18n="importConfig">恢复配置</span>
           </div>
-          <!-- 初始化配置 -->
+          <!-- 初始化 -->
           <div class="manage-option" role="option" tabindex="-1" data-action="init" aria-selected="false">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+             <path fill="currentColor" d="M13 8a5 5 0 0 0-9.001-3h2a.5.5 0 1 1 0 1H3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 1 0v1.531a6 6 0 1 1-1.476 4.513a.5.5 0 0 1 .997-.089A5 5 0 0 0 13 8"/>
+            </svg>
             <span class="manage-option-label" data-i18n="initConfigOption">初始化</span>
           </div>
         </div>

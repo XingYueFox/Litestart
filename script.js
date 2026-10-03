@@ -1,3 +1,6 @@
+const APP_VERSION = '1.7.1';           // 发行版本
+const GITHUB_REPO = 'XingYueFox/Litestart';
+
 const logos = {
   bing: `
     <svg aria-hidden="true" id="logo-icon" width="48" height="48" viewBox="0 0 48 48">
@@ -59,8 +62,10 @@ const i18nData = {
     forYou: '为您呈现',
     disclaimer: '请注意，此网页与 Microsoft 无关。',
     aboutTitle: '关于 Litestart',
+    download: '下载',
+    updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.7.0 | 更新时间：2026-10-3',
+    litever: '版本 1.7.1 | 更新时间：2026-10-4',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '搜索或输入 Web 地址',
@@ -90,6 +95,9 @@ const i18nData = {
     errorEngineUrlFormat: '请输入搜索 URL，必须包含 %s',
     useOnlineContent: '使用在线内容',
     bingDaily: '必应每日壁纸',
+    uploadedWallpaper: '上传的背景',
+    localImage: '选择图片',
+    baidu: 'Baidu',
     customUrl: '自定义',
     customOnlineWallpaper: '自定义在线壁纸',
     imageOrVideoUrl: '图片或视频URL',
@@ -182,8 +190,10 @@ const i18nData = {
     forYou: '為您呈現',
     disclaimer: '請注意，此網頁與 Microsoft 無關。',
     aboutTitle: '關於 Litestart',
+    download: '下載',
+    updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.7.0 | 更新時間：2026-10-3',
+    litever: '版本 1.7.1 | 更新時間：2026-10-4',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '搜尋或輸入 Web 地址',
@@ -213,6 +223,10 @@ const i18nData = {
     errorEngineUrlFormat: '請輸入搜尋 URL，必須包含 %s',
     useOnlineContent: '使用線上內容',
     bingDaily: 'Bing每日桌布',
+    uploadedWallpaper: '上傳的背景',
+    localImage: '選擇圖片',
+    baidu: 'Baidu',
+    bing: 'Bing',
     customUrl: '自訂',
     customOnlineWallpaper: '自訂線上桌布',
     imageOrVideoUrl: '圖片或影片網址',
@@ -379,8 +393,10 @@ const i18nData = {
     forYou: '',
     disclaimer: 'Note: This page is not affiliated with Microsoft.',
     aboutTitle: 'About Litestart',
+    download: 'Download',
+    updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.7.0 | Updated: 2026-10-3',
+    litever: 'Version 1.7.1 | Updated: 2026-10-4',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'Search the web or enter address',
@@ -410,6 +426,10 @@ const i18nData = {
     errorEngineUrlFormat: 'Search URL must contain %s',
     useOnlineContent: 'Use online content',
     bingDaily: 'Bing daily wallpaper',
+    uploadedWallpaper: 'Uploaded background',
+    localImage: 'Select image',
+    baidu: 'Baidu',
+    bing: 'Bing',
     customUrl: 'Custom',
     customOnlineWallpaper: 'Custom online wallpaper',
     imageOrVideoUrl: 'Image or video URL',
@@ -483,11 +503,14 @@ const i18nData = {
     helpFeedback: 'ヘルプとフィードバック',
     presentedBy: '提供:',
     xingyuefox: 'XingYue_Fox',
+    AomiRaku: 'Raku Inkyetta',
     forYou: '',
     disclaimer: '注: このページは Microsoft とは関係ありません。',
     aboutTitle: 'Litestart について',
+    download: 'ダウンロード',
+    updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.7.0 | 更新日: 2026-10-3',
+    litever: 'バージョン 1.7.1 | 更新日: 2026-10-4',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: 'Web を検索またはアドレスを入力',
@@ -517,6 +540,10 @@ const i18nData = {
     errorEngineUrlFormat: '検索 URL には %s を含める必要があります',
     useOnlineContent: 'オンラインコンテンツを使用',
     bingDaily: 'Bingの今日の壁紙',
+    uploadedWallpaper: 'アップロードした背景',
+    localImage: '画像を選択',
+    baidu: 'Baidu',
+    bing: 'Bing',
     customUrl: 'カスタム',
     customOnlineWallpaper: 'カスタムオンライン壁紙',
     imageOrVideoUrl: '画像または動画のURL',
@@ -589,11 +616,14 @@ const i18nData = {
     helpFeedback: 'Справка и отзывы',
     presentedBy: 'Создатель:',
     xingyuefox: 'XingYue_Fox',
+    AomiRaku: 'Raku Inkyetta',
     forYou: '',
     disclaimer: 'Примечание: Эта страница не связана с Microsoft.',
     aboutTitle: 'О Litestart',
+    download: 'Скачать',
+    updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.7.0 | Обновлено: 2026-10-3',
+    litever: 'Версия 1.7.1 | Обновлено: 2026-10-4',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Введите поисковый запрос или URL',
@@ -623,6 +653,9 @@ const i18nData = {
     errorEngineUrlFormat: 'URL должен содержать %s',
     useOnlineContent: 'Использовать онлайн-контент',
     bingDaily: 'Ежедневные обои Bing',
+    uploadedWallpaper: 'Загруженный фон',
+    localImage: 'Выбрать изображение',
+    baidu: 'Baidu',
     customUrl: 'Пользовательский',
     customOnlineWallpaper: 'Пользовательские онлайн-обои',
     imageOrVideoUrl: 'URL изображения или видео',
@@ -1407,6 +1440,95 @@ function refreshCustomSelects() {
   });
 }
 
+//  检查更新实现
+// 语义化版本比较：a>b 返回 1，a<b 返回 -1，相等返回 0
+// 不能用字符串比，"1.10.0" 在字符串里小于 "1.9.0"
+function compareVersions(a, b) {
+  const pa = String(a).replace(/^v/i, '').split('.').map(n => parseInt(n, 10) || 0);
+  const pb = String(b).replace(/^v/i, '').split('.').map(n => parseInt(n, 10) || 0);
+  const len = Math.max(pa.length, pb.length);
+  for (let i = 0; i < len; i++) {
+    const x = pa[i] || 0, y = pb[i] || 0;
+    if (x > y) return 1;
+    if (x < y) return -1;
+  }
+  return 0;
+}
+
+// ISO 日期 → yymmdd，如 "2026-10-03T..." → "261003"
+function formatReleaseDateCode(isoStr) {
+  if (!isoStr) return '';
+  const d = new Date(isoStr);
+  if (isNaN(d.getTime())) return '';
+  const yy = String(d.getFullYear()).slice(-2);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return yy + mm + dd;
+}
+
+// 拉取最新 release；若仓库只有 tag 没建 release，回退到 /tags
+async function fetchLatestRelease() {
+  const headers = { 'Accept': 'application/vnd.github+json' };
+
+  let res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`, { headers });
+  if (res.ok) {
+    const data = await res.json();
+    return {
+      tag: data.tag_name,
+      url: data.html_url,
+      publishedAt: data.published_at
+    };
+  }
+
+  // 404：说明没有 stable release（全发成了 prerelease 或纯 tag）
+  if (res.status === 404) {
+    res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/tags`, { headers });
+    if (res.ok) {
+      const list = await res.json();
+      if (Array.isArray(list) && list.length) {
+        // /tags 接口不返回发布日期，此分支下 (261003) 会省略
+        return {
+          tag: list[0].name,
+          url: `https://github.com/${GITHUB_REPO}/releases`,
+          publishedAt: null
+        };
+      }
+    }
+  }
+
+  throw new Error('HTTP ' + res.status);
+}
+
+// 检查更新--12小时缓存
+async function checkForUpdate({ force = false } = {}) {
+  const CACHE_KEY = 'ntp_update_check';
+  const INTERVAL = 12 * 60 * 60 * 1000;
+
+  if (!force) {
+    const cached = Storage.get(CACHE_KEY, null);
+    if (cached && Date.now() - cached.checkedAt < INTERVAL) {
+      return cached.result;
+    }
+  }
+
+  try {
+    const { tag, url, publishedAt } = await fetchLatestRelease();
+    const latest = String(tag || '').replace(/^v/i, '');
+    const result = {
+      tag,
+      latest,                                        // "版本号"
+      dateCode: formatReleaseDateCode(publishedAt),  // "发布号" 或 ""
+      hasUpdate: compareVersions(latest, APP_VERSION) > 0,
+      url                                            // release 页面
+    };
+    Storage.set(CACHE_KEY, { checkedAt: Date.now(), result });
+    return result;
+  } catch (e) {
+    console.warn('检查更新失败:', e);
+    return null;   // 失败保持静默
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // DOM元素引用
   const btnWaffle = document.getElementById('waffle');
@@ -1492,17 +1614,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgImage = document.getElementById('bg-image');
   const bgOverlay = document.getElementById('bg-overlay');
 
-  // 关于弹窗
-  document.getElementById('btn-about')?.addEventListener('click', () => {
-    popoverWaffle?.classList.remove('active'); // 关闭菜单
-    document.getElementById('modal-about')?.classList.add('active');
-  });
+  // ===== 关于弹窗1.7.1更新 =====
+  async function refreshUpdateNotice() {
+    const notice = document.getElementById('update-notice');
+    if (!notice) return;
+    notice.style.display = 'none';   // 先隐藏，避免上次结果残留
 
-  // 设置页脚版本号点击打开关于弹窗
+    const result = await checkForUpdate();
+    if (!result?.hasUpdate) return;
+
+    const versionText = document.getElementById('update-version-text');
+    const downloadBtn = document.getElementById('update-download-btn');
+
+    versionText.textContent = result.latest + (result.dateCode ? ` (${result.dateCode})` : '');
+    downloadBtn.href = result.url;
+    notice.style.display = 'flex';
+  }
+
+  function openAboutModal() {
+    popoverWaffle?.classList.remove('active');
+    popoverSettings?.classList.remove('active');
+    document.getElementById('modal-about')?.classList.add('active');
+    refreshUpdateNotice();   // 不 await，避免阻塞弹窗打开动画
+  }
+
+  document.getElementById('btn-about')?.addEventListener('click', openAboutModal);
   document.getElementById('btn-footer-version')?.addEventListener('click', (e) => {
     e.preventDefault();
-    popoverSettings?.classList.remove('active'); // 关闭设置面板
-    document.getElementById('modal-about')?.classList.add('active');
+    openAboutModal();
+  });
+
+  document.getElementById('btn-versioninfo')?.addEventListener('click', () => {
+    window.open(`https://github.com/${GITHUB_REPO}/releases`, '_blank', 'noopener');
   });
 
   document.getElementById('btn-about-close')?.addEventListener('click', () => {
@@ -1510,7 +1653,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   // 版本信息按钮跳转
   document.getElementById('btn-versioninfo')?.addEventListener('click', () => {
-    window.location.href = 'https://github.com/XingYueFox/Litestart/releases/tag/v1.7.0';
+    window.location.href = 'https://github.com/XingYueFox/Litestart/releases/tag/v1.7.1';
   });
 
   // 点击遮罩层关闭
@@ -1828,6 +1971,13 @@ document.addEventListener('DOMContentLoaded', () => {
     return '';
   }
 
+  // 用当前语言的翻译表设置壁纸类型标题（替代原先写死的中文）
+  function setWallpaperTypeTitle(key) {
+    if (!wallpaperTypeTitle) return;
+    const d = window._i18nDict || {};
+    wallpaperTypeTitle.textContent = (key && d[key]) || '';
+  }
+
   // 用当前语言的翻译表，把来源标签渲染到页面上
   function translateSourceLabel() {
     if (!wallpaperSourceLabel) return;
@@ -1855,20 +2005,20 @@ document.addEventListener('DOMContentLoaded', () => {
           bgImage.removeEventListener('load', onDefLoad);
         });
       }
-      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '选择图片';
+      setWallpaperTypeTitle('localImage');
       translateSourceLabel();
       if (wallpaperPreviewContainer) {
         wallpaperPreviewContainer.innerHTML = `<span style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>`;
       }
+      // 预览文字为动态创建的 data-i18n 节点，需立即翻译一次；语言切换时由 applyLanguage 统一重译
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
       return;
     }
 
     if (customWallpaperData.type === 'bing_daily') {
-      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '必应每日壁纸';
-    } else if (customWallpaperData.type === 'video') {
-      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '上传的背景';
+      setWallpaperTypeTitle('bingDaily');
     } else {
-      if (wallpaperTypeTitle) wallpaperTypeTitle.textContent = '上传的背景';
+      setWallpaperTypeTitle('uploadedWallpaper');
     }
 
     translateSourceLabel();
@@ -3324,6 +3474,7 @@ searchInput?.addEventListener('input', () => {
       localStorage.setItem('liteStart_language', val);
       applyLanguage(val);
       translateSourceLabel(); // 语言切换后同步翻译来源标签
+      renderWallpaper();      // 同步刷新壁纸类型标题（该文本由脚本写入，不随 data-i18n 自动更新）
     });
   }
 
