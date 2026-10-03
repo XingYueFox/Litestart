@@ -7,7 +7,7 @@ const logos = {
       <path fill="#F25022" d="M22.7.1H0v22.7h22.7V.1Z"></path>
     </svg>
     <svg aria-hidden="true" id="logo-text" width="163" height="48" viewBox="0 0 163 48">
-      <path id="logo-text-path" d="M31.19 9.66v28.68H26.2v-22.5h-.1l-8.86 22.5h-3.29L4.9 15.84h-.1v22.5H.22V9.66H7.4l8.26 21.2h.1l8.67-21.2h6.77Zm4.08 2.2c0-.8.3-1.5.9-2 .6-.5 1.29-.8 2.08-.8.9 0 1.6.3 2.1.9.5.5.9 1.2.9 2 0 .79-.3 1.49-.9 1.98-.6.5-1.3.8-2.1.8-.9 0-1.49-.3-2.09-.8-.5-.7-.9-1.39-.9-2.09Zm5.37 5.87v20.6h-4.87v-20.6h4.87Zm14.74 17.12a9.16 9.16 0 0 0 4.78-1.79v4.48c-.8.5-1.7.8-2.7 1-.99.2-2.08.3-3.28.3-3.08 0-5.47-.9-7.36-2.9a9.98 9.98 0 0 1-2.9-7.26c0-3.29 1-6.07 2.9-8.16 1.89-2.1 4.68-3.19 8.26-3.19.9 0 1.8.1 2.69.3.9.3 1.69.5 2.19.8v4.67c-.7-.5-1.5-1-2.3-1.29-.79-.3-1.58-.5-2.38-.5-1.9 0-3.49.6-4.68 1.9-1.2 1.29-1.8 2.88-1.8 5.07 0 2.1.5 3.68 1.7 4.88a7.45 7.45 0 0 0 4.88 1.7ZM73.9 17.43c.4 0 .7 0 1.1.1.29.1.59.1.79.2v4.88c-.3-.2-.6-.3-1.1-.5-.5-.2-1.1-.3-1.79-.3-1.2 0-2.19.5-2.99 1.5-.8.99-1.29 2.48-1.29 4.67v10.36h-4.88V17.73h4.88V21h.1c.5-1.1 1.1-1.99 1.99-2.68.8-.6 1.9-.9 3.19-.9Zm2.09 10.95c0-3.38.9-6.07 2.88-8.06 1.9-2 4.58-2.99 8.07-2.99 3.18 0 5.67.9 7.46 2.89 1.8 1.89 2.7 4.48 2.7 7.76 0 3.29-.9 5.98-2.9 7.97-1.89 1.99-4.47 2.98-7.86 2.98-3.19 0-5.67-.9-7.57-2.78-1.89-2-2.78-4.58-2.78-7.77Zm5.07-.2c0 2.1.5 3.78 1.5 4.88a5.4 5.4 0 0 0 4.18 1.7c1.8 0 3.09-.6 4.08-1.7.9-1.1 1.4-2.79 1.4-5.08 0-2.19-.5-3.88-1.5-4.98a4.97 4.97 0 0 0-3.98-1.69c-1.8 0-3.09.6-4.08 1.8-1.2 1.19-1.6 2.88-1.6 5.07Zm23.2-4.98c0 .7.2 1.3.7 1.7.5.4 1.4.9 2.89 1.49 1.89.8 3.28 1.7 4.08 2.59.8 1 1.2 2.09 1.2 3.48 0 1.9-.7 3.49-2.3 4.68-1.5 1.2-3.48 1.8-6.07 1.8a15.8 15.8 0 0 1-5.58-1.1v-4.88c.9.6 1.9 1.1 2.9 1.5.99.3 1.88.5 2.78.5 1.1 0 1.89-.1 2.39-.5.5-.3.8-.8.8-1.5s-.3-1.3-.8-1.7c-.5-.49-1.6-.99-3.09-1.59a8.89 8.89 0 0 1-3.78-2.48 5.7 5.7 0 0 1-1.1-3.59c0-1.89.7-3.38 2.2-4.58a8.8 8.8 0 0 1 5.67-1.79c.7 0 1.6.0 2.39.3.9.1 1.69.4 2.29.6v4.58c-.7-.4-1.4-.8-2.3-1.1-.89-.3-1.69-.5-2.48-.5-.9 0-1.7.2-2.1.5-.39.5-.69.9-.69 1.6Zm10.85 5.18c0-3.38.9-6.07 2.89-8.06 2-2 4.58-2.99 8.06-2.99 3.19 0 5.68.9 7.47 2.89 1.8 1.89 2.69 4.48 2.69 7.76 0 3.29-.9 5.98-2.89 7.97-1.89 1.99-4.48 2.98-7.86 2.98-3.19 0-5.68-.9-7.57-2.78-1.8-2-2.79-4.58-2.79-7.77Zm5.08-.2c0 2.1.5 3.78 1.5 4.88a5.4 5.4 0 0 0 4.17 1.7c1.8 0 3.1-.6 4.09-1.7.9-1.1 1.4-2.79 1.4-5.08 0-2.19-.5-3.88-1.5-4.98a4.96 4.96 0 0 0-3.98-1.69c-1.8 0-3.1.6-4.09 1.8-1.1 1.19-1.59 2.88-1.59 5.07Zm32.16-6.47h-7.27v16.63h-4.88V21.7h-3.48v-3.98h3.48v-2.89c0-2.19.7-3.88 2.1-5.28a7.28 7.28 0 0 1 5.37-2.09c.6 0 1.1 0 1.6.1.49.1.89.1 1.19.3v4.18c-.1-.1-.5-.2-.9-.3-.4-.1-.9-.2-1.4-.2-.99 0-1.79.3-2.28.9-.5.7-.8 1.6-.8 2.79v2.49h7.27v-4.68l4.88-1.5v6.08h4.87v3.98h-4.87v9.66c0 1.3.2 2.19.7 2.69.49.5 1.19.8 2.18.8.3 0 .6-.1 1-.2s.7-.3 1.1-.5v3.98c-.3.2-.8.3-1.5.5-.7.1-1.4.2-2.1.2-2.08 0-3.58-.5-4.57-1.7-1-1.1-1.5-2.69-1.5-4.88V21.71h-.2Z"></path>
+      <path id="logo-text-path" d="M31.19 9.66v28.68H26.2v-22.5h-.1l-8.86 22.5h-3.29L4.9 15.84h-.1v22.5H.22V9.66H7.4l8.26 21.2h.1l8.67-21.2h6.77Zm4.08 2.2c0-.8.3-1.5.9-2 .6-.5 1.29-.8 2.08-.8.9 0 1.6.3 2.1.9.5.5.9 1.2.9 2 0 .79-.3 1.49-.9 1.98-.6.5-1.3.8-2.1.8-.9 0-1.49-.3-2.09-.8-.5-.7-.9-1.39-.9-2.09Zm5.37 5.87v20.6h-4.87v-20.6h4.87Zm14.74 17.12a9.16 9.16 0 0 0 4.78-1.79v4.48c-.8.5-1.7.8-2.7 1-.99.2-2.08.3-3.28.3-3.08 0-5.47-.9-7.36-2.9a9.98 9.98 0 0 1-2.9-7.26c0-3.29 1-6.07 2.9-8.16 1.89-2.1 4.68-3.19 8.26-3.19.9 0 1.8.1 2.69.3.9.3 1.69.5 2.19.8v4.67c-.7-.5-1.5-1-2.3-1.29-.79-.3-1.58-.5-2.38-.5-1.9 0-3.49.6-4.68 1.9-1.2 1.29-1.8 2.88-1.8 5.07 0 2.1.5 3.68 1.7 4.88a7.45 7.45 0 0 0 4.88 1.7ZM73.9 17.43c.4 0 .7 0 1.1.1.29.1.59.1.79.2v4.88c-.3-.2-.6-.3-1.1-.5-.5-.2-1.1-.3-1.79-.3-1.2 0-2.19.5-2.99 1.5-.8.99-1.29 2.48-1.29 4.67v10.36h-4.88V17.73h4.88V21h.1c.5-1.1 1.1-1.99 1.99-2.68.8-.6 1.9-.9 3.19-.9Zm2.09 10.95c0-3.38.9-6.07 2.88-8.06 1.9-2 4.58-2.99 8.07-2.99 3.18 0 5.67.9 7.46 2.89 1.8 1.89 2.7 4.48 2.7 7.76 0 3.29-.9 5.98-2.9 7.97-1.89 1.99-4.47 2.98-7.86 2.98-3.19 0-5.67-.9-7.57-2.78-1.89-2-2.78-4.58-2.78-7.77Zm5.07-.2c0 2.1.5 3.78 1.5 4.88a5.4 5.4 0 0 0 4.18 1.7c1.8 0 3.09-.6 4.08-1.7.9-1.1 1.4-2.79 1.4-5.08 0-2.19-.5-3.88-1.5-4.98a4.97 4.97 0 0 0-3.98-1.69c-1.8 0-3.09.6-4.08 1.8-1.2 1.19-1.6 2.88-1.6 5.07Zm23.2-4.98c0 .7.2 1.3.7 1.7.5.4 1.4.9 2.89 1.49 1.89.8 3.28 1.7 4.08 2.59.8 1 1.2 2.09 1.2 3.48 0 1.9-.7 3.49-2.3 4.68-1.5 1.2-3.48 1.8-6.07 1.8a15.8 15.8 0 0 1-5.58-1.1v-4.88c.9.6 1.9 1.1 2.9 1.5.99.3 1.88.5 2.78.5 1.1 0 1.89-.1 2.39-.5.5-.3.8-.8.8-1.5s-.3-1.3-.8-1.7c-.5-.49-1.6-.99-3.09-1.59a8.89 8.89 0 0 1-3.78-2.48 5.7 5.7 0 0 1-1.1-3.59c0-1.89.7-3.38 2.2-4.58a8.8 8.8 0 0 1 5.67-1.79c.7 0 1.6.1 2.39.3.9.1 1.69.4 2.29.6v4.58c-.7-.4-1.4-.8-2.3-1.1-.89-.3-1.69-.5-2.48-.5-.9 0-1.7.2-2.1.5-.39.5-.69.9-.69 1.6Zm10.85 5.18c0-3.38.9-6.07 2.89-8.06 2-2 4.58-2.99 8.06-2.99 3.19 0 5.68.9 7.47 2.89 1.8 1.89 2.69 4.48 2.69 7.76 0 3.29-.9 5.98-2.89 7.97-1.89 1.99-4.48 2.98-7.86 2.98-3.19 0-5.68-.9-7.57-2.78-1.8-2-2.79-4.58-2.79-7.77Zm5.08-.2c0 2.1.5 3.78 1.5 4.88a5.4 5.4 0 0 0 4.17 1.7c1.8 0 3.1-.6 4.09-1.7.9-1.1 1.4-2.79 1.4-5.08 0-2.19-.5-3.88-1.5-4.98a4.96 4.96 0 0 0-3.98-1.69c-1.8 0-3.1.6-4.09 1.8-1.1 1.19-1.59 2.88-1.59 5.07Zm32.16-6.47h-7.27v16.63h-4.88V21.7h-3.48v-3.98h3.48v-2.89c0-2.19.7-3.88 2.1-5.28a7.28 7.28 0 0 1 5.37-2.09c.6 0 1.1 0 1.6.1.49.1.89.1 1.19.3v4.18c-.1-.1-.5-.2-.9-.3-.4-.1-.9-.2-1.4-.2-.99 0-1.79.3-2.28.9-.5.7-.8 1.6-.8 2.79v2.49h7.27v-4.68l4.88-1.5v6.08h4.87v3.98h-4.87v9.66c0 1.3.2 2.19.7 2.69.49.5 1.19.8 2.18.8.3 0 .6-.1 1-.2s.7-.3 1.1-.5v3.98c-.3.2-.8.3-1.5.5-.7.1-1.4.2-2.1.2-2.08 0-3.58-.5-4.57-1.7-1-1.1-1.5-2.69-1.5-4.88V21.71h-.2Z"></path>
     </svg>
   `,
   baidu: `
@@ -60,7 +60,7 @@ const i18nData = {
     disclaimer: '请注意，此网页与 Microsoft 无关。',
     aboutTitle: '关于 Litestart',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.6.0 | 更新时间：2026-10-1',
+    litever: '版本 1.7.0 | 更新时间：2026-10-3',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '搜索或输入 Web 地址',
@@ -115,8 +115,11 @@ const i18nData = {
 
     // 管理配置文件弹窗
     manageProfilesTitle: '管理配置文件',
+    selectOperation: '选择要执行的操作',
     exportConfig: '导出配置',
     importConfig: '恢复配置',
+    initConfigOption: '初始化',
+    next: '下一步',
 
     // 重置确认弹窗
     resetTitle: '重置 Litestart',
@@ -127,6 +130,10 @@ const i18nData = {
     resetDoneTitle: '重置完成',
     resetDoneDesc: '所有设置已重置为初始状态，页面即将刷新。',
     refreshNow: '立即刷新',
+
+    // 恢复完成弹窗
+    restoreDoneTitle: '配置恢复完成',
+    restoreDoneDesc: '配置已恢复，页面即将刷新以应用所有设置。',
 
     // 编辑页面布局弹窗
     layout: '页面布局',
@@ -176,7 +183,7 @@ const i18nData = {
     disclaimer: '請注意，此網頁與 Microsoft 無關。',
     aboutTitle: '關於 Litestart',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.6.0 | 更新時間：2026-10-1',
+    litever: '版本 1.7.0 | 更新時間：2026-10-3',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '搜尋或輸入 Web 地址',
@@ -224,14 +231,19 @@ const i18nData = {
     removeAvatar: '刪除頭像',
     description: '描述',
     manageProfilesTitle: '管理設定檔',
+    selectOperation: '選擇要執行的操作',
     exportConfig: '匯出設定',
     importConfig: '還原設定',
+    initConfigOption: '重設設定',
+    next: '下一步',
     resetTitle: '重設 Litestart',
     resetDesc: '如果你遇到了一些問題，或是對於目前的設定不滿意，重設可以清除所有數據並還原 Litestart 為初始狀態，請注意，此操作不可撤回！',
     confirmReset: '確定',
     resetDoneTitle: '重設完成',
     resetDoneDesc: '所有設定已重設為初始狀態，頁面即將重新整理。',
     refreshNow: '立即重新整理',
+    restoreDoneTitle: '設定還原完成',
+    restoreDoneDesc: '設定已還原，頁面即將重新整理以套用所有設定。',
     layout: '頁面佈局',
     editLayout: '編輯頁面佈局',
     searchBoxPosition: '搜尋框位置',
@@ -321,14 +333,19 @@ const i18nData = {
     removeAvatar: '去首像',
     description: '描述',
     manageProfilesTitle: '掌檔',
+    selectOperation: '擇所欲行',
     exportConfig: '出設',
     importConfig: '入設',
+    initConfigOption: '復初',
+    next: '續',
     resetTitle: '復初',
     resetDesc: '倘遭困顿，或厌时制，可复初以涤万设，返 Litestart 于鸿蒙。然此举不可追，慎之慎之！',
     confirmReset: '定',
     resetDoneTitle: '妙哉！返本归元',
     resetDoneDesc: '万设归初，新页将启，天光焕然。',
-    refreshNow: '即新'
+    refreshNow: '即新',
+    restoreDoneTitle: '掌檔既復',
+    restoreDoneDesc: '旧制已归，新页将启，焕然一新。',
   },
   'en': {
     pageTitle: 'New Tab',
@@ -363,7 +380,7 @@ const i18nData = {
     disclaimer: 'Note: This page is not affiliated with Microsoft.',
     aboutTitle: 'About Litestart',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.6.0 | Updated: 2026-10-1',
+    litever: 'Version 1.7.0 | Updated: 2026-10-3',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'Search the web or enter address',
@@ -412,14 +429,19 @@ const i18nData = {
     removeAvatar: 'Remove Avatar',
     description: 'Description',
     manageProfilesTitle: 'Manage Profiles',
+    selectOperation: 'Select an action',
     exportConfig: 'Export Config',
     importConfig: 'Import Config',
+    initConfigOption: 'Reset Config',
+    next: 'Next',
     resetTitle: 'Reset Litestart',
     resetDesc: 'If you encounter issues or are unsatisfied with current settings, resetting will clear all data and restore Litestart to its initial state. Note: This action cannot be undone!',
     confirmReset: 'Confirm',
     resetDoneTitle: 'Reset Complete',
     resetDoneDesc: 'All settings have been reset to initial state. The page will refresh.',
     refreshNow: 'Refresh Now',
+    restoreDoneTitle: 'Restore Complete',
+    restoreDoneDesc: 'Configuration restored. The page will refresh to apply all settings.',
     layout: 'Layout',
     editLayout: 'Edit Layout',
     searchBoxPosition: 'Search Box Position',
@@ -465,7 +487,7 @@ const i18nData = {
     disclaimer: '注: このページは Microsoft とは関係ありません。',
     aboutTitle: 'Litestart について',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.6.0 | 更新日: 2026-10-1',
+    litever: 'バージョン 1.7.0 | 更新日: 2026-10-3',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: 'Web を検索またはアドレスを入力',
@@ -514,14 +536,19 @@ const i18nData = {
     removeAvatar: '削除',
     description: '説明',
     manageProfilesTitle: 'プロファイル管理',
+    selectOperation: '実行する操作を選択',
     exportConfig: '設定をエクスポート',
     importConfig: '設定をインポート',
+    initConfigOption: '設定をリセット',
+    next: '次へ',
     resetTitle: 'Litestartをリセット',
     resetDesc: '問題が発生した場合や現在の設定に満足できない場合、リセットするとすべてのデータが消去されLitestartが初期状態に戻ります。この操作は元に戻せません！',
     confirmReset: 'リセット',
     resetDoneTitle: 'リセット完了',
     resetDoneDesc: 'すべての設定が初期状態にリセットされました。ページが更新されます。',
     refreshNow: '今すぐ更新',
+    restoreDoneTitle: '設定の復元が完了しました',
+    restoreDoneDesc: '設定を復元しました。すべての設定を反映するためページを更新します。',
     layout: 'レイアウト',
     editLayout: 'レイアウトを編集',
     searchBoxPosition: '検索ボックスの位置',
@@ -566,7 +593,7 @@ const i18nData = {
     disclaimer: 'Примечание: Эта страница не связана с Microsoft.',
     aboutTitle: 'О Litestart',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.6.0 | Обновлено: 2026-10-1',
+    litever: 'Версия 1.7.0 | Обновлено: 2026-10-3',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Введите поисковый запрос или URL',
@@ -615,14 +642,19 @@ const i18nData = {
     removeAvatar: 'Удалить',
     description: 'Описание',
     manageProfilesTitle: 'Управление профилями',
+    selectOperation: 'Выберите действие',
     exportConfig: 'Экспорт настроек',
     importConfig: 'Импорт настроек',
+    initConfigOption: 'Сброс настроек',
+    next: 'Далее',
     resetTitle: 'Сбросить Litestart',
     resetDesc: 'Если у вас возникли проблемы или вы недовольны текущими настройками, сброс удалит все данные и восстановит Litestart в исходное состояние. Обратите внимание: это действие необратимо!',
     confirmReset: 'Подтвердить',
     resetDoneTitle: 'Сброс завершён',
     resetDoneDesc: 'Все настройки сброшены до исходного состояния. Страница будет обновлена.',
     refreshNow: 'Обновить сейчас',
+    restoreDoneTitle: 'Восстановление завершено',
+    restoreDoneDesc: 'Настройки восстановлены. Страница будет обновлена для применения всех параметров.',
         layout: 'Макет',
     editLayout: 'Изменить макет',
     searchBoxPosition: 'Положение поисковой строки',
@@ -1478,7 +1510,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   // 版本信息按钮跳转
   document.getElementById('btn-versioninfo')?.addEventListener('click', () => {
-    window.location.href = 'https://github.com/XingYueFox/Litestart/releases/tag/v1.6.0';
+    window.location.href = 'https://github.com/XingYueFox/Litestart/releases/tag/v1.7.0';
   });
 
   // 点击遮罩层关闭
@@ -1916,10 +1948,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // ===== 初始化配置（重置）=====
-  document.getElementById('btn-init-config')?.addEventListener('click', () => {
-    popoverWaffle?.classList.remove('active'); // 关闭菜单
-    document.getElementById('modal-reset-confirm')?.classList.add('active');
-  });
+  // 重置入口已移至「管理配置文件」弹窗的操作列表：选中“初始化配置”后点击“下一步”打开确认弹窗
   // ===== 重置确认弹窗 =====
   const modalResetConfirm = document.getElementById('modal-reset-confirm');
   const btnResetCancel = document.getElementById('btn-reset-cancel');
@@ -1927,19 +1956,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalResetDone = document.getElementById('modal-reset-done');
   const btnResetDoneConfirm = document.getElementById('btn-reset-done-confirm');
 
+  // 清除全部本地数据：ntp_* 设置项、界面语言（liteStart_*）以及 IndexedDB 中的自定义壁纸
+  async function resetAllLocalData() {
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith('ntp_') || key.startsWith('liteStart_')) {
+        localStorage.removeItem(key);
+      }
+    });
+    // 自定义壁纸的二进制存放在 IndexedDB，也需要一并清除；
+    // 个别环境（无痕/存储受限）下 IndexedDB 可能长时间无响应，最多等待 1.5s，避免卡住完成弹窗
+    await Promise.race([
+      WallpaperDB.remove().catch(() => {}),
+      new Promise(resolve => setTimeout(resolve, 1500))
+    ]);
+  }
+
   // 取消按钮
   btnResetCancel?.addEventListener('click', () => {
     modalResetConfirm?.classList.remove('active');
   });
 
-  // 确定按钮 - 执行重置
-  btnResetConfirm?.addEventListener('click', () => {
-    const keys = Object.keys(localStorage);
-    keys.forEach(key => {
-      if (key.startsWith('ntp_')) {
-        localStorage.removeItem(key);
-      }
-    });
+  // 确定按钮 - 执行重置（包含界面语言，刷新后回到“跟随设备”）
+  btnResetConfirm?.addEventListener('click', async () => {
+    await resetAllLocalData();
     modalResetConfirm?.classList.remove('active');
     // 显示完成弹窗
     modalResetDone?.classList.add('active');
@@ -1963,59 +2002,151 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.reload();
     }
   });
-  // ===== 管理配置文件 - 导出/恢复 =====
+  // ===== 管理配置文件 - 选择操作（导出 / 恢复 / 初始化）=====
   const modalManageProfiles = document.getElementById('modal-manage-profiles');
   const btnManageProfiles = document.getElementById('btn-manage-profiles');
-  const btnExportConfig = document.getElementById('btn-export-config');
-  const btnImportConfig = document.getElementById('btn-import-config');
   const btnManageProfilesCancel = document.getElementById('btn-manage-profiles-cancel');
+  const btnManageProfilesNext = document.getElementById('btn-manage-profiles-next');
+  const manageProfileOptions = document.getElementById('manage-profile-options');
   const fileInputRestore = document.getElementById('file-input-restore');
+  const modalRestoreDone = document.getElementById('modal-restore-done');
+  const btnRestoreDoneConfirm = document.getElementById('btn-restore-done-confirm');
 
-  // 打开管理配置文件弹窗
+  // 恢复完成弹窗：点击“立即刷新”或遮罩后刷新页面以应用新设置
+  btnRestoreDoneConfirm?.addEventListener('click', () => {
+    window.location.reload();
+  });
+  modalRestoreDone?.addEventListener('click', (e) => {
+    if (e.target === modalRestoreDone) window.location.reload();
+  });
+
+  // 需要备份的设置项（由 Storage 写入的 JSON 值）
+  const CONFIG_KEYS = [
+    'ntp_engine',
+    'ntp_layout',
+    'ntp_quicklinks',
+    'ntp_quicklinks_list',
+    'ntp_history_enabled',
+    'ntp_search_history',
+    'ntp_show_time_capsule',
+    'ntp_show_menu_button',
+    'ntp_show_logo',
+    'ntp_search_visible',
+    'ntp_force_bing_cn',
+    'ntp_bg_enabled',
+    'ntp_enhanced_visibility',
+    'ntp_custom_engine_config',
+    'ntp_user_profile',
+    'ntp_custom_wallpaper'
+  ];
+  // 以纯字符串保存的设置项（界面语言），导入时需要原样写回
+  const RAW_CONFIG_KEYS = ['liteStart_language'];
+  // 恢复配置时只接受 Litestart 自己的键，避免写入无关数据
+  const RESTORABLE_KEY_PATTERN = /^(ntp_|liteStart_)/;
+
+  const DEFAULT_MANAGE_ACTION = 'export';
+  let manageSelectedAction = DEFAULT_MANAGE_ACTION;
+
+  // 切换操作列表选中项：同步 aria-selected、tabindex 以及左侧指示条
+  function setManageSelectedAction(action) {
+    if (!action) return;
+    manageSelectedAction = action;
+    manageProfileOptions?.querySelectorAll('.manage-option').forEach(option => {
+      const selected = option.dataset.action === action;
+      option.setAttribute('aria-selected', selected ? 'true' : 'false');
+      option.tabIndex = selected ? 0 : -1;
+    });
+  }
+
+  function closeManageProfilesModal() {
+    modalManageProfiles?.classList.remove('active');
+  }
+
+  // 打开管理配置文件弹窗（默认选中“导出配置”）
   btnManageProfiles?.addEventListener('click', () => {
-    popoverWaffle?.classList.remove('active');
+    popoverWaffle?.classList.remove('active'); // 关闭菜单
+    setManageSelectedAction(DEFAULT_MANAGE_ACTION);
     modalManageProfiles?.classList.add('active');
   });
 
   // 取消按钮
-  btnManageProfilesCancel?.addEventListener('click', () => {
-    modalManageProfiles?.classList.remove('active');
-  });
+  btnManageProfilesCancel?.addEventListener('click', closeManageProfilesModal);
 
   // 点击遮罩关闭
   modalManageProfiles?.addEventListener('click', (e) => {
-    if (e.target === modalManageProfiles) modalManageProfiles.classList.remove('active');
+    if (e.target === modalManageProfiles) closeManageProfilesModal();
   });
 
-  // 导出配置
-  btnExportConfig?.addEventListener('click', () => {
-    const keys = [
-      'ntp_engine',
-      'ntp_layout',
-      'ntp_quicklinks',
-      'ntp_history_enabled',
-      'ntp_show_time_capsule',
-      'ntp_show_menu_button',
-      'ntp_force_bing_cn',
-      'ntp_bg_enabled',
-      'ntp_enhanced_visibility',
-      'ntp_quicklinks_list',
-      'ntp_search_history',
-      'ntp_custom_engine_config',
-      'ntp_user_profile',
-      'ntp_custom_wallpaper'
-    ];
+  // 鼠标点击选择操作项
+  manageProfileOptions?.addEventListener('click', (e) => {
+    const option = e.target.closest('.manage-option');
+    if (option) setManageSelectedAction(option.dataset.action);
+  });
 
+  // 键盘操作：方向键切换、回车/空格直接进入下一步
+  manageProfileOptions?.addEventListener('keydown', (e) => {
+    const options = Array.from(manageProfileOptions.querySelectorAll('.manage-option'));
+    const current = e.target.closest?.('.manage-option');
+    const index = options.indexOf(current);
+    if (index === -1) return;
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      runManageProfilesAction();
+      return;
+    }
+
+    let nextIndex;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      nextIndex = (index + 1) % options.length;
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      nextIndex = (index - 1 + options.length) % options.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = options.length - 1;
+    } else {
+      return;
+    }
+
+    e.preventDefault();
+    setManageSelectedAction(options[nextIndex].dataset.action);
+    options[nextIndex].focus();
+  });
+
+  // 下一步：按所选操作执行
+  btnManageProfilesNext?.addEventListener('click', runManageProfilesAction);
+
+  function runManageProfilesAction() {
+    if (manageSelectedAction === 'import') {
+      closeManageProfilesModal();
+      // 紧接着用户点击同步触发，保证能唤起文件选择框
+      fileInputRestore?.click();
+    } else if (manageSelectedAction === 'init') {
+      closeManageProfilesModal();
+      // 初始化需要二次确认，沿用原有确认弹窗
+      modalResetConfirm?.classList.add('active');
+    } else {
+      exportConfigFile();
+      closeManageProfilesModal();
+    }
+  }
+
+  // 导出配置
+  function exportConfigFile() {
     const data = {};
-    keys.forEach(key => {
+    CONFIG_KEYS.forEach(key => {
       const val = localStorage.getItem(key);
-      if (val !== null) {
-        try {
-          data[key] = JSON.parse(val);
-        } catch (e) {
-          data[key] = val;
-        }
+      if (val === null) return;
+      try {
+        data[key] = JSON.parse(val);
+      } catch (e) {
+        data[key] = val;
       }
+    });
+    RAW_CONFIG_KEYS.forEach(key => {
+      const val = localStorage.getItem(key);
+      if (val !== null) data[key] = val; // 语言等纯字符串设置原样导出
     });
 
     const jsonStr = JSON.stringify(data, null, 2);
@@ -2029,14 +2160,9 @@ document.addEventListener('DOMContentLoaded', () => {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  });
+  }
 
-  // 点击恢复配置 -> 触发文件选择
-  btnImportConfig?.addEventListener('click', () => {
-    fileInputRestore?.click();
-  });
-
-  // 文件选择后的处理
+  // 文件选择后的处理（恢复配置）
   fileInputRestore?.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -2045,18 +2171,27 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.onload = (event) => {
       try {
         const data = JSON.parse(event.target.result);
-        // 检查是否是有效的配置文件（至少包含一些关键字段）
-        if (!data || typeof data !== 'object') {
+        // 检查是否是有效的配置文件（至少包含一个可恢复的设置项）
+        if (!data || typeof data !== 'object' || Array.isArray(data)) {
           throw new Error('无效的配置文件格式');
         }
 
+        const keys = Object.keys(data).filter(key => RESTORABLE_KEY_PATTERN.test(key));
+        if (keys.length === 0) {
+          throw new Error('配置文件中没有可恢复的设置');
+        }
+
         // 写入 localStorage
-        Object.keys(data).forEach(key => {
-          localStorage.setItem(key, JSON.stringify(data[key]));
+        keys.forEach(key => {
+          if (RAW_CONFIG_KEYS.includes(key)) {
+            localStorage.setItem(key, String(data[key]));
+          } else {
+            localStorage.setItem(key, JSON.stringify(data[key]));
+          }
         });
 
-        alert('配置恢复成功！页面将刷新以应用所有设置。');
-        window.location.reload();
+        // 恢复完成：弹出应用内提示弹窗（由用户点击“立即刷新”后再刷新，不使用浏览器原生提示）
+        modalRestoreDone?.classList.add('active');
       } catch (err) {
         alert('配置文件格式错误，请确保选择的是正确的 JSON 备份文件。');
         console.error('导入配置失败:', err);

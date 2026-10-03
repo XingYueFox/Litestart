@@ -38,9 +38,10 @@
       --colorNeutralStroke1Hover: #c7c7c7;     /* 边框 Hover 颜色 */
 
       /* 4. 强调色 */
-      --accent-foreground-rest: #0067C0;       /* 强调色 */
-      --accent-foreground-hover: #3683CB;      /* 第二强调色 */
-      --btn-secondary-bg: #ffffff;             /* 次级按钮背景 */
+      --accent-foreground-rest: #000000;       /* 强调色 */
+      --accent-foreground-hover: #1b1b1b;      /* 第二强调色 */
+      --accent-foreground-invert: #ffffff;   /* 反色强调色 */
+      --btn-secondary-bg: #EEEEEE;             /* 次级按钮背景 */
       --btn-danger-color: #d13438;             /* 危险/删除操作文字色 */
       --btn-danger-hover: #fde8e8;             /* 危险按钮 Hover 背景 */
 
@@ -53,7 +54,7 @@
       --modal-bg: #ffffff;
       --modal-border: #e0e0e0;
       --modal-mask: rgba(0, 0, 0, 0.4);
-      --input-bg: #f7f7f7;
+      --input-bg: #F2F2F2;
       --input-border-bottom: #8a8a8a;
 
       /* 7. 设置面板专用颜色 */
@@ -99,21 +100,22 @@
         --shadow4: 0 0 2px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.3);
         --shadow16: 0 0 2px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.28);
 
-        --modal-bg: #2b2b2b;
-        --modal-border: #444444;
+        --modal-bg: #242424;
+        --modal-border: #333333;
         --modal-mask: rgba(0, 0, 0, 0.65);
-        --input-bg: #1f1f1f;
+        --input-bg: #202020;
         --input-border-bottom: #666666;
         --btn-danger-color: #ff6b6b;
         --btn-danger-hover: #3d1a1a;
 
-        --accent-foreground-rest: #0067C0;       /* 强调色 */
-        --accent-foreground-hover: #0058a5;      /* 第二强调色 */
+        --accent-foreground-rest: #ffffff;       /* 强调色 */
+        --accent-foreground-hover: #E0E0E0;      /* 第二强调色 */
+        --accent-foreground-invert: #000000;   /* 反色强调色！！！ */
         --btn-secondary-bg: #2D2D2D;             /* 次级按钮背景 */
 
         --settings-panel-bg: #242424;
         --settings-card-bg: #2b2b2b;
-        --settings-card-border: #383838;
+        --settings-card-border: #323232;
         --settings-card-hover: #353535;
         --settings-text-primary: #e3e3e3;
         --settings-text-secondary: #9e9e9e;
@@ -542,6 +544,7 @@
 
     .custom-select-display.active {
       border-color: var(--accent-foreground-rest);
+      border-width: 1px; 
     }
 
     /* 下拉箭头旋转动画 */
@@ -681,9 +684,10 @@
       border-color: var(--accent-foreground-rest);
     }
 
+    /*这是开关滑块！*/
     input:checked + .slider:before {
       transform: translateX(18px);
-      background-color: #ffffff;
+      background-color: var(--accent-foreground-invert);
     }
 
     input:checked + .slider:hover:before {
@@ -738,7 +742,7 @@
     .preset-thumb-bar {
       position: absolute;
       width: 60%;
-      height: 6px;
+      height: 10px;
       background: #555;
       border-radius: 3px;
       z-index: 1;
@@ -748,7 +752,7 @@
       position: absolute;
       bottom: 6px;
       width: 60%;
-      height: 7px;
+      height: 6px;
       background: #555;
       border-radius: 3px;
       z-index: 1;
@@ -1347,37 +1351,33 @@
       transition: background-color 0.08s ease, filter 0.08s ease;
     }
 
+    /* 强调按钮样式 */
     .btn-primary {
       background-color: var(--accent-foreground-rest);
-      color: #ffffff;
+      color: var(--accent-foreground-invert);
       border: 1px solid transparent;
-      border-bottom: 2px solid #005cb0; 
+       
     }
 
     .btn-primary:hover {
       background-color: var(--accent-foreground-hover);
-      border-bottom: 2px solid var(--accent-foreground-hover);
       filter: none;
     }
 
+    /* 次级按钮样式 */
     .btn-secondary {
       background-color: var(--btn-secondary-bg);
       color: var(--neutral-foreground-rest);
-      border-width: 1px;
-      border-bottom-width: 2px;
-      border-style: solid;
-      border-color: var(--modal-border);
     }
 
     .btn-secondary:hover {
-      background-color: var(--neutral-fill-hover);
+      background-color: var(--modal-border);
     }
 
     @media (prefers-color-scheme: dark) {
       .btn-secondary {
-        background-color: #3b3b3b;
-        border-width: 1px;
-        border-top-width: 2px;
+        background-color: #474747;
+
         padding: 0 20px 1px 20px;
       }
     }
@@ -1390,6 +1390,17 @@
 
     .btn-danger:hover {
       background-color: var(--btn-danger-hover);
+    }
+
+    /* 无填充按钮 */
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--settings-card-border);
+      color: var(--neutral-foreground-rest);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--neutral-fill-hover);
     }
 
     /* 背景卡片样式 */
@@ -1613,6 +1624,85 @@
     height: 20px;
     }
 
+    /* ===== 管理配置文件：操作选择列表 ===== */
+    .manage-list-hint {
+      margin: 0 0 10px 0;
+      font-size: 13px;
+      color: var(--settings-text-secondary);
+    }
+
+    .manage-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .manage-option {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 12px 11px 22px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background-color: transparent;
+      color: var(--settings-text-primary);
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+      outline: none;
+      transition: background-color 0.08s ease, border-color 0.08s ease;
+    }
+
+    .manage-option:hover {
+      background-color: var(--neutral-fill-hover);
+    }
+
+    /* 选中态 */
+    .manage-option[aria-selected="true"] {
+      background-color: var(--neutral-fill-rest);
+    }
+
+    /* 左侧选中指示条 */
+    .manage-option::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 50%;
+      width: 3px;
+      height: 18px;
+      border-radius: 2px;
+      background-color: var(--accent-foreground-rest);
+      transform: translateY(-50%) scaleY(0);
+      transition: transform 0.1s ease;
+    }
+
+    .manage-option[aria-selected="true"]::before {
+      transform: translateY(-50%) scaleY(1);
+    }
+
+    /* 键盘聚焦时使用外描边，避免与“选中不描边”的样式冲突 */
+    .manage-option:focus-visible {
+      outline: 2px solid var(--accent-foreground-rest);
+      outline-offset: -2px;
+    }
+
+    .manage-option svg {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--settings-text-secondary);
+    }
+
+    /* 初始化（危险操作）使用警示色图标 */
+    .manage-option[data-action="init"] svg {
+      color: var(--btn-danger-color);
+    }
+
+    .manage-option-label {
+      line-height: 1.25;
+    }
+
     /* 关闭搜索栏时，隐藏搜索框但保留其在网格中的占位，但同时避免其他元素发生位移（ */
     body[data-search-hidden="true"] #search-container {
       visibility: hidden;
@@ -1636,7 +1726,7 @@
       <!-- 顶部导航栏 -->
       <div id="header">
         <div id="header-left">
-          <button id="waffle" class="header-button" type="button" aria-label="#" title="#">
+          <button id="waffle" class="header-button" type="button" aria-label="Litestart~" title="Litestart~">
             <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 17a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 17a2 2 0 110 4 2 2 0 010-4zm7-7a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 10a2 2 0 110 4 2 2 0 010-4zm7-7a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 3a2 2 0 110 4 2 2 0 010-4z">
               </path>
@@ -1768,14 +1858,14 @@
                 <div class="layout-presets">
                   <div class="preset-card" data-layout-val="inspirational" id="preset-inspirational">
                     <div class="preset-thumb">
-                      <div class="preset-thumb-bar" style="top: 10px;"></div>
+                      <div class="preset-thumb-box" style="bottom: 30px"></div>
                     </div>
                     <span class="preset-card-label" data-i18n="inspirational">展望</span>
                   </div>
                   <div class="preset-card" data-layout-val="focused" id="preset-focused">
                     <div class="preset-thumb">
-                      <div class="preset-thumb-bar" style="top: 17px"></div>
-                      <div class="preset-thumb-box" style="bottom: 14px"></div>
+                      <div class="preset-thumb-bar" style="top: 24px"></div>
+                      <div class="preset-thumb-box" style="bottom: 26px"></div>
                     </div>
                     <span class="preset-card-label" data-i18n="focused">聚焦</span>
                   </div>
@@ -1847,7 +1937,7 @@
                 
               </div>
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.6.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.7.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
@@ -2208,14 +2298,14 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.6.0 | 更新时间：2026-10-1</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.7.0 | 更新时间：2026-10-3</p><br>
         <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.8;">
           <p style="margin: 0 0 8px 0;" data-i18n="aboutDesc">一个简洁、快速的浏览器起始页。</p>
             <p style="margin: 0 0 4px 0;">
             <span data-i18n="presentedBy">由</span> 
-            <a href="https://xingyuefox.pages.dev" target="_blank" style="color: var(--accent-foreground-rest); text-decoration: none;" data-i18n="xingyuefox">XingYue_Fox</a>
+            <a href="https://xingyuefox.pages.dev" target="_blank" style="color: var(--accent-foreground-rest); " data-i18n="xingyuefox">XingYue_Fox</a>
             <span data-i18n="and">和</span> 
-            <a href="https://github.com/AomiRaku" target="_blank" style="color: var(--accent-foreground-rest); text-decoration: none;" data-i18n="AomiRaku">AomiRaku</a>
+            <a href="https://raku404.com/" target="_blank" style="color: var(--accent-foreground-rest); " data-i18n="AomiRaku">AomiRaku</a>
             <span data-i18n="forYou">为您呈现</span>
           </p>
 
@@ -2234,26 +2324,26 @@
     <div id="modal-manage-profiles" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="manageProfilesTitle">管理配置文件</div>
-        <div style="display: flex; flex-direction: column; gap: 12px; padding: 8px 0 16px 0;">
-          <!-- 导出配置按钮 -->
-          <button id="btn-export-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M1.5 3a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V3.5a.5.5 0 0 1 .5-.5m9.146.646a.5.5 0 0 1 .708 0l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8H4.5a.5.5 0 0 1 0-1h8.793l-2.647-2.646a.5.5 0 0 1 0-.708"/>
-            </svg>
-            <span data-i18n="exportConfig">导出配置</span>
-          </button>
-          <!-- 恢复配置按钮 -->
-          <button id="btn-import-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M13 12.5v-9a.5.5 0 0 1 .992-.09L14 3.5v9a.5.5 0 0 1-.992.09zM1.008 8.09L1 8a.5.5 0 0 1 .41-.492L1.5 7.5h8.792L7.611 4.818a.5.5 0 0 1-.058-.638l.058-.069a.5.5 0 0 1 .638-.058l.069.058l3.536 3.535a.5.5 0 0 1 .057.638l-.057.07l-3.536 3.535a.5.5 0 0 1-.765-.638l.058-.069L10.292 8.5H1.5a.5.5 0 0 1-.492-.41L1 8z"/>
-            </svg>
-            <span data-i18n="importConfig">恢复配置</span>
-          </button>
+        <!-- 第一步：选择要执行的操作 -->
+        <p class="manage-list-hint" data-i18n="selectOperation">选择要执行的操作</p>
+        <div class="manage-list" id="manage-profile-options" role="listbox" aria-label="管理配置文件" data-i18n-aria="manageProfilesTitle">
+          <!-- 导出配置 -->
+          <div class="manage-option" role="option" tabindex="0" data-action="export" aria-selected="true">
+            <span class="manage-option-label" data-i18n="exportConfig">导出配置</span>
+          </div>
+          <!-- 恢复配置 -->
+          <div class="manage-option" role="option" tabindex="-1" data-action="import" aria-selected="false">
+            <span class="manage-option-label" data-i18n="importConfig">恢复配置</span>
+          </div>
+          <!-- 初始化配置 -->
+          <div class="manage-option" role="option" tabindex="-1" data-action="init" aria-selected="false">
+            <span class="manage-option-label" data-i18n="initConfigOption">初始化</span>
+          </div>
         </div>
         <div class="modal-footer">
           <div class="modal-footer-right">
-            <button type="button" id="btn-init-config" class="btn btn-danger" data-i18n="initConfig">初始化配置</button>
             <button type="button" id="btn-manage-profiles-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+            <button type="button" id="btn-manage-profiles-next" class="btn btn-primary" data-i18n="next">下一步</button>
           </div>
         </div>
       </div>
@@ -2289,6 +2379,21 @@
         <div class="modal-footer">
           <div class="modal-footer-right">
             <button type="button" id="btn-reset-done-confirm" class="btn btn-primary" data-i18n="refreshNow">立即刷新</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 恢复完成提示弹窗 -->
+    <div id="modal-restore-done" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header" data-i18n="restoreDoneTitle">配置恢复完成</div>
+        <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.6;">
+          <p style="margin: 0;" data-i18n="restoreDoneDesc">配置已恢复，页面即将刷新以应用所有设置。</p>
+        </div>
+        <div class="modal-footer">
+          <div class="modal-footer-right">
+            <button type="button" id="btn-restore-done-confirm" class="btn btn-primary" data-i18n="refreshNow">立即刷新</button>
           </div>
         </div>
       </div>
