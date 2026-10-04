@@ -833,6 +833,9 @@ function applyLanguage(langConfig) {
   // 11.刷新自定义下拉选项文本
   refreshCustomSelects();
 
+  // 12.同步「快速链接」的“添加”按钮文案（避免整页重扫，也不必重建整个列表）
+  if (typeof syncQuicklinksLanguage === 'function') syncQuicklinksLanguage();
+
   // ===== 工具提示(Tooltip) 初始化 =====
 
   if (!window._tooltipInitialized) {
@@ -1708,6 +1711,8 @@ document.addEventListener('DOMContentLoaded', () => {
   btnSettings?.addEventListener('click', (e) => {
     e.stopPropagation();
     togglePopover(popoverSettings, popoverWaffle);
+    // 设置面板打开时，按当前语言同步快速链接的“添加”按钮文案
+    if (typeof syncQuicklinksLanguage === 'function') syncQuicklinksLanguage();
   });
 
   if (btnCloseSettings) {
@@ -2692,7 +2697,8 @@ inputOnlineUrl?.addEventListener('input', () => {
     const val = e.target.value;
     quicklinksElem?.setAttribute('rows', val);
     Storage.set('ntp_quicklinks', val);
-    renderQuicklinks();//（测试）修复无法加载
+    // 行数变化会改变每行/总数上限，强制重建一次
+    renderQuicklinks(true);
   });
 
     // 时间开关事件
@@ -2869,113 +2875,56 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   //=====快捷方式自适应计算--开始=====
 
-  // 单个快捷方式项默认宽度
-  const QUICKLINK_ITEM_DEFAULT_WIDTH = 80;
-  // 默认间距
-  const QUICKLINK_DEFAULT_GAP = 16;
-  const QUICKLINK_MAX_PER_ROW_CONFIG = [
-    { minWidth: 800, max: 8 },  // 844px
-    { minWidth: 640, max: 7 },  // 674px
-    { minWidth: 300, max: 5 },  // 419px
-    { minWidth: 0,   max: 4 }   // 343px（兼容性）
-  ];
+  // 单个快捷方式项的宽度
+  const QUICKLINK_ITEM_WIDTH = 80;
+  // 项与项之间的间距
+  const QUICKLINK_GAP = 16;
+  // 页面左右各保留的安全边距
+  const QUICKLINK_SIDE_MARGIN = 16;
+  // 每行最多显示的项数
+  const QUICKLINK_MAX_COLUMNS_ONE_ROW = 10;
+  const QUICKLINK_MAX_COLUMNS_TWO_ROWS = 12;
 
-  // 根据容器宽度查表得到当前档位下允许的最大数量
-  function getMaxPerRowForWidth(width) {
-    for (const rule of QUICKLINK_MAX_PER_ROW_CONFIG) {
-      if (width >= rule.minWidth) return rule.max;
-    }
-    return QUICKLINK_MAX_PER_ROW_CONFIG[QUICKLINK_MAX_PER_ROW_CONFIG.length - 1].max;
+  // 当前生效的列数；仅当它发生变化时才需要重建 DOM
+  let quicklinksColumns = 0;
+  let quicklinksLastRenderKey = '';
+
+  // 由列数反推容器内容宽度：n*80 + (n-1)*16
+  function quicklinksWidthForColumns(cols) {
+    return cols * QUICKLINK_ITEM_WIDTH + Math.max(0, cols - 1) * QUICKLINK_GAP;
   }
 
-  // 计算 ntp-quicklinks 单行可容纳的快捷方式数量（含"添加"按钮占位）
-  function getQuicklinksCapacityPerRow() {
-    if (!quicklinksElem) return 8;
-
-    const containerWidth = quicklinksElem.clientWidth;
-    // 容器尚未完成布局（例如 rows=0 时 display:none）时回退到默认值
-    if (!containerWidth) return 8;
-
-    // 读取实际列间距，便于以后调整 CSS 时自动同步
-    const computed = getComputedStyle(quicklinksElem);
-    let gap = parseFloat(computed.columnGap);
-    if (isNaN(gap)) gap = parseFloat(computed.gap);
-    if (isNaN(gap)) gap = QUICKLINK_DEFAULT_GAP;
-
-    // 优先取已渲染项的真实宽度，兼容媒体查询下的尺寸变化
-    let itemWidth = QUICKLINK_ITEM_DEFAULT_WIDTH;
-    const sampleItem = quicklinksElem.querySelector('.quicklink-item');
-    if (sampleItem && sampleItem.offsetWidth > 0) {
-      itemWidth = sampleItem.offsetWidth;
-    }
-
-    // 物理能放下的数量
-    const physicalCapacity = Math.floor((containerWidth + gap) / (itemWidth + gap));
-
-    // 再套上"当前档位允许的最大数量"上限
-    const maxAllowed = getMaxPerRowForWidth(window.innerWidth);
-
-    // 物理容量与上限取小值，且至少为 1（上限起"限制"作用，不会溢出）
-    return Math.max(1, Math.min(physicalCapacity, maxAllowed));
+  // 当前视口宽度下，单行最多能放多少项
+  // 只读视口宽度、不读取布局，避免 resize 期间反复强制重排
+  function quicklinksAvailableColumns() {
+    if (!quicklinksElem) return 0;
+    const maxColumns = Math.max(QUICKLINK_MAX_COLUMNS_ONE_ROW, QUICKLINK_MAX_COLUMNS_TWO_ROWS);
+    // 可用宽度受「视口 - 两侧安全边距」与「每行项数上限」共同约束
+    const availableWidth = Math.min(
+      document.documentElement.clientWidth - QUICKLINK_SIDE_MARGIN * 2,
+      quicklinksWidthForColumns(maxColumns)
+    );
+    // 反推列数：cols*80 + (cols-1)*16 <= availableWidth
+    return Math.max(1, Math.min(
+      maxColumns,
+      Math.floor((availableWidth + QUICKLINK_GAP) / (QUICKLINK_ITEM_WIDTH + QUICKLINK_GAP))
+    ));
   }
 
-  // 根据行数与容器实际宽度计算最多可显示的快捷方式数量
-  function getMaxQuicklinks(rows) {
-    const r = parseInt(rows, 10);
-    if (!r) return 0;
-    const perRow = getQuicklinksCapacityPerRow();
-    return r === 1 ? perRow : perRow * 2;
+  // 当前设置下每行允许的列数
+  function quicklinksColumnsPerRow(rowsValue) {
+    const available = quicklinksAvailableColumns();
+    if (rowsValue === '2') return Math.min(available, QUICKLINK_MAX_COLUMNS_TWO_ROWS);
+    return Math.min(available, QUICKLINK_MAX_COLUMNS_ONE_ROW);
   }
+
+  // 记录一次渲染，便于在浏览器控制台核对重建次数（Debug 用）
+  window.__qlDebug = { renders: 0, columns: 0, lastRows: null };
   //=====快捷方式自适应计算--结束=====
 
-
-  // 窗口尺寸变化时重渲染修复
-  let quicklinksResizeTimer = null;
-  window.addEventListener('resize', () => {
-    clearTimeout(quicklinksResizeTimer);
-    quicklinksResizeTimer = setTimeout(() => {
-      if (quicklinksElem?.getAttribute('rows') === '0') return;
-      renderQuicklinks();
-    }, 120);
-  });
-
-  function renderQuicklinks() {
-  if (!quicklinksElem) return;
-  const rows = quicklinksElem.getAttribute('rows');
-  const maxItems = getMaxQuicklinks(rows);
-
-  // 获取静态添加按钮（如果不存在则创建）
-  let addBtnStatic = quicklinksElem.querySelector('.quicklink-add-static');
-  if (!addBtnStatic) {
-    addBtnStatic = document.createElement('div');
-    addBtnStatic.className = 'quicklink-item quicklink-add-btn quicklink-add-static';
-    addBtnStatic.style.display = 'none';
-    addBtnStatic.innerHTML = `
-      <div class="quicklink-icon quicklink-add-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-        </svg>
-      </div>
-      <span class="quicklink-title" data-i18n="addlink">添加</span>
-    `;
-    quicklinksElem.appendChild(addBtnStatic);
-  }
-  if (addBtnStatic.dataset.bound !== 'true') {
-    addBtnStatic.addEventListener('click', () => openAddModal());
-    addBtnStatic.dataset.bound = 'true';
-  }
-
-  // 清空所有动态生成的快速链接（保留静态按钮）
-  const items = quicklinksElem.querySelectorAll('.quicklink-item:not(.quicklink-add-static)');
-  items.forEach(el => el.remove());
-
-  if (rows === '0') {
-    addBtnStatic.style.display = 'none';
-    return;
-  }
-
-  // 渲染已有的快速链接
-  quicklinksList.slice(0, maxItems).forEach(item => {
+  
+  // 创建快速链接项（图标 + 标题 + 编辑按钮 + 拖拽事件）
+  function createQuicklinkNode(item) {
     const linkElem = document.createElement('a');
     linkElem.href = item.url;
     linkElem.className = 'quicklink-item';
@@ -3019,20 +2968,100 @@ inputOnlineUrl?.addEventListener('input', () => {
       openEditModal(item);
     });
 
-    quicklinksElem.insertBefore(linkElem, addBtnStatic);
-  });
-
-  // 当已达到最大显示数量时，隐藏"添加"按钮
-  if (quicklinksList.length >= maxItems) {
-    addBtnStatic.style.display = 'none';
-  } else {
-    addBtnStatic.style.display = 'flex';
-    quicklinksElem.appendChild(addBtnStatic);
+    return linkElem;
   }
 
-  // 重新应用语言确保“添加”按钮文本更新
-  applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
-}
+  // 创建"添加"按钮项
+  function createQuicklinkAddNode() {
+    const addElem = document.createElement('div');
+    addElem.className = 'quicklink-item quicklink-add-btn';
+    addElem.innerHTML = `
+      <div class="quicklink-icon quicklink-add-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+      </div>
+      <span class="quicklink-title" data-i18n="addlink">添加</span>
+    `;
+    addElem.addEventListener('click', () => openAddModal());
+    return addElem;
+  }
+
+  // 只同步"添加"按钮的文案；语言切换时无需整页重扫，也不用重建列表
+  function syncQuicklinksLanguage() {
+    if (!quicklinksElem) return;
+    const label = quicklinksElem.querySelector('.quicklink-add-btn .quicklink-title');
+    if (!label) return;
+    const dict = window._i18nDict
+      || i18nData[getResolvedLanguageCode(localStorage.getItem('liteStart_language') || 'auto')]
+      || i18nData['zh-CN'];
+    if (dict && dict.addlink !== undefined) label.textContent = dict.addlink;
+  }
+
+  // 渲染快速链接列表
+  // 仅在「列数 / 行数设置 / 数据」变化时重建 DOM，窗口缩放不会引发无谓的重排
+  function renderQuicklinks(force) {
+    if (!quicklinksElem) return;
+
+    const rows = quicklinksElem.getAttribute('rows') || '0';
+    const perRow = quicklinksColumnsPerRow(rows);
+    quicklinksColumns = perRow;
+
+    // 关闭快速链接：清空内容并退出
+    if (rows === '0') {
+      quicklinksElem.textContent = '';
+      quicklinksElem.style.removeProperty('--quicklinks-content-width');
+      quicklinksLastRenderKey = 'off';
+      window.__qlDebug.columns = perRow;
+      window.__qlDebug.lastRows = rows;
+      return;
+    }
+
+    const maxItems = perRow * parseInt(rows, 10);
+    // 本次真正要渲染的项数（已达到上限时不再显示"添加"按钮）
+    const shownLinks = quicklinksList.slice(0, maxItems);
+    const visibleCount = shownLinks.length + (quicklinksList.length < maxItems ? 1 : 0);
+    // 容器内容宽度按"最后一行实际有多少项"计算，因此左右都不会残留空档
+    const contentWidth = quicklinksWidthForColumns(Math.min(perRow, Math.max(1, visibleCount)));
+    const renderKey = [rows, perRow, quicklinksList.length, quicklinksList.map(i => i.id).join(',')].join('|');
+    const widthChanged = quicklinksElem.style.getPropertyValue('--quicklinks-content-width') !== contentWidth + 'px';
+
+    if (!force && renderKey === quicklinksLastRenderKey && !widthChanged) return;
+    quicklinksLastRenderKey = renderKey;
+    quicklinksElem.style.setProperty('--quicklinks-content-width', contentWidth + 'px');
+
+    // 整体重建：链接项在前，"添加"按钮在末尾
+    const fragment = document.createDocumentFragment();
+    shownLinks.forEach(item => {
+      fragment.appendChild(createQuicklinkNode(item));
+    });
+    // 未超出显示上限时才显示"添加"按钮
+    if (quicklinksList.length < maxItems) {
+      fragment.appendChild(createQuicklinkAddNode());
+    }
+
+    quicklinksElem.textContent = '';
+    quicklinksElem.appendChild(fragment);
+    syncQuicklinksLanguage();
+
+    window.__qlDebug.renders += 1;
+    window.__qlDebug.columns = perRow;
+    window.__qlDebug.lastRows = rows;
+  }
+
+  // 窗口尺寸变化：合并到下一帧处理，并且只在列数真正变化时才重建 DOM
+  let quicklinksResizeQueued = false;
+  window.addEventListener('resize', () => {
+    if (quicklinksResizeQueued) return;
+    quicklinksResizeQueued = true;
+    requestAnimationFrame(() => {
+      quicklinksResizeQueued = false;
+      if (!quicklinksElem) return;
+      const rows = quicklinksElem.getAttribute('rows');
+      if (rows === '0') return;
+      if (quicklinksColumnsPerRow(rows) !== quicklinksColumns) renderQuicklinks();
+    });
+  });
 
 
   // ========== 拖拽事件处理函数 ==========

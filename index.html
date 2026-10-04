@@ -1034,10 +1034,12 @@
     /* 快速链接列表 */
     ntp-quicklinks {
       grid-row: 7; /* 宽度随窗口自适应 */
-      width: min(844px, calc(100% - 32px));
+      width: var(--quicklinks-content-width, 752px);
+      max-width: 100%;
       min-height: 60px;
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;             /* 2 行模式靠换行实现 */
       justify-content: center;
       align-items: center;
       gap: 16px;
@@ -1046,12 +1048,6 @@
 
     ntp-quicklinks[rows="0"] {
       display: none;
-    }
-
-    ntp-quicklinks[rows="2"] {
-      height: auto;
-      max-width: 844px;
-      flex-wrap: wrap;
     }
 
     .quicklink-item {
@@ -1452,14 +1448,11 @@
       display: none;
     }
 
-    /* 响应式适配 */
+    /* 响应式适配
+       注：ntp-quicklinks 的宽度已交由脚本按列数计算，这里不再写死，
+       避免媒体查询档位与「实际放得下的项数」不一致而留下空档。 */
     @media (max-width: 1267px) {
       #search-container { width: 528px; }
-      ntp-quicklinks { width: 674px; }
-    }
-
-    @media (max-width: 1097px) {
-      ntp-quicklinks { width: 419px; }
     }
 
     @media (max-width: 955px) {
@@ -1468,7 +1461,6 @@
 
     @media (max-width: 643px) {
       #search-container { width: 343px; }
-      ntp-quicklinks { width: 343px; }
       #header { padding: 0 12px; }
       #logo-text { width: 100px; }
       #logo-icon { height: 32px; }
@@ -1477,7 +1469,6 @@
 
     @media (max-width: 343px) {
       ntp-shell { min-width: auto; }
-      ntp-quicklinks { width: 100%; }
       #search-container { width: 90%; }
       #fakebox { height: 32px; }
       #suggestions-box { top: 32px; }
@@ -2004,18 +1995,8 @@
           </div>
         </div>
 
-        <!-- 快速链接列表（动态渲染） -->
-        <ntp-quicklinks id="quicklinks" rows="0">
-          <!-- 添加按钮 -->
-          <div class="quicklink-item quicklink-add-btn quicklink-add-static" style="display: none;">
-            <div class="quicklink-icon quicklink-add-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-              </svg>
-            </div>
-            <span class="quicklink-title" data-i18n="addlink">添加</span>
-          </div>
-        </ntp-quicklinks>
+        <!-- 快速链接列表（全部由脚本按可用宽度动态渲染） -->
+        <ntp-quicklinks id="quicklinks" rows="0"></ntp-quicklinks>
       </div>
     </ntp-shell>
 
