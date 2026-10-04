@@ -168,11 +168,12 @@ const i18nData = {
     elementSpacing: '元素排布',
     layoutGapTitle: '标题与搜索框间距',
     layoutGapLinks: '搜索框与快捷方式间距',
+    layoutOffsetX: '水平偏移',
     layoutOffsetY: '垂直偏移',
     layoutAlign: '元素对齐',
-    alignLeft: '靠左',
+    alignLeft: '左端对齐',
     alignCenter: '居中',
-    alignRight: '靠右',
+    alignRight: '右端对齐',
   },
   'zh-TW': {
     pageTitle: '新分頁',
@@ -294,11 +295,12 @@ const i18nData = {
     elementSpacing: '元素排列',
     layoutGapTitle: '標題與搜尋框間距',
     layoutGapLinks: '搜尋框與快速連結間距',
+    layoutOffsetX: '水平偏移',
     layoutOffsetY: '垂直偏移',
     layoutAlign: '元素對齊',
-    alignLeft: '靠左',
+    alignLeft: '左端對齊',
     alignCenter: '居中',
-    alignRight: '靠右',
+    alignRight: '右端對齊',
  },
   'zh-WY': {
     pageTitle: '新籤頁',
@@ -376,11 +378,12 @@ const i18nData = {
     elementSpacing: '諸元之布',
     layoutGapTitle: '題與搜器之隔',
     layoutGapLinks: '搜器與捷徑之隔',
+    layoutOffsetX: '左右之移',
     layoutOffsetY: '上下之移',
     layoutAlign: '諸元之齊',
-    alignLeft: '倚左',
+    alignLeft: '左端相齊',
     alignCenter: '居中',
-    alignRight: '倚右',
+    alignRight: '右端相齊',
     addlink: '增',
     accountDetails: '改易簡策，存真去偽',
     manageProfiles: '掌檔',
@@ -526,11 +529,12 @@ const i18nData = {
     elementSpacing: 'Element Spacing',
     layoutGapTitle: 'Title ↔ Search Box',
     layoutGapLinks: 'Search Box ↔ Quick Links',
+    layoutOffsetX: 'Horizontal Offset',
     layoutOffsetY: 'Vertical Offset',
     layoutAlign: 'Element Alignment',
-    alignLeft: 'Left',
+    alignLeft: 'Align left edges',
     alignCenter: 'Center',
-    alignRight: 'Right',
+    alignRight: 'Align right edges',
 
   },
   'ja': {
@@ -654,11 +658,12 @@ const i18nData = {
     elementSpacing: '要素の配置',
     layoutGapTitle: 'タイトルと検索ボックスの間隔',
     layoutGapLinks: '検索ボックスとクイックリンクの間隔',
+    layoutOffsetX: '水平オフセット',
     layoutOffsetY: '垂直オフセット',
     layoutAlign: '要素の整列',
-    alignLeft: '左揃え',
+    alignLeft: '左端を揃える',
     alignCenter: '中央',
-    alignRight: '右揃え',
+    alignRight: '右端を揃える',
   },
   'ru': {
     pageTitle: 'Новая вкладка',
@@ -782,11 +787,12 @@ const i18nData = {
     elementSpacing: 'Расположение элементов',
     layoutGapTitle: 'Заголовок ↔ поиск',
     layoutGapLinks: 'Поиск ↔ быстрые ссылки',
+    layoutOffsetX: 'Горизонтальное смещение',
     layoutOffsetY: 'Вертикальное смещение',
     layoutAlign: 'Выравнивание элементов',
-    alignLeft: 'По левому краю',
+    alignLeft: 'По левым краям',
     alignCenter: 'По центру',
-    alignRight: 'По правому краю',
+    alignRight: 'По правым краям',
 
   }
 };
@@ -2332,10 +2338,11 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_custom_engine_config',
     'ntp_user_profile',
     'ntp_custom_wallpaper',
-    // 主题模式与布局微调（间距/对齐/垂直偏移）
+    // 主题模式与布局微调（间距/对齐/水平与垂直偏移）
     'ntp_theme_mode',
     'ntp_layout_gap_title',
     'ntp_layout_gap_links',
+    'ntp_layout_offset_x',
     'ntp_layout_offset_y',
     'ntp_layout_align'
   ];
@@ -2875,39 +2882,68 @@ inputOnlineUrl?.addEventListener('input', () => {
   // ===== 布局微调：三元素间距 / 对齐 / 垂直偏移 =====
   const rangeGapTitle = document.getElementById('range-gap-title');
   const rangeGapLinks = document.getElementById('range-gap-links');
+  const rangeOffsetX = document.getElementById('range-offset-x');
   const rangeOffsetY = document.getElementById('range-offset-y');
   const valueGapTitle = document.getElementById('value-gap-title');
   const valueGapLinks = document.getElementById('value-gap-links');
+  const valueOffsetX = document.getElementById('value-offset-x');
   const valueOffsetY = document.getElementById('value-offset-y');
   const selectLayoutAlign = document.getElementById('select-layout-align');
 
   let layoutGapTitle = Storage.get('ntp_layout_gap_title', 72);
   let layoutGapLinks = Storage.get('ntp_layout_gap_links', 64);
+  let layoutOffsetX = Storage.get('ntp_layout_offset_x', 0);
   let layoutOffsetY = Storage.get('ntp_layout_offset_y', 0);
   let layoutAlign = Storage.get('ntp_layout_align', 'center');
 
   // 对齐取值 -> #inner 的 justify-items
   const LAYOUT_ALIGN_VALUES = { left: 'start', center: 'center', right: 'end' };
 
-  // 把间距/对齐/垂直偏移写入 CSS 变量（#inner 网格与 展望 布局均引用这些变量）
+  // 对齐基准线两侧的内缩量：
+  // 以最宽的搜索框为基准，靠左/靠右时三个元素各自在“基准列”内左端/右端对齐；
+  // 两侧内缩相等，因此搜索框（基准列）本身的位置完全不变，主体位置保持原样。
+  function layoutAlignInset() {
+    if (layoutAlign === 'center') return 0;
+    const viewportWidth = document.documentElement.clientWidth;
+    const refWidth = searchContainer ? searchContainer.getBoundingClientRect().width : 0;
+    if (!viewportWidth || !refWidth) return 0;
+    return Math.max(0, Math.round((viewportWidth - refWidth) / 2));
+  }
+
+  // 把间距/对齐/偏移写入 CSS 变量（#inner 网格与 展望 布局均引用这些变量）
   function applyLayoutTuning() {
     const rootStyle = document.documentElement.style;
     rootStyle.setProperty('--layout-gap-title', layoutGapTitle + 'px');
     rootStyle.setProperty('--layout-gap-links', layoutGapLinks + 'px');
+    rootStyle.setProperty('--layout-offset-x', layoutOffsetX + 'px');
     rootStyle.setProperty('--layout-offset-y', layoutOffsetY + 'px');
     rootStyle.setProperty('--layout-align', LAYOUT_ALIGN_VALUES[layoutAlign] || 'center');
+    rootStyle.setProperty('--layout-align-inset', layoutAlignInset() + 'px');
 
     if (valueGapTitle) valueGapTitle.textContent = layoutGapTitle + 'px';
     if (valueGapLinks) valueGapLinks.textContent = layoutGapLinks + 'px';
+    if (valueOffsetX) valueOffsetX.textContent = layoutOffsetX + 'px';
     if (valueOffsetY) valueOffsetY.textContent = layoutOffsetY + 'px';
   }
 
   // 控件初始值回填
   if (rangeGapTitle) rangeGapTitle.value = layoutGapTitle;
   if (rangeGapLinks) rangeGapLinks.value = layoutGapLinks;
+  if (rangeOffsetX) rangeOffsetX.value = layoutOffsetX;
   if (rangeOffsetY) rangeOffsetY.value = layoutOffsetY;
   if (selectLayoutAlign) selectLayoutAlign.value = layoutAlign;
   applyLayoutTuning();
+
+  // 窗口尺寸变化时重算对齐基准（搜索框宽度随断点变化）
+  let layoutTuningResizeQueued = false;
+  window.addEventListener('resize', () => {
+    if (layoutTuningResizeQueued) return;
+    layoutTuningResizeQueued = true;
+    requestAnimationFrame(() => {
+      layoutTuningResizeQueued = false;
+      applyLayoutTuning();
+    });
+  });
 
   // 间距/偏移滑块：拖动即时生效并保存
   rangeGapTitle?.addEventListener('input', (e) => {
@@ -2922,13 +2958,19 @@ inputOnlineUrl?.addEventListener('input', () => {
     applyLayoutTuning();
   });
 
+  rangeOffsetX?.addEventListener('input', (e) => {
+    layoutOffsetX = Number(e.target.value);
+    Storage.set('ntp_layout_offset_x', layoutOffsetX);
+    applyLayoutTuning();
+  });
+
   rangeOffsetY?.addEventListener('input', (e) => {
     layoutOffsetY = Number(e.target.value);
     Storage.set('ntp_layout_offset_y', layoutOffsetY);
     applyLayoutTuning();
   });
 
-  // 水平对齐下拉
+  // 元素对齐（左端对齐 / 居中 / 右端对齐）
   selectLayoutAlign?.addEventListener('change', (e) => {
     layoutAlign = e.target.value;
     Storage.set('ntp_layout_align', layoutAlign);

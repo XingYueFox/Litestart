@@ -893,15 +893,22 @@
 
     #inner {
       display: grid;
-      /* 布局微调：间距/对齐/垂直偏移由脚本写入 --layout-* 变量（见「页面布局」页） */
+      /* 布局微调：间距/对齐/偏移由脚本写入 --layout-* 变量（见「页面布局」页） */
       grid-template-rows: 1fr auto var(--layout-gap-title, 72px) 46px var(--layout-gap-links, 64px) 0px auto 1fr;
+      /* 元素对齐：居中=各自居中（主体位置不变）；
+         靠左/靠右=三个元素的左端/右端对齐到同一条基准线（脚本按搜索框宽度算出的内缩量），
+         因为两侧内缩相等，最宽的搜索框位置不变 */
       justify-items: var(--layout-align, center);
+      box-sizing: border-box;
+      padding-left: var(--layout-align-inset, 0px);
+      padding-right: var(--layout-align-inset, 0px);
       position: absolute;
       top: 0;
       width: 100%;
       height: 100vh;
       z-index: 2;
-      transform: translateY(var(--layout-offset-y, 0px));
+      /* 水平/垂直偏移 */
+      transform: translate(var(--layout-offset-x, 0px), var(--layout-offset-y, 0px));
     }
 
     #logo {
@@ -2153,6 +2160,14 @@
                   </div>
 
                   <div class="setting-slider-block">
+                    <div class="setting-label-group" data-i18n="layoutOffsetX">水平偏移</div>
+                    <div class="setting-slider-line">
+                      <input type="range" class="setting-slider" id="range-offset-x" min="-400" max="400" step="4" value="0">
+                      <span class="setting-slider-value" id="value-offset-x">0px</span>
+                    </div>
+                  </div>
+
+                  <div class="setting-slider-block">
                     <div class="setting-label-group" data-i18n="layoutOffsetY">垂直偏移</div>
                     <div class="setting-slider-line">
                       <input type="range" class="setting-slider" id="range-offset-y" min="-240" max="240" step="4" value="0">
@@ -2163,9 +2178,9 @@
                   <div class="settings-card-title" style="margin-top: 12px;" data-i18n="layoutAlign">元素对齐</div>
                   <div class="custom-select-wrapper">
                     <select id="select-layout-align" class="select-box" tabindex="-1" aria-label="元素对齐">
-                      <option value="left" data-i18n="alignLeft">靠左</option>
+                      <option value="left" data-i18n="alignLeft">左端对齐</option>
                       <option value="center" data-i18n="alignCenter">居中</option>
-                      <option value="right" data-i18n="alignRight">靠右</option>
+                      <option value="right" data-i18n="alignRight">右端对齐</option>
                     </select>
                     <div class="custom-select-display" data-for="select-layout-align">
                       <span class="custom-select-text"></span>
