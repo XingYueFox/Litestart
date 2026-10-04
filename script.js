@@ -1,4 +1,4 @@
-const APP_VERSION = '1.7.1';           // 发行版本
+const APP_VERSION = '1.7.2';           // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -65,7 +65,7 @@ const i18nData = {
     download: '下载',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.7.1 | 更新时间：2026-10-4',
+    litever: '版本 1.7.2 | 更新时间：2026-10-4',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '搜索或输入 Web 地址',
@@ -193,7 +193,7 @@ const i18nData = {
     download: '下載',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.7.1 | 更新時間：2026-10-4',
+    litever: '版本 1.7.2 | 更新時間：2026-10-4',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '搜尋或輸入 Web 地址',
@@ -396,7 +396,7 @@ const i18nData = {
     download: 'Download',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.7.1 | Updated: 2026-10-4',
+    litever: 'Version 1.7.2 | Updated: 2026-10-4',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'Search the web or enter address',
@@ -510,7 +510,7 @@ const i18nData = {
     download: 'ダウンロード',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.7.1 | 更新日: 2026-10-4',
+    litever: 'バージョン 1.7.2 | 更新日: 2026-10-4',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: 'Web を検索またはアドレスを入力',
@@ -623,7 +623,7 @@ const i18nData = {
     download: 'Скачать',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.7.1 | Обновлено: 2026-10-4',
+    litever: 'Версия 1.7.2 | Обновлено: 2026-10-4',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Введите поисковый запрос или URL',
@@ -1619,7 +1619,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgImage = document.getElementById('bg-image');
   const bgOverlay = document.getElementById('bg-overlay');
 
-  // ===== 关于弹窗1.7.1更新 =====
+  // ===== 关于弹窗1.7.2更新 =====
   async function refreshUpdateNotice() {
     const notice = document.getElementById('update-notice');
     if (!notice) return;
