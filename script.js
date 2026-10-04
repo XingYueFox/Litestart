@@ -731,11 +731,13 @@ function applyLanguage(langConfig) {
 
   document.documentElement.lang = langCode.startsWith('zh') ? (langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN') : langCode;
 
-  // 1.替换 innerText
+  // 1.替换 innerText（新增diff，内容一致时跳过重排）
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (dict[key] !== undefined) {
-      el.innerText = dict[key];
+    const target = dict[key];
+    // textContent 读取不触发重排；内容相同就完全跳过写入
+    if (target !== undefined && el.textContent !== target) {
+      el.textContent = target;
     }
   });
 
@@ -1651,10 +1653,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-about-close')?.addEventListener('click', () => {
     document.getElementById('modal-about')?.classList.remove('active');
   });
-  // 版本信息按钮跳转
-  document.getElementById('btn-versioninfo')?.addEventListener('click', () => {
-    window.location.href = 'https://github.com/XingYueFox/Litestart/releases/tag/v1.7.1';
-  });
 
   // 点击遮罩层关闭
   const modalAbout = document.getElementById('modal-about');
@@ -2081,13 +2079,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const previewImg = wallpaperPreviewContainer.querySelector('img');
         previewImg.addEventListener('error', () => {
           const errWrap = document.createElement('div');
-          errWrap.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:-4px;color:rgba(112,112,112,0.25);';
+          errWrap.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:-4px;color:rgb(255, 255, 255);';
           const errIcon = document.createElement('div');
           errIcon.textContent = '×';
           errIcon.style.cssText = 'font-size:80px;font-weight:700;line-height:1;margin-top:-8px;';
           const errLabel = document.createElement('div');
           errLabel.textContent = 'ERROR';
-          errLabel.style.cssText = 'font-size:14px;font-weight:600;letter-spacing:2px;margin-top:4px;color:rgba(112,112,112,0.4);';
+          errLabel.style.cssText = 'font-size:14px;font-weight:600;letter-spacing:2px;margin-top:4px;';
           errWrap.appendChild(errIcon);
           errWrap.appendChild(errLabel);
           previewImg.replaceWith(errWrap);
@@ -2097,8 +2095,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ===== 初始化配置（重置）=====
-  // 重置入口已移至「管理配置文件」弹窗的操作列表：选中“初始化配置”后点击“下一步”打开确认弹窗
+  // ===== 初始化配置已迁移 =====
   // ===== 重置确认弹窗 =====
   const modalResetConfirm = document.getElementById('modal-reset-confirm');
   const btnResetCancel = document.getElementById('btn-reset-cancel');
@@ -2656,6 +2653,11 @@ inputOnlineUrl?.addEventListener('input', () => {
   btnCloseLayoutModal?.addEventListener('click', closeLayoutModal);
   btnLayoutClose?.addEventListener('click', closeLayoutModal);
 
+  // 点击遮罩空白区域关闭编辑页面布局弹窗
+  modalLayout?.addEventListener('click', (e) => {
+    if (e.target === modalLayout) closeLayoutModal();
+  });
+
 
   // 设置面板切换监听
   selectEngine?.addEventListener('change', (e) => {
@@ -2927,21 +2929,20 @@ inputOnlineUrl?.addEventListener('input', () => {
   //=====快捷方式自适应计算--结束=====
 
 
-  function renderQuicklinks() {
-  if (!quicklinksElem) return;
-  const rows = quicklinksElem.getAttribute('rows');
-  const maxItems = getMaxQuicklinks(rows);
-
-  // 窗口尺寸变化时，重新计算单行可显示的快捷方式数量
+  // 窗口尺寸变化时重渲染修复
   let quicklinksResizeTimer = null;
   window.addEventListener('resize', () => {
-    if (quicklinksResizeTimer) clearTimeout(quicklinksResizeTimer);
+    clearTimeout(quicklinksResizeTimer);
     quicklinksResizeTimer = setTimeout(() => {
-      // 关闭状态下不渲染
       if (quicklinksElem?.getAttribute('rows') === '0') return;
       renderQuicklinks();
     }, 120);
   });
+
+  function renderQuicklinks() {
+  if (!quicklinksElem) return;
+  const rows = quicklinksElem.getAttribute('rows');
+  const maxItems = getMaxQuicklinks(rows);
 
   // 获取静态添加按钮（如果不存在则创建）
   let addBtnStatic = quicklinksElem.querySelector('.quicklink-add-static');

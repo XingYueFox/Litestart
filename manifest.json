@@ -21,7 +21,9 @@
     "https://bing.biturl.top/",
     "https://api.xinac.net/*",
     "https://suggestion.baidu.com/*",
-    "https://suggestqueries.google.com/*"
+    "https://suggestqueries.google.com/*",
+    "https://api.github.com/repos/XingYueFox/Litestart/releases/latest",
+    "https://api.github.com/repos/XingYueFox/Litestart/tags"
   ],
 
   "icons": {
