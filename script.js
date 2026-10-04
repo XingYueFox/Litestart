@@ -1,6 +1,11 @@
 const APP_VERSION = '1.7.2';           // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
+// 当前是否暗色主题：读取 <html data-theme>（由头部脚本与设置面板写入）
+function isDarkTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'dark';
+}
+
 const logos = {
   bing: `
     <svg aria-hidden="true" id="logo-icon" width="48" height="48" viewBox="0 0 48 48">
@@ -13,17 +18,13 @@ const logos = {
       <path id="logo-text-path" d="M31.19 9.66v28.68H26.2v-22.5h-.1l-8.86 22.5h-3.29L4.9 15.84h-.1v22.5H.22V9.66H7.4l8.26 21.2h.1l8.67-21.2h6.77Zm4.08 2.2c0-.8.3-1.5.9-2 .6-.5 1.29-.8 2.08-.8.9 0 1.6.3 2.1.9.5.5.9 1.2.9 2 0 .79-.3 1.49-.9 1.98-.6.5-1.3.8-2.1.8-.9 0-1.49-.3-2.09-.8-.5-.7-.9-1.39-.9-2.09Zm5.37 5.87v20.6h-4.87v-20.6h4.87Zm14.74 17.12a9.16 9.16 0 0 0 4.78-1.79v4.48c-.8.5-1.7.8-2.7 1-.99.2-2.08.3-3.28.3-3.08 0-5.47-.9-7.36-2.9a9.98 9.98 0 0 1-2.9-7.26c0-3.29 1-6.07 2.9-8.16 1.89-2.1 4.68-3.19 8.26-3.19.9 0 1.8.1 2.69.3.9.3 1.69.5 2.19.8v4.67c-.7-.5-1.5-1-2.3-1.29-.79-.3-1.58-.5-2.38-.5-1.9 0-3.49.6-4.68 1.9-1.2 1.29-1.8 2.88-1.8 5.07 0 2.1.5 3.68 1.7 4.88a7.45 7.45 0 0 0 4.88 1.7ZM73.9 17.43c.4 0 .7 0 1.1.1.29.1.59.1.79.2v4.88c-.3-.2-.6-.3-1.1-.5-.5-.2-1.1-.3-1.79-.3-1.2 0-2.19.5-2.99 1.5-.8.99-1.29 2.48-1.29 4.67v10.36h-4.88V17.73h4.88V21h.1c.5-1.1 1.1-1.99 1.99-2.68.8-.6 1.9-.9 3.19-.9Zm2.09 10.95c0-3.38.9-6.07 2.88-8.06 1.9-2 4.58-2.99 8.07-2.99 3.18 0 5.67.9 7.46 2.89 1.8 1.89 2.7 4.48 2.7 7.76 0 3.29-.9 5.98-2.9 7.97-1.89 1.99-4.47 2.98-7.86 2.98-3.19 0-5.67-.9-7.57-2.78-1.89-2-2.78-4.58-2.78-7.77Zm5.07-.2c0 2.1.5 3.78 1.5 4.88a5.4 5.4 0 0 0 4.18 1.7c1.8 0 3.09-.6 4.08-1.7.9-1.1 1.4-2.79 1.4-5.08 0-2.19-.5-3.88-1.5-4.98a4.97 4.97 0 0 0-3.98-1.69c-1.8 0-3.09.6-4.08 1.8-1.2 1.19-1.6 2.88-1.6 5.07Zm23.2-4.98c0 .7.2 1.3.7 1.7.5.4 1.4.9 2.89 1.49 1.89.8 3.28 1.7 4.08 2.59.8 1 1.2 2.09 1.2 3.48 0 1.9-.7 3.49-2.3 4.68-1.5 1.2-3.48 1.8-6.07 1.8a15.8 15.8 0 0 1-5.58-1.1v-4.88c.9.6 1.9 1.1 2.9 1.5.99.3 1.88.5 2.78.5 1.1 0 1.89-.1 2.39-.5.5-.3.8-.8.8-1.5s-.3-1.3-.8-1.7c-.5-.49-1.6-.99-3.09-1.59a8.89 8.89 0 0 1-3.78-2.48 5.7 5.7 0 0 1-1.1-3.59c0-1.89.7-3.38 2.2-4.58a8.8 8.8 0 0 1 5.67-1.79c.7 0 1.6.1 2.39.3.9.1 1.69.4 2.29.6v4.58c-.7-.4-1.4-.8-2.3-1.1-.89-.3-1.69-.5-2.48-.5-.9 0-1.7.2-2.1.5-.39.5-.69.9-.69 1.6Zm10.85 5.18c0-3.38.9-6.07 2.89-8.06 2-2 4.58-2.99 8.06-2.99 3.19 0 5.68.9 7.47 2.89 1.8 1.89 2.69 4.48 2.69 7.76 0 3.29-.9 5.98-2.89 7.97-1.89 1.99-4.48 2.98-7.86 2.98-3.19 0-5.68-.9-7.57-2.78-1.8-2-2.79-4.58-2.79-7.77Zm5.08-.2c0 2.1.5 3.78 1.5 4.88a5.4 5.4 0 0 0 4.17 1.7c1.8 0 3.1-.6 4.09-1.7.9-1.1 1.4-2.79 1.4-5.08 0-2.19-.5-3.88-1.5-4.98a4.96 4.96 0 0 0-3.98-1.69c-1.8 0-3.1.6-4.09 1.8-1.1 1.19-1.59 2.88-1.59 5.07Zm32.16-6.47h-7.27v16.63h-4.88V21.7h-3.48v-3.98h3.48v-2.89c0-2.19.7-3.88 2.1-5.28a7.28 7.28 0 0 1 5.37-2.09c.6 0 1.1 0 1.6.1.49.1.89.1 1.19.3v4.18c-.1-.1-.5-.2-.9-.3-.4-.1-.9-.2-1.4-.2-.99 0-1.79.3-2.28.9-.5.7-.8 1.6-.8 2.79v2.49h7.27v-4.68l4.88-1.5v6.08h4.87v3.98h-4.87v9.66c0 1.3.2 2.19.7 2.69.49.5 1.19.8 2.18.8.3 0 .6-.1 1-.2s.7-.3 1.1-.5v3.98c-.3.2-.8.3-1.5.5-.7.1-1.4.2-2.1.2-2.08 0-3.58-.5-4.57-1.7-1-1.1-1.5-2.69-1.5-4.88V21.71h-.2Z"></path>
     </svg>
   `,
-  baidu: `
-    <picture>
-      <source srcset="img/logo/baidu_logo_dark.png" media="(prefers-color-scheme: dark)">
-      <img src="img/logo/baidu_logo_light.png" alt="Baidu Logo" class="baidu-logo-img">
-    </picture>
+  // 百度/谷歌标题图为深浅两套位图：改为按当前主题动态选图
+  // （原来用 <picture><source media="(prefers-color-scheme: dark)">，无法跟随面板里的手动主题）
+  baidu: () => `
+    <img src="img/logo/baidu_logo_${isDarkTheme() ? 'dark' : 'light'}.png" alt="Baidu Logo" class="baidu-logo-img">
   `,
-  google: `
-    <picture>
-      <source srcset="img/logo/google_logo_dark.png" media="(prefers-color-scheme: dark)">
-      <img src="img/logo/google_logo_light.png" alt="Google Logo" class="google-logo-img">
-    </picture>
+  google: () => `
+    <img src="img/logo/google_logo_${isDarkTheme() ? 'dark' : 'light'}.png" alt="Google Logo" class="google-logo-img">
   `,
   custom: ``
 };
@@ -157,6 +158,21 @@ const i18nData = {
     selectImageFile: '选择图片',
     removeImage: '删除图片',
     noImageSelected: '未选择图片',
+
+    //页面布局页（第二页）/ 主题模式（新增）
+    back: '返回',
+    themeMode: '主题模式',
+    themeAuto: '跟随系统',
+    themeDark: '深色',
+    themeLight: '浅色',
+    elementSpacing: '元素排布',
+    layoutGapTitle: '标题与搜索框间距',
+    layoutGapLinks: '搜索框与快捷方式间距',
+    layoutOffsetY: '垂直偏移',
+    layoutAlign: '元素对齐',
+    alignLeft: '靠左',
+    alignCenter: '居中',
+    alignRight: '靠右',
   },
   'zh-TW': {
     pageTitle: '新分頁',
@@ -269,6 +285,20 @@ const i18nData = {
     selectImageFile: '選擇圖片',
     removeImage: '刪除圖片',
     noImageSelected: '未選擇圖片',
+    //页面布局页（第二页）/ 主题模式（新增）
+    back: '返回',
+    themeMode: '主題模式',
+    themeAuto: '跟隨系統',
+    themeDark: '深色',
+    themeLight: '淺色',
+    elementSpacing: '元素排列',
+    layoutGapTitle: '標題與搜尋框間距',
+    layoutGapLinks: '搜尋框與快速連結間距',
+    layoutOffsetY: '垂直偏移',
+    layoutAlign: '元素對齊',
+    alignLeft: '靠左',
+    alignCenter: '居中',
+    alignRight: '靠右',
  },
   'zh-WY': {
     pageTitle: '新籤頁',
@@ -337,6 +367,20 @@ const i18nData = {
     forceBingCNDesc: '<b>啟</b>：勒令必應專用中土之版<br><b>關</b>：隨網路之勢自擇。<br>此舉可免代理令主站失其自轉之能。',
     enhancedVisibility: '彰明諸元',
     enhancedVisibilityDesc: '啟背景時，徽標頂鈕之下施輕翳，映於畫圖而愈晰',
+    //页面布局页（第二页）/ 主题模式（新增）
+    back: '返',
+    themeMode: '主題',
+    themeAuto: '隨機',
+    themeDark: '玄夜',
+    themeLight: '昭明',
+    elementSpacing: '諸元之布',
+    layoutGapTitle: '題與搜器之隔',
+    layoutGapLinks: '搜器與捷徑之隔',
+    layoutOffsetY: '上下之移',
+    layoutAlign: '諸元之齊',
+    alignLeft: '倚左',
+    alignCenter: '居中',
+    alignRight: '倚右',
     addlink: '增',
     accountDetails: '改易簡策，存真去偽',
     manageProfiles: '掌檔',
@@ -473,6 +517,20 @@ const i18nData = {
     selectImageFile: 'Select Image',
     removeImage: 'Remove Image',
     noImageSelected: 'No Image Selected',
+    // Layout page (2nd page) / theme mode (new)
+    back: 'Back',
+    themeMode: 'Theme',
+    themeAuto: 'Follow system',
+    themeDark: 'Dark',
+    themeLight: 'Light',
+    elementSpacing: 'Element Spacing',
+    layoutGapTitle: 'Title ↔ Search Box',
+    layoutGapLinks: 'Search Box ↔ Quick Links',
+    layoutOffsetY: 'Vertical Offset',
+    layoutAlign: 'Element Alignment',
+    alignLeft: 'Left',
+    alignCenter: 'Center',
+    alignRight: 'Right',
 
   },
   'ja': {
@@ -587,6 +645,20 @@ const i18nData = {
     selectImageFile: '画像を選択',
     removeImage: '画像を削除',
     noImageSelected: '画像が選択されていません',
+    // レイアウトページ（2 ページ目）/ テーマ（新規）
+    back: '戻る',
+    themeMode: 'テーマ',
+    themeAuto: 'システムに従う',
+    themeDark: 'ダーク',
+    themeLight: 'ライト',
+    elementSpacing: '要素の配置',
+    layoutGapTitle: 'タイトルと検索ボックスの間隔',
+    layoutGapLinks: '検索ボックスとクイックリンクの間隔',
+    layoutOffsetY: '垂直オフセット',
+    layoutAlign: '要素の整列',
+    alignLeft: '左揃え',
+    alignCenter: '中央',
+    alignRight: '右揃え',
   },
   'ru': {
     pageTitle: 'Новая вкладка',
@@ -701,6 +773,20 @@ const i18nData = {
     selectImageFile: 'Выбрать изображение',
     removeImage: 'Удалить изображение',
     noImageSelected: 'Изображение не выбрано',
+    // Страница макета (2-я страница) / тема (новое)
+    back: 'Назад',
+    themeMode: 'Тема',
+    themeAuto: 'Как в системе',
+    themeDark: 'Тёмная',
+    themeLight: 'Светлая',
+    elementSpacing: 'Расположение элементов',
+    layoutGapTitle: 'Заголовок ↔ поиск',
+    layoutGapLinks: 'Поиск ↔ быстрые ссылки',
+    layoutOffsetY: 'Вертикальное смещение',
+    layoutAlign: 'Выравнивание элементов',
+    alignLeft: 'По левому краю',
+    alignCenter: 'По центру',
+    alignRight: 'По правому краю',
 
   }
 };
@@ -1417,7 +1503,8 @@ function decodeInput(str) {
 
   const settingsPanel = document.getElementById('popover-settings');
   if (settingsPanel) {
-    settingsPanel.addEventListener('scroll', repositionOrClose);
+    // 捕获阶段监听：分页后真正的滚动容器是内层 .settings-page，冒泡的 scroll 不会传到面板
+    settingsPanel.addEventListener('scroll', repositionOrClose, true);
   }
   window.addEventListener('resize', repositionOrClose);
   window.addEventListener('scroll', repositionOrClose, true);
@@ -1552,13 +1639,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoContainer = document.getElementById('logo');
   const selectLanguage = document.getElementById('select-language');
 
-  // 编辑页面布局弹窗相关 DOM
-  const modalLayout = document.getElementById('modal-layout');
+  // 页面布局页（设置悬浮窗第二页）相关 DOM
   const toggleLogoSwitch = document.getElementById('toggle-logo-switch');
   const selectLayout = document.getElementById('select-layout');
   const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
-  const btnCloseLayoutModal = document.getElementById('btn-close-layout-modal');
-  const btnLayoutClose = document.getElementById('btn-layout-close');
   
   const searchContainer = document.getElementById('search-container');
   const fakebox = document.getElementById('fakebox');
@@ -1675,12 +1759,37 @@ document.addEventListener('DOMContentLoaded', () => {
   let draggedId = null;//拖拽实现
   let selectedSuggestionIndex = -1;
 
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+  // ===== 主题模式：跟随系统 / 深色 / 浅色 =====
+  // 结果统一写到 <html data-theme="dark|light">，CSS 的暗色变量已改为由该属性驱动
+  const selectTheme = document.getElementById('select-theme');
+  const darkSchemeMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  let themeMode = Storage.get('ntp_theme_mode', 'auto');
+  if (themeMode !== 'dark' && themeMode !== 'light') themeMode = 'auto';
+
+  // 应用主题模式：更新 data-theme、标签页图标，以及需要按主题取图的标题图
+  function applyThemeMode(mode, { persist = true } = {}) {
+    themeMode = (mode === 'dark' || mode === 'light') ? mode : 'auto';
+    if (persist) Storage.set('ntp_theme_mode', themeMode);
+
+    const isDark = themeMode === 'dark' || (themeMode === 'auto' && darkSchemeMedia.matches);
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+
     const link = document.getElementById('favicon');
     if (link) {
-      const icon = e.matches ? 'img/icon_d.png' : 'img/icon_l.png';
-      link.href = icon + '?r=' + Math.random();
+      link.href = (isDark ? 'img/icon_d.png' : 'img/icon_l.png') + '?r=' + Math.random();
     }
+    // 百度/谷歌标题图为位图，需要按新主题重新取图
+    if (selectEngine) setLogo(selectEngine.value);
+  }
+
+  if (selectTheme) {
+    selectTheme.value = themeMode;
+    selectTheme.addEventListener('change', (e) => applyThemeMode(e.target.value));
+  }
+
+  // 跟随系统时，系统主题变化需要同步（手动指定深/浅色时忽略）
+  darkSchemeMedia.addEventListener('change', function () {
+    if (themeMode === 'auto') applyThemeMode('auto', { persist: false });
   });
 
   // 默认与自定义搜索引擎
@@ -1710,21 +1819,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnSettings?.addEventListener('click', (e) => {
     e.stopPropagation();
+    // 收起时重置分页：下次打开从主设置页开始
+    if (popoverSettings?.classList.contains('active')) popoverSettings.removeAttribute('data-page');
     togglePopover(popoverSettings, popoverWaffle);
     // 设置面板打开时，按当前语言同步快速链接的“添加”按钮文案
     if (typeof syncQuicklinksLanguage === 'function') syncQuicklinksLanguage();
   });
 
-  if (btnCloseSettings) {
-    btnCloseSettings.addEventListener('click', () => {
-      popoverSettings.classList.remove('active');
-      document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
-        dd.classList.remove('active');
-        clearDropdownInlineStyles(dd);
-        if (dd._display) dd._display.classList.remove('active');
-      });
+  // 关闭设置悬浮窗（同时把分页复位到主设置页）
+  function closeSettingsPanel() {
+    popoverSettings?.classList.remove('active');
+    popoverSettings?.removeAttribute('data-page');
+    document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
+      dd.classList.remove('active');
+      clearDropdownInlineStyles(dd);
+      if (dd._display) dd._display.classList.remove('active');
     });
   }
+
+  if (btnCloseSettings) {
+    btnCloseSettings.addEventListener('click', closeSettingsPanel);
+  }
+  // 布局页右上角的关闭按钮
+  document.getElementById('btn-close-settings-2')?.addEventListener('click', closeSettingsPanel);
 
   document.addEventListener('click', (e) => {
     if (!popoverWaffle?.contains(e.target) && !btnWaffle?.contains(e.target)) {
@@ -1732,6 +1849,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (!popoverSettings?.contains(e.target) && !btnSettings?.contains(e.target)) {
       popoverSettings?.classList.remove('active');
+      popoverSettings?.removeAttribute('data-page');  // 关闭后回到主设置页
     }
     if (!searchContainer?.contains(e.target)) {
       closeSuggestions();
@@ -1755,7 +1873,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (logos[engine] !== undefined) {
-      logoContainer.innerHTML = logos[engine];
+      const logoContent = logos[engine];
+      // 百度/谷歌为函数（按主题取图），其余为静态字符串
+      logoContainer.innerHTML = typeof logoContent === 'function' ? logoContent() : logoContent;
     }
   }
 
@@ -1917,6 +2037,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
   updateForceBingCNRow(savedEngine);
+  // 主题与标题图/图标对齐（头部脚本已提前写入 data-theme，这里做一次兜底同步）
+  applyThemeMode(themeMode, { persist: false });
   document.body.setAttribute('data-layout', savedLayout);
   quicklinksElem?.setAttribute('rows', savedQuicklinksRow);
 
@@ -1998,6 +2120,9 @@ document.addEventListener('DOMContentLoaded', () => {
         bgVideo.classList.remove('loaded');
       }
       if (bgImage) {
+        // 默认壁纸已在显示时同样直接复用，避免重复渐入导致“闪黑”
+        const sameDefault = bgImage.getAttribute('src') === 'img/background.webp' && bgImage.classList.contains('loaded');
+        if (!sameDefault) {
         bgImage.classList.remove('loaded');
         bgImage.style.display = 'block';
         bgImage.src = 'img/background.webp';
@@ -2007,6 +2132,7 @@ document.addEventListener('DOMContentLoaded', () => {
           bgOverlay?.classList.add('loaded');
           bgImage.removeEventListener('load', onDefLoad);
         });
+        }
       }
       setWallpaperTypeTitle('localImage');
       translateSourceLabel();
@@ -2015,6 +2141,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       // 预览文字为动态创建的 data-i18n 节点，需立即翻译一次；语言切换时由 applyLanguage 统一重译
       applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      updateVideoWallpaperFreeze();   // 非视频壁纸：收起“静态帧”层
       return;
     }
 
@@ -2027,11 +2154,17 @@ document.addEventListener('DOMContentLoaded', () => {
     translateSourceLabel();
 
     if (customWallpaperData.type === 'video') {
-      if (bgImage) {
+      // 图片层已隐藏时不再重复写 style/class，避免无谓的样式失效牵连到视频层
+      if (bgImage && bgImage.style.display !== 'none') {
         bgImage.style.display = 'none';
         bgImage.classList.remove('loaded');
       }
       if (bgVideo) {
+        // 同一段壁纸视频已在播放时直接复用，避免先隐藏再等 canplay 造成“壁纸闪黑”
+        const sameVideo = bgVideo.getAttribute('src') === customWallpaperData.url && bgVideo.classList.contains('loaded');
+        if (sameVideo) {
+          bgVideo.style.display = 'block';
+        } else {
         bgVideo.classList.remove('loaded');
         bgVideo.style.display = 'block';
         bgVideo.src = customWallpaperData.url;
@@ -2043,6 +2176,7 @@ document.addEventListener('DOMContentLoaded', () => {
           bgVideo.play().catch(() => {});
         };
         bgVideo.addEventListener('canplay', onCanPlay);
+        }
       }
 
       if (wallpaperPreviewContainer) {
@@ -2056,6 +2190,10 @@ document.addEventListener('DOMContentLoaded', () => {
         bgVideo.classList.remove('loaded');
       }
       if (bgImage) {
+        // 同一张壁纸已在显示时直接复用：语言切换等场景会重复调用本函数，
+        // 若每次都移除 .loaded 重新渐入，壁纸会先变透明露出深色底 → 视觉上“闪黑一下”
+        const sameImage = bgImage.getAttribute('src') === customWallpaperData.url && bgImage.classList.contains('loaded');
+        if (!sameImage) {
         bgImage.classList.remove('loaded');
         bgImage.style.display = 'block';
         bgImage.src = customWallpaperData.url;
@@ -2074,6 +2212,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         } else {
           bgImage.addEventListener('load', onLoad);
+        }
         }
       }
 
@@ -2097,6 +2236,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     }
+
+    // 渲染完成后同步“视频壁纸防闪黑”状态：若此刻有浮层打开，保持静态帧顶替视频层
+    updateVideoWallpaperFreeze();
   }
 
 
@@ -2189,7 +2331,13 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_enhanced_visibility',
     'ntp_custom_engine_config',
     'ntp_user_profile',
-    'ntp_custom_wallpaper'
+    'ntp_custom_wallpaper',
+    // 主题模式与布局微调（间距/对齐/垂直偏移）
+    'ntp_theme_mode',
+    'ntp_layout_gap_title',
+    'ntp_layout_gap_links',
+    'ntp_layout_offset_y',
+    'ntp_layout_align'
   ];
   // 以纯字符串保存的设置项（界面语言），导入时需要原样写回
   const RAW_CONFIG_KEYS = ['liteStart_language'];
@@ -2355,6 +2503,68 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInputRestore.value = '';
   });
   
+  // ===== 视频壁纸防“闪黑” =====
+  // 全屏播放的 <video> 会被浏览器提升为硬件覆盖层(overlay)；设置面板里的下拉、弹窗等
+  // UI 层出现/消失时，浏览器要在“覆盖层 ↔ 普通合成”之间来回切换，切换瞬间就会黑一帧。
+  // 处理办法：只要有浮层打开，就把视频层换成同一帧的静态画面（视频仍在后台播放），
+  // 浮层关闭后立刻换回，这样在交互期间完全没有视频层参与合成，黑帧无从出现。
+  const videoFreezeCanvas = document.createElement('canvas');
+  videoFreezeCanvas.id = 'bg-video-freeze';
+  videoFreezeCanvas.setAttribute('aria-hidden', 'true');
+  videoFreezeCanvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;display:none;';
+  bgOverlay?.parentNode?.insertBefore(videoFreezeCanvas, bgOverlay);
+
+  // 把视频当前帧按 object-fit: cover 的方式画进画布
+  function freezeVideoWallpaper() {
+    if (!bgVideo || !bgVideo.videoWidth || !bgVideo.classList.contains('loaded')) return;
+    const vw = bgVideo.videoWidth;
+    const vh = bgVideo.videoHeight;
+    const cw = bgVideo.clientWidth || window.innerWidth;
+    const ch = bgVideo.clientHeight || window.innerHeight;
+    if (!cw || !ch) return;
+
+    if (videoFreezeCanvas.width !== cw || videoFreezeCanvas.height !== ch) {
+      videoFreezeCanvas.width = cw;
+      videoFreezeCanvas.height = ch;
+    }
+    const cctx = videoFreezeCanvas.getContext('2d');
+    if (!cctx) return;
+    const scale = Math.max(cw / vw, ch / vh);
+    const dw = vw * scale;
+    const dh = vh * scale;
+    cctx.drawImage(bgVideo, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+
+    videoFreezeCanvas.style.display = 'block';
+    bgVideo.style.display = 'none';   // 移除视频层；视频未被暂停，恢复时即当前进度
+  }
+
+  // 浮层全部关闭后恢复视频层
+  function unfreezeVideoWallpaper() {
+    videoFreezeCanvas.style.display = 'none';
+    if (customWallpaperData && customWallpaperData.type === 'video' && bgEnabled) {
+      bgVideo.style.display = 'block';
+    }
+  }
+
+  // 只要任意浮层（设置面板 / 左侧菜单 / 任意弹窗）处于打开状态就冻结视频壁纸
+  function updateVideoWallpaperFreeze() {
+    if (!customWallpaperData || customWallpaperData.type !== 'video' || !bgEnabled) {
+      unfreezeVideoWallpaper();
+      return;
+    }
+    const anyPopupOpen = !!document.querySelector(
+      '#popover-settings.active, #popover-waffle.active, .modal-overlay.active'
+    );
+    if (anyPopupOpen) freezeVideoWallpaper();
+    else unfreezeVideoWallpaper();
+  }
+
+  // 监听浮层开关（class 变化）来冻结/恢复
+  const popupFreezeObserver = new MutationObserver(updateVideoWallpaperFreeze);
+  [popoverSettings, popoverWaffle, ...document.querySelectorAll('.modal-overlay')].forEach(el => {
+    if (el) popupFreezeObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
+  });
+
   // 初始化：异步加载壁纸（可能需要从 IndexedDB 取 Blob），再渲染
   (async () => {
     customWallpaperData = await loadWallpaperData();
@@ -2626,7 +2836,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     applyLayout(e.target.value);
   });
 
-  // 关闭弹窗内所有已展开的自定义下拉
+  // 关闭布局页内所有已展开的自定义下拉
   function closeLayoutDropdowns() {
     document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
       dd.classList.remove('active');
@@ -2635,15 +2845,16 @@ inputOnlineUrl?.addEventListener('input', () => {
     });
   }
 
-  // 关闭编辑页面布局弹窗
+  // ===== 设置悬浮窗分页：主设置页 ←→ 页面布局页（横向左移切换）=====
+
+  // 切回主设置页（原布局页左移出、主页面左移进入）
   function closeLayoutModal() {
-    modalLayout?.classList.remove('active');
+    popoverSettings?.removeAttribute('data-page');
     closeLayoutDropdowns();
   }
 
-  // 打开编辑页面布局弹窗
-  btnOpenLayoutModal?.addEventListener('click', () => {
-    popoverSettings?.classList.remove('active');
+  // 切到「页面布局」页：设置悬浮窗内容左移一页
+  function openLayoutPage() {
     closeLayoutDropdowns();
     // 同步为当前实际布局
     if (selectLayout) {
@@ -2651,16 +2862,77 @@ inputOnlineUrl?.addEventListener('input', () => {
         ? (document.body.getAttribute('data-layout') || 'focused')
         : 'hidden';
     }
-    modalLayout?.classList.add('active');
+    popoverSettings?.setAttribute('data-page', 'layout');
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+  }
+
+  // 「编辑页面布局」按钮：不再弹出独立窗口，改为在设置悬浮窗内左移切换
+  btnOpenLayoutModal?.addEventListener('click', openLayoutPage);
+
+  // 布局页左上角「返回」
+  document.getElementById('btn-layout-back')?.addEventListener('click', closeLayoutModal);
+
+  // ===== 布局微调：三元素间距 / 对齐 / 垂直偏移 =====
+  const rangeGapTitle = document.getElementById('range-gap-title');
+  const rangeGapLinks = document.getElementById('range-gap-links');
+  const rangeOffsetY = document.getElementById('range-offset-y');
+  const valueGapTitle = document.getElementById('value-gap-title');
+  const valueGapLinks = document.getElementById('value-gap-links');
+  const valueOffsetY = document.getElementById('value-offset-y');
+  const selectLayoutAlign = document.getElementById('select-layout-align');
+
+  let layoutGapTitle = Storage.get('ntp_layout_gap_title', 72);
+  let layoutGapLinks = Storage.get('ntp_layout_gap_links', 64);
+  let layoutOffsetY = Storage.get('ntp_layout_offset_y', 0);
+  let layoutAlign = Storage.get('ntp_layout_align', 'center');
+
+  // 对齐取值 -> #inner 的 justify-items
+  const LAYOUT_ALIGN_VALUES = { left: 'start', center: 'center', right: 'end' };
+
+  // 把间距/对齐/垂直偏移写入 CSS 变量（#inner 网格与 展望 布局均引用这些变量）
+  function applyLayoutTuning() {
+    const rootStyle = document.documentElement.style;
+    rootStyle.setProperty('--layout-gap-title', layoutGapTitle + 'px');
+    rootStyle.setProperty('--layout-gap-links', layoutGapLinks + 'px');
+    rootStyle.setProperty('--layout-offset-y', layoutOffsetY + 'px');
+    rootStyle.setProperty('--layout-align', LAYOUT_ALIGN_VALUES[layoutAlign] || 'center');
+
+    if (valueGapTitle) valueGapTitle.textContent = layoutGapTitle + 'px';
+    if (valueGapLinks) valueGapLinks.textContent = layoutGapLinks + 'px';
+    if (valueOffsetY) valueOffsetY.textContent = layoutOffsetY + 'px';
+  }
+
+  // 控件初始值回填
+  if (rangeGapTitle) rangeGapTitle.value = layoutGapTitle;
+  if (rangeGapLinks) rangeGapLinks.value = layoutGapLinks;
+  if (rangeOffsetY) rangeOffsetY.value = layoutOffsetY;
+  if (selectLayoutAlign) selectLayoutAlign.value = layoutAlign;
+  applyLayoutTuning();
+
+  // 间距/偏移滑块：拖动即时生效并保存
+  rangeGapTitle?.addEventListener('input', (e) => {
+    layoutGapTitle = Number(e.target.value);
+    Storage.set('ntp_layout_gap_title', layoutGapTitle);
+    applyLayoutTuning();
   });
 
-  btnCloseLayoutModal?.addEventListener('click', closeLayoutModal);
-  btnLayoutClose?.addEventListener('click', closeLayoutModal);
+  rangeGapLinks?.addEventListener('input', (e) => {
+    layoutGapLinks = Number(e.target.value);
+    Storage.set('ntp_layout_gap_links', layoutGapLinks);
+    applyLayoutTuning();
+  });
 
-  // 点击遮罩空白区域关闭编辑页面布局弹窗
-  modalLayout?.addEventListener('click', (e) => {
-    if (e.target === modalLayout) closeLayoutModal();
+  rangeOffsetY?.addEventListener('input', (e) => {
+    layoutOffsetY = Number(e.target.value);
+    Storage.set('ntp_layout_offset_y', layoutOffsetY);
+    applyLayoutTuning();
+  });
+
+  // 水平对齐下拉
+  selectLayoutAlign?.addEventListener('change', (e) => {
+    layoutAlign = e.target.value;
+    Storage.set('ntp_layout_align', layoutAlign);
+    applyLayoutTuning();
   });
 
 
@@ -3514,4 +3786,7 @@ searchInput?.addEventListener('input', () => {
 
   // 初始化自定义下拉组件
   initCustomSelects();
+
+  // 打开新标签页后默认聚焦搜索输入框（聚焦会同时展开历史记录/联想列表）
+  if (searchVisible) searchInput?.focus();
 });
