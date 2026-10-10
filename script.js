@@ -1,4 +1,4 @@
-const APP_VERSION = '1.7.2';           // 发行版本
+const APP_VERSION = '1.8.0';           // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -33,6 +33,7 @@ const i18nData = {
   'zh-CN': {
     pageTitle: '新标签页',
     settingsTitle: '页面设置',
+    guideWaffle: '在此处新建快速链接、导入和导出配置文件',
     close: '关闭',
     back: '返回',
     quicklinkStyle: '快速链接样式',
@@ -71,7 +72,7 @@ const i18nData = {
     download: '下载',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.7.2 | 更新时间：2026-10-4',
+    litever: '版本 1.8.0 | 更新时间：2026-10-10',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '搜索或输入 Web 地址',
@@ -173,6 +174,7 @@ const i18nData = {
   'zh-TW': {
     pageTitle: '新分頁',
     settingsTitle: '頁面設定',
+    guideWaffle: '在此處新增快速連結、匯入和匯出設定檔',
     close: '關閉',
     back: '返回',
     quicklinkStyle: '快速連結樣式',
@@ -211,7 +213,7 @@ const i18nData = {
     download: '下載',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.7.2 | 更新時間：2026-10-4',
+    litever: '版本 1.8.0 | 更新時間：2026-10-10',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '搜尋或輸入 Web 地址',
@@ -297,6 +299,7 @@ const i18nData = {
   'en': {
     pageTitle: 'New Tab',
     settingsTitle: 'Page Settings',
+    guideWaffle: 'Create quicklinks and back up or restore your settings here.',
     close: 'Close',
     back: 'Back',
     quicklinkStyle: 'Quicklink style',
@@ -336,7 +339,7 @@ const i18nData = {
     download: 'Download',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.7.2 | Updated: 2026-10-4',
+    litever: 'Version 1.8.0 | Updated: 2026-10-10',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'Search the web or enter address',
@@ -424,6 +427,7 @@ const i18nData = {
   'ja': {
     pageTitle: '新しいタブ',
     settingsTitle: '設定',
+    guideWaffle: 'ここでクイックリンクの作成や設定の入出力ができます。',
     close: '閉じる',
     back: '戻る',
     quicklinkStyle: 'クイックリンクの表示',
@@ -463,7 +467,7 @@ const i18nData = {
     download: 'ダウンロード',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.7.2 | 更新日: 2026-10-4',
+    litever: 'バージョン 1.8.0 | 更新日: 2026-10-10',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: 'Web を検索またはアドレスを入力',
@@ -550,6 +554,7 @@ const i18nData = {
   'ru': {
     pageTitle: 'Новая вкладка',
     settingsTitle: 'Настройки страницы',
+    guideWaffle: 'Здесь можно создать быстрые ссылки и сохранить настройки.',
     close: 'Закрыть',
     back: 'Назад',
     quicklinkStyle: 'Вид быстрых ссылок',
@@ -589,7 +594,7 @@ const i18nData = {
     download: 'Скачать',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.7.2 | Обновлено: 2026-10-4',
+    litever: 'Версия 1.8.0 | Обновлено: 2026-10-10',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Введите поисковый запрос или URL',
@@ -1550,6 +1555,57 @@ document.addEventListener('DOMContentLoaded', () => {
   const popoverWaffle = document.getElementById('popover-waffle');
   const popoverSettings = document.getElementById('popover-settings');
 
+  // ===== 首次使用引导 =====
+  const guideTipWaffle = document.getElementById('guide-tip-waffle');
+  const activeGuideTips = [];
+
+  const GUIDE_TIP_DELAY = 1000;   // 页面加载完成后延迟多久出现
+  const GUIDE_TIP_FADE = 500;     // 与 CSS 的 opacity 过渡时长保持一致
+  // 气泡落在目标按钮正下方，不越出窗口；小三角对准按钮中心
+  function positionGuideTip(tip, btn) {
+    const rect = btn.getBoundingClientRect();
+    tip.style.top = (rect.bottom + 12) + 'px';
+    tip.style.left = '0px';                     // 先归零再量宽度
+    const width = tip.offsetWidth;
+    let left = rect.right - width;
+    left = Math.max(12, Math.min(left, window.innerWidth - width - 12));
+    tip.style.left = left + 'px';
+    const arrowLeft = Math.max(10, Math.min(rect.left + rect.width / 2 - left - 7, width - 24));
+    tip.style.setProperty('--guide-arrow-left', arrowLeft + 'px');
+  }
+
+  // 目标按钮被隐藏时（例如关掉"显示菜单按钮"），对应引导一并收起
+  function syncGuideTipsAvailability() {
+    activeGuideTips.forEach(item => {
+      item.tip.hidden = getComputedStyle(item.btn).display === 'none';
+    });
+  }
+
+  // 只有点过对应按钮才算"看过"，之后（包括刷新页面）永久不再出现
+  function setupGuideTip(tip, btn, storageKey) {
+    if (!tip || !btn) return;
+    if (Storage.get(storageKey, false)) return;            // 已经点过，不再显示
+    if (getComputedStyle(btn).display === 'none') return;  // 按钮本身不可见就不引导
+
+    tip.hidden = false;
+    positionGuideTip(tip, btn);
+    activeGuideTips.push({ tip, btn });
+
+    // 页面加载完成后再等一会儿才淡入，先让用户看清界面
+    window.setTimeout(() => {
+      if (tip.hidden || Storage.get(storageKey, false)) return;
+      positionGuideTip(tip, btn);
+      tip.classList.add('visible');
+    }, GUIDE_TIP_DELAY);
+
+    btn.addEventListener('click', () => {
+      Storage.set(storageKey, true);
+      tip.classList.remove('visible');                                  // 0.5s 淡出
+      window.setTimeout(() => { tip.hidden = true; }, GUIDE_TIP_FADE);
+      const i = activeGuideTips.findIndex(item => item.tip === tip);
+      if (i >= 0) activeGuideTips.splice(i, 1);
+    }, { once: true });
+  }
   // 面板展开期间，让对应的触发按钮保持"悬停"高亮，直到面板关闭。
   // 用 MutationObserver 跟随面板的 active 类，这样任何关闭路径（再点一次、
   // 点面板外、点菜单项）都会自动取消高亮，不必逐处补代码。
@@ -1903,7 +1959,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgImage = document.getElementById('bg-image');
   const bgOverlay = document.getElementById('bg-overlay');
 
-  // ===== 关于弹窗1.7.2更新 =====
+  // ===== 关于弹窗的更新提示 =====
   async function refreshUpdateNotice() {
     const notice = document.getElementById('update-notice');
     if (!notice) return;
@@ -2103,6 +2159,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.style.display = 'none';
       if (popover) popover.classList.remove('active');
     }
+    syncGuideTipsAvailability();
   }
 
   // 启动时间定时器（每分钟更新一次）
@@ -4060,6 +4117,15 @@ searchInput?.addEventListener('input', () => {
 
   // 初始化自定义下拉组件
   initCustomSelects();
+
+  // 首次使用引导：只在没点过九点菜单时出现
+  setupGuideTip(guideTipWaffle, btnWaffle, 'ntp_guide_waffle_done');
+  window.addEventListener('resize', () => {
+    activeGuideTips.forEach(item => {
+      item.tip.hidden = getComputedStyle(item.btn).display === 'none';
+      positionGuideTip(item.tip, item.btn);
+    });
+  });
 
   // 初始化悬浮滚动条
   updateSettingsScrollbar();
