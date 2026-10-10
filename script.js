@@ -34,6 +34,7 @@ const i18nData = {
     pageTitle: '新标签页',
     settingsTitle: '页面设置',
     close: '关闭',
+    back: '返回',
     quicklinks: '快速链接',
     off: '关闭',
     on: '打开',
@@ -49,6 +50,7 @@ const i18nData = {
     inspirational: '展望',
     focused: '聚焦',
     background: '背景',
+    enableBackground: '启用背景',
     editBackground: '编辑背景',
     language: '页面语言',
     langAuto: '默认（跟随设备）',
@@ -164,6 +166,7 @@ const i18nData = {
     pageTitle: '新分頁',
     settingsTitle: '頁面設定',
     close: '關閉',
+    back: '返回',
     quicklinks: '快速連結',
     off: '關閉',
     on: '開啟',
@@ -179,6 +182,7 @@ const i18nData = {
     inspirational: '展望',
     focused: '聚焦',
     background: '背景',
+    enableBackground: '啟用背景',
     editBackground: '編輯背景',
     language: '頁面語言',
     langAuto: '預設（隨設備設定）',
@@ -278,6 +282,7 @@ const i18nData = {
     pageTitle: '新籤頁',
     settingsTitle: '頁面之設',
     close: '關',
+    back: '返',
     quicklinks: '快速連結',
     off: '止',
     on: '啟',
@@ -294,6 +299,7 @@ const i18nData = {
     inspirational: '展望',
     focused: '專注',
     background: '底景',
+    enableBackground: '啟底景',
     editBackground: '修飾底景',
     language: '頁面語',
     langAuto: '預設（順裝置）',
@@ -371,6 +377,7 @@ const i18nData = {
     pageTitle: 'New Tab',
     settingsTitle: 'Page Settings',
     close: 'Close',
+    back: 'Back',
     quicklinks: 'Quick Links',
     off: 'Off',
     on: 'On',
@@ -386,6 +393,7 @@ const i18nData = {
     inspirational: 'Inspirational',
     focused: 'Focused',
     background: 'Background',
+    enableBackground: 'Enable background',
     editBackground: 'Edit background',
     language: 'Language',
     langAuto: 'Default (System)',
@@ -487,6 +495,7 @@ const i18nData = {
     pageTitle: '新しいタブ',
     settingsTitle: '設定',
     close: '閉じる',
+    back: '戻る',
     quicklinks: 'クイックリンク',
     off: 'オフ',
     on: 'オン',
@@ -502,6 +511,7 @@ const i18nData = {
     inspirational: 'シンプル',
     focused: 'フォーカス',
     background: '背景',
+    enableBackground: '背景を有効にする',
     editBackground: '背景を編集',
     language: '言語',
     langAuto: 'デフォルト（システムに従う）',
@@ -602,6 +612,7 @@ const i18nData = {
     pageTitle: 'Новая вкладка',
     settingsTitle: 'Настройки страницы',
     close: 'Закрыть',
+    back: 'Назад',
     quicklinks: 'Быстрые ссылки',
     off: 'Выкл',
     on: 'Вкл',
@@ -617,6 +628,7 @@ const i18nData = {
     inspirational: 'Вдохновение',
     focused: 'Фокус',
     background: 'Фон',
+    enableBackground: 'Включить фон',
     editBackground: 'Изменить фон',
     language: 'Язык',
     langAuto: 'По умолчанию (системный)',
@@ -1557,7 +1569,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // DOM元素引用
   const btnWaffle = document.getElementById('waffle');
   const btnSettings = document.getElementById('settings');
-  const btnCloseSettings = document.getElementById('btn-close-settings');
   const popoverWaffle = document.getElementById('popover-waffle');
   const popoverSettings = document.getElementById('popover-settings');
 
@@ -1571,15 +1582,168 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoContainer = document.getElementById('logo');
   const selectLanguage = document.getElementById('select-language');
 
-  // 编辑页面布局弹窗相关 DOM
-  const modalLayout = document.getElementById('modal-layout');
+  // 编辑页面布局相关 DOM（布局设置现在是设置面板内的二级页）
   const toggleLogoSwitch = document.getElementById('toggle-logo-switch');
   const toggleAddButtonSwitch = document.getElementById('toggle-add-button-switch');
   const selectLayout = document.getElementById('select-layout');
   const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
   const btnCloseLayoutModal = document.getElementById('btn-close-layout-modal');
-  const btnLayoutClose = document.getElementById('btn-layout-close');
-  
+
+  // 设置面板内的二级页面（背景 / 布局），取代原来的模态弹窗
+  const settingsPageBg = document.getElementById('settings-page-bg');
+  const settingsPageLayout = document.getElementById('settings-page-layout');
+
+  // 在设置面板内切换页面：'main' 主设置页、'bg' 背景设置、'layout' 布局设置
+  // 切换带 0.2s 过渡：新内容淡入 + 面板高度平滑变化
+  const SETTINGS_PAGE_ANIM_MS = 200;
+  let settingsPageAnimTimer = null;
+
+  // 仅切换页面的显示状态（不含动画），供动画与"减少动态效果"两条路径复用
+  function applySettingsPageClasses(name) {
+    const isMain = name === 'main';
+    popoverSettings?.classList.toggle('in-subpage', !isMain);
+    settingsPageBg?.classList.toggle('active', name === 'bg');
+    settingsPageLayout?.classList.toggle('active', name === 'layout');
+  }
+
+  function showSettingsPage(name) {
+    if (!popoverSettings) return;
+
+    // 上一次过渡还没结束又切换：先清掉残留的内联样式与定时器
+    if (settingsPageAnimTimer) {
+      clearTimeout(settingsPageAnimTimer);
+      settingsPageAnimTimer = null;
+    }
+    popoverSettings.style.transition = '';
+    popoverSettings.style.height = '';
+    popoverSettings.style.overflowY = '';
+    popoverSettings.classList.remove('page-fading');
+
+    // 系统开启"减少动态效果"时直接切换，不做过渡
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      applySettingsPageClasses(name);
+      popoverSettings.scrollTop = 0;
+      updateSettingsScrollbar();
+      return;
+    }
+
+    // FLIP：记住旧高度 → 切页面 → 量出新高度 → 从旧高度过渡过去
+    const startHeight = popoverSettings.offsetHeight;
+
+    popoverSettings.classList.add('page-fading');
+    applySettingsPageClasses(name);
+    popoverSettings.scrollTop = 0;
+
+    void popoverSettings.offsetHeight;
+    popoverSettings.style.height = 'auto';
+    void popoverSettings.offsetHeight;
+    // auto 状态下量得的高度已受 max-height: 85vh 约束
+    const endHeight = popoverSettings.getBoundingClientRect().height;
+
+    popoverSettings.style.height = startHeight + 'px';
+    void popoverSettings.offsetHeight;
+    popoverSettings.style.transition = 'height ' + SETTINGS_PAGE_ANIM_MS + 'ms ease';
+    popoverSettings.style.overflowY = 'hidden';
+    popoverSettings.style.height = endHeight + 'px';
+
+    // 下一帧取消遮罩状态，触发内容 0 → 1 的淡入
+    requestAnimationFrame(() => {
+      popoverSettings.classList.remove('page-fading');
+    });
+
+    // 过渡结束后交还高度控制权（回到 auto），保留原有滚动行为
+    settingsPageAnimTimer = setTimeout(() => {
+      popoverSettings.style.transition = '';
+      popoverSettings.style.height = '';
+      popoverSettings.style.overflowY = '';
+      settingsPageAnimTimer = null;
+      updateSettingsScrollbar();
+    }, SETTINGS_PAGE_ANIM_MS + 30);
+  }
+
+  // ===== 设置面板的悬浮滚动条 =====
+  // 原生滚动条在 Windows 上会占据内容宽度，这里隐藏它并自绘一条覆盖在内容上的滑块
+  const settingsScrollbar = document.getElementById('settings-scrollbar');
+  const settingsScrollbarThumb = document.getElementById('settings-scrollbar-thumb');
+  let settingsScrollbarDrag = null;
+  // 上下安全间距（与面板 8px 圆角一致），避免滑块贴边被圆角裁切
+  const SETTINGS_SCROLLBAR_INSET = 8;
+
+  // 按面板当前尺寸算出滑块高度与可移动范围
+  function measureSettingsScrollbar() {
+    const viewHeight = popoverSettings.clientHeight;
+    const contentHeight = popoverSettings.scrollHeight;
+    const maxScroll = contentHeight - viewHeight;
+    const trackHeight = Math.max(1, viewHeight - SETTINGS_SCROLLBAR_INSET * 2);
+    const thumbHeight = Math.min(
+      trackHeight,
+      Math.max(24, Math.round(trackHeight * viewHeight / contentHeight))
+    );
+    return {
+      maxScroll: maxScroll,
+      thumbHeight: thumbHeight,
+      maxThumbTop: Math.max(0, trackHeight - thumbHeight)
+    };
+  }
+
+  function updateSettingsScrollbar() {
+    if (!popoverSettings || !settingsScrollbar || !settingsScrollbarThumb) return;
+    // 面板高度过渡期间不同步，避免每帧强制重排；过渡结束时会再调用一次
+    if (settingsPageAnimTimer) return;
+
+    // 先让滑块归零：被 translateY 移出面板的部分会算进 scrollHeight，
+    // 会让放得下的页面（例如较短的二级页）被误判成"可以滚动"
+    settingsScrollbarThumb.style.height = '0px';
+    settingsScrollbarThumb.style.transform = 'none';
+
+    const m = measureSettingsScrollbar();
+    // 容忍亚像素取整带来的 1~2px 误差
+    if (m.maxScroll <= 2) {
+      settingsScrollbar.classList.remove('visible');
+      return;
+    }
+
+    const progress = popoverSettings.scrollTop / m.maxScroll;
+    const top = SETTINGS_SCROLLBAR_INSET + Math.round(progress * m.maxThumbTop);
+
+    settingsScrollbarThumb.style.height = m.thumbHeight + 'px';
+    settingsScrollbarThumb.style.transform = 'translateY(' + top + 'px)';
+    settingsScrollbar.classList.add('visible');
+  }
+
+  popoverSettings?.addEventListener('scroll', updateSettingsScrollbar, { passive: true });
+  window.addEventListener('resize', updateSettingsScrollbar);
+  if (typeof ResizeObserver === 'function' && popoverSettings) {
+    new ResizeObserver(updateSettingsScrollbar).observe(popoverSettings);
+  }
+
+  // 拖动滑块滚动面板
+  settingsScrollbarThumb?.addEventListener('pointerdown', (e) => {
+    if (!popoverSettings) return;
+    const m = measureSettingsScrollbar();
+    e.preventDefault();
+    settingsScrollbarDrag = {
+      startY: e.clientY,
+      startScroll: popoverSettings.scrollTop,
+      ratio: m.maxScroll / Math.max(1, m.maxThumbTop)
+    };
+    if (settingsScrollbarThumb.setPointerCapture) {
+      settingsScrollbarThumb.setPointerCapture(e.pointerId);
+    }
+  });
+
+  settingsScrollbarThumb?.addEventListener('pointermove', (e) => {
+    if (!settingsScrollbarDrag || !popoverSettings) return;
+    const delta = e.clientY - settingsScrollbarDrag.startY;
+    popoverSettings.scrollTop = settingsScrollbarDrag.startScroll + delta * settingsScrollbarDrag.ratio;
+  });
+
+  function endSettingsScrollbarDrag() {
+    settingsScrollbarDrag = null;
+  }
+  settingsScrollbarThumb?.addEventListener('pointerup', endSettingsScrollbarDrag);
+  settingsScrollbarThumb?.addEventListener('pointercancel', endSettingsScrollbarDrag);
+
   const searchContainer = document.getElementById('search-container');
   const fakebox = document.getElementById('fakebox');
   const searchInput = document.getElementById('search-input');
@@ -1625,7 +1789,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const enhancedVisibilityRow = document.getElementById('enhanced-visibility-row');
   const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
   
-  const modalWallpaper = document.getElementById('modal-wallpaper');
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
   const toggleBgModalSwitch = document.getElementById('toggle-bg-modal-switch');
   const wallpaperPreviewContainer = document.getElementById('wallpaper-preview-container');
@@ -1634,6 +1797,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputWallpaperFile = document.getElementById('input-wallpaper-file');
   const wallpaperTypeTitle = document.getElementById('wallpaper-type-title');
   const wallpaperSourceLabel = document.getElementById('wallpaper-source-label');
+  const bgDependentSettings = document.getElementById('bg-dependent-settings');
 
   const bgVideo = document.getElementById('bg-video');
   const bgImage = document.getElementById('bg-image');
@@ -1731,20 +1895,16 @@ document.addEventListener('DOMContentLoaded', () => {
   btnSettings?.addEventListener('click', (e) => {
     e.stopPropagation();
     togglePopover(popoverSettings, popoverWaffle);
+    // 打开设置面板时直接回到主设置页（此时不做切换过渡，面板自身已有淡入），
+    // 避免停留在上次打开的二级页
+    if (popoverSettings?.classList.contains('active')) {
+      applySettingsPageClasses('main');
+      popoverSettings.scrollTop = 0;
+      updateSettingsScrollbar();
+    }
     // 设置面板打开时，按当前语言同步快速链接的“添加”按钮文案
     if (typeof syncQuicklinksLanguage === 'function') syncQuicklinksLanguage();
   });
-
-  if (btnCloseSettings) {
-    btnCloseSettings.addEventListener('click', () => {
-      popoverSettings.classList.remove('active');
-      document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
-        dd.classList.remove('active');
-        clearDropdownInlineStyles(dd);
-        if (dd._display) dd._display.classList.remove('active');
-      });
-    });
-  }
 
   document.addEventListener('click', (e) => {
     if (!popoverWaffle?.contains(e.target) && !btnWaffle?.contains(e.target)) {
@@ -1975,6 +2135,7 @@ document.addEventListener('DOMContentLoaded', () => {
       enhancedVisibilityRow.style.display = bgEnabled ? 'flex' : 'none';
     }
     applyEnhancedVisibility();
+    applyBgDependentEnabled();
   }
 
   // 根据"增强可见性"设置与背景开关，切换 body 的 data 属性
@@ -1983,6 +2144,18 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.setAttribute('data-enhanced-visibility', 'true');
     } else {
       document.body.removeAttribute('data-enhanced-visibility');
+    }
+  }
+
+  // 背景关闭时，依赖背景的设置（选择图片 / 在线内容）整体置灰且不可交互
+  function applyBgDependentEnabled() {
+    if (!bgDependentSettings) return;
+    if (bgEnabled) {
+      bgDependentSettings.classList.remove('disabled');
+      bgDependentSettings.removeAttribute('inert');
+    } else {
+      bgDependentSettings.classList.add('disabled');
+      bgDependentSettings.setAttribute('inert', '');
     }
   }
 
@@ -2409,16 +2582,16 @@ document.addEventListener('DOMContentLoaded', () => {
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
-  // 壁纸弹窗逻辑
+  // 背景设置：在设置面板内切换到二级页（不再弹窗）
   btnOpenBgModal?.addEventListener('click', () => {
-    popoverSettings?.classList.remove('active');
-    modalWallpaper?.classList.add('active');
+    showSettingsPage('bg');
     renderWallpaper();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
+  // 背景二级页标题栏的返回按钮：回到主设置页
   btnCloseWallpaperModal?.addEventListener('click', () => {
-    modalWallpaper?.classList.remove('active');
+    showSettingsPage('main');
   });
 
   btnUploadWallpaper?.addEventListener('click', () => {
@@ -2658,15 +2831,14 @@ inputOnlineUrl?.addEventListener('input', () => {
     });
   }
 
-  // 关闭编辑页面布局弹窗
+  // 布局二级页返回：回到主设置页
   function closeLayoutModal() {
-    modalLayout?.classList.remove('active');
+    showSettingsPage('main');
     closeLayoutDropdowns();
   }
 
-  // 打开编辑页面布局弹窗
+  // 布局设置：在设置面板内切换到二级页（不再弹窗）
   btnOpenLayoutModal?.addEventListener('click', () => {
-    popoverSettings?.classList.remove('active');
     closeLayoutDropdowns();
     // 同步为当前实际布局
     if (selectLayout) {
@@ -2674,17 +2846,13 @@ inputOnlineUrl?.addEventListener('input', () => {
         ? (document.body.getAttribute('data-layout') || 'focused')
         : 'hidden';
     }
-    modalLayout?.classList.add('active');
+    showSettingsPage('layout');
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
   btnCloseLayoutModal?.addEventListener('click', closeLayoutModal);
-  btnLayoutClose?.addEventListener('click', closeLayoutModal);
 
-  // 点击遮罩空白区域关闭编辑页面布局弹窗
-  modalLayout?.addEventListener('click', (e) => {
-    if (e.target === modalLayout) closeLayoutModal();
-  });
+  // 背景/布局设置已改为设置面板内的二级页，不再需要遮罩点击关闭
 
 
   // 设置面板切换监听
@@ -3565,4 +3733,7 @@ searchInput?.addEventListener('input', () => {
 
   // 初始化自定义下拉组件
   initCustomSelects();
+
+  // 初始化悬浮滚动条
+  updateSettingsScrollbar();
 });
