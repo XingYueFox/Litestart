@@ -36,6 +36,7 @@ const i18nData = {
     close: '关闭',
     back: '返回',
     quicklinkStyle: '快速链接样式',
+    showQuicklinks: '显示快速链接',
     quicklinks: '快速链接',
     off: '关闭',
     on: '打开',
@@ -175,6 +176,7 @@ const i18nData = {
     close: '關閉',
     back: '返回',
     quicklinkStyle: '快速連結樣式',
+    showQuicklinks: '顯示快速連結',
     quicklinks: '快速連結',
     off: '關閉',
     on: '開啟',
@@ -298,6 +300,7 @@ const i18nData = {
     close: 'Close',
     back: 'Back',
     quicklinkStyle: 'Quicklink style',
+    showQuicklinks: 'Show quicklinks',
     quicklinks: 'Quick Links',
     off: 'Off',
     on: 'On',
@@ -424,6 +427,7 @@ const i18nData = {
     close: '閉じる',
     back: '戻る',
     quicklinkStyle: 'クイックリンクの表示',
+    showQuicklinks: 'クイックリンクを表示',
     quicklinks: 'クイックリンク',
     off: 'オフ',
     on: 'オン',
@@ -549,6 +553,7 @@ const i18nData = {
     close: 'Закрыть',
     back: 'Назад',
     quicklinkStyle: 'Вид быстрых ссылок',
+    showQuicklinks: 'Показывать быстрые ссылки',
     quicklinks: 'Быстрые ссылки',
     off: 'Выкл',
     on: 'Вкл',
@@ -788,6 +793,13 @@ function applyLanguage(langConfig) {
   if (statusAddButton) {
     const isChecked = document.getElementById('toggle-add-button-switch')?.checked ?? true;
     statusAddButton.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  // 8.1.1 刷新"显示快速链接"开关状态文本
+  const statusQuicklinks = document.getElementById('status-quicklinks');
+  if (statusQuicklinks) {
+    const isChecked = document.getElementById('toggle-quicklinks-switch')?.checked ?? true;
+    statusQuicklinks.innerText = isChecked ? dict.on : dict.off;
   }
 
   // 8.2 刷新"显示搜索框"开关状态文本
@@ -1283,6 +1295,14 @@ function decodeInput(str) {
           if (index === nativeSelect.selectedIndex) {
             optionEl.classList.add('selected');
           }
+          dropdown.appendChild(optionEl);
+          // 原生 option 被禁用时：只展示、不选中，但依然要吃掉这次点击，
+          // 否则事件会冒泡到 document，被当成"点击面板外部"而把设置面板收起来
+          if (opt.disabled) {
+            optionEl.classList.add('disabled');
+            optionEl.addEventListener('click', (e) => e.stopPropagation());
+            return;
+          }
           optionEl.addEventListener('click', (e) => {
             e.stopPropagation();
             nativeSelect.value = opt.value;
@@ -1290,8 +1310,10 @@ function decodeInput(str) {
             closeAll(null);
             updateDisplayText();
           });
-          dropdown.appendChild(optionEl);
         });
+
+        // 浮层内部的点击一律不外传：避免点到禁用项或空白时被当成外部点击
+        dropdown.addEventListener('click', (e) => e.stopPropagation());
 
         // 挂到 body 上，脱离父容器 overflow 裁剪
         document.body.appendChild(dropdown);
@@ -1556,6 +1578,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 编辑页面布局相关 DOM（布局设置现在是设置面板内的二级页）
   const toggleLogoSwitch = document.getElementById('toggle-logo-switch');
   const toggleSearchSwitch = document.getElementById('toggle-search-switch');
+  const toggleQuicklinksSwitch = document.getElementById('toggle-quicklinks-switch');
   const toggleAddButtonSwitch = document.getElementById('toggle-add-button-switch');
   const selectLayout = document.getElementById('select-layout');
   const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
@@ -2105,7 +2128,18 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.set('ntp_force_bing_cn', true);
   }
   const savedLayout = Storage.get('ntp_layout', 'focused');
-  const savedQuicklinksRow = Storage.get('ntp_quicklinks', '0');
+  // 快速链接的"样式"（一行 / 多行）与"是否显示"现在分开：
+  // 旧版本用 ntp_quicklinks = '0' 表示关闭，这里迁移成"样式=一行 + 显示开关关闭"
+  let savedQuicklinksRow = Storage.get('ntp_quicklinks', '1');
+  let showQuicklinks = Storage.get('ntp_show_quicklinks', null);
+  if (showQuicklinks === null) {
+    showQuicklinks = savedQuicklinksRow !== '0';
+    Storage.set('ntp_show_quicklinks', showQuicklinks);
+  }
+  if (savedQuicklinksRow === '0') {
+    savedQuicklinksRow = '1';
+    Storage.set('ntp_quicklinks', '1');
+  }
   // 快速链接位置：'auto' 跟随布局；'bottom' 固定在页面底部（该模式强制一行）
   let quicklinkPosition = Storage.get('ntp_quicklink_position', 'auto');
   let historyEnabled = Storage.get('ntp_history_enabled', true);
@@ -2470,6 +2504,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_show_menu_button',
     'ntp_show_logo',
     'ntp_show_add_button',
+    'ntp_show_quicklinks',
     'ntp_search_visible',
     'ntp_force_bing_cn',
     'ntp_bg_enabled',
@@ -2860,27 +2895,58 @@ inputOnlineUrl?.addEventListener('input', () => {
     syncLayoutPresetSelection();
   }
 
-  // 快速链接位置：'bottom' 时固定到页面底部，并强制一行（锁住"快速链接数量"下拉）
+  // 把某条下拉整体置灰（该设置已经没有意义时）
+  function setSelectDisabled(selectId, disabled) {
+    const display = document.querySelector('.custom-select-display[data-for="' + selectId + '"]');
+    if (display) display.classList.toggle('disabled', disabled);
+    if (!disabled) return;
+    // 顺手收起已展开的面板，避免留下一个点了也没用的浮层
+    display?.classList.remove('active');
+    document.querySelector('.custom-select-dropdown[data-for-select="' + selectId + '"]')?.remove();
+  }
+
+  // 同步"开关关掉后就没意义"的下拉与开关：
+  // 显示搜索框关闭 → 搜索框位置不可用；显示快速链接关闭 → 位置/样式下拉与"添加按钮"开关都不可用
+  function syncLayoutSelectAvailability() {
+    setSelectDisabled('select-layout', !searchVisible);
+    setSelectDisabled('select-quicklink-position', !showQuicklinks);
+    setSelectDisabled('select-quicklinks', !showQuicklinks);
+
+    // 快速链接整体都关了，"在快速链接区域显示添加按钮"也就没有意义
+    const addButtonRow = toggleAddButtonSwitch ? toggleAddButtonSwitch.closest('.setting-row') : null;
+    if (addButtonRow) addButtonRow.classList.toggle('disabled', !showQuicklinks);
+  }
+
+  // 快速链接位置：'bottom' 时固定到页面底部。该模式不支持多行，
+  // 因此只把"多行"这一项禁掉，仍允许在一行与关闭之间切换
   function applyQuicklinkPosition() {
     const isBottom = quicklinkPosition === 'bottom';
     document.body.setAttribute('data-quicklink-position', isBottom ? 'bottom' : 'auto');
 
-    const savedRow = Storage.get('ntp_quicklinks', '0');
+    let savedRow = Storage.get('ntp_quicklinks', '1');
+    // 旧数据里 '0' 曾表示"关闭"，现在关闭由显示开关承担
+    if (savedRow === '0') savedRow = '1';
+    // 底部模式下若之前存的是"多行"，按一行处理（存储值保留，切回默认时还原）
+    const effectiveRow = (isBottom && savedRow === '2') ? '1' : savedRow;
+
+    const multiRowOption = selectQuicklinks ? selectQuicklinks.querySelector('option[value="2"]') : null;
+    if (multiRowOption) multiRowOption.disabled = isBottom;
+
+    // 不显示时用 rows="0" 表达（复用既有的隐藏逻辑）
     if (quicklinksElem) {
-      quicklinksElem.setAttribute('rows', isBottom ? '1' : savedRow);
+      quicklinksElem.setAttribute('rows', showQuicklinks ? effectiveRow : '0');
     }
     if (selectQuicklinks) {
-      selectQuicklinks.disabled = isBottom;
-      selectQuicklinks.value = isBottom ? '1' : savedRow;
+      selectQuicklinks.value = effectiveRow;
     }
     // 把当前位置写回下拉（首次加载时靠这句恢复上次的选择）
     if (selectQuicklinkPosition) {
       selectQuicklinkPosition.value = quicklinkPosition;
     }
-    // 原生 select 是透明的，禁用态要落到自定义下拉的可见部分
-    const quicklinksSelectDisplay = document.querySelector('.custom-select-display[data-for="select-quicklinks"]');
-    quicklinksSelectDisplay?.classList.toggle('disabled', isBottom);
+    // 禁用状态变了，已建好的下拉丢掉，下次展开时按新状态重建
+    document.querySelector('.custom-select-dropdown[data-for-select="select-quicklinks"]')?.remove();
     refreshCustomSelects();
+    syncLayoutSelectAvailability();
   }
 
   // 应用搜索栏可见性（使用 visibility，保留网格占位，避免其他元素位移）
@@ -2896,21 +2962,28 @@ inputOnlineUrl?.addEventListener('input', () => {
     }
     if (toggleSearchSwitch) toggleSearchSwitch.checked = searchVisible;
     refreshCustomSelects();
+    syncLayoutSelectAvailability();
+    // 搜索框显隐会连带动到 Logo 的显示，以及"显示 Logo"开关的可用性
+    applyLogoVisibility();
+    applyLogoSwitchAvailability();
   }
 
-  // 应用标题（Logo）显示
+  // 应用标题（Logo）显示。
+  // 搜索框关闭时 Logo 也一并隐藏，但不去改 showLogo 本身：
+  // 这样重新打开搜索框时 Logo 会立刻回来，"显示 Logo"开关的状态也保持不变
   function applyLogoVisibility() {
     if (logoContainer) {
-      logoContainer.style.display = showLogo ? '' : 'none';
+      logoContainer.style.display = (showLogo && searchVisible) ? '' : 'none';
     }
   }
 
-  // "悬挂"布局下 Logo 本来就不显示，对应的开关一并置灰禁用
+  // 两种情况下"显示 Logo"开关都没有意义，置灰禁用（但不去改它的开关值）：
+  // 1) "悬挂"布局下 Logo 本来就不显示；2) 搜索框关闭时 Logo 也一并隐藏
   function applyLogoSwitchAvailability() {
     const logoRow = toggleLogoSwitch ? toggleLogoSwitch.closest('.setting-row') : null;
     if (!logoRow) return;
     const isHanging = document.body.getAttribute('data-layout') === 'inspirational';
-    logoRow.classList.toggle('disabled', isHanging);
+    logoRow.classList.toggle('disabled', isHanging || !searchVisible);
   }
 
   // 旧数据兼容：早期版本把"关闭搜索框"存成了 ntp_layout = 'hidden'
@@ -2930,19 +3003,22 @@ inputOnlineUrl?.addEventListener('input', () => {
       layout: 'inspirational',
       searchVisible: true,
       showLogo: false,
-      quicklinkPosition: 'auto'
+      quicklinkPosition: 'auto',
+      showQuicklinks: true
     },
     focused: {
       layout: 'focused',
       searchVisible: true,
       showLogo: true,
-      quicklinkPosition: 'auto'
+      quicklinkPosition: 'auto',
+      showQuicklinks: true
     },
     appreciate: {
       layout: null,
       searchVisible: false,
       showLogo: false,
-      quicklinkPosition: 'bottom'
+      quicklinkPosition: 'bottom',
+      showQuicklinks: true
     }
   };
 
@@ -2963,6 +3039,11 @@ inputOnlineUrl?.addEventListener('input', () => {
     Storage.set('ntp_show_logo', showLogo);
     applyLogoVisibility();
     if (toggleLogoSwitch) toggleLogoSwitch.checked = showLogo;
+
+    // 显示快速链接
+    showQuicklinks = preset.showQuicklinks;
+    Storage.set('ntp_show_quicklinks', showQuicklinks);
+    if (toggleQuicklinksSwitch) toggleQuicklinksSwitch.checked = showQuicklinks;
 
     // 快速链接位置
     quicklinkPosition = preset.quicklinkPosition;
@@ -2989,6 +3070,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       if (preset.searchVisible !== searchVisible) continue;
       if (preset.showLogo !== showLogo) continue;
       if (preset.quicklinkPosition !== quicklinkPosition) continue;
+      if (preset.showQuicklinks !== showQuicklinks) continue;
       return names[i];
     }
     return null;
@@ -3080,10 +3162,14 @@ inputOnlineUrl?.addEventListener('input', () => {
   });
 
   selectQuicklinks?.addEventListener('change', (e) => {
-    const val = e.target.value;
+    let val = e.target.value;
+    // "底部"模式下不支持多行（该选项本身已禁用，这里再兜一层）
+    if (quicklinkPosition === 'bottom' && val === '2') {
+      val = '1';
+      selectQuicklinks.value = val;
+    }
     Storage.set('ntp_quicklinks', val);
-    // "底部"模式下固定一行，这里只记录偏好
-    quicklinksElem?.setAttribute('rows', quicklinkPosition === 'bottom' ? '1' : val);
+    quicklinksElem?.setAttribute('rows', val);
     // 行数变化会改变每行/总数上限，强制重建一次
     renderQuicklinks(true);
   });
@@ -3159,6 +3245,20 @@ inputOnlineUrl?.addEventListener('input', () => {
       showLogo = e.target.checked;
       Storage.set('ntp_show_logo', showLogo);
       applyLogoVisibility();
+      syncLayoutPresetSelection();
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    });
+  }
+
+  // 快速链接整体显示开关（关闭时快速链接区不渲染）
+  if (toggleQuicklinksSwitch) {
+    toggleQuicklinksSwitch.checked = showQuicklinks;
+
+    toggleQuicklinksSwitch.addEventListener('change', (e) => {
+      showQuicklinks = e.target.checked;
+      Storage.set('ntp_show_quicklinks', showQuicklinks);
+      applyQuicklinkPosition();
+      renderQuicklinks(true);
       syncLayoutPresetSelection();
       applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
     });
