@@ -54,6 +54,10 @@
       --dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       --dropdown-border: #e5e5e5;
 
+      /* 首次使用引导气泡：浅色模式黑底白字，深色模式白底黑字 */
+      --guide-tip-bg: #262626;
+      --guide-tip-fg: #f7f7f7;
+
       /* 6. 模态框与弹窗样式 */
       --modal-bg: #ffffff;
       --modal-border: #e0e0e0;
@@ -107,6 +111,10 @@
         /* 深色下黑色阴影几乎不可见，靠"加深的阴影 + 更亮的描边"把浮层托起来（别调太狠，会发脏） */
         --dropdown-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.22);
         --dropdown-border: #4c4c4c;
+
+        /* 引导气泡：深色下反过来，纯白底深色字 */
+        --guide-tip-bg: #ffffff;
+        --guide-tip-fg: #333333;
 
         --modal-bg: #242424;
         --modal-border: #333333;
@@ -364,6 +372,40 @@
     /* 开启"增强元素可见性"时，用悬停档的半透明底 */
     body.bg-enabled[data-enhanced-visibility="true"] .header-button.active {
       background-color: var(--enhanced-visibility-bg-hover);
+    }
+
+    /* 首次使用引导气泡（位置由脚本按目标按钮计算） */
+    .guide-tip {
+      position: fixed;
+      z-index: 1300;
+      max-width: 300px;
+      padding: 14px 16px;   /* 上下留白稍多一些 */
+      border-radius: 8px;
+      background-color: var(--guide-tip-bg);
+      color: var(--guide-tip-fg);
+      font-size: 15px;
+      line-height: 1.55;
+      box-shadow: 0 0 18px rgba(0, 0, 0, 0.25);   /* 不带偏移，四周均匀 */
+      pointer-events: none;   /* 不挡按钮的点击 */
+      opacity: 0;
+      transition: opacity 0.5s ease;   /* 出现与消失都用这段过渡 */
+    }
+
+    .guide-tip.visible {
+      opacity: 1;
+    }
+
+    /* 指向按钮的小三角，水平位置由脚本对准按钮中心 */
+    .guide-tip::after {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: var(--guide-arrow-left, 14px);
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-bottom: 8px solid var(--guide-tip-bg);
     }
 
     /* 弹出菜单面板通用样式 —— 展开/收起动画
@@ -1931,6 +1973,12 @@
               </path>
             </svg>
           </button>
+
+          <!-- 首次使用引导：指向九点菜单 -->
+          <div id="guide-tip-waffle" class="guide-tip" hidden>
+            <span data-i18n="guideWaffle">在此处新建快速链接、导入和导出配置文件</span>
+          </div>
+
           <!-- 时间显示：与菜单按钮同一行 -->
           <div id="time-display">
             <span class="time-value"></span>
@@ -2127,7 +2175,7 @@
                 
               </div>
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.7.2</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.8.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
@@ -2485,7 +2533,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.7.2 | 更新时间：2026-10-4</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.0 | 更新时间：2026-10-10</p><br>
         
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
