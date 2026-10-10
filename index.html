@@ -241,7 +241,7 @@
 
     body.bg-enabled[data-enhanced-visibility="true"] #logo {
       padding: 16px;
-      border-radius: 8px;
+      border-radius: 12px;
       background-color: var(--enhanced-visibility-logo-bg);
     }
 
@@ -346,6 +346,16 @@
       transition: background-color 0.08s ease;
     }
 
+    /* 面板展开期间，触发按钮保持"悬停"高亮，直到面板关闭（由脚本同步 active 类） */
+    .header-button.active {
+      background-color: var(--neutral-fill-rest);
+    }
+
+    /* 开启"增强元素可见性"时，用悬停档的半透明底 */
+    body.bg-enabled[data-enhanced-visibility="true"] .header-button.active {
+      background-color: var(--enhanced-visibility-bg-hover);
+    }
+
     /* 弹出菜单面板通用样式 —— 展开/收起动画
        - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
        - .active 状态：opacity:1, visibility:visible, transform 归零
@@ -389,7 +399,7 @@
       padding: 0;
       background-color: var(--settings-panel-bg);
       border: 1px solid var(--settings-card-border);
-      border-radius: 8px;
+      border-radius: 12px;
       max-height: 85vh;
       overflow-y: auto;
 
@@ -1209,7 +1219,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-radius: 8px;
+      border-radius: 12px;
     }
 
     .modal-header {
@@ -1587,7 +1597,7 @@
     padding: 0;
     background-color: var(--settings-panel-bg);
     border: 1px solid var(--settings-card-border);
-    border-radius: 8px;
+    border-radius: 12px;
     }
 
     .waffle-menu-item {
@@ -1751,16 +1761,18 @@
       display: none;
     }
 
-    /* 标题栏改成三列网格：左侧放返回按钮，标题恒定居中（仅作用于设置面板） */
+    /* 标题栏：返回按钮（若有）与标题依次靠左（仅作用于设置面板）
+       min-height 与返回按钮同高，让主页与二级页的标题落在同一水平线上 */
     #popover-settings .settings-header {
-      display: grid;
-      grid-template-columns: 24px 1fr 24px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
       gap: 8px;
+      min-height: 24px;
     }
 
     #popover-settings .settings-title {
-      grid-column: 2;
-      text-align: center;
+      text-align: left;
     }
 
     /* 页面切换时的内容淡入（0.2s，与面板高度过渡同时进行） */
@@ -1780,7 +1792,7 @@
 
     /* 二级页标题栏里的返回按钮 */
     .settings-back-btn {
-      grid-column: 1;
+      flex-shrink: 0;
       width: 24px;
       height: 24px;
       border-radius: 4px;

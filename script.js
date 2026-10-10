@@ -1572,6 +1572,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const popoverWaffle = document.getElementById('popover-waffle');
   const popoverSettings = document.getElementById('popover-settings');
 
+  // 面板展开期间，让对应的触发按钮保持"悬停"高亮，直到面板关闭。
+  // 用 MutationObserver 跟随面板的 active 类，这样任何关闭路径（再点一次、
+  // 点面板外、点菜单项）都会自动取消高亮，不必逐处补代码。
+  function syncHeaderButtonActive() {
+    btnSettings?.classList.toggle('active', !!popoverSettings?.classList.contains('active'));
+    btnWaffle?.classList.toggle('active', !!popoverWaffle?.classList.contains('active'));
+  }
+  if (typeof MutationObserver === 'function') {
+    const headerButtonObserver = new MutationObserver(syncHeaderButtonActive);
+    [popoverSettings, popoverWaffle].forEach((el) => {
+      if (el) headerButtonObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
+    });
+  }
+
   const selectEngine = document.getElementById('select-engine');
   const btnEditEngine = document.getElementById('btn-edit-engine');
   const forceBingCNRow = document.getElementById('force-bing-cn-row');
@@ -1692,8 +1706,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 原生滚动条在 Windows 上会占据内容宽度，这里隐藏它并自绘一条覆盖在内容上的滑块
   const settingsScrollbar = document.getElementById('settings-scrollbar');
   const settingsScrollbarThumb = document.getElementById('settings-scrollbar-thumb');
-  // 上下安全间距（与面板 8px 圆角一致），避免滑块贴边被圆角裁切
-  const SETTINGS_SCROLLBAR_INSET = 8;
+  // 上下安全间距（与面板 12px 圆角一致），避免滑块贴边被圆角裁切
+  const SETTINGS_SCROLLBAR_INSET = 12;
   // 页面出现后 / 停止滚动后，多久自动隐藏（1.3s）
   const SETTINGS_SCROLLBAR_HIDE_DELAY = 1300;
   // 鼠标进入面板右侧多宽的条带，算作"停在滚动条上"
