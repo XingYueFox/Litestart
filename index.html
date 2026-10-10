@@ -50,6 +50,10 @@
       --shadow4: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
       --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14);
 
+      /* 下拉浮层的阴影与描边（深色主题下单独加强） */
+      --dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      --dropdown-border: #e5e5e5;
+
       /* 6. 模态框与弹窗样式 */
       --modal-bg: #ffffff;
       --modal-border: #e0e0e0;
@@ -99,6 +103,10 @@
         --shadow2: 0 0 2px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28);
         --shadow4: 0 0 2px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.3);
         --shadow16: 0 0 2px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.28);
+
+        /* 深色下黑色阴影几乎不可见，靠"加深的阴影 + 更亮的描边"把浮层托起来（别调太狠，会发脏） */
+        --dropdown-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.22);
+        --dropdown-border: #4c4c4c;
 
         --modal-bg: #242424;
         --modal-border: #333333;
@@ -612,9 +620,9 @@
     .custom-select-dropdown {
       position: fixed;
       background-color: var(--fill-popup-color);
-      border: 1px solid var(--settings-card-border);
+      border: 1px solid var(--dropdown-border);
       border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      box-shadow: var(--dropdown-shadow);
       z-index: 2000;
       max-height: 260px;
       overflow-y: auto;
