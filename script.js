@@ -1624,11 +1624,20 @@ document.addEventListener('DOMContentLoaded', () => {
       applySettingsPageClasses(name);
       popoverSettings.scrollTop = 0;
       updateSettingsScrollbar();
+      revealSettingsScrollbar();
       return;
     }
 
     // FLIP：记住旧高度 → 切页面 → 量出新高度 → 从旧高度过渡过去
     const startHeight = popoverSettings.offsetHeight;
+
+    // 测量前先把滑块归零（否则它的溢出会算进 scrollHeight），同时记下当前尺寸用于淡出
+    const prevThumbHeight = settingsScrollbarThumb ? settingsScrollbarThumb.style.height : '';
+    const prevThumbTransform = settingsScrollbarThumb ? settingsScrollbarThumb.style.transform : '';
+    if (settingsScrollbarThumb) {
+      settingsScrollbarThumb.style.height = '0px';
+      settingsScrollbarThumb.style.transform = 'none';
+    }
 
     popoverSettings.classList.add('page-fading');
     applySettingsPageClasses(name);
@@ -1639,6 +1648,23 @@ document.addEventListener('DOMContentLoaded', () => {
     void popoverSettings.offsetHeight;
     // auto 状态下量得的高度已受 max-height: 85vh 约束
     const endHeight = popoverSettings.getBoundingClientRect().height;
+    const endScrollHeight = popoverSettings.scrollHeight;
+
+    // 滚动条与页面内容在同一时刻过渡：
+    // 目标页面放不下 → 显示（2s 后隐藏）；放得下 → 带着原尺寸随旧内容一起淡出
+    if (settingsScrollbar && settingsScrollbarThumb) {
+      const metrics = computeSettingsScrollbarMetrics(endHeight, endScrollHeight);
+      settingsScrollbarCanScroll = metrics.maxScroll > 2;
+      if (settingsScrollbarCanScroll) {
+        settingsScrollbarThumb.style.height = metrics.thumbHeight + 'px';
+        settingsScrollbarThumb.style.transform = 'translateY(' + SETTINGS_SCROLLBAR_INSET + 'px)';
+        revealSettingsScrollbar();
+      } else {
+        settingsScrollbarThumb.style.height = prevThumbHeight;
+        settingsScrollbarThumb.style.transform = prevThumbTransform;
+        hideSettingsScrollbar();
+      }
+    }
 
     popoverSettings.style.height = startHeight + 'px';
     void popoverSettings.offsetHeight;
@@ -1657,6 +1683,7 @@ document.addEventListener('DOMContentLoaded', () => {
       popoverSettings.style.height = '';
       popoverSettings.style.overflowY = '';
       settingsPageAnimTimer = null;
+      // 只同步几何；显隐时机已在切换那一刻按目标页面决定
       updateSettingsScrollbar();
     }, SETTINGS_PAGE_ANIM_MS + 30);
   }
@@ -1665,14 +1692,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // 原生滚动条在 Windows 上会占据内容宽度，这里隐藏它并自绘一条覆盖在内容上的滑块
   const settingsScrollbar = document.getElementById('settings-scrollbar');
   const settingsScrollbarThumb = document.getElementById('settings-scrollbar-thumb');
-  let settingsScrollbarDrag = null;
   // 上下安全间距（与面板 8px 圆角一致），避免滑块贴边被圆角裁切
   const SETTINGS_SCROLLBAR_INSET = 8;
+  // 页面出现后 / 停止滚动后，多久自动隐藏（1.3s）
+  const SETTINGS_SCROLLBAR_HIDE_DELAY = 1300;
+  // 鼠标进入面板右侧多宽的条带，算作"停在滚动条上"
+  const SETTINGS_SCROLLBAR_HOVER_ZONE = 20;
 
-  // 按面板当前尺寸算出滑块高度与可移动范围
-  function measureSettingsScrollbar() {
-    const viewHeight = popoverSettings.clientHeight;
-    const contentHeight = popoverSettings.scrollHeight;
+  let settingsScrollbarDrag = null;
+  let settingsScrollbarCanScroll = false;
+  let settingsScrollbarHovering = false;
+  let settingsScrollbarHideTimer = null;
+
+  // 由「可视高度 + 内容高度」算出滑块高度与可移动范围
+  function computeSettingsScrollbarMetrics(viewHeight, contentHeight) {
     const maxScroll = contentHeight - viewHeight;
     const trackHeight = Math.max(1, viewHeight - SETTINGS_SCROLLBAR_INSET * 2);
     const thumbHeight = Math.min(
@@ -1686,6 +1719,38 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  // 按面板当前尺寸量一次
+  function measureSettingsScrollbar() {
+    return computeSettingsScrollbarMetrics(popoverSettings.clientHeight, popoverSettings.scrollHeight);
+  }
+
+  // 立即隐藏（例如切到放得下的页面）
+  function hideSettingsScrollbar() {
+    if (settingsScrollbarHideTimer) {
+      clearTimeout(settingsScrollbarHideTimer);
+      settingsScrollbarHideTimer = null;
+    }
+    settingsScrollbar?.classList.remove('visible');
+  }
+
+  // 延迟隐藏：鼠标还停在滚动条上、或正在拖动时不隐藏
+  function scheduleSettingsScrollbarHide() {
+    if (settingsScrollbarHideTimer) clearTimeout(settingsScrollbarHideTimer);
+    settingsScrollbarHideTimer = setTimeout(() => {
+      settingsScrollbarHideTimer = null;
+      if (settingsScrollbarHovering || settingsScrollbarDrag) return;
+      settingsScrollbar?.classList.remove('visible');
+    }, SETTINGS_SCROLLBAR_HIDE_DELAY);
+  }
+
+  // 显示滑块并重新开始倒计时（只有确实能滚动时才显示）
+  function revealSettingsScrollbar() {
+    if (!settingsScrollbarCanScroll) return;
+    settingsScrollbar?.classList.add('visible');
+    scheduleSettingsScrollbarHide();
+  }
+
+  // 同步几何与"能否滚动"；不主动显示，只在一变得放不下时立即隐藏
   function updateSettingsScrollbar() {
     if (!popoverSettings || !settingsScrollbar || !settingsScrollbarThumb) return;
     // 面板高度过渡期间不同步，避免每帧强制重排；过渡结束时会再调用一次
@@ -1693,29 +1758,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 先让滑块归零：被 translateY 移出面板的部分会算进 scrollHeight，
     // 会让放得下的页面（例如较短的二级页）被误判成"可以滚动"
+    const prevHeight = settingsScrollbarThumb.style.height;
+    const prevTransform = settingsScrollbarThumb.style.transform;
     settingsScrollbarThumb.style.height = '0px';
     settingsScrollbarThumb.style.transform = 'none';
 
     const m = measureSettingsScrollbar();
     // 容忍亚像素取整带来的 1~2px 误差
-    if (m.maxScroll <= 2) {
-      settingsScrollbar.classList.remove('visible');
+    settingsScrollbarCanScroll = m.maxScroll > 2;
+
+    if (!settingsScrollbarCanScroll) {
+      // 还原尺寸再淡出，否则高度被归零会让它"瞬间消失"
+      settingsScrollbarThumb.style.height = prevHeight;
+      settingsScrollbarThumb.style.transform = prevTransform;
+      hideSettingsScrollbar();
       return;
     }
 
     const progress = popoverSettings.scrollTop / m.maxScroll;
     const top = SETTINGS_SCROLLBAR_INSET + Math.round(progress * m.maxThumbTop);
-
     settingsScrollbarThumb.style.height = m.thumbHeight + 'px';
     settingsScrollbarThumb.style.transform = 'translateY(' + top + 'px)';
-    settingsScrollbar.classList.add('visible');
   }
 
-  popoverSettings?.addEventListener('scroll', updateSettingsScrollbar, { passive: true });
+  // 滚动时显示，停止滚动 2s 后隐藏
+  popoverSettings?.addEventListener('scroll', () => {
+    updateSettingsScrollbar();
+    revealSettingsScrollbar();
+  }, { passive: true });
+
+  // 尺寸变化只同步几何，不主动显示
   window.addEventListener('resize', updateSettingsScrollbar);
   if (typeof ResizeObserver === 'function' && popoverSettings) {
     new ResizeObserver(updateSettingsScrollbar).observe(popoverSettings);
   }
+
+  // 鼠标移到面板右侧的滚动条区域时显示
+  popoverSettings?.addEventListener('pointermove', (e) => {
+    const rect = popoverSettings.getBoundingClientRect();
+    const inZone = e.clientX >= rect.right - SETTINGS_SCROLLBAR_HOVER_ZONE &&
+      e.clientY >= rect.top && e.clientY <= rect.bottom;
+    if (inZone === settingsScrollbarHovering) return;
+    settingsScrollbarHovering = inZone;
+    if (inZone) {
+      revealSettingsScrollbar();
+    } else {
+      scheduleSettingsScrollbarHide();
+    }
+  });
+
+  popoverSettings?.addEventListener('pointerleave', () => {
+    if (!settingsScrollbarHovering) return;
+    settingsScrollbarHovering = false;
+    scheduleSettingsScrollbarHide();
+  });
 
   // 拖动滑块滚动面板
   settingsScrollbarThumb?.addEventListener('pointerdown', (e) => {
@@ -1740,6 +1836,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function endSettingsScrollbarDrag() {
     settingsScrollbarDrag = null;
+    scheduleSettingsScrollbarHide();
   }
   settingsScrollbarThumb?.addEventListener('pointerup', endSettingsScrollbarDrag);
   settingsScrollbarThumb?.addEventListener('pointercancel', endSettingsScrollbarDrag);
@@ -1901,6 +1998,7 @@ document.addEventListener('DOMContentLoaded', () => {
       applySettingsPageClasses('main');
       popoverSettings.scrollTop = 0;
       updateSettingsScrollbar();
+      revealSettingsScrollbar();
     }
     // 设置面板打开时，按当前语言同步快速链接的“添加”按钮文案
     if (typeof syncQuicklinksLanguage === 'function') syncQuicklinksLanguage();

@@ -421,13 +421,14 @@
       border-radius: 4px;
       background: var(--settings-thumb-border);
       opacity: 0;
-      transition: opacity 0.15s ease, background-color 0.15s ease;
-      pointer-events: auto;
+      transition: opacity 0.2s ease, background-color 0.15s ease;
+      pointer-events: none;   /* 隐藏时不拦截鼠标 */
       cursor: default;
     }
 
     #settings-scrollbar.visible #settings-scrollbar-thumb {
       opacity: 1;
+      pointer-events: auto;
     }
 
     #settings-scrollbar-thumb:hover {
