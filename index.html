@@ -2445,49 +2445,6 @@
     </div>
 
 
-    <!-- 编辑个人资料模态框 -->
-    <div id="modal-profile" class="modal-overlay">
-      <div class="modal-dialog">
-        <div class="modal-header" data-i18n="editProfile">编辑个人资料</div>
-        <form id="profile-form" novalidate>
-          <!-- 头像区域 -->
-          <div class="form-group" style="margin-bottom: 20px;">
-            <label class="form-label" data-i18n="profileAvatar">头像</label>
-            <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-              <img id="profile-avatar-preview" src="img/profiles.png" alt="头像预览" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background-color: var(--settings-thumb-bg); border: 1px solid var(--settings-card-border);">
-              <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn btn-secondary" id="btn-upload-avatar" data-i18n="uploadAvatar">选择头像</button>
-                <button type="button" class="btn btn-secondary" id="btn-remove-avatar" data-i18n="removeAvatar" style="display: none;">删除头像</button>
-              </div>
-              <input type="file" id="input-avatar-file" class="file-input-hidden" accept="image/*">
-            </div>
-          </div>
-
-          <!-- 姓名 -->
-          <div class="form-group">
-            <label class="form-label" for="input-profile-name" data-i18n="name">姓名</label>
-            <div class="input-container" id="container-profile-name">
-              <input type="text" id="input-profile-name" class="input" placeholder="个人" autocomplete="off">
-            </div>
-          </div>
-
-          <!-- 描述 -->
-          <div class="form-group">
-            <label class="form-label" for="input-profile-description" data-i18n="description">描述</label>
-            <div class="input-container" id="container-profile-description">
-              <input type="text" id="input-profile-description" class="input" placeholder="本地账户" autocomplete="off">
-            </div>
-          </div> 
-
-          <div class="modal-footer">
-            <div class="modal-footer-right">
-              <button type="button" id="btn-profile-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
-              <button type="submit" id="btn-profile-save" class="btn btn-primary" data-i18n="save">保存</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
 
 
 

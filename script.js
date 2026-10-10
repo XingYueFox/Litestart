@@ -117,7 +117,7 @@ const i18nData = {
 
     // 个人资料菜单
     accountDetails: '编辑账户信息',
-    manageProfiles: '管理配置文件',
+    manageProfiles: '备份与重置',
     initConfig: '重置',
 
    // 编辑个人资料弹窗
@@ -128,7 +128,7 @@ const i18nData = {
     description: '描述',
 
     // 管理配置文件弹窗
-    manageProfilesTitle: '管理配置文件',
+    manageProfilesTitle: '配置备份与重置',
     selectOperation: '选择要执行的操作',
     exportConfig: '导出配置',
     importConfig: '恢复配置',
@@ -254,14 +254,14 @@ const i18nData = {
     addlink: '新增',
     addQuicklink: '新增快速連結',
     accountDetails: '編輯帳戶資訊',
-    manageProfiles: '管理設定檔',
+    manageProfiles: '備份與重設',
     initConfig: '重設',
     editProfile: '編輯個人資料',
     profileAvatar: '頭像',
     uploadAvatar: '選擇頭像',
     removeAvatar: '刪除頭像',
     description: '描述',
-    manageProfilesTitle: '管理設定檔',
+    manageProfilesTitle: '設定備份與重設',
     selectOperation: '選擇要執行的操作',
     exportConfig: '匯出設定',
     importConfig: '還原設定',
@@ -379,14 +379,14 @@ const i18nData = {
     addlink: 'Add',
     addQuicklink: 'Add quicklink',
     accountDetails: 'Edit Account',
-    manageProfiles: 'Manage Profiles',
+    manageProfiles: 'Backup & Reset',
     initConfig: 'Reset',
     editProfile: 'Edit Profile',
     profileAvatar: 'Avatar',
     uploadAvatar: 'Select Avatar',
     removeAvatar: 'Remove Avatar',
     description: 'Description',
-    manageProfilesTitle: 'Manage Profiles',
+    manageProfilesTitle: 'Backup & Reset',
     selectOperation: 'Select an action',
     exportConfig: 'Export Config',
     importConfig: 'Import Config',
@@ -505,14 +505,14 @@ const i18nData = {
     addlink: '追加',
     addQuicklink: 'クイックリンクを追加',
     accountDetails: 'アカウント編集',
-    manageProfiles: 'プロファイル管理',
+    manageProfiles: 'バックアップとリセット',
     initConfig: 'リセット',
     editProfile: 'プロファイル編集',
     profileAvatar: 'アバター',
     uploadAvatar: 'アバターを選択',
     removeAvatar: '削除',
     description: '説明',
-    manageProfilesTitle: 'プロファイル管理',
+    manageProfilesTitle: 'バックアップとリセット',
     selectOperation: '実行する操作を選択',
     exportConfig: '設定をエクスポート',
     importConfig: '設定をインポート',
@@ -629,14 +629,14 @@ const i18nData = {
     addlink: 'Добавить',
     addQuicklink: 'Добавить быструю ссылку',
     accountDetails: 'Редактировать аккаунт',
-    manageProfiles: 'Управление профилями',
+    manageProfiles: 'Резервная копия',
     initConfig: 'Сброс',
     editProfile: 'Редактировать профиль',
     profileAvatar: 'Аватар',
     uploadAvatar: 'Выбрать аватар',
     removeAvatar: 'Удалить',
     description: 'Описание',
-    manageProfilesTitle: 'Управление профилями',
+    manageProfilesTitle: 'Резервное копирование и сброс',
     selectOperation: 'Выберите действие',
     exportConfig: 'Экспорт настроек',
     importConfig: 'Импорт настроек',
@@ -1159,9 +1159,15 @@ function sanitizeInput(str) {
     .replace(/`/g, '&#96;');
 }
 
-// 反转 HTML 转义（仅还原 <>），用于显示原始文本
+// 反转 HTML 转义，用于把转义过的文本还原显示（&amp; 放最后，避免二次解码）
 function decodeInput(str) {
-  return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  return String(str)
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#96;/g, '`')
+    .replace(/&amp;/g, '&');
 }
 
 // ===== 重写下拉菜单(Custom Select) =====
@@ -2317,9 +2323,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (wallpaperPreviewContainer) {
-        wallpaperPreviewContainer.innerHTML = `
-          <video src="${customWallpaperData.url}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>
-        `;
+        const previewVideo = document.createElement('video');
+        previewVideo.src = customWallpaperData.url;
+        previewVideo.autoplay = true;
+        previewVideo.loop = true;
+        previewVideo.muted = true;
+        previewVideo.playsInline = true;
+        previewVideo.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        wallpaperPreviewContainer.textContent = '';
+        wallpaperPreviewContainer.appendChild(previewVideo);
       }
     } else {
       if (bgVideo) {
@@ -2349,10 +2361,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (wallpaperPreviewContainer) {
-        wallpaperPreviewContainer.innerHTML = `
-          <img src="${customWallpaperData.url}" alt="背景预览" style="width:100%;height:100%;object-fit:cover;" />
-        `;
-        const previewImg = wallpaperPreviewContainer.querySelector('img');
+        const previewImg = document.createElement('img');
+        previewImg.src = customWallpaperData.url;
+        previewImg.alt = '背景预览';
+        previewImg.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        wallpaperPreviewContainer.textContent = '';
+        wallpaperPreviewContainer.appendChild(previewImg);
         previewImg.addEventListener('error', () => {
           const errWrap = document.createElement('div');
           errWrap.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:-4px;color:rgb(255, 255, 255);';
@@ -2461,7 +2475,6 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_bg_enabled',
     'ntp_enhanced_visibility',
     'ntp_custom_engine_config',
-    'ntp_user_profile',
     'ntp_custom_wallpaper'
   ];
   // 以纯字符串保存的设置项（界面语言），导入时需要原样写回
@@ -2783,7 +2796,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 表单提交
   onlineWallpaperForm?.addEventListener('submit', (e) => {
   e.preventDefault();
-  const url = sanitizeInput(inputOnlineUrl.value.trim());
+  // URL 原样保存；预览改用 DOM 赋值，不再拼进 HTML
+  const url = inputOnlineUrl.value.trim();
   containerOnlineUrl?.classList.remove('error');
   tipOnlineUrl?.classList.remove('active');
 
@@ -3239,7 +3253,8 @@ inputOnlineUrl?.addEventListener('input', () => {
   customEngineForm?.addEventListener('submit', (e) => {
     e.preventDefault();
     let name = sanitizeInput(inputEngineName.value.trim());
-    let url = sanitizeInput(inputEngineUrl.value.trim());
+    // URL 原样保存，使用时经 encodeURIComponent 拼接
+    let url = inputEngineUrl.value.trim();
     let hasError = false;
 
     containerEngineName?.classList.remove('error');
@@ -3640,7 +3655,9 @@ function onDrop(e) {
     clearErrors();
 
     const title = sanitizeInput(inputName.value.trim());
-    let url = sanitizeInput(inputUrl.value.trim());
+    // URL 原样保存：它只会被赋给 href/src 这类属性，不经过 HTML 解析；
+    // 在这里转义会把含 & 的地址（多个查询参数）写坏
+    let url = inputUrl.value.trim();
     let hasError = false;
 
     if (!title) {
