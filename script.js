@@ -37,8 +37,8 @@ const i18nData = {
     quicklinks: '快速链接',
     off: '关闭',
     on: '打开',
-    rows1: '1 行',
-    rows2: '2 行',
+    rows1: '一行',
+    rows2: '多行',
     showTimeCapsule: '显示时间',
     showMenuButton: '显示菜单按钮',
     searchEngine: '搜索引擎',
@@ -165,8 +165,8 @@ const i18nData = {
     quicklinks: '快速連結',
     off: '關閉',
     on: '開啟',
-    rows1: '1 行',
-    rows2: '2 行',
+    rows1: '一行',
+    rows2: '多行',
     showTimeCapsule: '顯示時間',
     showMenuButton: '顯示菜單按鈕',
     searchEngine: '搜尋引擎',
@@ -277,8 +277,8 @@ const i18nData = {
     quicklinks: '快速連結',
     off: '止',
     on: '啟',
-    rows1: '一列',
-    rows2: '二列',
+    rows1: '一行',
+    rows2: '多行',
     showTimeCapsule: '顯時',
     showMenuButton: '顯目錄',
     searchEngine: '搜尋器',
@@ -368,8 +368,8 @@ const i18nData = {
     quicklinks: 'Quick Links',
     off: 'Off',
     on: 'On',
-    rows1: '1 row',
-    rows2: '2 rows',
+    rows1: 'One row',
+    rows2: 'Multiple rows',
     showTimeCapsule: 'Show Time',
     showMenuButton: 'Show Menu Button',
     searchEngine: 'Search Engine',
@@ -483,7 +483,7 @@ const i18nData = {
     off: 'オフ',
     on: 'オン',
     rows1: '1 行',
-    rows2: '2 行',
+    rows2: '複数行',
     showTimeCapsule: '時間を表示',
     showMenuButton: 'メニューボタンを表示',
     searchEngine: '検索エンジン',
@@ -595,8 +595,8 @@ const i18nData = {
     quicklinks: 'Быстрые ссылки',
     off: 'Выкл',
     on: 'Вкл',
-    rows1: '1 строка',
-    rows2: '2 строки',
+    rows1: 'Одна строка',
+    rows2: 'Несколько строк',
     showTimeCapsule: 'Показать время',
     showMenuButton: 'Показать кнопку меню',
     searchEngine: 'Поисковая система',
@@ -2881,9 +2881,10 @@ inputOnlineUrl?.addEventListener('input', () => {
   const QUICKLINK_GAP = 16;
   // 页面左右各保留的安全边距
   const QUICKLINK_SIDE_MARGIN = 16;
-  // 每行最多显示的项数
+  // 单行模式：每行最多显示的项数，超出的项与"添加"按钮都不再渲染
   const QUICKLINK_MAX_COLUMNS_ONE_ROW = 10;
-  const QUICKLINK_MAX_COLUMNS_TWO_ROWS = 12;
+  // 多行模式：每行显示的项数，行数不限（窗口过窄时按实际可用列数收缩）
+  const QUICKLINK_MAX_COLUMNS_MULTI_ROW = 9;
 
   // 当前生效的列数；仅当它发生变化时才需要重建 DOM
   let quicklinksColumns = 0;
@@ -2898,7 +2899,8 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 只读视口宽度、不读取布局，避免 resize 期间反复强制重排
   function quicklinksAvailableColumns() {
     if (!quicklinksElem) return 0;
-    const maxColumns = Math.max(QUICKLINK_MAX_COLUMNS_ONE_ROW, QUICKLINK_MAX_COLUMNS_TWO_ROWS);
+    // 视口再宽也不会超过单行模式的上限；多行模式的每行项数更少，取两者较大值即可
+    const maxColumns = Math.max(QUICKLINK_MAX_COLUMNS_ONE_ROW, QUICKLINK_MAX_COLUMNS_MULTI_ROW);
     // 可用宽度受「视口 - 两侧安全边距」与「每行项数上限」共同约束
     const availableWidth = Math.min(
       document.documentElement.clientWidth - QUICKLINK_SIDE_MARGIN * 2,
@@ -2912,9 +2914,10 @@ inputOnlineUrl?.addEventListener('input', () => {
   }
 
   // 当前设置下每行允许的列数
+  // 单行模式：最多 10 列；多行模式：每行 9 列（窄窗口按实际可用列数收缩）
   function quicklinksColumnsPerRow(rowsValue) {
     const available = quicklinksAvailableColumns();
-    if (rowsValue === '2') return Math.min(available, QUICKLINK_MAX_COLUMNS_TWO_ROWS);
+    if (rowsValue === '2') return Math.min(available, QUICKLINK_MAX_COLUMNS_MULTI_ROW);
     return Math.min(available, QUICKLINK_MAX_COLUMNS_ONE_ROW);
   }
 
@@ -3017,12 +3020,18 @@ inputOnlineUrl?.addEventListener('input', () => {
       return;
     }
 
-    const maxItems = perRow * parseInt(rows, 10);
-    // 本次真正要渲染的项数（已达到上限时不再显示"添加"按钮）
+    // 单行模式：最多渲染 perRow 项（超出部分与"添加"按钮都不渲染）
+    // 多行模式：不限项数，全部渲染，由 CSS 换行成多行
+    const multiRow = rows === '2';
+    const maxItems = multiRow ? Infinity : perRow;
     const shownLinks = quicklinksList.slice(0, maxItems);
-    const visibleCount = shownLinks.length + (quicklinksList.length < maxItems ? 1 : 0);
-    // 容器内容宽度按"最后一行实际有多少项"计算，因此左右都不会残留空档
-    const contentWidth = quicklinksWidthForColumns(Math.min(perRow, Math.max(1, visibleCount)));
+    const hasAddButton = quicklinksList.length < maxItems;
+    // 容器内容宽度：多行模式固定为 perRow 列，保证每行排满 perRow 项后才换行（行数不限）；
+    // 单行模式按实际渲染项数收缩，左右不留空档
+    const widthColumns = multiRow
+      ? perRow
+      : Math.min(perRow, Math.max(1, shownLinks.length + (hasAddButton ? 1 : 0)));
+    const contentWidth = quicklinksWidthForColumns(widthColumns);
     const renderKey = [rows, perRow, quicklinksList.length, quicklinksList.map(i => i.id).join(',')].join('|');
     const widthChanged = quicklinksElem.style.getPropertyValue('--quicklinks-content-width') !== contentWidth + 'px';
 
@@ -3035,8 +3044,8 @@ inputOnlineUrl?.addEventListener('input', () => {
     shownLinks.forEach(item => {
       fragment.appendChild(createQuicklinkNode(item));
     });
-    // 未超出显示上限时才显示"添加"按钮
-    if (quicklinksList.length < maxItems) {
+    // 单行模式未超出显示上限时才显示"添加"按钮；多行模式始终显示在末尾
+    if (hasAddButton) {
       fragment.appendChild(createQuicklinkAddNode());
     }
 

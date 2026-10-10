@@ -1039,7 +1039,7 @@
       min-height: 60px;
       display: flex;
       flex-direction: row;
-      flex-wrap: wrap;             /* 2 行模式靠换行实现 */
+      flex-wrap: wrap;             /* 多行模式靠换行实现，每行 9 项 */
       justify-content: center;
       align-items: center;
       gap: 16px;
@@ -1806,8 +1806,8 @@
                   <div class="custom-select-wrapper">
                     <select id="select-quicklinks" class="select-box" tabindex="-1" aria-label="快速链接数量">
                       <option value="0" data-i18n="off">关闭</option>
-                      <option value="1" data-i18n="rows1">1 行</option>
-                      <option value="2" data-i18n="rows2">2 行</option>
+                      <option value="1" data-i18n="rows1">一行</option>
+                      <option value="2" data-i18n="rows2">多行</option>
                     </select>
                     <div class="custom-select-display" data-for="select-quicklinks">
                       <span class="custom-select-text"></span>
