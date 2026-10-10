@@ -2516,6 +2516,12 @@ document.addEventListener('DOMContentLoaded', () => {
       option.setAttribute('aria-selected', selected ? 'true' : 'false');
       option.tabIndex = selected ? 0 : -1;
     });
+    // 选中「初始化」（不可撤回）时，把「下一步」换成与"重置 Litestart"同款的危险按钮样式
+    if (btnManageProfilesNext) {
+      const isDanger = action === 'init';
+      btnManageProfilesNext.classList.toggle('btn-danger', isDanger);
+      btnManageProfilesNext.classList.toggle('btn-primary', !isDanger);
+    }
   }
 
   function closeManageProfilesModal() {
