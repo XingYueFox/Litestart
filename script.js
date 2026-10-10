@@ -1187,6 +1187,15 @@ function decodeInput(str) {
     .replace(/&amp;/g, '&');
 }
 
+// 校验并清洗 URL，拒绝 javascript:/data:/vbscript: 等危险协议，防止协议型 XSS
+function sanitizeUrl(str) {
+  const url = String(str == null ? '' : str).trim();
+  if (/^(javascript|data|vbscript|file):/i.test(url)) {
+    return '#';
+  }
+  return url;
+}
+
 // ===== 重写下拉菜单(Custom Select) =====
 
 
