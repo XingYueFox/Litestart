@@ -284,6 +284,8 @@
       align-items: center;
       background-color: var(--fill-color);
       overflow: auto;
+      /* 到边界后不再产生弹性/链式滚动，避免"滚一下又弹回来" */
+      overscroll-behavior: none;
       z-index: 2;
     }
 
@@ -405,6 +407,8 @@
 
       /* 原生滚动条隐藏，改用下面自绘的悬浮滚动条（不占内容宽度） */
       scrollbar-width: none;
+      /* 面板内滚到边界时，不要把滚动动作传给外层容器 */
+      overscroll-behavior: contain;
     }
 
     /* WebKit 下同样隐藏原生滚动条 */
@@ -560,6 +564,18 @@
       border-width: 1px; 
     }
 
+    /* 自定义下拉被锁定时（例如"底部"模式下固定一行） */
+    .custom-select-display.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* 整行不可用时（例如"悬挂"布局下的"显示 Logo"开关） */
+    .setting-row.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
     /* 下拉箭头旋转动画 */
     .custom-select-arrow {
       width: 12px;
@@ -707,9 +723,17 @@
     }
 
     /* 卡片视图选择器 */
+    /* 预设区的小标题 */
+    .preset-section-label {
+      margin-top: 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--settings-text-secondary);
+    }
+
     .layout-presets {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 8px;
       margin-top: 10px;
     }
@@ -750,23 +774,41 @@
       justify-content: center;
     }
 
-    .preset-thumb-bar {
-      position: absolute;
-      width: 60%;
-      height: 10px;
-      background: #555;
-      border-radius: 3px;
-      z-index: 1;
-    }
-
     .preset-thumb-box {
       position: absolute;
       bottom: 6px;
       width: 60%;
-      height: 6px;
-      background: #555;
-      border-radius: 3px;
+      height: 4px;
+      background: rgba(128, 128, 128, 0.55);
+      border-radius: 2px;
       z-index: 1;
+    }
+
+    /* 预设缩略图里的小长方形（Logo 占位） */
+    .preset-thumb-logo {
+      position: absolute;
+      width: 30%;
+      height: 8px;
+      border-radius: 2px;
+      background: rgba(128, 128, 128, 0.55);
+      z-index: 1;
+    }
+
+    /* 预设缩略图里的一排圆点：整体宽度与上面的条条一致 */
+    .preset-thumb-dots {
+      position: absolute;
+      width: 60%;
+      height: 10px;              /* 与原粗条等高，方便用同样的位置摆放 */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .preset-thumb-dots span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(128, 128, 128, 0.55);
     }
 
     .preset-card-label {
@@ -1055,7 +1097,10 @@
       flex-wrap: wrap;             /* 多行模式靠换行实现，每行 9 项 */
       justify-content: center;
       align-items: center;
-      gap: 16px;
+      /* 容器比内容高时（"悬挂"布局里它占满 1fr 行），多行行高不能被拉伸，
+         否则行间距会被撑开；这里让多行贴着容器顶部、间距恒为 gap */
+      align-content: flex-start;
+      gap: 10px;
       overflow: visible;
     }
 
@@ -1170,6 +1215,19 @@
 
     body[data-layout="inspirational"] ntp-quicklinks {
       grid-row: 4;
+    }
+
+    /* 快速链接固定到页面底部（该模式下由脚本强制一行） */
+    body[data-quicklink-position="bottom"] ntp-quicklinks {
+      position: absolute;
+      grid-row: auto;      /* 脱离网格定位，包含块回到 #inner，bottom 才指向整页底部 */
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      width: auto;
+      max-width: none;
+      min-height: 0;
+      z-index: 3;
     }
 
     /* 通用 Modal 模态对话框 */
@@ -1898,23 +1956,47 @@
             </div>
 
             <div class="settings-content">
-              <!-- 快速链接 -->
+              <!-- 页面布局视图选择 -->
               <div class="settings-card">
-                  <div class="settings-card-title" data-i18n="quicklinks">快速链接</div>
-                  <div class="custom-select-wrapper">
-                    <select id="select-quicklinks" class="select-box" tabindex="-1" aria-label="快速链接数量">
-                      <option value="0" data-i18n="off">关闭</option>
-                      <option value="1" data-i18n="rows1">一行</option>
-                      <option value="2" data-i18n="rows2">多行</option>
-                    </select>
-                    <div class="custom-select-display" data-for="select-quicklinks">
-                      <span class="custom-select-text"></span>
-                      <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
-                        <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
-                      </svg>
+                <div class="settings-card-header">
+                  <span data-i18n="layout">页面布局</span>
+                </div>
+                <button id="btn-open-layout-modal" class="icon-btn-text" type="button">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12.085 6.5l5.415 5.415l-8.793 8.792A1 1 0 0 1 8 21H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 .293-.707zm5.406-2.698a3.828 3.828 0 0 1 1.716 6.405l-.292.293L13.5 5.085l.293-.292a3.83 3.83 0 0 1 3.698-.991"/></svg>
+                  <span data-i18n="editLayout">编辑页面布局</span>
+                </button>
+                <div class="preset-section-label" data-i18n="presets">预设</div>
+                <div class="layout-presets">
+                  <div class="preset-card" data-layout-val="inspirational" id="preset-inspirational">
+                    <div class="preset-thumb">
+                      <div class="preset-thumb-box" style="bottom: 30px"></div>
+                      <div class="preset-thumb-dots" style="top: 20px">
+                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                      </div>
                     </div>
+                    <span class="preset-card-label" data-i18n="inspirational">展望</span>
                   </div>
+                  <div class="preset-card" data-layout-val="focused" id="preset-focused">
+                    <div class="preset-thumb">
+                      <div class="preset-thumb-logo" style="top: 10px"></div>
+                      <div class="preset-thumb-box" style="bottom: 22px"></div>
+                      <div class="preset-thumb-dots" style="top: 28px">
+                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                      </div>
+                    </div>
+                    <span class="preset-card-label" data-i18n="focused">聚焦</span>
+                  </div>
+                  <div class="preset-card" data-layout-val="appreciate" id="preset-appreciate">
+                    <div class="preset-thumb">
+                      <div class="preset-thumb-dots" style="bottom: 6px">
+                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                      </div>
+                    </div>
+                    <span class="preset-card-label" data-i18n="appreciate">欣赏</span>
+                  </div>
+                </div>
               </div>
+
               <div class="settings-card">
                 <div class="settings-card-title" data-i18n="searchEngine">搜索引擎</div>
                 <div class="custom-select-wrapper">
@@ -1969,31 +2051,6 @@
                 </div>
               </div>
 
-              <!-- 页面布局视图选择 -->
-              <div class="settings-card">
-                <div class="settings-card-header">
-                  <span data-i18n="layout">页面布局</span>
-                </div>
-                <div class="layout-presets">
-                  <div class="preset-card" data-layout-val="inspirational" id="preset-inspirational">
-                    <div class="preset-thumb">
-                      <div class="preset-thumb-box" style="bottom: 30px"></div>
-                    </div>
-                    <span class="preset-card-label" data-i18n="inspirational">展望</span>
-                  </div>
-                  <div class="preset-card" data-layout-val="focused" id="preset-focused">
-                    <div class="preset-thumb">
-                      <div class="preset-thumb-bar" style="top: 24px"></div>
-                      <div class="preset-thumb-box" style="bottom: 26px"></div>
-                    </div>
-                    <span class="preset-card-label" data-i18n="focused">聚焦</span>
-                  </div>
-                </div>
-                <button id="btn-open-layout-modal" class="icon-btn-text" type="button">
-                  <span data-i18n="editLayout">编辑页面布局</span>
-                </button>
-              </div>
-
               <!-- 背景设置卡片 -->
               <div class="settings-card">
                 <div class="setting-row" style="margin-bottom: 8px;">
@@ -2007,18 +2064,9 @@
                   </div>
                 </div>
                 <button id="btn-open-bg-modal" class="icon-btn-text" type="button">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12.085 6.5l5.415 5.415l-8.793 8.792A1 1 0 0 1 8 21H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 .293-.707zm5.406-2.698a3.828 3.828 0 0 1 1.716 6.405l-.292.293L13.5 5.085l.293-.292a3.83 3.83 0 0 1 3.698-.991"/></svg>
                   <span data-i18n="editBackground">编辑背景</span>
                 </button>
-                <div id="enhanced-visibility-row" class="setting-row" style="display:none; margin-top: 8px;">
-                  <div class="setting-label-group" data-i18n="enhancedVisibility">增强元素可见性</div>
-                  <div class="switch-container">
-                    <span class="setting-status-text" id="status-enhanced-visibility" data-i18n="off">关闭</span>
-                    <label class="switch">
-                      <input type="checkbox" id="toggle-enhanced-visibility">
-                      <span class="slider"></span>
-                    </label>
-                  </div>
-                </div>
               </div>
 
               <!-- 页面语言选择卡片 -->
@@ -2032,7 +2080,6 @@
                     <option value="ru">Русский</option>
                     <option value="zh-CN">中文-简体</option>
                     <option value="zh-TW">中文-繁體</option>
-                    <option value="zh-WY">华夏-文言</option>
                   </select>
                   <div class="custom-select-display" data-for="select-language">
                     <span class="custom-select-text"></span>
@@ -2110,6 +2157,20 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- 增强元素可见性：只有背景开启时才出现，放在最后 -->
+                <div id="enhanced-visibility-row" class="settings-card" style="display: none;">
+                  <div class="setting-row">
+                    <div class="setting-label-group" data-i18n="enhancedVisibility">增强元素可见性</div>
+                    <div class="switch-container">
+                      <span class="setting-status-text" id="status-enhanced-visibility" data-i18n="off">关闭</span>
+                      <label class="switch">
+                        <input type="checkbox" id="toggle-enhanced-visibility">
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -2128,7 +2189,6 @@
                     <select id="select-layout" class="select-box" tabindex="-1" aria-label="搜索框位置">
                       <option value="inspirational" data-i18n="layoutHanging">悬挂</option>
                       <option value="focused" data-i18n="layoutCentered">居中</option>
-                      <option value="hidden" data-i18n="layoutHidden">关闭</option>
                     </select>
                     <div class="custom-select-display" data-for="select-layout">
                       <span class="custom-select-text"></span>
@@ -2137,11 +2197,18 @@
                       </svg>
                     </div>
                   </div>
-                </div>
-
-                <div class="settings-card">
-                  <div class="setting-row" style="margin-bottom: 12px;">
-                    <div class="setting-label-group" data-i18n="showLogo">显示标题</div>
+                  <div class="setting-row" style="margin-top: 12px;">
+                    <div class="setting-label-group" data-i18n="showSearchBox">显示搜索框</div>
+                    <div class="switch-container">
+                      <span class="setting-status-text" id="status-search-box" data-i18n="on">打开</span>
+                      <label class="switch">
+                        <input type="checkbox" id="toggle-search-switch" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="setting-row" style="margin-top: 12px;">
+                    <div class="setting-label-group" data-i18n="showLogo">显示 Logo</div>
                     <div class="switch-container">
                       <span class="setting-status-text" id="status-logo" data-i18n="on">打开</span>
                       <label class="switch">
@@ -2150,16 +2217,49 @@
                       </label>
                     </div>
                   </div>
-                  <div class="setting-row" style="margin-bottom: 12px;">
-                    <div class="setting-label-group" data-i18n="showAddButton">显示快速链接添加按钮</div>
+                </div>
+
+                <div class="settings-card">
+                  <div class="settings-card-title" data-i18n="quicklinkPosition">快速链接位置</div>
+                  <div class="custom-select-wrapper">
+                    <select id="select-quicklink-position" class="select-box" tabindex="-1" aria-label="快速链接位置">
+                      <option value="auto" data-i18n="qlPositionDefault">默认</option>
+                      <option value="bottom" data-i18n="qlPositionBottom">底部</option>
+                    </select>
+                    <div class="custom-select-display" data-for="select-quicklink-position">
+                      <span class="custom-select-text"></span>
+                      <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                        <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="settings-card-title" data-i18n="quicklinkStyle" style="margin-top: 14px;">快速链接样式</div>
+                  <div class="custom-select-wrapper">
+                    <select id="select-quicklinks" class="select-box" tabindex="-1" aria-label="快速链接数量">
+                      <option value="0" data-i18n="off">关闭</option>
+                      <option value="1" data-i18n="rows1">一行</option>
+                      <option value="2" data-i18n="rows2">多行</option>
+                    </select>
+                    <div class="custom-select-display" data-for="select-quicklinks">
+                      <span class="custom-select-text"></span>
+                      <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                        <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="setting-row" style="margin-top: 12px;">
+                    <div class="setting-label-group" data-i18n="showAddButton">在快速链接区域显示添加按钮</div>
                     <div class="switch-container">
-                      <span class="setting-status-text" id="status-add-button" data-i18n="on">打开</span>
+                      <span class="setting-status-text" id="status-add-button" data-i18n="off">关闭</span>
                       <label class="switch">
-                        <input type="checkbox" id="toggle-add-button-switch" checked>
+                        <input type="checkbox" id="toggle-add-button-switch">
                         <span class="slider"></span>
                       </label>
                     </div>
                   </div>
+                </div>
+
+                <div class="settings-card">
                   <div class="setting-row" style="margin-bottom: 12px;">
                     <div class="setting-label-group" data-i18n="showMenuButton">显示菜单按钮</div>
                     <div class="switch-container">

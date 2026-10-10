@@ -35,6 +35,7 @@ const i18nData = {
     settingsTitle: '页面设置',
     close: '关闭',
     back: '返回',
+    quicklinkStyle: '快速链接样式',
     quicklinks: '快速链接',
     off: '关闭',
     on: '打开',
@@ -49,6 +50,8 @@ const i18nData = {
     layout: '页面布局',
     inspirational: '展望',
     focused: '聚焦',
+    appreciate: '欣赏',
+    presets: '预设',
     background: '背景',
     enableBackground: '启用背景',
     editBackground: '编辑背景',
@@ -150,11 +153,15 @@ const i18nData = {
     layout: '页面布局',
     editLayout: '编辑页面布局',
     searchBoxPosition: '搜索框位置',
+    showSearchBox: '显示搜索框',
+    quicklinkPosition: '快速链接位置',
+    qlPositionDefault: '默认',
+    qlPositionBottom: '底部',
     layoutHanging: '悬挂',
     layoutCentered: '居中',
     layoutHidden: '关闭',
-    showLogo: '显示标题',
-    showAddButton: '显示快速链接添加按钮',
+    showLogo: '显示 Logo',
+    showAddButton: '在快速链接区域显示添加按钮',
 
     //自定义搜索引擎图片部分
     customTitleImage: '自定义标题图片',
@@ -167,6 +174,7 @@ const i18nData = {
     settingsTitle: '頁面設定',
     close: '關閉',
     back: '返回',
+    quicklinkStyle: '快速連結樣式',
     quicklinks: '快速連結',
     off: '關閉',
     on: '開啟',
@@ -181,6 +189,8 @@ const i18nData = {
     layout: '頁面佈局',
     inspirational: '展望',
     focused: '聚焦',
+    appreciate: '欣賞',
+    presets: '預設',
     background: '背景',
     enableBackground: '啟用背景',
     editBackground: '編輯背景',
@@ -268,116 +278,26 @@ const i18nData = {
     layout: '頁面佈局',
     editLayout: '編輯頁面佈局',
     searchBoxPosition: '搜尋框位置',
+    showSearchBox: '顯示搜尋框',
+    quicklinkPosition: '快速連結位置',
+    qlPositionDefault: '預設',
+    qlPositionBottom: '底部',
     layoutHanging: '懸掛',
     layoutCentered: '居中',
     layoutHidden: '關閉',
-    showLogo: '顯示標題',
-    showAddButton: '顯示快速連結新增按鈕',
+    showLogo: '顯示 Logo',
+    showAddButton: '在快速連結區域顯示新增按鈕',
     customTitleImage: '自訂標題圖片',
     selectImageFile: '選擇圖片',
     removeImage: '刪除圖片',
     noImageSelected: '未選擇圖片',
  },
-  'zh-WY': {
-    pageTitle: '新籤頁',
-    settingsTitle: '頁面之設',
-    close: '關',
-    back: '返',
-    quicklinks: '快速連結',
-    off: '止',
-    on: '啟',
-    rows1: '一行',
-    rows2: '多行',
-    showTimeCapsule: '顯時',
-    showMenuButton: '顯目錄',
-    showAddButton: '顯快速連結增鈕',
-    searchEngine: '搜尋器',
-    custom: '自訂',
-    editCustomEngine: '訂搜器',
-    saveHistory: '搜錄',
-    layout: '佈局',
-    inspirational: '展望',
-    focused: '專注',
-    background: '底景',
-    enableBackground: '啟底景',
-    editBackground: '修飾底景',
-    language: '頁面語',
-    langAuto: '預設（順裝置）',
-    cookieNotice: '隱私與餅儲',
-    license: '開源之約',
-    contributor: '題名錄',
-    helpFeedback: '求助與反饋',
-    presentedBy: '由',
-    xingyuefox: '秋山星月',
-    AomiRaku: '羽梦千景',
-    forYou: '呈獻',
-    disclaimer: '謹告：此頁與微軟無涉。',
-    and: '及',
-    searchPlaceholder: '或搜或鍵，惟網址依',
-    searchInput: '搜尋之框',
-    clearSearchHistory: '拭搜尋記',
-    customBackground: '自定底景',
-    usingDefaultBg: '現用默認底景',
-    sourceLocal: '來自本機圖',
-    sourceBingDaily: '來自 Bing 日圖',
-    sourceCustomUrl: '來自自訂之鏈',
-    selectImage: '擇本機圖或影',
-    uploadFile: '擇檔案',
-    restoreDefault: '復初',
-    editShortcut: '修快速連結',
-    name: '名',
-    inputNamePh: '書快速連結之名',
-    errorNameReq: '請填快速連結名',
-    errorUrlReq: '請填網址',
-    delete: '刪',
-    cancel: '止',
-    save: '儲',
-    customEngineTitle: '自定搜尋器',
-    engineName: '引擎之名',
-    engineNamePh: '例: DuckDuckGo',
-    errorEngineNameReq: '請填搜尋器名',
-    engineUrl: '搜尋 URL (%s 換字)',
-    errorEngineUrlFormat: '請填搜尋 URL，必含 %s',
-    useOnlineContent: '用網圖',
-    bingDaily: '必應日圖',
-    customUrl: '自訂',
-    customOnlineWallpaper: '自訂網圖',
-    imageOrVideoUrl: '圖影鏈',
-    enterUrl: '輸圖影鏈',
-    forceBingCN: '勒令必應專用中土之版',
-    forceBingCNDesc: '<b>啟</b>：勒令必應專用中土之版<br><b>關</b>：隨網路之勢自擇。<br>此舉可免代理令主站失其自轉之能。',
-    enhancedVisibility: '彰明諸元',
-    enhancedVisibilityDesc: '啟背景時，徽標頂鈕之下施輕翳，映於畫圖而愈晰',
-    addlink: '增',
-    addQuicklink: '增快速連結',
-    accountDetails: '改易簡策，存真去偽',
-    manageProfiles: '掌檔',
-    initConfig: '重置',
-    editProfile: '修飾名帖',
-    profileAvatar: '首像',
-    uploadAvatar: '擇首像',
-    removeAvatar: '去首像',
-    description: '描述',
-    manageProfilesTitle: '掌檔',
-    selectOperation: '擇所欲行',
-    exportConfig: '出設',
-    importConfig: '入設',
-    initConfigOption: '復初',
-    next: '續',
-    resetTitle: '復初',
-    resetDesc: '倘遭困顿，或厌时制，可复初以涤万设，返 Litestart 于鸿蒙。然此举不可追，慎之慎之！',
-    confirmReset: '定',
-    resetDoneTitle: '妙哉！返本归元',
-    resetDoneDesc: '万设归初，新页将启，天光焕然。',
-    refreshNow: '即新',
-    restoreDoneTitle: '掌檔既復',
-    restoreDoneDesc: '旧制已归，新页将启，焕然一新。',
-  },
   'en': {
     pageTitle: 'New Tab',
     settingsTitle: 'Page Settings',
     close: 'Close',
     back: 'Back',
+    quicklinkStyle: 'Quicklink style',
     quicklinks: 'Quick Links',
     off: 'Off',
     on: 'On',
@@ -392,6 +312,9 @@ const i18nData = {
     layout: 'Layout',
     inspirational: 'Inspirational',
     focused: 'Focused',
+    appreciate: 'Appreciate',
+    presets: 'Presets',
+
     background: 'Background',
     enableBackground: 'Enable background',
     editBackground: 'Edit background',
@@ -480,11 +403,15 @@ const i18nData = {
     layout: 'Layout',
     editLayout: 'Edit Layout',
     searchBoxPosition: 'Search Box Position',
+    showSearchBox: 'Show search box',
+    quicklinkPosition: 'Quicklink position',
+    qlPositionDefault: 'Default',
+    qlPositionBottom: 'Bottom',
     layoutHanging: 'Hanging',
     layoutCentered: 'Centered',
     layoutHidden: 'Hidden',
-    showLogo: 'Show Title',
-    showAddButton: 'Show quicklink add button',
+    showLogo: 'Show logo',
+    showAddButton: 'Show add button in quicklinks area',
     customTitleImage: 'Custom Title Image',
     selectImageFile: 'Select Image',
     removeImage: 'Remove Image',
@@ -496,6 +423,7 @@ const i18nData = {
     settingsTitle: '設定',
     close: '閉じる',
     back: '戻る',
+    quicklinkStyle: 'クイックリンクの表示',
     quicklinks: 'クイックリンク',
     off: 'オフ',
     on: 'オン',
@@ -510,6 +438,9 @@ const i18nData = {
     layout: 'レイアウト',
     inspirational: 'シンプル',
     focused: 'フォーカス',
+    appreciate: '鑑賞',
+    presets: 'プリセット',
+
     background: '背景',
     enableBackground: '背景を有効にする',
     editBackground: '背景を編集',
@@ -598,11 +529,15 @@ const i18nData = {
     layout: 'レイアウト',
     editLayout: 'レイアウトを編集',
     searchBoxPosition: '検索ボックスの位置',
+    showSearchBox: '検索ボックスを表示',
+    quicklinkPosition: 'クイックリンクの位置',
+    qlPositionDefault: '既定',
+    qlPositionBottom: '下部',
     layoutHanging: 'ハンギング',
     layoutCentered: '中央',
     layoutHidden: '非表示',
-    showLogo: 'タイトルを表示',
-    showAddButton: 'クイックリンクの追加ボタンを表示',
+    showLogo: 'ロゴを表示',
+    showAddButton: 'クイックリンクに追加ボタンを表示',
     customTitleImage: 'カスタムタイトル画像',
     selectImageFile: '画像を選択',
     removeImage: '画像を削除',
@@ -613,6 +548,7 @@ const i18nData = {
     settingsTitle: 'Настройки страницы',
     close: 'Закрыть',
     back: 'Назад',
+    quicklinkStyle: 'Вид быстрых ссылок',
     quicklinks: 'Быстрые ссылки',
     off: 'Выкл',
     on: 'Вкл',
@@ -627,6 +563,9 @@ const i18nData = {
     layout: 'Макет',
     inspirational: 'Вдохновение',
     focused: 'Фокус',
+    appreciate: 'Созерцание',
+    presets: 'Пресеты',
+
     background: 'Фон',
     enableBackground: 'Включить фон',
     editBackground: 'Изменить фон',
@@ -714,11 +653,15 @@ const i18nData = {
         layout: 'Макет',
     editLayout: 'Изменить макет',
     searchBoxPosition: 'Положение поисковой строки',
+    showSearchBox: 'Показывать поисковую строку',
+    quicklinkPosition: 'Положение быстрых ссылок',
+    qlPositionDefault: 'По умолчанию',
+    qlPositionBottom: 'Внизу',
     layoutHanging: 'Подвесной',
     layoutCentered: 'По центру',
     layoutHidden: 'Скрыто',
-    showLogo: 'Показать заголовок',
-    showAddButton: 'Показывать кнопку добавления быстрой ссылки',
+    showLogo: 'Показывать логотип',
+    showAddButton: 'Кнопка добавления в быстрых ссылках',
     // ...
     bing: 'Bing',
     customTitleImage: 'Пользовательское изображение заголовка',
@@ -845,6 +788,13 @@ function applyLanguage(langConfig) {
   if (statusAddButton) {
     const isChecked = document.getElementById('toggle-add-button-switch')?.checked ?? true;
     statusAddButton.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  // 8.2 刷新"显示搜索框"开关状态文本
+  const statusSearchBox = document.getElementById('status-search-box');
+  if (statusSearchBox) {
+    const isChecked = document.getElementById('toggle-search-switch')?.checked ?? true;
+    statusSearchBox.innerText = isChecked ? dict.on : dict.off;
   }
 
   // 9.强制使用必应中国版开关状态文本
@@ -1592,12 +1542,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleForceBingCN = document.getElementById('toggle-force-bing-cn');
   const toggleHistorySwitch = document.getElementById('toggle-history-switch');
   const selectQuicklinks = document.getElementById('select-quicklinks');
+  const selectQuicklinkPosition = document.getElementById('select-quicklink-position');
   const quicklinksElem = document.getElementById('quicklinks');
   const logoContainer = document.getElementById('logo');
   const selectLanguage = document.getElementById('select-language');
 
   // 编辑页面布局相关 DOM（布局设置现在是设置面板内的二级页）
   const toggleLogoSwitch = document.getElementById('toggle-logo-switch');
+  const toggleSearchSwitch = document.getElementById('toggle-search-switch');
   const toggleAddButtonSwitch = document.getElementById('toggle-add-button-switch');
   const selectLayout = document.getElementById('select-layout');
   const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
@@ -1782,6 +1734,8 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsScrollbarCanScroll = m.maxScroll > 2;
 
     if (!settingsScrollbarCanScroll) {
+      // 放得下却残留了一点滚动位置（亚像素）时归零，避免内容看起来被顶上去
+      if (popoverSettings.scrollTop !== 0) popoverSettings.scrollTop = 0;
       // 还原尺寸再淡出，否则高度被归零会让它"瞬间消失"
       settingsScrollbarThumb.style.height = prevHeight;
       settingsScrollbarThumb.style.transform = prevTransform;
@@ -1800,6 +1754,12 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSettingsScrollbar();
     revealSettingsScrollbar();
   }, { passive: true });
+
+  // 面板内容放得下时直接吃掉滚轮事件：否则浏览器会把滚动动作交给外层容器，
+  // 表现为"滚一下、内容轻微上移又弹回来"
+  popoverSettings?.addEventListener('wheel', (e) => {
+    if (!settingsScrollbarCanScroll) e.preventDefault();
+  }, { passive: false });
 
   // 尺寸变化只同步几何，不主动显示
   window.addEventListener('resize', updateSettingsScrollbar);
@@ -2140,6 +2100,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const savedLayout = Storage.get('ntp_layout', 'focused');
   const savedQuicklinksRow = Storage.get('ntp_quicklinks', '0');
+  // 快速链接位置：'auto' 跟随布局；'bottom' 固定在页面底部（该模式强制一行）
+  let quicklinkPosition = Storage.get('ntp_quicklink_position', 'auto');
   let historyEnabled = Storage.get('ntp_history_enabled', true);
   let searchHistory = Storage.get('ntp_search_history', []);
   let showTimeCapsule = Storage.get('ntp_show_time_capsule', false);
@@ -2151,8 +2113,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
   let searchVisible = Storage.get('ntp_search_visible', true);
   let showLogo = Storage.get('ntp_show_logo', true);
-  // 快速链接区"添加"按钮的显隐（默认开启）
-  let showAddButton = Storage.get('ntp_show_add_button', true);
+  // 快速链接区"添加"按钮的显隐（默认关闭）
+  let showAddButton = Storage.get('ntp_show_add_button', false);
 
   // 获取今天的日期字符串，如 "2026-09-03"，用于判断壁纸是否过期
   function getTodayStr() {
@@ -2211,8 +2173,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
   updateForceBingCNRow(savedEngine);
-  document.body.setAttribute('data-layout', savedLayout);
-  quicklinksElem?.setAttribute('rows', savedQuicklinksRow);
+  document.body.setAttribute('data-layout', savedLayout === 'hidden' ? 'focused' : savedLayout);
+  // 应用快速链接位置（"底部"模式会强制一行并锁定数量下拉）
+  applyQuicklinkPosition();
 
   // 背景显隐及渲染逻辑
   function applyBackgroundState() {
@@ -2244,7 +2207,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (enhancedVisibilityRow) {
-      enhancedVisibilityRow.style.display = bgEnabled ? 'flex' : 'none';
+      // 该开关现在是一张独立卡片，显隐值用 block
+      enhancedVisibilityRow.style.display = bgEnabled ? 'block' : 'none';
     }
     applyEnhancedVisibility();
     applyBgDependentEnabled();
@@ -2484,6 +2448,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_engine',
     'ntp_layout',
     'ntp_quicklinks',
+    'ntp_quicklink_position',
     'ntp_quicklinks_list',
     'ntp_history_enabled',
     'ntp_search_history',
@@ -2863,27 +2828,44 @@ inputOnlineUrl?.addEventListener('input', () => {
 
 
   // 布局切换-------------
+  // 只负责搜索框的"悬挂 / 居中"；是否显示由"显示搜索框"开关接管
   function applyLayout(layoutVal) {
-    if (!layoutVal) return;
+    if (!layoutVal || layoutVal === 'hidden') return;
 
-    // 「关闭」：只隐藏搜索栏，不改动 data-layout 与预设卡片
-    if (layoutVal === 'hidden') {
-      searchVisible = false;
-      Storage.set('ntp_search_visible', false);
-      applySearchVisibility();
-      return;
-    }
-
-    // 正常切换布局；如果之前是隐藏状态，则顺手把搜索栏恢复
+    // 切换布局时顺手把搜索栏恢复显示
     document.body.setAttribute('data-layout', layoutVal);
     Storage.set('ntp_layout', layoutVal);
-    updateLayoutPresetUI(layoutVal);
 
     if (!searchVisible) {
       searchVisible = true;
       Storage.set('ntp_search_visible', true);
     }
     applySearchVisibility();
+    applyLogoSwitchAvailability();
+    refreshCustomSelects();
+    syncLayoutPresetSelection();
+  }
+
+  // 快速链接位置：'bottom' 时固定到页面底部，并强制一行（锁住"快速链接数量"下拉）
+  function applyQuicklinkPosition() {
+    const isBottom = quicklinkPosition === 'bottom';
+    document.body.setAttribute('data-quicklink-position', isBottom ? 'bottom' : 'auto');
+
+    const savedRow = Storage.get('ntp_quicklinks', '0');
+    if (quicklinksElem) {
+      quicklinksElem.setAttribute('rows', isBottom ? '1' : savedRow);
+    }
+    if (selectQuicklinks) {
+      selectQuicklinks.disabled = isBottom;
+      selectQuicklinks.value = isBottom ? '1' : savedRow;
+    }
+    // 把当前位置写回下拉（首次加载时靠这句恢复上次的选择）
+    if (selectQuicklinkPosition) {
+      selectQuicklinkPosition.value = quicklinkPosition;
+    }
+    // 原生 select 是透明的，禁用态要落到自定义下拉的可见部分
+    const quicklinksSelectDisplay = document.querySelector('.custom-select-display[data-for="select-quicklinks"]');
+    quicklinksSelectDisplay?.classList.toggle('disabled', isBottom);
     refreshCustomSelects();
   }
 
@@ -2894,12 +2876,11 @@ inputOnlineUrl?.addEventListener('input', () => {
     } else {
       document.body.setAttribute('data-search-hidden', 'true');
     }
-    // 同步下拉显示文本
+    // 下拉只表示"悬挂 / 居中"，是否显示由开关承担
     if (selectLayout) {
-      selectLayout.value = searchVisible
-        ? (document.body.getAttribute('data-layout') || 'focused')
-        : 'hidden';
+      selectLayout.value = document.body.getAttribute('data-layout') || 'focused';
     }
+    if (toggleSearchSwitch) toggleSearchSwitch.checked = searchVisible;
     refreshCustomSelects();
   }
 
@@ -2910,28 +2891,110 @@ inputOnlineUrl?.addEventListener('input', () => {
     }
   }
 
-  if (selectLayout) selectLayout.value = savedLayout;
+  // "悬挂"布局下 Logo 本来就不显示，对应的开关一并置灰禁用
+  function applyLogoSwitchAvailability() {
+    const logoRow = toggleLogoSwitch ? toggleLogoSwitch.closest('.setting-row') : null;
+    if (!logoRow) return;
+    const isHanging = document.body.getAttribute('data-layout') === 'inspirational';
+    logoRow.classList.toggle('disabled', isHanging);
+  }
+
+  // 旧数据兼容：早期版本把"关闭搜索框"存成了 ntp_layout = 'hidden'
+  const initialLayout = savedLayout === 'hidden' ? 'focused' : savedLayout;
+  if (selectLayout) selectLayout.value = initialLayout;
 
   // 初始化搜索栏可见性与标题显示
   applySearchVisibility();
   applyLogoVisibility();
+  applyLogoSwitchAvailability();
 
-  // 初始化更新布局预设卡片选中状态
-  function updateLayoutPresetUI(currentLayout) {
+
+  // 三个预设各自要改的项；没列出来的项保持用户当前设置不动
+  // layout 为 null 表示"搜索框位置不动"
+  const LAYOUT_PRESETS = {
+    inspirational: {
+      layout: 'inspirational',
+      searchVisible: true,
+      showLogo: false,
+      quicklinkPosition: 'auto'
+    },
+    focused: {
+      layout: 'focused',
+      searchVisible: true,
+      showLogo: true,
+      quicklinkPosition: 'auto'
+    },
+    appreciate: {
+      layout: null,
+      searchVisible: false,
+      showLogo: false,
+      quicklinkPosition: 'bottom'
+    }
+  };
+
+  // 应用预设
+  function applyLayoutPreset(name) {
+    const preset = LAYOUT_PRESETS[name];
+    if (!preset) return;
+
+    // 搜索框位置（内部会写 data-layout 与 ntp_layout）；为 null 时保持不动
+    if (preset.layout) applyLayout(preset.layout);
+
+    // 显示搜索框
+    searchVisible = preset.searchVisible;
+    Storage.set('ntp_search_visible', searchVisible);
+
+    // 显示 Logo
+    showLogo = preset.showLogo;
+    Storage.set('ntp_show_logo', showLogo);
+    applyLogoVisibility();
+    if (toggleLogoSwitch) toggleLogoSwitch.checked = showLogo;
+
+    // 快速链接位置
+    quicklinkPosition = preset.quicklinkPosition;
+    Storage.set('ntp_quicklink_position', quicklinkPosition);
+    applyQuicklinkPosition();
+    renderQuicklinks(true);
+
+    // 同步界面（开关勾选、状态文字、下拉文本）
+    applySearchVisibility();
+    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+
+    // 按当前配置重新判定选中态
+    syncLayoutPresetSelection();
+  }
+
+  // 当前配置是否与某个预设完全一致（只比预设里列出的项）
+  // 注意 preset.layout 为 null 表示"该项不参与比较"
+  function matchLayoutPreset() {
+    const layout = document.body.getAttribute('data-layout') || 'focused';
+    const names = Object.keys(LAYOUT_PRESETS);
+    for (let i = 0; i < names.length; i++) {
+      const preset = LAYOUT_PRESETS[names[i]];
+      if (preset.layout && preset.layout !== layout) continue;
+      if (preset.searchVisible !== searchVisible) continue;
+      if (preset.showLogo !== showLogo) continue;
+      if (preset.quicklinkPosition !== quicklinkPosition) continue;
+      return names[i];
+    }
+    return null;
+  }
+
+  // 刷新预设卡片选中态：与某个预设完全一致才选中它，都不一致则三个都不选
+  function syncLayoutPresetSelection() {
+    const matched = matchLayoutPreset();
     document.querySelectorAll('.preset-card').forEach(card => {
-      if (card.dataset.layoutVal === currentLayout) {
-        card.classList.add('active');
-      } else {
-        card.classList.remove('active');
-      }
+      card.classList.toggle('active', card.dataset.layoutVal === matched);
     });
   }
-  updateLayoutPresetUI(savedLayout);
+
+  // 初始化：按当前配置决定选中态（可能一个都不选）
+  syncLayoutPresetSelection();
 
   // 布局卡片点击监听
   document.querySelectorAll('.preset-card').forEach(card => {
     card.addEventListener('click', () => {
-      applyLayout(card.dataset.layoutVal);
+      applyLayoutPreset(card.dataset.layoutVal);
     });
   });
 
@@ -3004,10 +3067,20 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   selectQuicklinks?.addEventListener('change', (e) => {
     const val = e.target.value;
-    quicklinksElem?.setAttribute('rows', val);
     Storage.set('ntp_quicklinks', val);
+    // "底部"模式下固定一行，这里只记录偏好
+    quicklinksElem?.setAttribute('rows', quicklinkPosition === 'bottom' ? '1' : val);
     // 行数变化会改变每行/总数上限，强制重建一次
     renderQuicklinks(true);
+  });
+
+  // 快速链接位置切换
+  selectQuicklinkPosition?.addEventListener('change', (e) => {
+    quicklinkPosition = e.target.value;
+    Storage.set('ntp_quicklink_position', quicklinkPosition);
+    applyQuicklinkPosition();
+    renderQuicklinks(true);
+    syncLayoutPresetSelection();
   });
 
     // 时间开关事件
@@ -3051,6 +3124,19 @@ inputOnlineUrl?.addEventListener('input', () => {
     });
   }
 
+    // "显示搜索框"开关：控制搜索栏显隐（原"关闭"选项改由它承担）
+  if (toggleSearchSwitch) {
+    toggleSearchSwitch.checked = searchVisible;
+
+    toggleSearchSwitch.addEventListener('change', (e) => {
+      searchVisible = e.target.checked;
+      Storage.set('ntp_search_visible', searchVisible);
+      applySearchVisibility();
+      syncLayoutPresetSelection();
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    });
+  }
+
     // 显示标题开关事件
   if (toggleLogoSwitch) {
     toggleLogoSwitch.checked = showLogo;
@@ -3059,6 +3145,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       showLogo = e.target.checked;
       Storage.set('ntp_show_logo', showLogo);
       applyLogoVisibility();
+      syncLayoutPresetSelection();
       applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
     });
   }
@@ -3199,7 +3286,7 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 单个快捷方式项的宽度
   const QUICKLINK_ITEM_WIDTH = 80;
   // 项与项之间的间距
-  const QUICKLINK_GAP = 16;
+  const QUICKLINK_GAP = 10;
   // 页面左右各保留的安全边距
   const QUICKLINK_SIDE_MARGIN = 16;
   // 单行模式：每行最多显示的项数，超出的项与"添加"按钮都不再渲染
@@ -3354,7 +3441,10 @@ inputOnlineUrl?.addEventListener('input', () => {
       ? perRow
       : Math.min(perRow, Math.max(1, shownLinks.length + (hasAddButton ? 1 : 0)));
     const contentWidth = quicklinksWidthForColumns(widthColumns);
-    const renderKey = [rows, perRow, showAddButton ? '1' : '0', quicklinksList.length, quicklinksList.map(i => i.id).join(',')].join('|');
+    // 缓存键必须带上标题与网址：只改名称时项数与 id 都没变，
+    // 否则这里会被判成"无需重建"，界面要刷新才更新
+    const renderKey = [rows, perRow, showAddButton ? '1' : '0', quicklinksList.length,
+      quicklinksList.map(i => i.id + '~' + i.title + '~' + i.url).join(';')].join('|');
     const widthChanged = quicklinksElem.style.getPropertyValue('--quicklinks-content-width') !== contentWidth + 'px';
 
     if (!force && renderKey === quicklinksLastRenderKey && !widthChanged) return;
@@ -3834,8 +3924,10 @@ searchInput?.addEventListener('input', () => {
 
   // 语言选择与应用初始化
   const savedLang = localStorage.getItem('liteStart_language') || 'auto';
+  // 若存的是已下架的语言（例如曾经的 zh-WY），回落到"跟随设备"
+  const initialLang = (savedLang === 'auto' || i18nData[savedLang]) ? savedLang : 'auto';
   if (selectLanguage) {
-    selectLanguage.value = savedLang;
+    selectLanguage.value = initialLang;
     selectLanguage.addEventListener('change', (e) => {
       const val = e.target.value;
       localStorage.setItem('liteStart_language', val);
@@ -3846,7 +3938,7 @@ searchInput?.addEventListener('input', () => {
   }
 
   // 初始化应用全页翻译
-  applyLanguage(savedLang);
+  applyLanguage(initialLang);
   translateSourceLabel(); // 初始化时翻译来源标签
 
   // 初始化自定义下拉组件
