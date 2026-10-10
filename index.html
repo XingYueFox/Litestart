@@ -1766,6 +1766,11 @@
             <div style="padding: 12px;">
 
             <!-- 下方菜单项 -->
+             <!-- 添加快速链接（与快速链接区的"添加"按钮同功能，始终显示） -->
+            <div class="waffle-menu-item" id="btn-add-quicklink" style="margin-bottom: 4px;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="128" height="128"><path d="M8 1.5a.75.75 0 0 1 .75.75V7.25h5a.75.75 0 0 1 0 1.5h-5v5a.75.75 0 0 1-1.5 0v-5h-5a.75.75 0 0 1 0-1.5h5V2.25A.75.75 0 0 1 8 1.5z"/></svg>
+              <span data-i18n="addQuicklink">添加快速链接</span>
+            </div>
              <!-- 管理配置文件 -->
             <div class="waffle-menu-item" id="btn-manage-profiles" style="margin-bottom: 4px;">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="128" height="128"><path d="M1 3.25C1 2.56 1.56 2 2.249 2h.5c.69 0 1.248.56 1.248 1.25v9.495c0 .69-.559 1.25-1.248 1.25h-.5A1.25 1.25 0 0 1 1 12.744zM2.249 3a.25.25 0 0 0-.25.25v9.495c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25V3.249a.25.25 0 0 0-.25-.25zm2.748.25c0-.69.559-1.25 1.249-1.25h.5c.689 0 1.248.56 1.248 1.25v9.495c0 .69-.56 1.25-1.249 1.25h-.5a1.25 1.25 0 0 1-1.248-1.25zM6.246 3a.25.25 0 0 0-.25.25v9.495c0 .138.112.25.25.25h.5a.25.25 0 0 0 .249-.25V3.249a.25.25 0 0 0-.25-.25zm5.726 1.777a1.25 1.25 0 0 0-1.57-.713l-.583.204a1.25 1.25 0 0 0-.746 1.645l2.937 7.304c.249.62.94.933 1.571.713l.582-.204a1.25 1.25 0 0 0 .746-1.646zm-1.24.23a.25.25 0 0 1 .313.143l2.937 7.303a.25.25 0 0 1-.149.33l-.582.203a.25.25 0 0 1-.314-.142L10 5.54a.25.25 0 0 1 .149-.329z"/></svg>
@@ -2121,6 +2126,18 @@
             <span class="setting-status-text" id="status-logo" data-i18n="on">打开</span>
             <label class="switch">
               <input type="checkbox" id="toggle-logo-switch" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 显示快速链接的"添加"按钮 -->
+        <div class="setting-row" style="margin-bottom: 12px;">
+          <div class="setting-label-group" data-i18n="showAddButton">显示快速链接添加按钮</div>
+          <div class="switch-container">
+            <span class="setting-status-text" id="status-add-button" data-i18n="on">打开</span>
+            <label class="switch">
+              <input type="checkbox" id="toggle-add-button-switch" checked>
               <span class="slider"></span>
             </label>
           </div>

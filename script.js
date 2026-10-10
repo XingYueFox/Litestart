@@ -108,6 +108,7 @@ const i18nData = {
     enhancedVisibility: '增强元素可见性',
     enhancedVisibilityDesc: '开启背景时给Logo和顶部按钮添加半透明背景，使其在背景图上更清晰',
     addlink: '添加',
+    addQuicklink: '添加快速链接',
 
     // 个人资料菜单
     accountDetails: '编辑账户信息',
@@ -151,6 +152,7 @@ const i18nData = {
     layoutCentered: '居中',
     layoutHidden: '关闭',
     showLogo: '显示标题',
+    showAddButton: '显示快速链接添加按钮',
 
     //自定义搜索引擎图片部分
     customTitleImage: '自定义标题图片',
@@ -236,6 +238,7 @@ const i18nData = {
     enhancedVisibility: '增強元素可見性',
     enhancedVisibilityDesc: '開啟背景時給Logo和頂部按鈕添加半透明背景，使其在背景圖上更清晰',
     addlink: '新增',
+    addQuicklink: '新增快速連結',
     accountDetails: '編輯帳戶資訊',
     manageProfiles: '管理設定檔',
     initConfig: '重設',
@@ -265,6 +268,7 @@ const i18nData = {
     layoutCentered: '居中',
     layoutHidden: '關閉',
     showLogo: '顯示標題',
+    showAddButton: '顯示快速連結新增按鈕',
     customTitleImage: '自訂標題圖片',
     selectImageFile: '選擇圖片',
     removeImage: '刪除圖片',
@@ -281,6 +285,7 @@ const i18nData = {
     rows2: '多行',
     showTimeCapsule: '顯時',
     showMenuButton: '顯目錄',
+    showAddButton: '顯快速連結增鈕',
     searchEngine: '搜尋器',
     custom: '自訂',
     editCustomEngine: '訂搜器',
@@ -338,6 +343,7 @@ const i18nData = {
     enhancedVisibility: '彰明諸元',
     enhancedVisibilityDesc: '啟背景時，徽標頂鈕之下施輕翳，映於畫圖而愈晰',
     addlink: '增',
+    addQuicklink: '增快速連結',
     accountDetails: '改易簡策，存真去偽',
     manageProfiles: '掌檔',
     initConfig: '重置',
@@ -440,6 +446,7 @@ const i18nData = {
     enhancedVisibility: 'Enhance Element Visibility',
     enhancedVisibilityDesc: 'Adds semi-transparent backgrounds to Logo and header buttons when background is enabled for better clarity',
     addlink: 'Add',
+    addQuicklink: 'Add quicklink',
     accountDetails: 'Edit Account',
     manageProfiles: 'Manage Profiles',
     initConfig: 'Reset',
@@ -469,6 +476,7 @@ const i18nData = {
     layoutCentered: 'Centered',
     layoutHidden: 'Hidden',
     showLogo: 'Show Title',
+    showAddButton: 'Show quicklink add button',
     customTitleImage: 'Custom Title Image',
     selectImageFile: 'Select Image',
     removeImage: 'Remove Image',
@@ -554,6 +562,7 @@ const i18nData = {
     enhancedVisibility: '要素の視認性を向上',
     enhancedVisibilityDesc: '背景有効時にロゴとヘッダーボタンに半透明の背景を追加し、見やすくします',
     addlink: '追加',
+    addQuicklink: 'クイックリンクを追加',
     accountDetails: 'アカウント編集',
     manageProfiles: 'プロファイル管理',
     initConfig: 'リセット',
@@ -583,6 +592,7 @@ const i18nData = {
     layoutCentered: '中央',
     layoutHidden: '非表示',
     showLogo: 'タイトルを表示',
+    showAddButton: 'クイックリンクの追加ボタンを表示',
     customTitleImage: 'カスタムタイトル画像',
     selectImageFile: '画像を選択',
     removeImage: '画像を削除',
@@ -666,6 +676,7 @@ const i18nData = {
     enhancedVisibility: 'Повысить видимость элементов',
     enhancedVisibilityDesc: 'Добавляет полупрозрачный фон к логотипу и кнопкам заголовка при включенном фоне для лучшей читаемости',
     addlink: 'Добавить',
+    addQuicklink: 'Добавить быструю ссылку',
     accountDetails: 'Редактировать аккаунт',
     manageProfiles: 'Управление профилями',
     initConfig: 'Сброс',
@@ -695,6 +706,7 @@ const i18nData = {
     layoutCentered: 'По центру',
     layoutHidden: 'Скрыто',
     showLogo: 'Показать заголовок',
+    showAddButton: 'Показывать кнопку добавления быстрой ссылки',
     // ...
     bing: 'Bing',
     customTitleImage: 'Пользовательское изображение заголовка',
@@ -814,6 +826,13 @@ function applyLanguage(langConfig) {
   if (statusLogo) {
     const isChecked = document.getElementById('toggle-logo-switch')?.checked ?? true;
     statusLogo.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  // 8.1 刷新快速链接"添加"按钮开关状态文本
+  const statusAddButton = document.getElementById('status-add-button');
+  if (statusAddButton) {
+    const isChecked = document.getElementById('toggle-add-button-switch')?.checked ?? true;
+    statusAddButton.innerText = isChecked ? dict.on : dict.off;
   }
 
   // 9.强制使用必应中国版开关状态文本
@@ -1555,6 +1574,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 编辑页面布局弹窗相关 DOM
   const modalLayout = document.getElementById('modal-layout');
   const toggleLogoSwitch = document.getElementById('toggle-logo-switch');
+  const toggleAddButtonSwitch = document.getElementById('toggle-add-button-switch');
   const selectLayout = document.getElementById('select-layout');
   const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
   const btnCloseLayoutModal = document.getElementById('btn-close-layout-modal');
@@ -1859,6 +1879,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
   let searchVisible = Storage.get('ntp_search_visible', true);
   let showLogo = Storage.get('ntp_show_logo', true);
+  // 快速链接区"添加"按钮的显隐（默认开启）
+  let showAddButton = Storage.get('ntp_show_add_button', true);
 
   // 获取今天的日期字符串，如 "2026-09-03"，用于判断壁纸是否过期
   function getTodayStr() {
@@ -2183,6 +2205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_show_time_capsule',
     'ntp_show_menu_button',
     'ntp_show_logo',
+    'ntp_show_add_button',
     'ntp_search_visible',
     'ntp_force_bing_cn',
     'ntp_bg_enabled',
@@ -2754,6 +2777,18 @@ inputOnlineUrl?.addEventListener('input', () => {
     });
   }
 
+  // 快速链接"添加"按钮显隐开关（按钮由脚本渲染，改动后需要重建列表）
+  if (toggleAddButtonSwitch) {
+    toggleAddButtonSwitch.checked = showAddButton;
+
+    toggleAddButtonSwitch.addEventListener('change', (e) => {
+      showAddButton = e.target.checked;
+      Storage.set('ntp_show_add_button', showAddButton);
+      renderQuicklinks(true);
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    });
+  }
+
 
   // 如果初始状态是开启，启动定时器并显示
   if (showTimeCapsule) {
@@ -3025,14 +3060,15 @@ inputOnlineUrl?.addEventListener('input', () => {
     const multiRow = rows === '2';
     const maxItems = multiRow ? Infinity : perRow;
     const shownLinks = quicklinksList.slice(0, maxItems);
-    const hasAddButton = quicklinksList.length < maxItems;
+    // "添加"按钮显示条件：设置里开启 + 单行模式尚未排满（多行模式不限项数，只看开关）
+    const hasAddButton = showAddButton && quicklinksList.length < maxItems;
     // 容器内容宽度：多行模式固定为 perRow 列，保证每行排满 perRow 项后才换行（行数不限）；
     // 单行模式按实际渲染项数收缩，左右不留空档
     const widthColumns = multiRow
       ? perRow
       : Math.min(perRow, Math.max(1, shownLinks.length + (hasAddButton ? 1 : 0)));
     const contentWidth = quicklinksWidthForColumns(widthColumns);
-    const renderKey = [rows, perRow, quicklinksList.length, quicklinksList.map(i => i.id).join(',')].join('|');
+    const renderKey = [rows, perRow, showAddButton ? '1' : '0', quicklinksList.length, quicklinksList.map(i => i.id).join(',')].join('|');
     const widthChanged = quicklinksElem.style.getPropertyValue('--quicklinks-content-width') !== contentWidth + 'px';
 
     if (!force && renderKey === quicklinksLastRenderKey && !widthChanged) return;
@@ -3187,6 +3223,12 @@ function onDrop(e) {
     modalOverlay?.classList.add('active');
     setTimeout(() => inputName?.focus(), 50);
   }
+
+  // 左上角菜单里的"添加快速链接"：与快速链接区的"添加"按钮同功能，始终可用
+  document.getElementById('btn-add-quicklink')?.addEventListener('click', () => {
+    popoverWaffle?.classList.remove('active');
+    openAddModal();
+  });
 
   // 打开"编辑快速链接"弹窗，填充当前数据并显示删除按钮
   function openEditModal(item) {
