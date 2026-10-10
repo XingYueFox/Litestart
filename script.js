@@ -1148,7 +1148,7 @@ async function loadWallpaperData() {
 // 解析Hostname域名
 function getDomain(urlStr) {
   try {
-    if (!urlStr.startsWith('http://') && !urlStr.startsWith('https://')) {
+    if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(urlStr)) {
       urlStr = 'https://' + urlStr;
     }
     const url = new URL(urlStr);
@@ -3838,7 +3838,7 @@ function onDrop(e) {
 
     if (hasError) return;
 
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(url)) {
       url = 'https://' + url;
     }
 
