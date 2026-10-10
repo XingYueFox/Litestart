@@ -34,11 +34,13 @@ const i18nData = {
     pageTitle: '新标签页',
     settingsTitle: '页面设置',
     close: '关闭',
+    back: '返回',
+    quicklinkStyle: '快速链接样式',
     quicklinks: '快速链接',
     off: '关闭',
     on: '打开',
-    rows1: '1 行',
-    rows2: '2 行',
+    rows1: '一行',
+    rows2: '多行',
     showTimeCapsule: '显示时间',
     showMenuButton: '显示菜单按钮',
     searchEngine: '搜索引擎',
@@ -48,7 +50,10 @@ const i18nData = {
     layout: '页面布局',
     inspirational: '展望',
     focused: '聚焦',
+    appreciate: '欣赏',
+    presets: '预设',
     background: '背景',
+    enableBackground: '启用背景',
     editBackground: '编辑背景',
     language: '页面语言',
     langAuto: '默认（跟随设备）',
@@ -108,10 +113,11 @@ const i18nData = {
     enhancedVisibility: '增强元素可见性',
     enhancedVisibilityDesc: '开启背景时给Logo和顶部按钮添加半透明背景，使其在背景图上更清晰',
     addlink: '添加',
+    addQuicklink: '添加快速链接',
 
     // 个人资料菜单
     accountDetails: '编辑账户信息',
-    manageProfiles: '管理配置文件',
+    manageProfiles: '备份与重置',
     initConfig: '重置',
 
    // 编辑个人资料弹窗
@@ -122,7 +128,7 @@ const i18nData = {
     description: '描述',
 
     // 管理配置文件弹窗
-    manageProfilesTitle: '管理配置文件',
+    manageProfilesTitle: '配置备份与重置',
     selectOperation: '选择要执行的操作',
     exportConfig: '导出配置',
     importConfig: '恢复配置',
@@ -147,10 +153,15 @@ const i18nData = {
     layout: '页面布局',
     editLayout: '编辑页面布局',
     searchBoxPosition: '搜索框位置',
+    showSearchBox: '显示搜索框',
+    quicklinkPosition: '快速链接位置',
+    qlPositionDefault: '默认',
+    qlPositionBottom: '底部',
     layoutHanging: '悬挂',
     layoutCentered: '居中',
     layoutHidden: '关闭',
-    showLogo: '显示标题',
+    showLogo: '显示 Logo',
+    showAddButton: '在快速链接区域显示添加按钮',
 
     //自定义搜索引擎图片部分
     customTitleImage: '自定义标题图片',
@@ -162,11 +173,13 @@ const i18nData = {
     pageTitle: '新分頁',
     settingsTitle: '頁面設定',
     close: '關閉',
+    back: '返回',
+    quicklinkStyle: '快速連結樣式',
     quicklinks: '快速連結',
     off: '關閉',
     on: '開啟',
-    rows1: '1 行',
-    rows2: '2 行',
+    rows1: '一行',
+    rows2: '多行',
     showTimeCapsule: '顯示時間',
     showMenuButton: '顯示菜單按鈕',
     searchEngine: '搜尋引擎',
@@ -176,7 +189,10 @@ const i18nData = {
     layout: '頁面佈局',
     inspirational: '展望',
     focused: '聚焦',
+    appreciate: '欣賞',
+    presets: '預設',
     background: '背景',
+    enableBackground: '啟用背景',
     editBackground: '編輯背景',
     language: '頁面語言',
     langAuto: '預設（隨設備設定）',
@@ -236,15 +252,16 @@ const i18nData = {
     enhancedVisibility: '增強元素可見性',
     enhancedVisibilityDesc: '開啟背景時給Logo和頂部按鈕添加半透明背景，使其在背景圖上更清晰',
     addlink: '新增',
+    addQuicklink: '新增快速連結',
     accountDetails: '編輯帳戶資訊',
-    manageProfiles: '管理設定檔',
+    manageProfiles: '備份與重設',
     initConfig: '重設',
     editProfile: '編輯個人資料',
     profileAvatar: '頭像',
     uploadAvatar: '選擇頭像',
     removeAvatar: '刪除頭像',
     description: '描述',
-    manageProfilesTitle: '管理設定檔',
+    manageProfilesTitle: '設定備份與重設',
     selectOperation: '選擇要執行的操作',
     exportConfig: '匯出設定',
     importConfig: '還原設定',
@@ -261,115 +278,31 @@ const i18nData = {
     layout: '頁面佈局',
     editLayout: '編輯頁面佈局',
     searchBoxPosition: '搜尋框位置',
+    showSearchBox: '顯示搜尋框',
+    quicklinkPosition: '快速連結位置',
+    qlPositionDefault: '預設',
+    qlPositionBottom: '底部',
     layoutHanging: '懸掛',
     layoutCentered: '居中',
     layoutHidden: '關閉',
-    showLogo: '顯示標題',
+    showLogo: '顯示 Logo',
+    showAddButton: '在快速連結區域顯示新增按鈕',
     customTitleImage: '自訂標題圖片',
     selectImageFile: '選擇圖片',
     removeImage: '刪除圖片',
     noImageSelected: '未選擇圖片',
  },
-  'zh-WY': {
-    pageTitle: '新籤頁',
-    settingsTitle: '頁面之設',
-    close: '關',
-    quicklinks: '快速連結',
-    off: '止',
-    on: '啟',
-    rows1: '一列',
-    rows2: '二列',
-    showTimeCapsule: '顯時',
-    showMenuButton: '顯目錄',
-    searchEngine: '搜尋器',
-    custom: '自訂',
-    editCustomEngine: '訂搜器',
-    saveHistory: '搜錄',
-    layout: '佈局',
-    inspirational: '展望',
-    focused: '專注',
-    background: '底景',
-    editBackground: '修飾底景',
-    language: '頁面語',
-    langAuto: '預設（順裝置）',
-    cookieNotice: '隱私與餅儲',
-    license: '開源之約',
-    contributor: '題名錄',
-    helpFeedback: '求助與反饋',
-    presentedBy: '由',
-    xingyuefox: '秋山星月',
-    AomiRaku: '羽梦千景',
-    forYou: '呈獻',
-    disclaimer: '謹告：此頁與微軟無涉。',
-    and: '及',
-    searchPlaceholder: '或搜或鍵，惟網址依',
-    searchInput: '搜尋之框',
-    clearSearchHistory: '拭搜尋記',
-    customBackground: '自定底景',
-    usingDefaultBg: '現用默認底景',
-    sourceLocal: '來自本機圖',
-    sourceBingDaily: '來自 Bing 日圖',
-    sourceCustomUrl: '來自自訂之鏈',
-    selectImage: '擇本機圖或影',
-    uploadFile: '擇檔案',
-    restoreDefault: '復初',
-    editShortcut: '修快速連結',
-    name: '名',
-    inputNamePh: '書快速連結之名',
-    errorNameReq: '請填快速連結名',
-    errorUrlReq: '請填網址',
-    delete: '刪',
-    cancel: '止',
-    save: '儲',
-    customEngineTitle: '自定搜尋器',
-    engineName: '引擎之名',
-    engineNamePh: '例: DuckDuckGo',
-    errorEngineNameReq: '請填搜尋器名',
-    engineUrl: '搜尋 URL (%s 換字)',
-    errorEngineUrlFormat: '請填搜尋 URL，必含 %s',
-    useOnlineContent: '用網圖',
-    bingDaily: '必應日圖',
-    customUrl: '自訂',
-    customOnlineWallpaper: '自訂網圖',
-    imageOrVideoUrl: '圖影鏈',
-    enterUrl: '輸圖影鏈',
-    forceBingCN: '勒令必應專用中土之版',
-    forceBingCNDesc: '<b>啟</b>：勒令必應專用中土之版<br><b>關</b>：隨網路之勢自擇。<br>此舉可免代理令主站失其自轉之能。',
-    enhancedVisibility: '彰明諸元',
-    enhancedVisibilityDesc: '啟背景時，徽標頂鈕之下施輕翳，映於畫圖而愈晰',
-    addlink: '增',
-    accountDetails: '改易簡策，存真去偽',
-    manageProfiles: '掌檔',
-    initConfig: '重置',
-    editProfile: '修飾名帖',
-    profileAvatar: '首像',
-    uploadAvatar: '擇首像',
-    removeAvatar: '去首像',
-    description: '描述',
-    manageProfilesTitle: '掌檔',
-    selectOperation: '擇所欲行',
-    exportConfig: '出設',
-    importConfig: '入設',
-    initConfigOption: '復初',
-    next: '續',
-    resetTitle: '復初',
-    resetDesc: '倘遭困顿，或厌时制，可复初以涤万设，返 Litestart 于鸿蒙。然此举不可追，慎之慎之！',
-    confirmReset: '定',
-    resetDoneTitle: '妙哉！返本归元',
-    resetDoneDesc: '万设归初，新页将启，天光焕然。',
-    refreshNow: '即新',
-    restoreDoneTitle: '掌檔既復',
-    restoreDoneDesc: '旧制已归，新页将启，焕然一新。',
-  },
   'en': {
     pageTitle: 'New Tab',
     settingsTitle: 'Page Settings',
     close: 'Close',
+    back: 'Back',
+    quicklinkStyle: 'Quicklink style',
     quicklinks: 'Quick Links',
     off: 'Off',
     on: 'On',
-    rows1: '1 row',
-    rows2: '2 rows',
+    rows1: 'One row',
+    rows2: 'Multiple rows',
     showTimeCapsule: 'Show Time',
     showMenuButton: 'Show Menu Button',
     searchEngine: 'Search Engine',
@@ -379,7 +312,11 @@ const i18nData = {
     layout: 'Layout',
     inspirational: 'Inspirational',
     focused: 'Focused',
+    appreciate: 'Appreciate',
+    presets: 'Presets',
+
     background: 'Background',
+    enableBackground: 'Enable background',
     editBackground: 'Edit background',
     language: 'Language',
     langAuto: 'Default (System)',
@@ -440,15 +377,16 @@ const i18nData = {
     enhancedVisibility: 'Enhance Element Visibility',
     enhancedVisibilityDesc: 'Adds semi-transparent backgrounds to Logo and header buttons when background is enabled for better clarity',
     addlink: 'Add',
+    addQuicklink: 'Add quicklink',
     accountDetails: 'Edit Account',
-    manageProfiles: 'Manage Profiles',
+    manageProfiles: 'Backup & Reset',
     initConfig: 'Reset',
     editProfile: 'Edit Profile',
     profileAvatar: 'Avatar',
     uploadAvatar: 'Select Avatar',
     removeAvatar: 'Remove Avatar',
     description: 'Description',
-    manageProfilesTitle: 'Manage Profiles',
+    manageProfilesTitle: 'Backup & Reset',
     selectOperation: 'Select an action',
     exportConfig: 'Export Config',
     importConfig: 'Import Config',
@@ -465,10 +403,15 @@ const i18nData = {
     layout: 'Layout',
     editLayout: 'Edit Layout',
     searchBoxPosition: 'Search Box Position',
+    showSearchBox: 'Show search box',
+    quicklinkPosition: 'Quicklink position',
+    qlPositionDefault: 'Default',
+    qlPositionBottom: 'Bottom',
     layoutHanging: 'Hanging',
     layoutCentered: 'Centered',
     layoutHidden: 'Hidden',
-    showLogo: 'Show Title',
+    showLogo: 'Show logo',
+    showAddButton: 'Show add button in quicklinks area',
     customTitleImage: 'Custom Title Image',
     selectImageFile: 'Select Image',
     removeImage: 'Remove Image',
@@ -479,11 +422,13 @@ const i18nData = {
     pageTitle: '新しいタブ',
     settingsTitle: '設定',
     close: '閉じる',
+    back: '戻る',
+    quicklinkStyle: 'クイックリンクの表示',
     quicklinks: 'クイックリンク',
     off: 'オフ',
     on: 'オン',
     rows1: '1 行',
-    rows2: '2 行',
+    rows2: '複数行',
     showTimeCapsule: '時間を表示',
     showMenuButton: 'メニューボタンを表示',
     searchEngine: '検索エンジン',
@@ -493,7 +438,11 @@ const i18nData = {
     layout: 'レイアウト',
     inspirational: 'シンプル',
     focused: 'フォーカス',
+    appreciate: '鑑賞',
+    presets: 'プリセット',
+
     background: '背景',
+    enableBackground: '背景を有効にする',
     editBackground: '背景を編集',
     language: '言語',
     langAuto: 'デフォルト（システムに従う）',
@@ -554,15 +503,16 @@ const i18nData = {
     enhancedVisibility: '要素の視認性を向上',
     enhancedVisibilityDesc: '背景有効時にロゴとヘッダーボタンに半透明の背景を追加し、見やすくします',
     addlink: '追加',
+    addQuicklink: 'クイックリンクを追加',
     accountDetails: 'アカウント編集',
-    manageProfiles: 'プロファイル管理',
+    manageProfiles: 'バックアップとリセット',
     initConfig: 'リセット',
     editProfile: 'プロファイル編集',
     profileAvatar: 'アバター',
     uploadAvatar: 'アバターを選択',
     removeAvatar: '削除',
     description: '説明',
-    manageProfilesTitle: 'プロファイル管理',
+    manageProfilesTitle: 'バックアップとリセット',
     selectOperation: '実行する操作を選択',
     exportConfig: '設定をエクスポート',
     importConfig: '設定をインポート',
@@ -579,10 +529,15 @@ const i18nData = {
     layout: 'レイアウト',
     editLayout: 'レイアウトを編集',
     searchBoxPosition: '検索ボックスの位置',
+    showSearchBox: '検索ボックスを表示',
+    quicklinkPosition: 'クイックリンクの位置',
+    qlPositionDefault: '既定',
+    qlPositionBottom: '下部',
     layoutHanging: 'ハンギング',
     layoutCentered: '中央',
     layoutHidden: '非表示',
-    showLogo: 'タイトルを表示',
+    showLogo: 'ロゴを表示',
+    showAddButton: 'クイックリンクに追加ボタンを表示',
     customTitleImage: 'カスタムタイトル画像',
     selectImageFile: '画像を選択',
     removeImage: '画像を削除',
@@ -592,11 +547,13 @@ const i18nData = {
     pageTitle: 'Новая вкладка',
     settingsTitle: 'Настройки страницы',
     close: 'Закрыть',
+    back: 'Назад',
+    quicklinkStyle: 'Вид быстрых ссылок',
     quicklinks: 'Быстрые ссылки',
     off: 'Выкл',
     on: 'Вкл',
-    rows1: '1 строка',
-    rows2: '2 строки',
+    rows1: 'Одна строка',
+    rows2: 'Несколько строк',
     showTimeCapsule: 'Показать время',
     showMenuButton: 'Показать кнопку меню',
     searchEngine: 'Поисковая система',
@@ -606,7 +563,11 @@ const i18nData = {
     layout: 'Макет',
     inspirational: 'Вдохновение',
     focused: 'Фокус',
+    appreciate: 'Созерцание',
+    presets: 'Пресеты',
+
     background: 'Фон',
+    enableBackground: 'Включить фон',
     editBackground: 'Изменить фон',
     language: 'Язык',
     langAuto: 'По умолчанию (системный)',
@@ -666,15 +627,16 @@ const i18nData = {
     enhancedVisibility: 'Повысить видимость элементов',
     enhancedVisibilityDesc: 'Добавляет полупрозрачный фон к логотипу и кнопкам заголовка при включенном фоне для лучшей читаемости',
     addlink: 'Добавить',
+    addQuicklink: 'Добавить быструю ссылку',
     accountDetails: 'Редактировать аккаунт',
-    manageProfiles: 'Управление профилями',
+    manageProfiles: 'Резервная копия',
     initConfig: 'Сброс',
     editProfile: 'Редактировать профиль',
     profileAvatar: 'Аватар',
     uploadAvatar: 'Выбрать аватар',
     removeAvatar: 'Удалить',
     description: 'Описание',
-    manageProfilesTitle: 'Управление профилями',
+    manageProfilesTitle: 'Резервное копирование и сброс',
     selectOperation: 'Выберите действие',
     exportConfig: 'Экспорт настроек',
     importConfig: 'Импорт настроек',
@@ -691,10 +653,15 @@ const i18nData = {
         layout: 'Макет',
     editLayout: 'Изменить макет',
     searchBoxPosition: 'Положение поисковой строки',
+    showSearchBox: 'Показывать поисковую строку',
+    quicklinkPosition: 'Положение быстрых ссылок',
+    qlPositionDefault: 'По умолчанию',
+    qlPositionBottom: 'Внизу',
     layoutHanging: 'Подвесной',
     layoutCentered: 'По центру',
     layoutHidden: 'Скрыто',
-    showLogo: 'Показать заголовок',
+    showLogo: 'Показывать логотип',
+    showAddButton: 'Кнопка добавления в быстрых ссылках',
     // ...
     bing: 'Bing',
     customTitleImage: 'Пользовательское изображение заголовка',
@@ -814,6 +781,20 @@ function applyLanguage(langConfig) {
   if (statusLogo) {
     const isChecked = document.getElementById('toggle-logo-switch')?.checked ?? true;
     statusLogo.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  // 8.1 刷新快速链接"添加"按钮开关状态文本
+  const statusAddButton = document.getElementById('status-add-button');
+  if (statusAddButton) {
+    const isChecked = document.getElementById('toggle-add-button-switch')?.checked ?? true;
+    statusAddButton.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  // 8.2 刷新"显示搜索框"开关状态文本
+  const statusSearchBox = document.getElementById('status-search-box');
+  if (statusSearchBox) {
+    const isChecked = document.getElementById('toggle-search-switch')?.checked ?? true;
+    statusSearchBox.innerText = isChecked ? dict.on : dict.off;
   }
 
   // 9.强制使用必应中国版开关状态文本
@@ -1178,9 +1159,15 @@ function sanitizeInput(str) {
     .replace(/`/g, '&#96;');
 }
 
-// 反转 HTML 转义（仅还原 <>），用于显示原始文本
+// 反转 HTML 转义，用于把转义过的文本还原显示（&amp; 放最后，避免二次解码）
 function decodeInput(str) {
-  return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  return String(str)
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#96;/g, '`')
+    .replace(/&amp;/g, '&');
 }
 
 // ===== 重写下拉菜单(Custom Select) =====
@@ -1538,9 +1525,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // DOM元素引用
   const btnWaffle = document.getElementById('waffle');
   const btnSettings = document.getElementById('settings');
-  const btnCloseSettings = document.getElementById('btn-close-settings');
   const popoverWaffle = document.getElementById('popover-waffle');
   const popoverSettings = document.getElementById('popover-settings');
+
+  // 面板展开期间，让对应的触发按钮保持"悬停"高亮，直到面板关闭。
+  // 用 MutationObserver 跟随面板的 active 类，这样任何关闭路径（再点一次、
+  // 点面板外、点菜单项）都会自动取消高亮，不必逐处补代码。
+  function syncHeaderButtonActive() {
+    btnSettings?.classList.toggle('active', !!popoverSettings?.classList.contains('active'));
+    btnWaffle?.classList.toggle('active', !!popoverWaffle?.classList.contains('active'));
+  }
+  if (typeof MutationObserver === 'function') {
+    const headerButtonObserver = new MutationObserver(syncHeaderButtonActive);
+    [popoverSettings, popoverWaffle].forEach((el) => {
+      if (el) headerButtonObserver.observe(el, { attributes: true, attributeFilter: ['class'] });
+    });
+  }
 
   const selectEngine = document.getElementById('select-engine');
   const btnEditEngine = document.getElementById('btn-edit-engine');
@@ -1548,18 +1548,279 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleForceBingCN = document.getElementById('toggle-force-bing-cn');
   const toggleHistorySwitch = document.getElementById('toggle-history-switch');
   const selectQuicklinks = document.getElementById('select-quicklinks');
+  const selectQuicklinkPosition = document.getElementById('select-quicklink-position');
   const quicklinksElem = document.getElementById('quicklinks');
   const logoContainer = document.getElementById('logo');
   const selectLanguage = document.getElementById('select-language');
 
-  // 编辑页面布局弹窗相关 DOM
-  const modalLayout = document.getElementById('modal-layout');
+  // 编辑页面布局相关 DOM（布局设置现在是设置面板内的二级页）
   const toggleLogoSwitch = document.getElementById('toggle-logo-switch');
+  const toggleSearchSwitch = document.getElementById('toggle-search-switch');
+  const toggleAddButtonSwitch = document.getElementById('toggle-add-button-switch');
   const selectLayout = document.getElementById('select-layout');
   const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
   const btnCloseLayoutModal = document.getElementById('btn-close-layout-modal');
-  const btnLayoutClose = document.getElementById('btn-layout-close');
-  
+
+  // 设置面板内的二级页面（背景 / 布局），取代原来的模态弹窗
+  const settingsPageBg = document.getElementById('settings-page-bg');
+  const settingsPageLayout = document.getElementById('settings-page-layout');
+
+  // 在设置面板内切换页面：'main' 主设置页、'bg' 背景设置、'layout' 布局设置
+  // 切换带 0.2s 过渡：新内容淡入 + 面板高度平滑变化
+  const SETTINGS_PAGE_ANIM_MS = 200;
+  let settingsPageAnimTimer = null;
+
+  // 仅切换页面的显示状态（不含动画），供动画与"减少动态效果"两条路径复用
+  function applySettingsPageClasses(name) {
+    const isMain = name === 'main';
+    popoverSettings?.classList.toggle('in-subpage', !isMain);
+    settingsPageBg?.classList.toggle('active', name === 'bg');
+    settingsPageLayout?.classList.toggle('active', name === 'layout');
+  }
+
+  function showSettingsPage(name) {
+    if (!popoverSettings) return;
+
+    // 上一次过渡还没结束又切换：先清掉残留的内联样式与定时器
+    if (settingsPageAnimTimer) {
+      clearTimeout(settingsPageAnimTimer);
+      settingsPageAnimTimer = null;
+    }
+    popoverSettings.style.transition = '';
+    popoverSettings.style.height = '';
+    popoverSettings.style.overflowY = '';
+    popoverSettings.classList.remove('page-fading');
+
+    // 系统开启"减少动态效果"时直接切换，不做过渡
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      applySettingsPageClasses(name);
+      popoverSettings.scrollTop = 0;
+      updateSettingsScrollbar();
+      revealSettingsScrollbar();
+      return;
+    }
+
+    // FLIP：记住旧高度 → 切页面 → 量出新高度 → 从旧高度过渡过去
+    const startHeight = popoverSettings.offsetHeight;
+
+    // 测量前先把滑块归零（否则它的溢出会算进 scrollHeight），同时记下当前尺寸用于淡出
+    const prevThumbHeight = settingsScrollbarThumb ? settingsScrollbarThumb.style.height : '';
+    const prevThumbTransform = settingsScrollbarThumb ? settingsScrollbarThumb.style.transform : '';
+    if (settingsScrollbarThumb) {
+      settingsScrollbarThumb.style.height = '0px';
+      settingsScrollbarThumb.style.transform = 'none';
+    }
+
+    popoverSettings.classList.add('page-fading');
+    applySettingsPageClasses(name);
+    popoverSettings.scrollTop = 0;
+
+    void popoverSettings.offsetHeight;
+    popoverSettings.style.height = 'auto';
+    void popoverSettings.offsetHeight;
+    // auto 状态下量得的高度已受 max-height: 85vh 约束
+    const endHeight = popoverSettings.getBoundingClientRect().height;
+    const endScrollHeight = popoverSettings.scrollHeight;
+
+    // 滚动条与页面内容在同一时刻过渡：
+    // 目标页面放不下 → 显示（2s 后隐藏）；放得下 → 带着原尺寸随旧内容一起淡出
+    if (settingsScrollbar && settingsScrollbarThumb) {
+      const metrics = computeSettingsScrollbarMetrics(endHeight, endScrollHeight);
+      settingsScrollbarCanScroll = metrics.maxScroll > 2;
+      if (settingsScrollbarCanScroll) {
+        settingsScrollbarThumb.style.height = metrics.thumbHeight + 'px';
+        settingsScrollbarThumb.style.transform = 'translateY(' + SETTINGS_SCROLLBAR_INSET + 'px)';
+        revealSettingsScrollbar();
+      } else {
+        settingsScrollbarThumb.style.height = prevThumbHeight;
+        settingsScrollbarThumb.style.transform = prevThumbTransform;
+        hideSettingsScrollbar();
+      }
+    }
+
+    popoverSettings.style.height = startHeight + 'px';
+    void popoverSettings.offsetHeight;
+    popoverSettings.style.transition = 'height ' + SETTINGS_PAGE_ANIM_MS + 'ms ease';
+    popoverSettings.style.overflowY = 'hidden';
+    popoverSettings.style.height = endHeight + 'px';
+
+    // 下一帧取消遮罩状态，触发内容 0 → 1 的淡入
+    requestAnimationFrame(() => {
+      popoverSettings.classList.remove('page-fading');
+    });
+
+    // 过渡结束后交还高度控制权（回到 auto），保留原有滚动行为
+    settingsPageAnimTimer = setTimeout(() => {
+      popoverSettings.style.transition = '';
+      popoverSettings.style.height = '';
+      popoverSettings.style.overflowY = '';
+      settingsPageAnimTimer = null;
+      // 只同步几何；显隐时机已在切换那一刻按目标页面决定
+      updateSettingsScrollbar();
+    }, SETTINGS_PAGE_ANIM_MS + 30);
+  }
+
+  // ===== 设置面板的悬浮滚动条 =====
+  // 原生滚动条在 Windows 上会占据内容宽度，这里隐藏它并自绘一条覆盖在内容上的滑块
+  const settingsScrollbar = document.getElementById('settings-scrollbar');
+  const settingsScrollbarThumb = document.getElementById('settings-scrollbar-thumb');
+  // 上下安全间距（与面板 12px 圆角一致），避免滑块贴边被圆角裁切
+  const SETTINGS_SCROLLBAR_INSET = 12;
+  // 页面出现后 / 停止滚动后，多久自动隐藏（1.3s）
+  const SETTINGS_SCROLLBAR_HIDE_DELAY = 1300;
+  // 鼠标进入面板右侧多宽的条带，算作"停在滚动条上"
+  const SETTINGS_SCROLLBAR_HOVER_ZONE = 20;
+
+  let settingsScrollbarDrag = null;
+  let settingsScrollbarCanScroll = false;
+  let settingsScrollbarHovering = false;
+  let settingsScrollbarHideTimer = null;
+
+  // 由「可视高度 + 内容高度」算出滑块高度与可移动范围
+  function computeSettingsScrollbarMetrics(viewHeight, contentHeight) {
+    const maxScroll = contentHeight - viewHeight;
+    const trackHeight = Math.max(1, viewHeight - SETTINGS_SCROLLBAR_INSET * 2);
+    const thumbHeight = Math.min(
+      trackHeight,
+      Math.max(24, Math.round(trackHeight * viewHeight / contentHeight))
+    );
+    return {
+      maxScroll: maxScroll,
+      thumbHeight: thumbHeight,
+      maxThumbTop: Math.max(0, trackHeight - thumbHeight)
+    };
+  }
+
+  // 按面板当前尺寸量一次
+  function measureSettingsScrollbar() {
+    return computeSettingsScrollbarMetrics(popoverSettings.clientHeight, popoverSettings.scrollHeight);
+  }
+
+  // 立即隐藏（例如切到放得下的页面）
+  function hideSettingsScrollbar() {
+    if (settingsScrollbarHideTimer) {
+      clearTimeout(settingsScrollbarHideTimer);
+      settingsScrollbarHideTimer = null;
+    }
+    settingsScrollbar?.classList.remove('visible');
+  }
+
+  // 延迟隐藏：鼠标还停在滚动条上、或正在拖动时不隐藏
+  function scheduleSettingsScrollbarHide() {
+    if (settingsScrollbarHideTimer) clearTimeout(settingsScrollbarHideTimer);
+    settingsScrollbarHideTimer = setTimeout(() => {
+      settingsScrollbarHideTimer = null;
+      if (settingsScrollbarHovering || settingsScrollbarDrag) return;
+      settingsScrollbar?.classList.remove('visible');
+    }, SETTINGS_SCROLLBAR_HIDE_DELAY);
+  }
+
+  // 显示滑块并重新开始倒计时（只有确实能滚动时才显示）
+  function revealSettingsScrollbar() {
+    if (!settingsScrollbarCanScroll) return;
+    settingsScrollbar?.classList.add('visible');
+    scheduleSettingsScrollbarHide();
+  }
+
+  // 同步几何与"能否滚动"；不主动显示，只在一变得放不下时立即隐藏
+  function updateSettingsScrollbar() {
+    if (!popoverSettings || !settingsScrollbar || !settingsScrollbarThumb) return;
+    // 面板高度过渡期间不同步，避免每帧强制重排；过渡结束时会再调用一次
+    if (settingsPageAnimTimer) return;
+
+    // 先让滑块归零：被 translateY 移出面板的部分会算进 scrollHeight，
+    // 会让放得下的页面（例如较短的二级页）被误判成"可以滚动"
+    const prevHeight = settingsScrollbarThumb.style.height;
+    const prevTransform = settingsScrollbarThumb.style.transform;
+    settingsScrollbarThumb.style.height = '0px';
+    settingsScrollbarThumb.style.transform = 'none';
+
+    const m = measureSettingsScrollbar();
+    // 容忍亚像素取整带来的 1~2px 误差
+    settingsScrollbarCanScroll = m.maxScroll > 2;
+
+    if (!settingsScrollbarCanScroll) {
+      // 放得下却残留了一点滚动位置（亚像素）时归零，避免内容看起来被顶上去
+      if (popoverSettings.scrollTop !== 0) popoverSettings.scrollTop = 0;
+      // 还原尺寸再淡出，否则高度被归零会让它"瞬间消失"
+      settingsScrollbarThumb.style.height = prevHeight;
+      settingsScrollbarThumb.style.transform = prevTransform;
+      hideSettingsScrollbar();
+      return;
+    }
+
+    const progress = popoverSettings.scrollTop / m.maxScroll;
+    const top = SETTINGS_SCROLLBAR_INSET + Math.round(progress * m.maxThumbTop);
+    settingsScrollbarThumb.style.height = m.thumbHeight + 'px';
+    settingsScrollbarThumb.style.transform = 'translateY(' + top + 'px)';
+  }
+
+  // 滚动时显示，停止滚动 2s 后隐藏
+  popoverSettings?.addEventListener('scroll', () => {
+    updateSettingsScrollbar();
+    revealSettingsScrollbar();
+  }, { passive: true });
+
+  // 面板内容放得下时直接吃掉滚轮事件：否则浏览器会把滚动动作交给外层容器，
+  // 表现为"滚一下、内容轻微上移又弹回来"
+  popoverSettings?.addEventListener('wheel', (e) => {
+    if (!settingsScrollbarCanScroll) e.preventDefault();
+  }, { passive: false });
+
+  // 尺寸变化只同步几何，不主动显示
+  window.addEventListener('resize', updateSettingsScrollbar);
+  if (typeof ResizeObserver === 'function' && popoverSettings) {
+    new ResizeObserver(updateSettingsScrollbar).observe(popoverSettings);
+  }
+
+  // 鼠标移到面板右侧的滚动条区域时显示
+  popoverSettings?.addEventListener('pointermove', (e) => {
+    const rect = popoverSettings.getBoundingClientRect();
+    const inZone = e.clientX >= rect.right - SETTINGS_SCROLLBAR_HOVER_ZONE &&
+      e.clientY >= rect.top && e.clientY <= rect.bottom;
+    if (inZone === settingsScrollbarHovering) return;
+    settingsScrollbarHovering = inZone;
+    if (inZone) {
+      revealSettingsScrollbar();
+    } else {
+      scheduleSettingsScrollbarHide();
+    }
+  });
+
+  popoverSettings?.addEventListener('pointerleave', () => {
+    if (!settingsScrollbarHovering) return;
+    settingsScrollbarHovering = false;
+    scheduleSettingsScrollbarHide();
+  });
+
+  // 拖动滑块滚动面板
+  settingsScrollbarThumb?.addEventListener('pointerdown', (e) => {
+    if (!popoverSettings) return;
+    const m = measureSettingsScrollbar();
+    e.preventDefault();
+    settingsScrollbarDrag = {
+      startY: e.clientY,
+      startScroll: popoverSettings.scrollTop,
+      ratio: m.maxScroll / Math.max(1, m.maxThumbTop)
+    };
+    if (settingsScrollbarThumb.setPointerCapture) {
+      settingsScrollbarThumb.setPointerCapture(e.pointerId);
+    }
+  });
+
+  settingsScrollbarThumb?.addEventListener('pointermove', (e) => {
+    if (!settingsScrollbarDrag || !popoverSettings) return;
+    const delta = e.clientY - settingsScrollbarDrag.startY;
+    popoverSettings.scrollTop = settingsScrollbarDrag.startScroll + delta * settingsScrollbarDrag.ratio;
+  });
+
+  function endSettingsScrollbarDrag() {
+    settingsScrollbarDrag = null;
+    scheduleSettingsScrollbarHide();
+  }
+  settingsScrollbarThumb?.addEventListener('pointerup', endSettingsScrollbarDrag);
+  settingsScrollbarThumb?.addEventListener('pointercancel', endSettingsScrollbarDrag);
+
   const searchContainer = document.getElementById('search-container');
   const fakebox = document.getElementById('fakebox');
   const searchInput = document.getElementById('search-input');
@@ -1605,7 +1866,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const enhancedVisibilityRow = document.getElementById('enhanced-visibility-row');
   const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
   
-  const modalWallpaper = document.getElementById('modal-wallpaper');
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
   const toggleBgModalSwitch = document.getElementById('toggle-bg-modal-switch');
   const wallpaperPreviewContainer = document.getElementById('wallpaper-preview-container');
@@ -1614,6 +1874,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputWallpaperFile = document.getElementById('input-wallpaper-file');
   const wallpaperTypeTitle = document.getElementById('wallpaper-type-title');
   const wallpaperSourceLabel = document.getElementById('wallpaper-source-label');
+  const bgDependentSettings = document.getElementById('bg-dependent-settings');
 
   const bgVideo = document.getElementById('bg-video');
   const bgImage = document.getElementById('bg-image');
@@ -1711,20 +1972,17 @@ document.addEventListener('DOMContentLoaded', () => {
   btnSettings?.addEventListener('click', (e) => {
     e.stopPropagation();
     togglePopover(popoverSettings, popoverWaffle);
+    // 打开设置面板时直接回到主设置页（此时不做切换过渡，面板自身已有淡入），
+    // 避免停留在上次打开的二级页
+    if (popoverSettings?.classList.contains('active')) {
+      applySettingsPageClasses('main');
+      popoverSettings.scrollTop = 0;
+      updateSettingsScrollbar();
+      revealSettingsScrollbar();
+    }
     // 设置面板打开时，按当前语言同步快速链接的“添加”按钮文案
     if (typeof syncQuicklinksLanguage === 'function') syncQuicklinksLanguage();
   });
-
-  if (btnCloseSettings) {
-    btnCloseSettings.addEventListener('click', () => {
-      popoverSettings.classList.remove('active');
-      document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
-        dd.classList.remove('active');
-        clearDropdownInlineStyles(dd);
-        if (dd._display) dd._display.classList.remove('active');
-      });
-    });
-  }
 
   document.addEventListener('click', (e) => {
     if (!popoverWaffle?.contains(e.target) && !btnWaffle?.contains(e.target)) {
@@ -1848,6 +2106,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const savedLayout = Storage.get('ntp_layout', 'focused');
   const savedQuicklinksRow = Storage.get('ntp_quicklinks', '0');
+  // 快速链接位置：'auto' 跟随布局；'bottom' 固定在页面底部（该模式强制一行）
+  let quicklinkPosition = Storage.get('ntp_quicklink_position', 'auto');
   let historyEnabled = Storage.get('ntp_history_enabled', true);
   let searchHistory = Storage.get('ntp_search_history', []);
   let showTimeCapsule = Storage.get('ntp_show_time_capsule', false);
@@ -1859,6 +2119,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
   let searchVisible = Storage.get('ntp_search_visible', true);
   let showLogo = Storage.get('ntp_show_logo', true);
+  // 快速链接区"添加"按钮的显隐（默认关闭）
+  let showAddButton = Storage.get('ntp_show_add_button', false);
 
   // 获取今天的日期字符串，如 "2026-09-03"，用于判断壁纸是否过期
   function getTodayStr() {
@@ -1917,8 +2179,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
   updateForceBingCNRow(savedEngine);
-  document.body.setAttribute('data-layout', savedLayout);
-  quicklinksElem?.setAttribute('rows', savedQuicklinksRow);
+  document.body.setAttribute('data-layout', savedLayout === 'hidden' ? 'focused' : savedLayout);
+  // 应用快速链接位置（"底部"模式会强制一行并锁定数量下拉）
+  applyQuicklinkPosition();
 
   // 背景显隐及渲染逻辑
   function applyBackgroundState() {
@@ -1950,9 +2213,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (enhancedVisibilityRow) {
-      enhancedVisibilityRow.style.display = bgEnabled ? 'flex' : 'none';
+      // 该开关现在是一张独立卡片，显隐值用 block
+      enhancedVisibilityRow.style.display = bgEnabled ? 'block' : 'none';
     }
     applyEnhancedVisibility();
+    applyBgDependentEnabled();
   }
 
   // 根据"增强可见性"设置与背景开关，切换 body 的 data 属性
@@ -1961,6 +2226,18 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.setAttribute('data-enhanced-visibility', 'true');
     } else {
       document.body.removeAttribute('data-enhanced-visibility');
+    }
+  }
+
+  // 背景关闭时，依赖背景的设置（选择图片 / 在线内容）整体置灰且不可交互
+  function applyBgDependentEnabled() {
+    if (!bgDependentSettings) return;
+    if (bgEnabled) {
+      bgDependentSettings.classList.remove('disabled');
+      bgDependentSettings.removeAttribute('inert');
+    } else {
+      bgDependentSettings.classList.add('disabled');
+      bgDependentSettings.setAttribute('inert', '');
     }
   }
 
@@ -2046,9 +2323,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (wallpaperPreviewContainer) {
-        wallpaperPreviewContainer.innerHTML = `
-          <video src="${customWallpaperData.url}" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>
-        `;
+        const previewVideo = document.createElement('video');
+        previewVideo.src = customWallpaperData.url;
+        previewVideo.autoplay = true;
+        previewVideo.loop = true;
+        previewVideo.muted = true;
+        previewVideo.playsInline = true;
+        previewVideo.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        wallpaperPreviewContainer.textContent = '';
+        wallpaperPreviewContainer.appendChild(previewVideo);
       }
     } else {
       if (bgVideo) {
@@ -2078,10 +2361,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (wallpaperPreviewContainer) {
-        wallpaperPreviewContainer.innerHTML = `
-          <img src="${customWallpaperData.url}" alt="背景预览" style="width:100%;height:100%;object-fit:cover;" />
-        `;
-        const previewImg = wallpaperPreviewContainer.querySelector('img');
+        const previewImg = document.createElement('img');
+        previewImg.src = customWallpaperData.url;
+        previewImg.alt = '背景预览';
+        previewImg.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+        wallpaperPreviewContainer.textContent = '';
+        wallpaperPreviewContainer.appendChild(previewImg);
         previewImg.addEventListener('error', () => {
           const errWrap = document.createElement('div');
           errWrap.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:-4px;color:rgb(255, 255, 255);';
@@ -2177,18 +2462,19 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_engine',
     'ntp_layout',
     'ntp_quicklinks',
+    'ntp_quicklink_position',
     'ntp_quicklinks_list',
     'ntp_history_enabled',
     'ntp_search_history',
     'ntp_show_time_capsule',
     'ntp_show_menu_button',
     'ntp_show_logo',
+    'ntp_show_add_button',
     'ntp_search_visible',
     'ntp_force_bing_cn',
     'ntp_bg_enabled',
     'ntp_enhanced_visibility',
     'ntp_custom_engine_config',
-    'ntp_user_profile',
     'ntp_custom_wallpaper'
   ];
   // 以纯字符串保存的设置项（界面语言），导入时需要原样写回
@@ -2208,6 +2494,12 @@ document.addEventListener('DOMContentLoaded', () => {
       option.setAttribute('aria-selected', selected ? 'true' : 'false');
       option.tabIndex = selected ? 0 : -1;
     });
+    // 选中「初始化」（不可撤回）时，把「下一步」换成与"重置 Litestart"同款的危险按钮样式
+    if (btnManageProfilesNext) {
+      const isDanger = action === 'init';
+      btnManageProfilesNext.classList.toggle('btn-danger', isDanger);
+      btnManageProfilesNext.classList.toggle('btn-primary', !isDanger);
+    }
   }
 
   function closeManageProfilesModal() {
@@ -2386,16 +2678,16 @@ document.addEventListener('DOMContentLoaded', () => {
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
-  // 壁纸弹窗逻辑
+  // 背景设置：在设置面板内切换到二级页（不再弹窗）
   btnOpenBgModal?.addEventListener('click', () => {
-    popoverSettings?.classList.remove('active');
-    modalWallpaper?.classList.add('active');
+    showSettingsPage('bg');
     renderWallpaper();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
+  // 背景二级页标题栏的返回按钮：回到主设置页
   btnCloseWallpaperModal?.addEventListener('click', () => {
-    modalWallpaper?.classList.remove('active');
+    showSettingsPage('main');
   });
 
   btnUploadWallpaper?.addEventListener('click', () => {
@@ -2504,7 +2796,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 表单提交
   onlineWallpaperForm?.addEventListener('submit', (e) => {
   e.preventDefault();
-  const url = sanitizeInput(inputOnlineUrl.value.trim());
+  // URL 原样保存；预览改用 DOM 赋值，不再拼进 HTML
+  const url = inputOnlineUrl.value.trim();
   containerOnlineUrl?.classList.remove('error');
   tipOnlineUrl?.classList.remove('active');
 
@@ -2549,27 +2842,44 @@ inputOnlineUrl?.addEventListener('input', () => {
 
 
   // 布局切换-------------
+  // 只负责搜索框的"悬挂 / 居中"；是否显示由"显示搜索框"开关接管
   function applyLayout(layoutVal) {
-    if (!layoutVal) return;
+    if (!layoutVal || layoutVal === 'hidden') return;
 
-    // 「关闭」：只隐藏搜索栏，不改动 data-layout 与预设卡片
-    if (layoutVal === 'hidden') {
-      searchVisible = false;
-      Storage.set('ntp_search_visible', false);
-      applySearchVisibility();
-      return;
-    }
-
-    // 正常切换布局；如果之前是隐藏状态，则顺手把搜索栏恢复
+    // 切换布局时顺手把搜索栏恢复显示
     document.body.setAttribute('data-layout', layoutVal);
     Storage.set('ntp_layout', layoutVal);
-    updateLayoutPresetUI(layoutVal);
 
     if (!searchVisible) {
       searchVisible = true;
       Storage.set('ntp_search_visible', true);
     }
     applySearchVisibility();
+    applyLogoSwitchAvailability();
+    refreshCustomSelects();
+    syncLayoutPresetSelection();
+  }
+
+  // 快速链接位置：'bottom' 时固定到页面底部，并强制一行（锁住"快速链接数量"下拉）
+  function applyQuicklinkPosition() {
+    const isBottom = quicklinkPosition === 'bottom';
+    document.body.setAttribute('data-quicklink-position', isBottom ? 'bottom' : 'auto');
+
+    const savedRow = Storage.get('ntp_quicklinks', '0');
+    if (quicklinksElem) {
+      quicklinksElem.setAttribute('rows', isBottom ? '1' : savedRow);
+    }
+    if (selectQuicklinks) {
+      selectQuicklinks.disabled = isBottom;
+      selectQuicklinks.value = isBottom ? '1' : savedRow;
+    }
+    // 把当前位置写回下拉（首次加载时靠这句恢复上次的选择）
+    if (selectQuicklinkPosition) {
+      selectQuicklinkPosition.value = quicklinkPosition;
+    }
+    // 原生 select 是透明的，禁用态要落到自定义下拉的可见部分
+    const quicklinksSelectDisplay = document.querySelector('.custom-select-display[data-for="select-quicklinks"]');
+    quicklinksSelectDisplay?.classList.toggle('disabled', isBottom);
     refreshCustomSelects();
   }
 
@@ -2580,12 +2890,11 @@ inputOnlineUrl?.addEventListener('input', () => {
     } else {
       document.body.setAttribute('data-search-hidden', 'true');
     }
-    // 同步下拉显示文本
+    // 下拉只表示"悬挂 / 居中"，是否显示由开关承担
     if (selectLayout) {
-      selectLayout.value = searchVisible
-        ? (document.body.getAttribute('data-layout') || 'focused')
-        : 'hidden';
+      selectLayout.value = document.body.getAttribute('data-layout') || 'focused';
     }
+    if (toggleSearchSwitch) toggleSearchSwitch.checked = searchVisible;
     refreshCustomSelects();
   }
 
@@ -2596,28 +2905,110 @@ inputOnlineUrl?.addEventListener('input', () => {
     }
   }
 
-  if (selectLayout) selectLayout.value = savedLayout;
+  // "悬挂"布局下 Logo 本来就不显示，对应的开关一并置灰禁用
+  function applyLogoSwitchAvailability() {
+    const logoRow = toggleLogoSwitch ? toggleLogoSwitch.closest('.setting-row') : null;
+    if (!logoRow) return;
+    const isHanging = document.body.getAttribute('data-layout') === 'inspirational';
+    logoRow.classList.toggle('disabled', isHanging);
+  }
+
+  // 旧数据兼容：早期版本把"关闭搜索框"存成了 ntp_layout = 'hidden'
+  const initialLayout = savedLayout === 'hidden' ? 'focused' : savedLayout;
+  if (selectLayout) selectLayout.value = initialLayout;
 
   // 初始化搜索栏可见性与标题显示
   applySearchVisibility();
   applyLogoVisibility();
+  applyLogoSwitchAvailability();
 
-  // 初始化更新布局预设卡片选中状态
-  function updateLayoutPresetUI(currentLayout) {
+
+  // 三个预设各自要改的项；没列出来的项保持用户当前设置不动
+  // layout 为 null 表示"搜索框位置不动"
+  const LAYOUT_PRESETS = {
+    inspirational: {
+      layout: 'inspirational',
+      searchVisible: true,
+      showLogo: false,
+      quicklinkPosition: 'auto'
+    },
+    focused: {
+      layout: 'focused',
+      searchVisible: true,
+      showLogo: true,
+      quicklinkPosition: 'auto'
+    },
+    appreciate: {
+      layout: null,
+      searchVisible: false,
+      showLogo: false,
+      quicklinkPosition: 'bottom'
+    }
+  };
+
+  // 应用预设
+  function applyLayoutPreset(name) {
+    const preset = LAYOUT_PRESETS[name];
+    if (!preset) return;
+
+    // 搜索框位置（内部会写 data-layout 与 ntp_layout）；为 null 时保持不动
+    if (preset.layout) applyLayout(preset.layout);
+
+    // 显示搜索框
+    searchVisible = preset.searchVisible;
+    Storage.set('ntp_search_visible', searchVisible);
+
+    // 显示 Logo
+    showLogo = preset.showLogo;
+    Storage.set('ntp_show_logo', showLogo);
+    applyLogoVisibility();
+    if (toggleLogoSwitch) toggleLogoSwitch.checked = showLogo;
+
+    // 快速链接位置
+    quicklinkPosition = preset.quicklinkPosition;
+    Storage.set('ntp_quicklink_position', quicklinkPosition);
+    applyQuicklinkPosition();
+    renderQuicklinks(true);
+
+    // 同步界面（开关勾选、状态文字、下拉文本）
+    applySearchVisibility();
+    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+
+    // 按当前配置重新判定选中态
+    syncLayoutPresetSelection();
+  }
+
+  // 当前配置是否与某个预设完全一致（只比预设里列出的项）
+  // 注意 preset.layout 为 null 表示"该项不参与比较"
+  function matchLayoutPreset() {
+    const layout = document.body.getAttribute('data-layout') || 'focused';
+    const names = Object.keys(LAYOUT_PRESETS);
+    for (let i = 0; i < names.length; i++) {
+      const preset = LAYOUT_PRESETS[names[i]];
+      if (preset.layout && preset.layout !== layout) continue;
+      if (preset.searchVisible !== searchVisible) continue;
+      if (preset.showLogo !== showLogo) continue;
+      if (preset.quicklinkPosition !== quicklinkPosition) continue;
+      return names[i];
+    }
+    return null;
+  }
+
+  // 刷新预设卡片选中态：与某个预设完全一致才选中它，都不一致则三个都不选
+  function syncLayoutPresetSelection() {
+    const matched = matchLayoutPreset();
     document.querySelectorAll('.preset-card').forEach(card => {
-      if (card.dataset.layoutVal === currentLayout) {
-        card.classList.add('active');
-      } else {
-        card.classList.remove('active');
-      }
+      card.classList.toggle('active', card.dataset.layoutVal === matched);
     });
   }
-  updateLayoutPresetUI(savedLayout);
+
+  // 初始化：按当前配置决定选中态（可能一个都不选）
+  syncLayoutPresetSelection();
 
   // 布局卡片点击监听
   document.querySelectorAll('.preset-card').forEach(card => {
     card.addEventListener('click', () => {
-      applyLayout(card.dataset.layoutVal);
+      applyLayoutPreset(card.dataset.layoutVal);
     });
   });
 
@@ -2635,15 +3026,14 @@ inputOnlineUrl?.addEventListener('input', () => {
     });
   }
 
-  // 关闭编辑页面布局弹窗
+  // 布局二级页返回：回到主设置页
   function closeLayoutModal() {
-    modalLayout?.classList.remove('active');
+    showSettingsPage('main');
     closeLayoutDropdowns();
   }
 
-  // 打开编辑页面布局弹窗
+  // 布局设置：在设置面板内切换到二级页（不再弹窗）
   btnOpenLayoutModal?.addEventListener('click', () => {
-    popoverSettings?.classList.remove('active');
     closeLayoutDropdowns();
     // 同步为当前实际布局
     if (selectLayout) {
@@ -2651,17 +3041,13 @@ inputOnlineUrl?.addEventListener('input', () => {
         ? (document.body.getAttribute('data-layout') || 'focused')
         : 'hidden';
     }
-    modalLayout?.classList.add('active');
+    showSettingsPage('layout');
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
   btnCloseLayoutModal?.addEventListener('click', closeLayoutModal);
-  btnLayoutClose?.addEventListener('click', closeLayoutModal);
 
-  // 点击遮罩空白区域关闭编辑页面布局弹窗
-  modalLayout?.addEventListener('click', (e) => {
-    if (e.target === modalLayout) closeLayoutModal();
-  });
+  // 背景/布局设置已改为设置面板内的二级页，不再需要遮罩点击关闭
 
 
   // 设置面板切换监听
@@ -2695,10 +3081,20 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   selectQuicklinks?.addEventListener('change', (e) => {
     const val = e.target.value;
-    quicklinksElem?.setAttribute('rows', val);
     Storage.set('ntp_quicklinks', val);
+    // "底部"模式下固定一行，这里只记录偏好
+    quicklinksElem?.setAttribute('rows', quicklinkPosition === 'bottom' ? '1' : val);
     // 行数变化会改变每行/总数上限，强制重建一次
     renderQuicklinks(true);
+  });
+
+  // 快速链接位置切换
+  selectQuicklinkPosition?.addEventListener('change', (e) => {
+    quicklinkPosition = e.target.value;
+    Storage.set('ntp_quicklink_position', quicklinkPosition);
+    applyQuicklinkPosition();
+    renderQuicklinks(true);
+    syncLayoutPresetSelection();
   });
 
     // 时间开关事件
@@ -2742,6 +3138,19 @@ inputOnlineUrl?.addEventListener('input', () => {
     });
   }
 
+    // "显示搜索框"开关：控制搜索栏显隐（原"关闭"选项改由它承担）
+  if (toggleSearchSwitch) {
+    toggleSearchSwitch.checked = searchVisible;
+
+    toggleSearchSwitch.addEventListener('change', (e) => {
+      searchVisible = e.target.checked;
+      Storage.set('ntp_search_visible', searchVisible);
+      applySearchVisibility();
+      syncLayoutPresetSelection();
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    });
+  }
+
     // 显示标题开关事件
   if (toggleLogoSwitch) {
     toggleLogoSwitch.checked = showLogo;
@@ -2750,6 +3159,19 @@ inputOnlineUrl?.addEventListener('input', () => {
       showLogo = e.target.checked;
       Storage.set('ntp_show_logo', showLogo);
       applyLogoVisibility();
+      syncLayoutPresetSelection();
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    });
+  }
+
+  // 快速链接"添加"按钮显隐开关（按钮由脚本渲染，改动后需要重建列表）
+  if (toggleAddButtonSwitch) {
+    toggleAddButtonSwitch.checked = showAddButton;
+
+    toggleAddButtonSwitch.addEventListener('change', (e) => {
+      showAddButton = e.target.checked;
+      Storage.set('ntp_show_add_button', showAddButton);
+      renderQuicklinks(true);
       applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
     });
   }
@@ -2831,7 +3253,8 @@ inputOnlineUrl?.addEventListener('input', () => {
   customEngineForm?.addEventListener('submit', (e) => {
     e.preventDefault();
     let name = sanitizeInput(inputEngineName.value.trim());
-    let url = sanitizeInput(inputEngineUrl.value.trim());
+    // URL 原样保存，使用时经 encodeURIComponent 拼接
+    let url = inputEngineUrl.value.trim();
     let hasError = false;
 
     containerEngineName?.classList.remove('error');
@@ -2878,12 +3301,13 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 单个快捷方式项的宽度
   const QUICKLINK_ITEM_WIDTH = 80;
   // 项与项之间的间距
-  const QUICKLINK_GAP = 16;
+  const QUICKLINK_GAP = 10;
   // 页面左右各保留的安全边距
   const QUICKLINK_SIDE_MARGIN = 16;
-  // 每行最多显示的项数
+  // 单行模式：每行最多显示的项数，超出的项与"添加"按钮都不再渲染
   const QUICKLINK_MAX_COLUMNS_ONE_ROW = 10;
-  const QUICKLINK_MAX_COLUMNS_TWO_ROWS = 12;
+  // 多行模式：每行显示的项数，行数不限（窗口过窄时按实际可用列数收缩）
+  const QUICKLINK_MAX_COLUMNS_MULTI_ROW = 9;
 
   // 当前生效的列数；仅当它发生变化时才需要重建 DOM
   let quicklinksColumns = 0;
@@ -2898,7 +3322,8 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 只读视口宽度、不读取布局，避免 resize 期间反复强制重排
   function quicklinksAvailableColumns() {
     if (!quicklinksElem) return 0;
-    const maxColumns = Math.max(QUICKLINK_MAX_COLUMNS_ONE_ROW, QUICKLINK_MAX_COLUMNS_TWO_ROWS);
+    // 视口再宽也不会超过单行模式的上限；多行模式的每行项数更少，取两者较大值即可
+    const maxColumns = Math.max(QUICKLINK_MAX_COLUMNS_ONE_ROW, QUICKLINK_MAX_COLUMNS_MULTI_ROW);
     // 可用宽度受「视口 - 两侧安全边距」与「每行项数上限」共同约束
     const availableWidth = Math.min(
       document.documentElement.clientWidth - QUICKLINK_SIDE_MARGIN * 2,
@@ -2912,9 +3337,10 @@ inputOnlineUrl?.addEventListener('input', () => {
   }
 
   // 当前设置下每行允许的列数
+  // 单行模式：最多 10 列；多行模式：每行 9 列（窄窗口按实际可用列数收缩）
   function quicklinksColumnsPerRow(rowsValue) {
     const available = quicklinksAvailableColumns();
-    if (rowsValue === '2') return Math.min(available, QUICKLINK_MAX_COLUMNS_TWO_ROWS);
+    if (rowsValue === '2') return Math.min(available, QUICKLINK_MAX_COLUMNS_MULTI_ROW);
     return Math.min(available, QUICKLINK_MAX_COLUMNS_ONE_ROW);
   }
 
@@ -3017,13 +3443,23 @@ inputOnlineUrl?.addEventListener('input', () => {
       return;
     }
 
-    const maxItems = perRow * parseInt(rows, 10);
-    // 本次真正要渲染的项数（已达到上限时不再显示"添加"按钮）
+    // 单行模式：最多渲染 perRow 项（超出部分与"添加"按钮都不渲染）
+    // 多行模式：不限项数，全部渲染，由 CSS 换行成多行
+    const multiRow = rows === '2';
+    const maxItems = multiRow ? Infinity : perRow;
     const shownLinks = quicklinksList.slice(0, maxItems);
-    const visibleCount = shownLinks.length + (quicklinksList.length < maxItems ? 1 : 0);
-    // 容器内容宽度按"最后一行实际有多少项"计算，因此左右都不会残留空档
-    const contentWidth = quicklinksWidthForColumns(Math.min(perRow, Math.max(1, visibleCount)));
-    const renderKey = [rows, perRow, quicklinksList.length, quicklinksList.map(i => i.id).join(',')].join('|');
+    // "添加"按钮显示条件：设置里开启 + 单行模式尚未排满（多行模式不限项数，只看开关）
+    const hasAddButton = showAddButton && quicklinksList.length < maxItems;
+    // 容器内容宽度：多行模式固定为 perRow 列，保证每行排满 perRow 项后才换行（行数不限）；
+    // 单行模式按实际渲染项数收缩，左右不留空档
+    const widthColumns = multiRow
+      ? perRow
+      : Math.min(perRow, Math.max(1, shownLinks.length + (hasAddButton ? 1 : 0)));
+    const contentWidth = quicklinksWidthForColumns(widthColumns);
+    // 缓存键必须带上标题与网址：只改名称时项数与 id 都没变，
+    // 否则这里会被判成"无需重建"，界面要刷新才更新
+    const renderKey = [rows, perRow, showAddButton ? '1' : '0', quicklinksList.length,
+      quicklinksList.map(i => i.id + '~' + i.title + '~' + i.url).join(';')].join('|');
     const widthChanged = quicklinksElem.style.getPropertyValue('--quicklinks-content-width') !== contentWidth + 'px';
 
     if (!force && renderKey === quicklinksLastRenderKey && !widthChanged) return;
@@ -3035,8 +3471,8 @@ inputOnlineUrl?.addEventListener('input', () => {
     shownLinks.forEach(item => {
       fragment.appendChild(createQuicklinkNode(item));
     });
-    // 未超出显示上限时才显示"添加"按钮
-    if (quicklinksList.length < maxItems) {
+    // 单行模式未超出显示上限时才显示"添加"按钮；多行模式始终显示在末尾
+    if (hasAddButton) {
       fragment.appendChild(createQuicklinkAddNode());
     }
 
@@ -3179,6 +3615,12 @@ function onDrop(e) {
     setTimeout(() => inputName?.focus(), 50);
   }
 
+  // 左上角菜单里的"添加快速链接"：与快速链接区的"添加"按钮同功能，始终可用
+  document.getElementById('btn-add-quicklink')?.addEventListener('click', () => {
+    popoverWaffle?.classList.remove('active');
+    openAddModal();
+  });
+
   // 打开"编辑快速链接"弹窗，填充当前数据并显示删除按钮
   function openEditModal(item) {
     currentEditingId = item.id;
@@ -3213,7 +3655,9 @@ function onDrop(e) {
     clearErrors();
 
     const title = sanitizeInput(inputName.value.trim());
-    let url = sanitizeInput(inputUrl.value.trim());
+    // URL 原样保存：它只会被赋给 href/src 这类属性，不经过 HTML 解析；
+    // 在这里转义会把含 & 的地址（多个查询参数）写坏
+    let url = inputUrl.value.trim();
     let hasError = false;
 
     if (!title) {
@@ -3497,8 +3941,10 @@ searchInput?.addEventListener('input', () => {
 
   // 语言选择与应用初始化
   const savedLang = localStorage.getItem('liteStart_language') || 'auto';
+  // 若存的是已下架的语言（例如曾经的 zh-WY），回落到"跟随设备"
+  const initialLang = (savedLang === 'auto' || i18nData[savedLang]) ? savedLang : 'auto';
   if (selectLanguage) {
-    selectLanguage.value = savedLang;
+    selectLanguage.value = initialLang;
     selectLanguage.addEventListener('change', (e) => {
       const val = e.target.value;
       localStorage.setItem('liteStart_language', val);
@@ -3509,9 +3955,12 @@ searchInput?.addEventListener('input', () => {
   }
 
   // 初始化应用全页翻译
-  applyLanguage(savedLang);
+  applyLanguage(initialLang);
   translateSourceLabel(); // 初始化时翻译来源标签
 
   // 初始化自定义下拉组件
   initCustomSelects();
+
+  // 初始化悬浮滚动条
+  updateSettingsScrollbar();
 });
