@@ -54,10 +54,6 @@
       --dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       --dropdown-border: #e5e5e5;
 
-      /* 首次使用引导气泡：浅色模式黑底白字，深色模式白底黑字 */
-      --guide-tip-bg: #262626;
-      --guide-tip-fg: #f7f7f7;
-
       /* 6. 模态框与弹窗样式 */
       --modal-bg: #ffffff;
       --modal-border: #e0e0e0;
@@ -111,10 +107,6 @@
         /* 深色下黑色阴影几乎不可见，靠"加深的阴影 + 更亮的描边"把浮层托起来（别调太狠，会发脏） */
         --dropdown-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.22);
         --dropdown-border: #4c4c4c;
-
-        /* 引导气泡：深色下反过来，纯白底深色字 */
-        --guide-tip-bg: #ffffff;
-        --guide-tip-fg: #333333;
 
         --modal-bg: #242424;
         --modal-border: #333333;
@@ -381,8 +373,8 @@
       max-width: 300px;
       padding: 14px 16px;   /* 上下留白稍多一些 */
       border-radius: 8px;
-      background-color: var(--guide-tip-bg);
-      color: var(--guide-tip-fg);
+      background-color: var(--accent-foreground-hover);
+      color: var(--accent-foreground-invert);
       font-size: 15px;
       line-height: 1.55;
       box-shadow: 0 0 18px rgba(0, 0, 0, 0.25);   /* 不带偏移，四周均匀 */
@@ -405,15 +397,10 @@
       height: 0;
       border-left: 7px solid transparent;
       border-right: 7px solid transparent;
-      border-bottom: 8px solid var(--guide-tip-bg);
+      border-bottom: 8px solid var(--accent-foreground-hover);
     }
 
-    /* 弹出菜单面板通用样式 —— 展开/收起动画
-       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
-       - .active 状态：opacity:1, visibility:visible, transform 归零
-       - visibility 延迟 0.06s 切换（通过 transition-delay），
-         确保 opacity 过渡完成后再隐藏，避免闪烁
-    */
+    /* 弹出菜单面板通用样式 */
     .popover-panel {
       position: absolute;
       top: var(--header-height);
