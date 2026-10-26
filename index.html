@@ -1578,9 +1578,9 @@
       position: fixed;
       z-index: 2200;                   /* 高于自定义下拉浮层与图标面板 */
       display: none;
-      min-width: 152px;
-      /* 与选项菜单（custom-select-dropdown）完全一致：无内边距、无描边，
-         选中底色直接铺到菜单边缘，由 overflow:hidden 裁进圆角 */
+      min-width: 168px;
+      /* 上下留白由首/末项的 padding 提供，左右不留：选中底色始终顶到菜单边缘，
+         兼顾"有呼吸空间"与"整行铺满、不出现内层圆角"两个要求 */
       padding: 0;
       border: none;
       border-radius: 6px;
@@ -1604,10 +1604,13 @@
       justify-content: flex-start;   /* 图标与文字一律靠左 */
       gap: 10px;
       width: 100%;
-      padding: 7px 10px;
+      /* 上下 8px 给行高留呼吸，左右 20px 让内容离菜单左右边缘更远一点（不挤）；
+         首/末项再额外加一点上下 padding，菜单整体上下也不显得贴边 */
+      padding: 8px 20px;
       box-sizing: border-box;
       border: none;
-      /* 选中/悬停直接铺满整项，不再在项内再套一层圆角块 */
+      /* 菜单已有外圈留白，这里保持 0；选中底色仍是整行铺满。
+         行内不再套圆角块，避免出现"选中项外面又有一圈圆角"的观感 */
       border-radius: 0;
       background-color: transparent;
       color: var(--settings-text-primary);
@@ -1618,7 +1621,7 @@
       white-space: nowrap;
       cursor: pointer;
       outline: none;
-      transition: background-color 0.08s ease;
+      transition: background-color 0.08s ease, color 0.08s ease;
     }
 
     .quicklink-menu-item svg {
@@ -1653,7 +1656,28 @@
       color: var(--accent-foreground-rest);
     }
 
-    
+    /* 首/末项补齐菜单上下留白（左右仍顶边），并让底色贴合菜单圆角 */
+    .quicklink-menu > .quicklink-menu-item:first-child:not([hidden]) {
+      padding-top: 12px;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+
+    .quicklink-menu > .quicklink-menu-item:last-child:not([hidden]) {
+      padding-bottom: 12px;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
+    }
+
+    /* 首项同时又是末项（如"添加"按钮只有一项）时上下都留白 */
+    .quicklink-menu > .quicklink-menu-item:first-child:last-child:not([hidden]) {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    /* 每项左右都顶到菜单边缘；只给首/末项的上下外角做圆角，
+       内侧保持直角 —— 这样铺满效果是整块连续的，不会被圆角切断 */
+
     .quicklink-add-icon {
       background-color: var(--neutral-layer-floating);
       border: none;
@@ -2747,7 +2771,7 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.8.9-Beta2</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.8.9-Beta1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
@@ -3212,7 +3236,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.9-Beta2 | 更新时间：2026-10-26</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.9-Beta1 | 更新时间：2026-10-26</p><br>
         
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
