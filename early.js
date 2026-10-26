@@ -72,8 +72,8 @@
       );
       var qlCols = Math.min(qlMaxCols, Math.max(1, Math.floor((qlAvail + qlGap) / (qlItemW + qlGap))));
       // 与实际渲染规则一致：单行模式只渲染前 perRow 项，多行模式全部渲染
-      var qlAddBtn = JSON.parse(localStorage.getItem('ntp_show_add_button') || 'null');
-      var qlAddOn = (qlAddBtn === true || qlAddBtn === 'true');
+      var qlAddBtn = JSON.parse(localStorage.getItem('ntp_show_add_button') || 'true');
+      var qlAddOn = (qlAddBtn !== false);
       var qlCount = Array.isArray(qlList) ? qlList.length : 0;
       var qlMaxItems = qlRow === '2' ? Infinity : qlCols;
       var qlShown = Math.min(qlCount, qlMaxItems);

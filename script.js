@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.8';      // 发行版本
+const APP_VERSION = '1.8.9-Beta1';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -29,7 +29,6 @@ const i18nData = {
   'zh-CN': {
     pageTitle: '新标签页',
     settingsTitle: '页面设置',
-    guideWaffle: '在此处新建快速链接、导入和导出配置文件',
     close: '关闭',
     back: '返回',
     quicklinkStyle: '快速链接样式',
@@ -66,7 +65,7 @@ const i18nData = {
     download: '下载',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.8 | 更新时间：2026-10-19',
+    litever: '版本 1.8.9-Beta1 | 更新时间：2026-10-26',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -204,6 +203,10 @@ const i18nData = {
     layoutCentered: '居中',
     showLogo: '显示 Logo',
     showAddButton: '在快速链接区域显示添加按钮',
+    hideAddButton: '隐藏此按钮',
+    addButtonHiddenTitle: '添加按钮已隐藏',
+    addButtonHiddenDesc: '添加按钮已隐藏，请在 页面左上角菜单 中添加快速链接。<br>也可在 设置 - 编辑页面布局 中重新开启此按钮。',
+    ok: '确定',
 
     //自定义搜索引擎图片部分
     customTitleImage: '自定义标题图片',
@@ -214,7 +217,6 @@ const i18nData = {
   'zh-TW': {
     pageTitle: '新分頁',
     settingsTitle: '頁面設定',
-    guideWaffle: '在此處新增快速連結、匯入和匯出設定檔',
     close: '關閉',
     back: '返回',
     quicklinkStyle: '快速連結樣式',
@@ -251,7 +253,7 @@ const i18nData = {
     download: '下載',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.8 | 更新時間：2026-10-19',
+    litever: '版本 1.8.9-Beta1 | 更新時間：2026-10-26',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -375,6 +377,10 @@ const i18nData = {
     layoutCentered: '居中',
     showLogo: '顯示 Logo',
     showAddButton: '在快速連結區域顯示新增按鈕',
+    hideAddButton: '隱藏此按鈕',
+    addButtonHiddenTitle: '新增按鈕已隱藏',
+    addButtonHiddenDesc: '新增按鈕已隱藏，請在 頁面左上角選單 中新增快速連結。<br>也可在 設定 - 編輯頁面佈局 中重新開啟此按鈕。',
+    ok: '確定',
     customTitleImage: '自訂標題圖片',
     selectImageFile: '選擇圖片',
     removeImage: '刪除圖片',
@@ -383,7 +389,6 @@ const i18nData = {
   'en': {
     pageTitle: 'New Tab',
     settingsTitle: 'Page Settings',
-    guideWaffle: 'Create quicklinks and back up or restore your settings here.',
     close: 'Close',
     back: 'Back',
     quicklinkStyle: 'Quicklink style',
@@ -421,7 +426,7 @@ const i18nData = {
     download: 'Download',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.8 | Updated: 2026-10-19',
+    litever: 'Version 1.8.9-Beta1 | Updated: 2026-10-26',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -545,6 +550,10 @@ const i18nData = {
     layoutCentered: 'Centered',
     showLogo: 'Show logo',
     showAddButton: 'Show add button in quicklinks area',
+    hideAddButton: 'Hide this button',
+    addButtonHiddenTitle: 'Add button hidden',
+    addButtonHiddenDesc: 'The add button is hidden. Create quicklinks from the menu at the top-left corner.<br>You can also re-enable it in Settings - Edit Layout.',
+    ok: 'OK',
     customTitleImage: 'Custom Title Image',
     selectImageFile: 'Select Image',
     removeImage: 'Remove Image',
@@ -554,7 +563,6 @@ const i18nData = {
   'ja': {
     pageTitle: '新しいタブ',
     settingsTitle: '設定',
-    guideWaffle: 'ここでクイックリンクの作成や設定の入出力ができます。',
     close: '閉じる',
     back: '戻る',
     quicklinkStyle: 'クイックリンクの表示',
@@ -592,7 +600,7 @@ const i18nData = {
     download: 'ダウンロード',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.8 | 更新日: 2026-10-19',
+    litever: 'バージョン 1.8.9-Beta1 | 更新日: 2026-10-26',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -716,6 +724,10 @@ const i18nData = {
     layoutCentered: '中央',
     showLogo: 'ロゴを表示',
     showAddButton: 'クイックリンクに追加ボタンを表示',
+    hideAddButton: 'このボタンを非表示',
+    addButtonHiddenTitle: '追加ボタンを非表示にしました',
+    addButtonHiddenDesc: '追加ボタンは非表示です。左上のメニューからクイックリンクを作成してください。<br>「設定 - レイアウトを編集」で再度有効にできます。',
+    ok: 'OK',
     customTitleImage: 'カスタムタイトル画像',
     selectImageFile: '画像を選択',
     removeImage: '画像を削除',
@@ -724,7 +736,6 @@ const i18nData = {
   'ru': {
     pageTitle: 'Новая вкладка',
     settingsTitle: 'Настройки страницы',
-    guideWaffle: 'Здесь можно создать быстрые ссылки и сохранить настройки.',
     close: 'Закрыть',
     back: 'Назад',
     quicklinkStyle: 'Вид быстрых ссылок',
@@ -762,7 +773,7 @@ const i18nData = {
     download: 'Скачать',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.8 | Обновлено: 2026-10-19',
+    litever: 'Версия 1.8.9-Beta1 | Обновлено: 2026-10-26',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -885,6 +896,10 @@ const i18nData = {
     layoutCentered: 'По центру',
     showLogo: 'Показывать логотип',
     showAddButton: 'Кнопка добавления в быстрых ссылках',
+    hideAddButton: 'Скрыть кнопку',
+    addButtonHiddenTitle: 'Кнопка добавления скрыта',
+    addButtonHiddenDesc: 'Кнопка добавления скрыта. Создавайте быстрые ссылки через меню в левом верхнем углу.<br>Её можно снова включить в разделе «Настройки — Изменить макет».',
+    ok: 'ОК',
     // ...
     bing: 'Bing',
     customTitleImage: 'Пользовательское изображение заголовка',
@@ -1892,57 +1907,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const popoverWaffle = document.getElementById('popover-waffle');
   const popoverSettings = document.getElementById('popover-settings');
 
-  // ===== 首次使用引导 =====
-  const guideTipWaffle = document.getElementById('guide-tip-waffle');
-  const activeGuideTips = [];
-
-  const GUIDE_TIP_DELAY = 1000;   // 页面加载完成后延迟多久出现
-  const GUIDE_TIP_FADE = 500;     // 与 CSS 的 opacity 过渡时长保持一致
-  // 气泡落在目标按钮正下方，不越出窗口；小三角对准按钮中心
-  function positionGuideTip(tip, btn) {
-    const rect = btn.getBoundingClientRect();
-    tip.style.top = (rect.bottom + 12) + 'px';
-    tip.style.left = '0px';                     // 先归零再量宽度
-    const width = tip.offsetWidth;
-    let left = rect.right - width;
-    left = Math.max(12, Math.min(left, window.innerWidth - width - 12));
-    tip.style.left = left + 'px';
-    const arrowLeft = Math.max(10, Math.min(rect.left + rect.width / 2 - left - 7, width - 24));
-    tip.style.setProperty('--guide-arrow-left', arrowLeft + 'px');
-  }
-
-  // 目标按钮被隐藏时（例如关掉"显示菜单按钮"），对应引导一并收起
-  function syncGuideTipsAvailability() {
-    activeGuideTips.forEach(item => {
-      item.tip.hidden = getComputedStyle(item.btn).display === 'none';
-    });
-  }
-
-  // 只有点过对应按钮才算"看过"，之后（包括刷新页面）永久不再出现
-  function setupGuideTip(tip, btn, storageKey) {
-    if (!tip || !btn) return;
-    if (Storage.get(storageKey, false)) return;            // 已经点过，不再显示
-    if (getComputedStyle(btn).display === 'none') return;  // 按钮本身不可见就不引导
-
-    tip.hidden = false;
-    positionGuideTip(tip, btn);
-    activeGuideTips.push({ tip, btn });
-
-    // 页面加载完成后再等一会儿才淡入，先让用户看清界面
-    window.setTimeout(() => {
-      if (tip.hidden || Storage.get(storageKey, false)) return;
-      positionGuideTip(tip, btn);
-      tip.classList.add('visible');
-    }, GUIDE_TIP_DELAY);
-
-    btn.addEventListener('click', () => {
-      Storage.set(storageKey, true);
-      tip.classList.remove('visible');                                  // 0.5s 淡出
-      window.setTimeout(() => { tip.hidden = true; }, GUIDE_TIP_FADE);
-      const i = activeGuideTips.findIndex(item => item.tip === tip);
-      if (i >= 0) activeGuideTips.splice(i, 1);
-    }, { once: true });
-  }
   // 面板展开期间，让对应的触发按钮保持"悬停"高亮，直到面板关闭。
   // 用 MutationObserver 跟随面板的 active 类，这样任何关闭路径（再点一次、
   // 点面板外、点菜单项）都会自动取消高亮，不必逐处补代码。
@@ -2618,7 +2582,6 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.style.display = 'none';
       if (popover) popover.classList.remove('active');
     }
-    syncGuideTipsAvailability();
   }
 
   // 启动时间定时器（每分钟更新一次）
@@ -2677,7 +2640,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let searchVisible = Storage.get('ntp_search_visible', true);
   let showLogo = Storage.get('ntp_show_logo', true);
   // 快速链接区"添加"按钮的显隐（默认关闭）
-  let showAddButton = Storage.get('ntp_show_add_button', false);
+  let showAddButton = Storage.get('ntp_show_add_button', true);
 
   // 获取今天的日期字符串，如 "2026-09-03"，用于判断壁纸是否过期
   function getTodayStr() {
@@ -4761,9 +4724,13 @@ function onDrop(e) {
   }
 
   // 在指定位置弹出菜单（三个点按钮与右键共用同一套）
-  function showQuicklinkMenu(link, left, top) {
-    if (!quicklinkMenu || !link) return;
+  // forAddButton 为真时只显示针对添加按钮的项
+  function showQuicklinkMenu(link, left, top, forAddButton) {
+    if (!quicklinkMenu) return;
     quicklinkMenuTarget = link;
+    quicklinkMenu.querySelectorAll('.quicklink-menu-item').forEach(item => {
+      item.hidden = forAddButton ? item.dataset.action !== 'hide-add' : item.dataset.action === 'hide-add';
+    });
     quicklinkMenu.classList.add('active');
     const rect = quicklinkMenu.getBoundingClientRect();
     if (left + rect.width > window.innerWidth - 8) left = window.innerWidth - rect.width - 8;
@@ -4774,10 +4741,14 @@ function onDrop(e) {
 
   quicklinksElem?.addEventListener('contextmenu', (e) => {
     const item = e.target instanceof Element ? e.target.closest('.quicklink-item') : null;
-    if (!item || item.classList.contains('quicklink-add-btn')) return;   // "添加"按钮不弹菜单
+    if (!item) return;
+    e.preventDefault();
+    if (item.classList.contains('quicklink-add-btn')) {
+      showQuicklinkMenu(null, e.clientX, e.clientY, true);
+      return;
+    }
     const link = quicklinksList.find(x => x.id === item.getAttribute('data-id'));
     if (!link) return;
-    e.preventDefault();
     showQuicklinkMenu(link, e.clientX, e.clientY);
   });
 
@@ -4787,6 +4758,10 @@ function onDrop(e) {
     const link = quicklinkMenuTarget;
     const action = btn.dataset.action;
     hideQuicklinkMenu();
+    if (action === 'hide-add') {
+      hideQuicklinkAddButton();
+      return;
+    }
     if (!link) return;
     if (action === 'open') {
       window.open(link.url, '_blank', 'noopener');
@@ -4795,6 +4770,26 @@ function onDrop(e) {
     } else if (action === 'edit') {
       openEditModal(link);            // 与三个点按钮同一个入口
     }
+  });
+
+  // 隐藏添加按钮：等同于关闭设置中的开关，并给出重新开启的入口说明
+  const modalAddButtonHidden = document.getElementById('modal-add-button-hidden');
+  const btnAddButtonHiddenOk = document.getElementById('btn-add-button-hidden-ok');
+
+  function hideQuicklinkAddButton() {
+    showAddButton = false;
+    Storage.set('ntp_show_add_button', false);
+    if (toggleAddButtonSwitch) toggleAddButtonSwitch.checked = false;
+    renderQuicklinks(true);
+    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    modalAddButtonHidden?.classList.add('active');
+  }
+
+  btnAddButtonHiddenOk?.addEventListener('click', () => {
+    modalAddButtonHidden?.classList.remove('active');
+  });
+  modalAddButtonHidden?.addEventListener('click', (e) => {
+    if (e.target === modalAddButtonHidden) modalAddButtonHidden.classList.remove('active');
   });
 
   // 点空白处、按 Esc、失焦、改变窗口大小都收起
@@ -5308,15 +5303,6 @@ searchInput?.addEventListener('input', () => {
 
   // 开关手柄可拖拽
   initSwitchDrag();
-
-  // 首次使用引导：只在没点过九点菜单时出现
-  setupGuideTip(guideTipWaffle, btnWaffle, 'ntp_guide_waffle_done');
-  window.addEventListener('resize', () => {
-    activeGuideTips.forEach(item => {
-      item.tip.hidden = getComputedStyle(item.btn).display === 'none';
-      positionGuideTip(item.tip, item.btn);
-    });
-  });
 
   // 初始化悬浮滚动条
   updateSettingsScrollbar();
