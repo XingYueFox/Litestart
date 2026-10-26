@@ -1578,9 +1578,9 @@
       position: fixed;
       z-index: 2200;                   /* 高于自定义下拉浮层与图标面板 */
       display: none;
-      min-width: 168px;
-      /* 上下留白由首/末项的 padding 提供，左右不留：选中底色始终顶到菜单边缘，
-         兼顾"有呼吸空间"与"整行铺满、不出现内层圆角"两个要求 */
+      min-width: 184px;
+      /* 容器不留内边距：项的底色可直接铺到菜单左右边缘，
+         上下同样顶到菜单边（圆角由 overflow:hidden 裁切） */
       padding: 0;
       border: none;
       border-radius: 6px;
@@ -1598,19 +1598,19 @@
       display: none;
     }
 
+    /* 每项四边等宽：上下统一，左右加宽一档（内容离边缘更远、底色仍顶到菜单边缘） */
     .quicklink-menu-item {
+      --ql-menu-item-pad-y: 10px;
+      --ql-menu-item-pad-x: 18px;
       display: flex;
       align-items: center;
       justify-content: flex-start;   /* 图标与文字一律靠左 */
       gap: 10px;
       width: 100%;
-      /* 上下 8px 给行高留呼吸，左右 20px 让内容离菜单左右边缘更远一点（不挤）；
-         首/末项再额外加一点上下 padding，菜单整体上下也不显得贴边 */
-      padding: 8px 20px;
+      padding: var(--ql-menu-item-pad-y) var(--ql-menu-item-pad-x);
       box-sizing: border-box;
       border: none;
-      /* 菜单已有外圈留白，这里保持 0；选中底色仍是整行铺满。
-         行内不再套圆角块，避免出现"选中项外面又有一圈圆角"的观感 */
+      /* 项自身不设圆角：整行铺到菜单边缘，外角由菜单 overflow:hidden 裁切 */
       border-radius: 0;
       background-color: transparent;
       color: var(--settings-text-primary);
@@ -1622,6 +1622,11 @@
       cursor: pointer;
       outline: none;
       transition: background-color 0.08s ease, color 0.08s ease;
+    }
+
+    /* 文字右侧保留与左右内边距相同的距离，避免长文字顶到菜单右边缘 */
+    .quicklink-menu-item > span {
+      padding-right: var(--ql-menu-item-pad-x);
     }
 
     .quicklink-menu-item svg {
@@ -1655,28 +1660,6 @@
     .quicklink-menu-item[aria-current="true"] svg {
       color: var(--accent-foreground-rest);
     }
-
-    /* 首/末项补齐菜单上下留白（左右仍顶边），并让底色贴合菜单圆角 */
-    .quicklink-menu > .quicklink-menu-item:first-child:not([hidden]) {
-      padding-top: 12px;
-      border-top-left-radius: 6px;
-      border-top-right-radius: 6px;
-    }
-
-    .quicklink-menu > .quicklink-menu-item:last-child:not([hidden]) {
-      padding-bottom: 12px;
-      border-bottom-left-radius: 6px;
-      border-bottom-right-radius: 6px;
-    }
-
-    /* 首项同时又是末项（如"添加"按钮只有一项）时上下都留白 */
-    .quicklink-menu > .quicklink-menu-item:first-child:last-child:not([hidden]) {
-      padding-top: 12px;
-      padding-bottom: 12px;
-    }
-
-    /* 每项左右都顶到菜单边缘；只给首/末项的上下外角做圆角，
-       内侧保持直角 —— 这样铺满效果是整块连续的，不会被圆角切断 */
 
     .quicklink-add-icon {
       background-color: var(--neutral-layer-floating);

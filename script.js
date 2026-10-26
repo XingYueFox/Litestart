@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.9-Beta2';      // 发行版本
+const APP_VERSION = '1.8.9-Beta1';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -68,7 +68,7 @@ const i18nData = {
     skipRestore: '恢复提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.9-Beta2 | 更新时间：2026-10-26',
+    litever: '版本 1.8.9-Beta1 | 更新时间：2026-10-26',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -259,7 +259,7 @@ const i18nData = {
     skipRestore: '恢復提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.9-Beta2 | 更新時間：2026-10-26',
+    litever: '版本 1.8.9-Beta1 | 更新時間：2026-10-26',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -435,7 +435,7 @@ const i18nData = {
     skipRestore: 'Resume reminders',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.9-Beta2 | Updated: 2026-10-26',
+    litever: 'Version 1.8.9-Beta1 | Updated: 2026-10-26',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -612,7 +612,7 @@ const i18nData = {
     skipRestore: '通知を再開',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.9-Beta2 | 更新日: 2026-10-26',
+    litever: 'バージョン 1.8.9-Beta1 | 更新日: 2026-10-26',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -788,7 +788,7 @@ const i18nData = {
     skipRestore: 'Возобновить напоминания',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.9-Beta2 | Обновлено: 2026-10-26',
+    litever: 'Версия 1.8.9-Beta1 | Обновлено: 2026-10-26',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
