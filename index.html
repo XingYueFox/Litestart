@@ -1201,6 +1201,25 @@
       justify-content: center;
       gap: 14px;
       height: 48px;
+      /* Logo 只是装饰：不允许选中文字、拖动图片或调出拖拽残影。
+         这里只禁选中与图片原生拖拽，不碰长按手势（避免影响触屏交互） */
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Logo 内的图片（Google / 百度等）不参与拖拽，也不拦截指针事件 */
+    #logo img {
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+      pointer-events: none;
+    }
+
+    /* SVG 文字在鼠标拖选时会被当作文本选中，一并禁用 */
+    #logo svg,
+    #logo svg * {
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     /* 首帧即按最终状态隐藏 Logo：它占网格第 2 行，晚隐藏会让搜索框先偏下再上移 */
@@ -1467,6 +1486,17 @@
       font-size: 12px;
       gap: 6px;
       transition: background-color 0.1s;
+      /* 只禁"选中文字"，不动拖拽：触屏长按拖拽（HTML5 drag）依赖原生手势，
+         一旦加 -webkit-touch-callout: none / -webkit-user-drag: none 就会失效 */
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* 图标内部元素同样不参与文字选中 */
+    .quicklink-icon,
+    .quicklink-icon * {
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .quicklink-item:hover {
@@ -1509,6 +1539,10 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       text-align: center;
+      /* 名称只是展示，不允许被选中或拖动 */
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
     }
 
     .quicklink-edit-btn {
@@ -1545,12 +1579,14 @@
       z-index: 2200;                   /* 高于自定义下拉浮层与图标面板 */
       display: none;
       min-width: 152px;
-      padding: 4px;
-      /* 纯平风格：与自定义下拉浮层统一，去掉描边，层次交给 box-shadow */
-      border: 1px solid transparent;
+      /* 与选项菜单（custom-select-dropdown）完全一致：无内边距、无描边，
+         选中底色直接铺到菜单边缘，由 overflow:hidden 裁进圆角 */
+      padding: 0;
+      border: none;
       border-radius: 6px;
       background-color: var(--fill-popup-color);
       box-shadow: var(--dropdown-shadow);
+      overflow: hidden;
     }
 
     .quicklink-menu.active {
@@ -1571,7 +1607,8 @@
       padding: 7px 10px;
       box-sizing: border-box;
       border: none;
-      border-radius: 4px;
+      /* 选中/悬停直接铺满整项，不再在项内再套一层圆角块 */
+      border-radius: 0;
       background-color: transparent;
       color: var(--settings-text-primary);
       /* 显式取全局字体：本菜单挂在 <body> 下，而全局字体只设在 ntp-shell 上，inherit 拿不到 */
@@ -1580,6 +1617,7 @@
       text-align: left;
       white-space: nowrap;
       cursor: pointer;
+      outline: none;
       transition: background-color 0.08s ease;
     }
 
@@ -1588,6 +1626,7 @@
       height: 18px;                  /* 定宽，保证各项文字左边缘对齐 */
       flex-shrink: 0;
       display: block;
+      transition: color 0.08s ease;
     }
 
     /* 铅笔图标占位更满，尺寸略收敛以平衡视觉重量 */
@@ -1595,9 +1634,25 @@
       transform: scale(0.9);
     }
 
-    .quicklink-menu-item:hover {
-      background-color: var(--neutral-fill-hover);
+    /* 悬停：与选项菜单（下拉项 / 管理操作列表）一致，浅一档 */
+    .quicklink-menu-item:hover,
+    .quicklink-menu-item:focus-visible {
+      background-color: var(--neutral-fill-rest);
     }
+
+    /* 选中（键盘聚焦 / 当前项）：与选项菜单同一档更深的颜色 + 文字与图标用强调色 */
+    .quicklink-menu-item.selected,
+    .quicklink-menu-item[aria-current="true"] {
+      background-color: var(--neutral-fill-hover);
+      color: var(--accent-foreground-rest);
+      font-weight: 600;
+    }
+
+    .quicklink-menu-item.selected svg,
+    .quicklink-menu-item[aria-current="true"] svg {
+      color: var(--accent-foreground-rest);
+    }
+
     
     .quicklink-add-icon {
       background-color: var(--neutral-layer-floating);
@@ -2198,6 +2253,7 @@
       border: 1px solid var(--settings-card-border);
       border-radius: 8px;
       background-color: var(--neutral-fill-rest);
+      position: relative;              /* 下拉菜单定位基准 */
     }
 
     .update-notice-info {
@@ -2205,6 +2261,7 @@
       flex-direction: column;
       gap: 2px;
       min-width: 0;
+      flex: 1;
     }
 
     .update-notice-title {
@@ -2218,12 +2275,135 @@
       color: var(--settings-text-secondary);
     }
 
-    .update-notice .btn {
-      flex-shrink: 0;
+    /* 暂时忽略后的提示文字 */
+    .update-notice-skip-tip {
+      margin-left: 6px;
+      opacity: 0.85;
+    }
+
+    /* ===== 拆分按钮：左侧主操作 + 右侧下拉箭头 ===== */
+    .update-split-btn {
+      display: flex;
+      align-items: stretch;
+      flex: 0 0 auto;
       height: 28px;
+      border-radius: 6px;
+      background-color: var(--accent-foreground-rest);
+      overflow: hidden;
+    }
+
+    /* 左侧「下载」：尺寸与改造前单独按钮完全一致（高 28 / 内边距 0 16 / 字号 13） */
+    .update-split-main {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       padding: 0 16px;
       font-size: 13px;
+      font-weight: 500;
+      line-height: 1;
+      color: var(--accent-foreground-invert);
       text-decoration: none;
+      white-space: nowrap;
+      transition: background-color 0.08s ease;
+    }
+
+    .update-split-main:hover {
+      background-color: rgba(0, 0, 0, 0.10);
+    }
+
+    :root[data-theme="dark"] .update-split-main:hover {
+      background-color: rgba(255, 255, 255, 0.16);
+    }
+
+    /* 竖分隔线：夹在「下载」与下拉按钮之间，不占两侧按钮的宽度 */
+    .update-split-sep {
+      flex: 0 0 1px;
+      align-self: stretch;
+      background-color: rgba(0, 0, 0, 0.18);
+    }
+
+    :root[data-theme="dark"] .update-split-sep {
+      background-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .update-split-toggle {
+      flex: 0 0 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: none;
+      background-color: transparent;
+      color: var(--accent-foreground-invert);
+      cursor: pointer;
+      transition: background-color 0.08s ease;
+    }
+
+    .update-split-toggle:hover {
+      background-color: rgba(0, 0, 0, 0.10);
+    }
+
+    :root[data-theme="dark"] .update-split-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .update-split-toggle svg {
+      width: 12px;
+      height: 12px;
+      transition: transform 0.08s ease;
+    }
+
+    .update-split-toggle[aria-expanded="true"] svg {
+      transform: rotate(180deg);
+    }
+
+    /* 下拉菜单：position:fixed，避开弹窗 overflow 裁剪 */
+    .update-skip-menu {
+      position: fixed;
+      z-index: 2100;                   /* 高于模态框（1000）与自定义下拉（2000） */
+      min-width: 132px;
+      padding: 4px;
+      box-sizing: border-box;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background-color: var(--fill-popup-color);
+      box-shadow: var(--dropdown-shadow);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity 0.08s ease-out, transform 0.08s ease-out, visibility 0s linear 0.08s;
+    }
+
+    .update-skip-menu.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+      transition: opacity 0.08s ease-out, transform 0.08s ease-out;
+    }
+
+    .update-skip-item {
+      display: block;
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      background-color: transparent;
+      font-size: 13px;
+      font-family: var(--font-family);
+      color: var(--settings-text-primary);
+      text-align: left;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.08s ease;
+    }
+
+    .update-skip-item:hover,
+    .update-skip-item:focus-visible {
+      background-color: var(--neutral-fill-hover);
+      outline: none;
     }
     /* ===== 设置面板内的二级页面（背景 / 布局） ===== */
 
@@ -2567,7 +2747,7 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.8.9-Beta1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.8.9-Beta2</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
@@ -3032,7 +3212,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.9-Beta1 | 更新时间：2026-10-26</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.9-Beta2 | 更新时间：2026-10-26</p><br>
         
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
@@ -3040,9 +3220,27 @@
             <div class="update-notice-title" data-i18n="updateAvailable">可用更新</div>
             <div class="update-notice-version">
               <span>Litestart <span id="update-version-text"></span></span>
+              <span id="update-skip-tip" class="update-notice-skip-tip" style="display: none;"></span>
             </div>
           </div>
-          <a id="update-download-btn" class="btn btn-primary" href="#" target="_blank" rel="noopener" data-i18n="download">下载</a>
+          <!-- 拆分按钮：左侧下载，右侧下拉箭头 -->
+          <div id="update-split-btn" class="update-split-btn">
+            <a id="update-download-btn" class="update-split-main" href="#" target="_blank" rel="noopener">
+              <span data-i18n="download">下载</span>
+            </a>
+            <span class="update-split-sep" aria-hidden="true"></span>
+            <button type="button" id="update-split-toggle" class="update-split-toggle"
+                    aria-haspopup="true" aria-expanded="false" aria-controls="update-skip-menu">
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z"
+                      fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+          <!-- 下拉菜单：由 JS 定位到按钮下方 -->
+          <div id="update-skip-menu" class="update-skip-menu" role="menu" aria-labelledby="update-split-toggle">
+            <button type="button" id="update-skip-btn" class="update-skip-item" role="menuitem" data-i18n="skipThisUpdate">暂时忽略</button>
+          </div>
         </div>
 
         <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.8;">

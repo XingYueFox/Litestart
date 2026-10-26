@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.9-Beta1';      // 发行版本
+const APP_VERSION = '1.8.9-Beta2';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -63,9 +63,12 @@ const i18nData = {
     disclaimer: '请注意，此网页与 Microsoft 无关。',
     aboutTitle: '关于 Litestart',
     download: '下载',
+    updateOptions: '更新选项',
+    skipThisUpdate: '暂时忽略',
+    skipRestore: '恢复提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.9-Beta1 | 更新时间：2026-10-26',
+    litever: '版本 1.8.9-Beta2 | 更新时间：2026-10-26',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -251,9 +254,12 @@ const i18nData = {
     disclaimer: '請注意，此網頁與 Microsoft 無關。',
     aboutTitle: '關於 Litestart',
     download: '下載',
+    updateOptions: '更新選項',
+    skipThisUpdate: '暫時忽略',
+    skipRestore: '恢復提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.9-Beta1 | 更新時間：2026-10-26',
+    litever: '版本 1.8.9-Beta2 | 更新時間：2026-10-26',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -424,9 +430,12 @@ const i18nData = {
     disclaimer: 'Note: This page is not affiliated with Microsoft.',
     aboutTitle: 'About Litestart',
     download: 'Download',
+    updateOptions: 'Update options',
+    skipThisUpdate: 'Pause for today',
+    skipRestore: 'Resume reminders',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.9-Beta1 | Updated: 2026-10-26',
+    litever: 'Version 1.8.9-Beta2 | Updated: 2026-10-26',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -598,9 +607,12 @@ const i18nData = {
     disclaimer: '注: このページは Microsoft とは関係ありません。',
     aboutTitle: 'Litestart について',
     download: 'ダウンロード',
+    updateOptions: '更新オプション',
+    skipThisUpdate: '今日は表示しない',
+    skipRestore: '通知を再開',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.9-Beta1 | 更新日: 2026-10-26',
+    litever: 'バージョン 1.8.9-Beta2 | 更新日: 2026-10-26',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -771,9 +783,12 @@ const i18nData = {
     disclaimer: 'Примечание: Эта страница не связана с Microsoft.',
     aboutTitle: 'О Litestart',
     download: 'Скачать',
+    updateOptions: 'Параметры обновления',
+    skipThisUpdate: 'Отложить до завтра',
+    skipRestore: 'Возобновить напоминания',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.9-Beta1 | Обновлено: 2026-10-26',
+    litever: 'Версия 1.8.9-Beta2 | Обновлено: 2026-10-26',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -1717,6 +1732,8 @@ function decodeInput(str) {
           dd._display.classList.remove('active');
         });
       }
+      // 同步收掉关于页「更新」拆分按钮弹出的菜单
+      window.dispatchEvent(new Event('liteStart:hideFloatingLayers'));
     });
 
     // ESC 键关闭所有下拉
@@ -2329,21 +2346,124 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgOverlay = document.getElementById('bg-overlay');
 
   // ===== 关于弹窗的更新提示 =====
+  // 「暂时忽略」的记录：存忽略当天的日期与当时看到的版本号。
+  // 按「发生日」而非固定 24 小时计算，跨天零点即恢复提醒；
+  // 记录版本号是为了日后出现更新的版本时不再被旧的忽略状态挡住。
+  const UPDATE_SKIP_KEY = 'ntp_update_skipped';
+  // 弹窗内其它浮层的关闭信号：隐藏「暂时忽略」菜单
+  const HIDE_UPDATE_LAYERS_EVT = 'liteStart:hideFloatingLayers';
+
+  function getLocalDateStr(d = new Date()) {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+
+  // 返回当前跳过记录的版本号，没有生效中的跳过记录则返回 null
+  function getSkippedUpdateVersion() {
+    const rec = Storage.get(UPDATE_SKIP_KEY, null);
+    if (!rec || typeof rec !== 'object') return null;
+    if (rec.date !== getLocalDateStr()) return null;   // 已跨天，提醒恢复
+    return typeof rec.version === 'string' ? rec.version : '';
+  }
+
+  const updateNotice = document.getElementById('update-notice');
+  const updateVersionText = document.getElementById('update-version-text');
+  const updateDownloadBtn = document.getElementById('update-download-btn');
+  const updateSkipTip = document.getElementById('update-skip-tip');
+  const updateSplitBtn = document.getElementById('update-split-btn');
+  const updateSplitToggle = document.getElementById('update-split-toggle');
+  const updateSkipMenu = document.getElementById('update-skip-menu');
+  const updateSkipBtn = document.getElementById('update-skip-btn');
+
+  // 下载按钮的矩形；用于让下拉菜单与其左边缘对齐
+  function updateDownloadRect() {
+    const el = updateDownloadBtn || updateSplitToggle || updateSplitBtn;
+    return el.getBoundingClientRect();
+  }
+
+  // 下拉菜单：左边缘与「下载」按钮对齐，垂直方向贴着整个拆分按钮下方
+  function positionUpdateSkipMenu() {
+    if (!updateSkipMenu || !updateSplitToggle) return;
+    const menuW = Math.max(updateSkipMenu.offsetWidth || 0, updateSplitBtn?.offsetWidth || 100);
+    const h = updateDownloadRect();
+    const anchor = updateSplitBtn || updateSplitToggle;
+    const r = anchor.getBoundingClientRect();
+    const menuH = updateSkipMenu.offsetHeight || 40;
+    const gap = 4;
+    // 与下载按钮左边缘对齐；右侧贴边时向左回收，不越出视口
+    const left = Math.max(8, Math.min(h.left, window.innerWidth - menuW - 8));
+    updateSkipMenu.style.minWidth = `${Math.round(menuW)}px`;
+    updateSkipMenu.style.left = `${Math.round(left)}px`;
+    const below = r.bottom + gap;
+    if (below + menuH > window.innerHeight - 8 && r.top - gap - menuH > 8) {
+      updateSkipMenu.style.top = `${Math.round(r.top - gap - menuH)}px`;
+    } else {
+      updateSkipMenu.style.top = `${Math.round(below)}px`;
+    }
+  }
+
+  function openUpdateSkipMenu() {
+    if (!updateSkipMenu) return;
+    updateSkipMenu.classList.add('active');
+    updateSplitToggle?.setAttribute('aria-expanded', 'true');
+    positionUpdateSkipMenu();
+    updateSkipBtn?.focus({ preventScroll: true });
+  }
+
+  function closeUpdateSkipMenu() {
+    if (!updateSkipMenu?.classList.contains('active')) return;
+    updateSkipMenu.classList.remove('active');
+    updateSplitToggle?.setAttribute('aria-expanded', 'false');
+  }
+
   async function refreshUpdateNotice() {
-    const notice = document.getElementById('update-notice');
-    if (!notice) return;
-    notice.style.display = 'none';   // 先隐藏，避免上次结果残留
+    if (!updateNotice) return;
+    updateNotice.style.display = 'none';   // 先隐藏，避免上次结果残留
+    closeUpdateSkipMenu();
 
     const result = await checkForUpdate();
     if (!result?.hasUpdate) return;
 
-    const versionText = document.getElementById('update-version-text');
-    const downloadBtn = document.getElementById('update-download-btn');
+    const skippedVersion = getSkippedUpdateVersion();
+    if (skippedVersion !== null && skippedVersion === result.latest) {
+      // 今天已选择暂时忽略：不展示更新框
+      return;
+    }
 
-    versionText.textContent = result.latest + (result.dateCode ? ` (${result.dateCode})` : '');
-    downloadBtn.href = result.url;
-    notice.style.display = 'flex';
+    updateVersionText.textContent = result.latest + (result.dateCode ? ` (${result.dateCode})` : '');
+    updateDownloadBtn.href = result.url;
+    updateNotice.style.display = 'flex';
   }
+
+  updateSplitToggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (updateSkipMenu?.classList.contains('active')) {
+      closeUpdateSkipMenu();
+    } else {
+      openUpdateSkipMenu();
+    }
+  });
+
+  // 「暂时忽略」：记录今天已忽略该版本，收起提示框
+  updateSkipBtn?.addEventListener('click', () => {
+    // 版本号形如「1.8.10 (261026)」，取第一段即可
+    const ver = (updateVersionText?.textContent || '').trim().split(' ')[0];
+    Storage.set(UPDATE_SKIP_KEY, { date: getLocalDateStr(), version: ver });
+    closeUpdateSkipMenu();
+    if (updateNotice) updateNotice.style.display = 'none';
+  });
+
+  // 点其它位置 / Esc / 窗口尺寸变化时收起菜单
+  document.addEventListener('click', (e) => {
+    if (!updateSkipMenu?.classList.contains('active')) return;
+    if (e.target instanceof Element &&
+        (e.target.closest('#update-skip-menu') || e.target.closest('#update-split-toggle'))) return;
+    closeUpdateSkipMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeUpdateSkipMenu();
+  });
+  window.addEventListener('resize', closeUpdateSkipMenu);
+  window.addEventListener(HIDE_UPDATE_LAYERS_EVT, closeUpdateSkipMenu);
 
   function openAboutModal() {
     popoverWaffle?.classList.remove('active');
@@ -2364,6 +2484,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('btn-about-close')?.addEventListener('click', () => {
     document.getElementById('modal-about')?.classList.remove('active');
+    closeUpdateSkipMenu();
   });
 
   // 点击遮罩层关闭
@@ -2371,6 +2492,7 @@ document.addEventListener('DOMContentLoaded', () => {
   modalAbout?.addEventListener('click', (e) => {
     if (e.target === modalAbout) {
       modalAbout.classList.remove('active');
+      closeUpdateSkipMenu();
     }
   });
   //关于弹窗（结束）
@@ -3575,8 +3697,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return typeof v === 'string' ? v : '';
   }
 
-  // 应用保留的本地壁纸。blob URL 每次重新生成，避免与已释放的地址冲突
   // 壁纸切换后的统一收尾：确保背景开启，并刷新渲染与文案
+  // 注：这里不自动改动「增强元素可见性」等其它附加设置，任何来源的壁纸都只切壁纸本身。
   function commitWallpaperAsActive() {
     if (!bgEnabled) {
       bgEnabled = true;
@@ -3589,6 +3711,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   }
 
+  // 应用保留的本地壁纸。blob URL 每次重新生成，避免与已释放的地址冲突
   async function applyLocalWallpaper() {
     if (!localWallpaperBlob) return;
     const type = localWallpaperType || 'image';
@@ -3630,22 +3753,8 @@ document.addEventListener('DOMContentLoaded', () => {
       fetchDate: getTodayStr()
     };
     saveWallpaperData(customWallpaperData);
-    if (!bgEnabled) {
-      bgEnabled = true;
-      Storage.set('ntp_bg_enabled', true);
-    }
-    // 必应每日壁纸的明暗不可控，自动开启「增强元素可见性」以保证元素可读。
-    // 必须在 applyBackgroundState() 之前设置，它内部才来得及应用到 body。
-    if (!enhancedVisibility) {
-      enhancedVisibility = true;
-      Storage.set('ntp_enhanced_visibility', true);
-      if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = true;
-    }
-    resetBgVignette();
-    applyBackgroundState();
-    if (toggleBgSwitch) toggleBgSwitch.checked = true;
-    if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    // 与本地/在线壁纸走相同的收尾流程，不额外改动「增强元素可见性」等设置
+    commitWallpaperAsActive();
     return true;
   }
 
@@ -3664,7 +3773,11 @@ document.addEventListener('DOMContentLoaded', () => {
     containerOnlineUrl?.classList.remove('error');
     tipOnlineUrl?.classList.remove('active');
     modalOnlineWallpaper?.classList.add('active');
-    setTimeout(() => inputOnlineUrl?.focus(), 50);
+    setTimeout(() => {
+      inputOnlineUrl?.focus();
+      // 关于页「更新」菜单是 fixed 定位，弹窗叠上来后需收起，避免残留在上层
+      window.dispatchEvent(new Event(HIDE_UPDATE_LAYERS_EVT));
+    }, 50);
   }
 
   // 关闭自定义URL弹窗
@@ -4720,6 +4833,11 @@ function onDrop(e) {
 
   function hideQuicklinkMenu() {
     quicklinkMenu?.classList.remove('active');
+    // 收起时清掉选中态，下次弹出不会残留高亮
+    quicklinkMenu?.querySelectorAll('.quicklink-menu-item').forEach(item => {
+      item.classList.remove('selected');
+      item.removeAttribute('aria-current');
+    });
     quicklinkMenuTarget = null;
   }
 
@@ -4730,6 +4848,8 @@ function onDrop(e) {
     quicklinkMenuTarget = link;
     quicklinkMenu.querySelectorAll('.quicklink-menu-item').forEach(item => {
       item.hidden = forAddButton ? item.dataset.action !== 'hide-add' : item.dataset.action === 'hide-add';
+      item.classList.remove('selected');
+      item.removeAttribute('aria-current');
     });
     quicklinkMenu.classList.add('active');
     const rect = quicklinkMenu.getBoundingClientRect();
@@ -4755,6 +4875,8 @@ function onDrop(e) {
   quicklinkMenu?.addEventListener('click', (e) => {
     const btn = e.target instanceof Element ? e.target.closest('.quicklink-menu-item') : null;
     if (!btn) return;
+    // 点击时先落到该项上（视觉与键盘导航一致），再执行动作并收起
+    setQuicklinkMenuItemSelected(btn);
     const link = quicklinkMenuTarget;
     const action = btn.dataset.action;
     hideQuicklinkMenu();
@@ -4798,6 +4920,34 @@ function onDrop(e) {
     if (e.target instanceof Element && e.target.closest('.quicklink-menu')) return;
     hideQuicklinkMenu();
   });
+  // 选中项按选项菜单的规则：单选、铺满整项、加粗强调色。
+  // 菜单内的当前选中项以 aria-current 标记，供样式与键盘导航共用。
+  function setQuicklinkMenuItemSelected(item) {
+    if (!quicklinkMenu) return;
+    quicklinkMenu.querySelectorAll('.quicklink-menu-item').forEach(el => {
+      const on = el === item;
+      el.classList.toggle('selected', on);
+      if (on) el.setAttribute('aria-current', 'true');
+      else el.removeAttribute('aria-current');
+    });
+  }
+
+  // 键盘上下键在本菜单内移动选中项，Enter/空格即触发（按钮默认行为）
+  quicklinkMenu?.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    e.preventDefault();
+    const items = Array.from(quicklinkMenu.querySelectorAll('.quicklink-menu-item'))
+      .filter(el => !el.hidden);
+    if (!items.length) return;
+    const cur = items.findIndex(el => el.getAttribute('aria-current') === 'true');
+    const step = e.key === 'ArrowDown' ? 1 : -1;
+    const next = cur < 0
+      ? (step > 0 ? 0 : items.length - 1)
+      : (cur + step + items.length) % items.length;
+    setQuicklinkMenuItemSelected(items[next]);
+    items[next].focus({ preventScroll: true });
+  });
+
   // 关闭所有临时浮层（右键菜单 + 预置宫格）
   function hideQuicklinkPopups() {
     hideQuicklinkMenu();
