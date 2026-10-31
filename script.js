@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.9-Beta1';      // 发行版本
+const APP_VERSION = '1.8.6';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -45,7 +45,7 @@ const i18nData = {
     saveHistory: '保存搜索历史记录',
     inspirational: '展望',
     focused: '聚焦',
-    appreciate: '欣赏',
+    appreciate: '窗台',
     presets: '预设',
     background: '背景',
     enableBackground: '启用背景',
@@ -68,7 +68,7 @@ const i18nData = {
     skipRestore: '恢复提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.9-Beta1 | 更新时间：2026-10-26',
+    litever: '版本 1.8.9 | 更新时间：2026-10-31',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -202,6 +202,7 @@ const i18nData = {
     quicklinkPosition: '快速链接位置',
     qlPositionDefault: '默认',
     qlPositionBottom: '底部',
+    qlPositionMiddle: '中间',
     layoutHanging: '悬挂',
     layoutCentered: '居中',
     showLogo: '显示 Logo',
@@ -236,7 +237,7 @@ const i18nData = {
     saveHistory: '儲存搜尋紀錄',
     inspirational: '展望',
     focused: '聚焦',
-    appreciate: '欣賞',
+    appreciate: '窗台',
     presets: '預設',
     background: '背景',
     enableBackground: '啟用背景',
@@ -259,7 +260,7 @@ const i18nData = {
     skipRestore: '恢復提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.9-Beta1 | 更新時間：2026-10-26',
+    litever: '版本 1.8.9 | 更新時間：2026-10-31',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -379,6 +380,7 @@ const i18nData = {
     quicklinkPosition: '快速連結位置',
     qlPositionDefault: '預設',
     qlPositionBottom: '底部',
+    qlPositionMiddle: '中間',
     layoutHanging: '懸掛',
     layoutCentered: '居中',
     showLogo: '顯示 Logo',
@@ -411,7 +413,7 @@ const i18nData = {
     saveHistory: 'Save search history',
     inspirational: 'Inspirational',
     focused: 'Focused',
-    appreciate: 'Appreciate',
+    appreciate: 'Windowsill',
     presets: 'Presets',
 
     background: 'Background',
@@ -435,7 +437,7 @@ const i18nData = {
     skipRestore: 'Resume reminders',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.9-Beta1 | Updated: 2026-10-26',
+    litever: 'Version 1.8.9 | Updated: 2026-10-31',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -555,6 +557,7 @@ const i18nData = {
     quicklinkPosition: 'Quicklink position',
     qlPositionDefault: 'Default',
     qlPositionBottom: 'Bottom',
+    qlPositionMiddle: 'Middle',
     layoutHanging: 'Hanging',
     layoutCentered: 'Centered',
     showLogo: 'Show logo',
@@ -588,7 +591,7 @@ const i18nData = {
     saveHistory: '検索履歴を保存',
     inspirational: 'シンプル',
     focused: 'フォーカス',
-    appreciate: '鑑賞',
+    appreciate: '窓辺',
     presets: 'プリセット',
 
     background: '背景',
@@ -612,7 +615,7 @@ const i18nData = {
     skipRestore: '通知を再開',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.9-Beta1 | 更新日: 2026-10-26',
+    litever: 'バージョン 1.8.9 | 更新日: 2026-10-31',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -732,6 +735,7 @@ const i18nData = {
     quicklinkPosition: 'クイックリンクの位置',
     qlPositionDefault: '既定',
     qlPositionBottom: '下部',
+    qlPositionMiddle: '中央',
     layoutHanging: 'ハンギング',
     layoutCentered: '中央',
     showLogo: 'ロゴを表示',
@@ -764,7 +768,7 @@ const i18nData = {
     saveHistory: 'Сохранять историю поиска',
     inspirational: 'Вдохновение',
     focused: 'Фокус',
-    appreciate: 'Созерцание',
+    appreciate: 'Подоконник',
     presets: 'Пресеты',
 
     background: 'Фон',
@@ -788,7 +792,7 @@ const i18nData = {
     skipRestore: 'Возобновить напоминания',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.9-Beta1 | Обновлено: 2026-10-26',
+    litever: 'Версия 1.8.9 | Обновлено: 2026-10-31',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -907,6 +911,7 @@ const i18nData = {
     quicklinkPosition: 'Положение быстрых ссылок',
     qlPositionDefault: 'По умолчанию',
     qlPositionBottom: 'Внизу',
+    qlPositionMiddle: 'По центру',
     layoutHanging: 'Подвесной',
     layoutCentered: 'По центру',
     showLogo: 'Показывать логотип',
@@ -1888,33 +1893,43 @@ async function fetchLatestRelease() {
 }
 
 // 检查更新--12小时缓存
+// 缓存只存远端原始信息（tag / url / publishedAt），hasUpdate 每次按当前
+// APP_VERSION 现算：若把算好的结果整包缓存，改版本号或升级后 12 小时内
+// 拿到的仍是旧结论（例如从 1.8.9 改回 1.8.6 也照样显示“无更新”）。
 async function checkForUpdate({ force = false } = {}) {
   const CACHE_KEY = 'ntp_update_check';
   const INTERVAL = 12 * 60 * 60 * 1000;
 
+  let remote = null;
   if (!force) {
     const cached = Storage.get(CACHE_KEY, null);
     if (cached && Date.now() - cached.checkedAt < INTERVAL) {
-      return cached.result;
+      remote = cached.remote
+        // 兼容旧格式：早期缓存把整个结果放在 result 里
+        || (cached.result && cached.result.tag
+          ? { tag: cached.result.tag, url: cached.result.url, publishedAt: null }
+          : null);
     }
   }
 
-  try {
-    const { tag, url, publishedAt } = await fetchLatestRelease();
-    const latest = String(tag || '').replace(/^v/i, '');
-    const result = {
-      tag,
-      latest,                                        // "版本号"
-      dateCode: formatReleaseDateCode(publishedAt),  // "发布号" 或 ""
-      hasUpdate: compareVersions(latest, APP_VERSION) > 0,
-      url                                            // release 页面
-    };
-    Storage.set(CACHE_KEY, { checkedAt: Date.now(), result });
-    return result;
-  } catch (e) {
-    console.warn('检查更新失败:', e);
-    return null;   // 失败保持静默
+  if (!remote) {
+    try {
+      remote = await fetchLatestRelease();
+    } catch (e) {
+      console.warn('检查更新失败:', e);
+      return null;   // 静默失败：不打扰用户，控制台留痕即可
+    }
+    Storage.set(CACHE_KEY, { checkedAt: Date.now(), remote });
   }
+
+  const latest = String(remote.tag || '').replace(/^v/i, '');
+  return {
+    tag: remote.tag,
+    latest,                                        // "版本号"
+    dateCode: formatReleaseDateCode(remote.publishedAt),  // "发布号" 或 ""
+    hasUpdate: compareVersions(latest, APP_VERSION) > 0,
+    url: remote.url                                // release 页面
+  };
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2420,6 +2435,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateNotice.style.display = 'none';   // 先隐藏，避免上次结果残留
     closeUpdateSkipMenu();
 
+    // 设计约定：不主动打扰用户。既不在没有新版本时提示，也不提示
+    // 检查失败（断网、GitHub 限流 403 等）——失败就是安静地什么都不显示。
     const result = await checkForUpdate();
     if (!result?.hasUpdate) return;
 
@@ -3874,6 +3891,9 @@ inputOnlineUrl?.addEventListener('input', () => {
     setLayoutAttr(layoutVal);
     Storage.set('ntp_layout', layoutVal);
 
+    // 悬挂与否决定"中间"选项的可用性，布局变化后立即重算
+    applyQuicklinkPosition();
+
     if (!searchVisible) {
       searchVisible = true;
       Storage.set('ntp_search_visible', true);
@@ -3908,18 +3928,26 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   // 快速链接位置：'bottom' 时固定到页面底部。该模式不支持多行，
   // 因此只把"多行"这一项禁掉，仍允许在一行与关闭之间切换
+  // 'middle'（垂直居中）只在悬挂布局下可用：其它布局按默认处理，
+  // 存储值保留，切回悬挂时还原（与"底部模式暂存多行"同一套处理）
   function applyQuicklinkPosition() {
-    const isBottom = quicklinkPosition === 'bottom';
-    document.body.setAttribute('data-quicklink-position', isBottom ? 'bottom' : 'auto');
+    const isHanging = (document.body.getAttribute('data-layout') || 'focused') === 'inspirational';
+    const effective = (quicklinkPosition === 'middle' && !isHanging) ? 'auto' : quicklinkPosition;
+    const pos = (effective === 'bottom' || effective === 'middle') ? effective : 'auto';
+    document.body.setAttribute('data-quicklink-position', pos);
+
+    // "中间"选项只在悬挂布局下可选
+    const middleOption = selectQuicklinkPosition ? selectQuicklinkPosition.querySelector('option[value="middle"]') : null;
+    if (middleOption) middleOption.disabled = !isHanging;
 
     let savedRow = Storage.get('ntp_quicklinks', '1');
     // 旧数据里 '0' 曾表示"关闭"，现在关闭由显示开关承担
     if (savedRow === '0') savedRow = '1';
     // 底部模式下若之前存的是"多行"，按一行处理（存储值保留，切回默认时还原）
-    const effectiveRow = (isBottom && savedRow === '2') ? '1' : savedRow;
+    const effectiveRow = (effective === 'bottom' && savedRow === '2') ? '1' : savedRow;
 
     const multiRowOption = selectQuicklinks ? selectQuicklinks.querySelector('option[value="2"]') : null;
-    if (multiRowOption) multiRowOption.disabled = isBottom;
+    if (multiRowOption) multiRowOption.disabled = effective === 'bottom';
 
     // 不显示时用 rows="0" 表达（复用既有的隐藏逻辑）
     if (quicklinksElem) {
@@ -3930,12 +3958,14 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (selectQuicklinks) {
       selectQuicklinks.value = effectiveRow;
     }
-    // 把当前位置写回下拉（首次加载时靠这句恢复上次的选择）
+    // 把当前位置写回下拉（首次加载时靠这句恢复上次的选择）；
+    // 非悬挂布局下"中间"按默认展示，存储值不动
     if (selectQuicklinkPosition) {
-      selectQuicklinkPosition.value = quicklinkPosition;
+      selectQuicklinkPosition.value = effective;
     }
     // 禁用状态变了，已建好的下拉丢掉，下次展开时按新状态重建
     document.querySelector('.custom-select-dropdown[data-for-select="select-quicklinks"]')?.remove();
+    document.querySelector('.custom-select-dropdown[data-for-select="select-quicklink-position"]')?.remove();
     refreshCustomSelects();
     syncLayoutSelectAvailability();
   }
@@ -3996,7 +4026,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       layout: 'inspirational',
       searchVisible: true,
       showLogo: false,
-      quicklinkPosition: 'auto',
+      quicklinkPosition: 'middle',
       showQuicklinks: true
     },
     focused: {

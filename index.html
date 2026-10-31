@@ -800,9 +800,9 @@
       left: calc(var(--thumb-start) + var(--p) * var(--thumb-travel));
       width: var(--thumb-w);
       height: var(--thumb-w);
-      /* 基准缩放：0.5（关闭）→ 0.85（打开），再乘 --hover-factor */
+      /* 基准缩放：0.625（关闭）→ 0.85（打开），再乘 --hover-factor */
       --hover-factor: 1;
-      transform: scale(calc((0.5 + var(--p) * 0.35) * var(--hover-factor)));
+      transform: scale(calc((0.625 + var(--p) * 0.225) * var(--hover-factor)));
       /* 过渡悬停系数 */
       transition: --hover-factor 0.2s ease;
       border-radius: 50%;
@@ -1697,6 +1697,11 @@
       z-index: 3;
     }
 
+    /* 快速链接在搜索框下方的剩余空间内垂直居中（仅悬挂布局提供该选项） */
+    body[data-quicklink-position="middle"] ntp-quicklinks {
+      align-content: center;
+    }
+
     /* 通用 Modal 模态对话框 */
     .modal-overlay {
       display: flex;
@@ -2365,17 +2370,20 @@
       transform: rotate(180deg);
     }
 
-    /* 下拉菜单：position:fixed，避开弹窗 overflow 裁剪 */
+    /* 下拉菜单：position:fixed，避开弹窗 overflow 裁剪
+       样式与主页快捷方式右键菜单（.quicklink-menu）一致：无边框，
+       容器不留内边距，项的底色铺满菜单，外角由 overflow:hidden 裁切 */
     .update-skip-menu {
       position: fixed;
       z-index: 2100;                   /* 高于模态框（1000）与自定义下拉（2000） */
       min-width: 132px;
-      padding: 4px;
+      padding: 0;
       box-sizing: border-box;
-      border: 1px solid transparent;
+      border: none;
       border-radius: 6px;
       background-color: var(--fill-popup-color);
       box-shadow: var(--dropdown-shadow);
+      overflow: hidden;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -2391,12 +2399,14 @@
       transition: opacity 0.08s ease-out, transform 0.08s ease-out;
     }
 
+    /* 与右键菜单项同规格：四边内边距一致，项自身不设圆角 */
     .update-skip-item {
       display: block;
       width: 100%;
-      padding: 8px 12px;
+      padding: 10px 18px;
+      box-sizing: border-box;
       border: none;
-      border-radius: 4px;
+      border-radius: 0;
       background-color: transparent;
       font-size: 13px;
       font-family: var(--font-family);
@@ -2404,13 +2414,13 @@
       text-align: left;
       white-space: nowrap;
       cursor: pointer;
+      outline: none;
       transition: background-color 0.08s ease;
     }
 
     .update-skip-item:hover,
     .update-skip-item:focus-visible {
-      background-color: var(--neutral-fill-hover);
-      outline: none;
+      background-color: var(--neutral-fill-rest);
     }
     /* ===== 设置面板内的二级页面（背景 / 布局） ===== */
 
@@ -2610,7 +2620,7 @@
                   <div class="preset-card" data-layout-val="inspirational" id="preset-inspirational">
                     <div class="preset-thumb">
                       <div class="preset-thumb-box" style="bottom: 30px"></div>
-                      <div class="preset-thumb-dots" style="top: 20px">
+                      <div class="preset-thumb-dots" style="top: 26px">
                         <span></span><span></span><span></span><span></span><span></span><span></span>
                       </div>
                     </div>
@@ -2632,7 +2642,7 @@
                         <span></span><span></span><span></span><span></span><span></span><span></span>
                       </div>
                     </div>
-                    <span class="preset-card-label" data-i18n="appreciate">欣赏</span>
+                    <span class="preset-card-label" data-i18n="appreciate">窗台</span>
                   </div>
                 </div>
               </div>
@@ -2754,7 +2764,7 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.8.9-Beta1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.8.9</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
@@ -2953,6 +2963,7 @@
                     <select id="select-quicklink-position" class="select-box" tabindex="-1" aria-label="快速链接位置">
                       <option value="auto" data-i18n="qlPositionDefault">默认</option>
                       <option value="bottom" data-i18n="qlPositionBottom">底部</option>
+                      <option value="middle" data-i18n="qlPositionMiddle">中间</option>
                     </select>
                     <div class="custom-select-display" data-for="select-quicklink-position">
                       <span class="custom-select-text"></span>
@@ -3219,8 +3230,8 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.9-Beta1 | 更新时间：2026-10-26</p><br>
-        
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.9 | 更新时间：2026-10-31</p><br>
+
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
           <div class="update-notice-info">
