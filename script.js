@@ -4555,8 +4555,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       // 用站点官方标记替代 favicon；fill=currentColor 让它跟随主题（深色下自动变浅）
       iconContent = `<svg class="quicklink-site-icon" viewBox="${siteOverride.viewBox}" role="img" aria-label="${safeTitle}">${siteOverride.body}</svg>`;
     } else if (faviconUrl) {
-      iconContent = `<img src="${faviconUrl}" alt="${safeTitle}" loading="lazy" 
-                        onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
+      iconContent = `<img src="${faviconUrl}" alt="${safeTitle}" loading="lazy">`;
     } else {
       iconContent = initialChar;
     }
@@ -4570,6 +4569,12 @@ inputOnlineUrl?.addEventListener('input', () => {
         </svg>
       </button>
     `;
+
+    // 站点图标加载失败时回退为首字符
+    const quicklinkIconImg = linkElem.querySelector('.quicklink-icon img');
+    quicklinkIconImg?.addEventListener('error', () => {
+      quicklinkIconImg.replaceWith(document.createTextNode(initialChar));
+    }, { once: true });
 
     // 拖拽事件
     linkElem.draggable = true;
