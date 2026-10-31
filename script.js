@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.6';      // 发行版本
+const APP_VERSION = '1.8.9';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
