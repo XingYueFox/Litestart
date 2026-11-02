@@ -81,7 +81,6 @@ const i18nData = {
     themeDark: '深色',
     searchInput: '搜索输入框',
     clearSearchHistory: '清除搜索历史记录',
-    usingDefaultBg: '正在使用默认背景',
     defaultWallpaper: '默认',
     localFile: '本地文件',
     onlineWallpaper: '自定义在线链接',
@@ -147,9 +146,7 @@ const i18nData = {
     errorEngineNameReq: '请输入搜索引擎名称',
     engineUrl: '搜索 URL (%s 替换搜索关键词)',
     errorEngineUrlFormat: '请输入搜索 URL，必须包含 %s',
-    useOnlineContent: '使用在线内容',
     bingDaily: '必应每日壁纸',
-    uploadedWallpaper: '上传的背景',
     localImage: '背景图片',
     baidu: 'Baidu',
     customUrl: '自定义',
@@ -273,7 +270,6 @@ const i18nData = {
     themeDark: '深色',
     searchInput: '搜尋輸入框',
     clearSearchHistory: '清除搜尋紀錄',
-    usingDefaultBg: '正在使用預設背景',
     defaultWallpaper: '預設',
     localFile: '本機檔案',
     onlineWallpaper: '自訂線上連結',
@@ -339,9 +335,7 @@ const i18nData = {
     errorEngineNameReq: '請輸入搜尋引擎名稱',
     engineUrl: '搜尋 URL (%s 替換搜尋關鍵字)',
     errorEngineUrlFormat: '請輸入搜尋 URL，必須包含 %s',
-    useOnlineContent: '使用線上內容',
     bingDaily: 'Bing每日桌布',
-    uploadedWallpaper: '上傳的背景',
     localImage: '背景圖片',
     baidu: 'Baidu',
     bing: 'Bing',
@@ -450,7 +444,6 @@ const i18nData = {
     themeDark: 'Dark',
     searchInput: 'Search input',
     clearSearchHistory: 'Clear search history',
-    usingDefaultBg: 'Using default background',
     defaultWallpaper: 'Default',
     localFile: 'Local file',
     onlineWallpaper: 'Custom online link',
@@ -515,9 +508,7 @@ const i18nData = {
     errorEngineNameReq: 'Please enter engine name',
     engineUrl: 'Search URL (%s replacing query)',
     errorEngineUrlFormat: 'Search URL must contain %s',
-    useOnlineContent: 'Use online content',
     bingDaily: 'Bing daily wallpaper',
-    uploadedWallpaper: 'Uploaded background',
     localImage: 'Background image',
     baidu: 'Baidu',
     bing: 'Bing',
@@ -628,7 +619,6 @@ const i18nData = {
     themeDark: 'ダーク',
     searchInput: '検索入力ボックス',
     clearSearchHistory: '検索履歴を消去',
-    usingDefaultBg: 'デフォルトの背景を使用中',
     defaultWallpaper: 'デフォルト',
     localFile: 'ローカルファイル',
     onlineWallpaper: 'カスタムオンラインリンク',
@@ -693,9 +683,7 @@ const i18nData = {
     errorEngineNameReq: '検索エンジン名を入力してください',
     engineUrl: '検索 URL (%s が検索語に置換されます)',
     errorEngineUrlFormat: '検索 URL には %s を含める必要があります',
-    useOnlineContent: 'オンラインコンテンツを使用',
     bingDaily: 'Bingの今日の壁紙',
-    uploadedWallpaper: 'アップロードした背景',
     localImage: '背景画像',
     baidu: 'Baidu',
     bing: 'Bing',
@@ -805,7 +793,6 @@ const i18nData = {
     themeDark: 'Тёмная',
     searchInput: 'Поле поиска',
     clearSearchHistory: 'Очистить историю поиска',
-    usingDefaultBg: 'Используется стандартный фон',
     defaultWallpaper: 'По умолчанию',
     localFile: 'Локальный файл',
     onlineWallpaper: 'Своя онлайн-ссылка',
@@ -870,9 +857,7 @@ const i18nData = {
     errorEngineNameReq: 'Введите название',
     engineUrl: 'URL поиска (%s вместо запроса)',
     errorEngineUrlFormat: 'URL должен содержать %s',
-    useOnlineContent: 'Использовать онлайн-контент',
     bingDaily: 'Ежедневные обои Bing',
-    uploadedWallpaper: 'Загруженный фон',
     localImage: 'Фоновое изображение',
     baidu: 'Baidu',
     customUrl: 'Пользовательский',
@@ -3936,7 +3921,7 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   // 快速链接位置：'bottom' 时固定到页面底部。该模式不支持多行，
   // 因此只把"多行"这一项禁掉，仍允许在一行与关闭之间切换
-  // 'middle'（垂直居中）只在悬挂布局下可用：其它布局按默认处理，
+  // 'middle'（垂直居中）在悬挂布局下生效：其它布局按默认处理，
   // 存储值保留，切回悬挂时还原（与"底部模式暂存多行"同一套处理）
   function applyQuicklinkPosition() {
     const isHanging = (document.body.getAttribute('data-layout') || 'focused') === 'inspirational';
