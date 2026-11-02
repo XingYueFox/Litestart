@@ -1808,6 +1808,15 @@ function decodeInput(str) {
   window.addEventListener('scroll', repositionOrClose, true);
 }
 
+// 丢弃已缓存的下拉面板：下次展开时按原生 select 重建
+function discardCustomSelectDropdown(selectId) {
+  const stale = document.querySelector('.custom-select-dropdown[data-for-select="' + selectId + '"]');
+  if (!stale) return;
+  // 面板与触发器的展开态需一起清除
+  if (stale._display) stale._display.classList.remove('active');
+  stale.remove();
+}
+
 // 重新同步自定义下拉菜单的显示文本与选项（语言切换后调用）
 function refreshCustomSelects() {
   document.querySelectorAll('.custom-select-display').forEach(display => {
@@ -3910,8 +3919,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (display) display.classList.toggle('disabled', disabled);
     if (!disabled) return;
     // 收起已展开的面板，避免留下无效浮层
-    display?.classList.remove('active');
-    document.querySelector('.custom-select-dropdown[data-for-select="' + selectId + '"]')?.remove();
+    discardCustomSelectDropdown(selectId);
   }
 
   // 同步"开关关掉后就没意义"的下拉与开关：
@@ -3936,10 +3944,6 @@ inputOnlineUrl?.addEventListener('input', () => {
     const pos = (effective === 'bottom' || effective === 'middle') ? effective : 'auto';
     document.body.setAttribute('data-quicklink-position', pos);
 
-    // "中间"选项只在悬挂布局下可选
-    const middleOption = selectQuicklinkPosition ? selectQuicklinkPosition.querySelector('option[value="middle"]') : null;
-    if (middleOption) middleOption.disabled = !isHanging;
-
     let savedRow = Storage.get('ntp_quicklinks', '1');
     // 旧数据里 '0' 曾表示"关闭"，现在关闭由显示开关承担
     if (savedRow === '0') savedRow = '1';
@@ -3958,14 +3962,15 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (selectQuicklinks) {
       selectQuicklinks.value = effectiveRow;
     }
-    // 把当前位置写回下拉（首次加载时靠这句恢复上次的选择）；
-    // 非悬挂布局下"中间"按默认展示，存储值不动
+    // 下拉回显存储的选择；非悬挂布局下"中间"的实际效果与默认相同
     if (selectQuicklinkPosition) {
-      selectQuicklinkPosition.value = effective;
+      selectQuicklinkPosition.value = (quicklinkPosition === 'bottom' || quicklinkPosition === 'middle')
+        ? quicklinkPosition
+        : 'auto';
     }
     // 禁用状态变了，已建好的下拉丢掉，下次展开时按新状态重建
-    document.querySelector('.custom-select-dropdown[data-for-select="select-quicklinks"]')?.remove();
-    document.querySelector('.custom-select-dropdown[data-for-select="select-quicklink-position"]')?.remove();
+    discardCustomSelectDropdown('select-quicklinks');
+    discardCustomSelectDropdown('select-quicklink-position');
     refreshCustomSelects();
     syncLayoutSelectAvailability();
   }
@@ -5768,6 +5773,6 @@ function updateCustomEngineOption() {
     : (dict.custom || '自定义');
   // 自定义下拉面板的选项文本是构建时固化的：这里主动丢弃它，
   // 下次展开时会按新的 option 文本重建（否则会一直显示旧名字）
-  document.querySelector('.custom-select-dropdown[data-for-select="select-engine"]')?.remove();
+  discardCustomSelectDropdown('select-engine');
   refreshCustomSelects();
 }
