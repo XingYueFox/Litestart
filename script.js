@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.9';      // 发行版本
+const APP_VERSION = '1.8.10';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -68,7 +68,7 @@ const i18nData = {
     skipRestore: '恢复提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.9 | 更新时间：2026-10-31',
+    litever: '版本 1.8.10 | 更新时间：2026-11-02',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -257,7 +257,7 @@ const i18nData = {
     skipRestore: '恢復提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.9 | 更新時間：2026-10-31',
+    litever: '版本 1.8.10 | 更新時間：2026-11-02',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -431,7 +431,7 @@ const i18nData = {
     skipRestore: 'Resume reminders',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.9 | Updated: 2026-10-31',
+    litever: 'Version 1.8.10 | Updated: 2026-11-02',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -606,7 +606,7 @@ const i18nData = {
     skipRestore: '通知を再開',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.9 | 更新日: 2026-10-31',
+    litever: 'バージョン 1.8.10 | 更新日: 2026-11-02',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -780,7 +780,7 @@ const i18nData = {
     skipRestore: 'Возобновить напоминания',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.9 | Обновлено: 2026-10-31',
+    litever: 'Версия 1.8.10 | Обновлено: 2026-11-02',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -1889,7 +1889,7 @@ async function fetchLatestRelease() {
 // 检查更新--12小时缓存
 // 缓存只存远端原始信息（tag / url / publishedAt），hasUpdate 每次按当前
 // APP_VERSION 现算：若把算好的结果整包缓存，改版本号或升级后 12 小时内
-// 拿到的仍是旧结论（例如从 1.8.9 改回 1.8.6 也照样显示“无更新”）。
+// 拿到的仍是旧结论（例如从 1.8.10 改回 1.8.6 也照样显示“无更新”）。
 async function checkForUpdate({ force = false } = {}) {
   const CACHE_KEY = 'ntp_update_check';
   const INTERVAL = 12 * 60 * 60 * 1000;
