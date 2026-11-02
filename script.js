@@ -199,7 +199,7 @@ const i18nData = {
     quicklinkPosition: '快速链接位置',
     qlPositionDefault: '默认',
     qlPositionBottom: '底部',
-    qlPositionMiddle: '中间',
+    qlPositionMiddle: '居中',
     layoutHanging: '悬挂',
     layoutCentered: '居中',
     showLogo: '显示 Logo',
@@ -374,7 +374,7 @@ const i18nData = {
     quicklinkPosition: '快速連結位置',
     qlPositionDefault: '預設',
     qlPositionBottom: '底部',
-    qlPositionMiddle: '中間',
+    qlPositionMiddle: '居中',
     layoutHanging: '懸掛',
     layoutCentered: '居中',
     showLogo: '顯示 Logo',
@@ -548,7 +548,7 @@ const i18nData = {
     quicklinkPosition: 'Quicklink position',
     qlPositionDefault: 'Default',
     qlPositionBottom: 'Bottom',
-    qlPositionMiddle: 'Middle',
+    qlPositionMiddle: 'Center',
     layoutHanging: 'Hanging',
     layoutCentered: 'Centered',
     showLogo: 'Show logo',
@@ -3885,7 +3885,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     setLayoutAttr(layoutVal);
     Storage.set('ntp_layout', layoutVal);
 
-    // 悬挂与否决定"中间"选项的可用性，布局变化后立即重算
+    // 悬挂与否决定"居中"是否生效，布局变化后立即重算
     applyQuicklinkPosition();
 
     if (!searchVisible) {
@@ -3947,7 +3947,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (selectQuicklinks) {
       selectQuicklinks.value = effectiveRow;
     }
-    // 下拉回显存储的选择；非悬挂布局下"中间"的实际效果与默认相同
+    // 下拉回显存储的选择；非悬挂布局下"居中"的实际效果与默认相同
     if (selectQuicklinkPosition) {
       selectQuicklinkPosition.value = (quicklinkPosition === 'bottom' || quicklinkPosition === 'middle')
         ? quicklinkPosition
