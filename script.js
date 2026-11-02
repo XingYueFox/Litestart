@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.9';      // 发行版本
+const APP_VERSION = '1.8.10';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -68,7 +68,7 @@ const i18nData = {
     skipRestore: '恢复提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.9 | 更新时间：2026-10-31',
+    litever: '版本 1.8.10 | 更新时间：2026-11-02',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -81,7 +81,6 @@ const i18nData = {
     themeDark: '深色',
     searchInput: '搜索输入框',
     clearSearchHistory: '清除搜索历史记录',
-    usingDefaultBg: '正在使用默认背景',
     defaultWallpaper: '默认',
     localFile: '本地文件',
     onlineWallpaper: '自定义在线链接',
@@ -147,9 +146,7 @@ const i18nData = {
     errorEngineNameReq: '请输入搜索引擎名称',
     engineUrl: '搜索 URL (%s 替换搜索关键词)',
     errorEngineUrlFormat: '请输入搜索 URL，必须包含 %s',
-    useOnlineContent: '使用在线内容',
     bingDaily: '必应每日壁纸',
-    uploadedWallpaper: '上传的背景',
     localImage: '背景图片',
     baidu: 'Baidu',
     customUrl: '自定义',
@@ -202,7 +199,7 @@ const i18nData = {
     quicklinkPosition: '快速链接位置',
     qlPositionDefault: '默认',
     qlPositionBottom: '底部',
-    qlPositionMiddle: '中间',
+    qlPositionMiddle: '居中',
     layoutHanging: '悬挂',
     layoutCentered: '居中',
     showLogo: '显示 Logo',
@@ -260,7 +257,7 @@ const i18nData = {
     skipRestore: '恢復提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.9 | 更新時間：2026-10-31',
+    litever: '版本 1.8.10 | 更新時間：2026-11-02',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -273,7 +270,6 @@ const i18nData = {
     themeDark: '深色',
     searchInput: '搜尋輸入框',
     clearSearchHistory: '清除搜尋紀錄',
-    usingDefaultBg: '正在使用預設背景',
     defaultWallpaper: '預設',
     localFile: '本機檔案',
     onlineWallpaper: '自訂線上連結',
@@ -339,9 +335,7 @@ const i18nData = {
     errorEngineNameReq: '請輸入搜尋引擎名稱',
     engineUrl: '搜尋 URL (%s 替換搜尋關鍵字)',
     errorEngineUrlFormat: '請輸入搜尋 URL，必須包含 %s',
-    useOnlineContent: '使用線上內容',
     bingDaily: 'Bing每日桌布',
-    uploadedWallpaper: '上傳的背景',
     localImage: '背景圖片',
     baidu: 'Baidu',
     bing: 'Bing',
@@ -380,7 +374,7 @@ const i18nData = {
     quicklinkPosition: '快速連結位置',
     qlPositionDefault: '預設',
     qlPositionBottom: '底部',
-    qlPositionMiddle: '中間',
+    qlPositionMiddle: '居中',
     layoutHanging: '懸掛',
     layoutCentered: '居中',
     showLogo: '顯示 Logo',
@@ -437,7 +431,7 @@ const i18nData = {
     skipRestore: 'Resume reminders',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.9 | Updated: 2026-10-31',
+    litever: 'Version 1.8.10 | Updated: 2026-11-02',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -450,7 +444,6 @@ const i18nData = {
     themeDark: 'Dark',
     searchInput: 'Search input',
     clearSearchHistory: 'Clear search history',
-    usingDefaultBg: 'Using default background',
     defaultWallpaper: 'Default',
     localFile: 'Local file',
     onlineWallpaper: 'Custom online link',
@@ -515,9 +508,7 @@ const i18nData = {
     errorEngineNameReq: 'Please enter engine name',
     engineUrl: 'Search URL (%s replacing query)',
     errorEngineUrlFormat: 'Search URL must contain %s',
-    useOnlineContent: 'Use online content',
     bingDaily: 'Bing daily wallpaper',
-    uploadedWallpaper: 'Uploaded background',
     localImage: 'Background image',
     baidu: 'Baidu',
     bing: 'Bing',
@@ -557,7 +548,7 @@ const i18nData = {
     quicklinkPosition: 'Quicklink position',
     qlPositionDefault: 'Default',
     qlPositionBottom: 'Bottom',
-    qlPositionMiddle: 'Middle',
+    qlPositionMiddle: 'Center',
     layoutHanging: 'Hanging',
     layoutCentered: 'Centered',
     showLogo: 'Show logo',
@@ -615,7 +606,7 @@ const i18nData = {
     skipRestore: '通知を再開',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.9 | 更新日: 2026-10-31',
+    litever: 'バージョン 1.8.10 | 更新日: 2026-11-02',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -628,7 +619,6 @@ const i18nData = {
     themeDark: 'ダーク',
     searchInput: '検索入力ボックス',
     clearSearchHistory: '検索履歴を消去',
-    usingDefaultBg: 'デフォルトの背景を使用中',
     defaultWallpaper: 'デフォルト',
     localFile: 'ローカルファイル',
     onlineWallpaper: 'カスタムオンラインリンク',
@@ -693,9 +683,7 @@ const i18nData = {
     errorEngineNameReq: '検索エンジン名を入力してください',
     engineUrl: '検索 URL (%s が検索語に置換されます)',
     errorEngineUrlFormat: '検索 URL には %s を含める必要があります',
-    useOnlineContent: 'オンラインコンテンツを使用',
     bingDaily: 'Bingの今日の壁紙',
-    uploadedWallpaper: 'アップロードした背景',
     localImage: '背景画像',
     baidu: 'Baidu',
     bing: 'Bing',
@@ -792,7 +780,7 @@ const i18nData = {
     skipRestore: 'Возобновить напоминания',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.9 | Обновлено: 2026-10-31',
+    litever: 'Версия 1.8.10 | Обновлено: 2026-11-02',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -805,7 +793,6 @@ const i18nData = {
     themeDark: 'Тёмная',
     searchInput: 'Поле поиска',
     clearSearchHistory: 'Очистить историю поиска',
-    usingDefaultBg: 'Используется стандартный фон',
     defaultWallpaper: 'По умолчанию',
     localFile: 'Локальный файл',
     onlineWallpaper: 'Своя онлайн-ссылка',
@@ -870,9 +857,7 @@ const i18nData = {
     errorEngineNameReq: 'Введите название',
     engineUrl: 'URL поиска (%s вместо запроса)',
     errorEngineUrlFormat: 'URL должен содержать %s',
-    useOnlineContent: 'Использовать онлайн-контент',
     bingDaily: 'Ежедневные обои Bing',
-    uploadedWallpaper: 'Загруженный фон',
     localImage: 'Фоновое изображение',
     baidu: 'Baidu',
     customUrl: 'Пользовательский',
@@ -1808,6 +1793,15 @@ function decodeInput(str) {
   window.addEventListener('scroll', repositionOrClose, true);
 }
 
+// 丢弃已缓存的下拉面板：下次展开时按原生 select 重建
+function discardCustomSelectDropdown(selectId) {
+  const stale = document.querySelector('.custom-select-dropdown[data-for-select="' + selectId + '"]');
+  if (!stale) return;
+  // 面板与触发器的展开态需一起清除
+  if (stale._display) stale._display.classList.remove('active');
+  stale.remove();
+}
+
 // 重新同步自定义下拉菜单的显示文本与选项（语言切换后调用）
 function refreshCustomSelects() {
   document.querySelectorAll('.custom-select-display').forEach(display => {
@@ -1895,7 +1889,7 @@ async function fetchLatestRelease() {
 // 检查更新--12小时缓存
 // 缓存只存远端原始信息（tag / url / publishedAt），hasUpdate 每次按当前
 // APP_VERSION 现算：若把算好的结果整包缓存，改版本号或升级后 12 小时内
-// 拿到的仍是旧结论（例如从 1.8.9 改回 1.8.6 也照样显示“无更新”）。
+// 拿到的仍是旧结论（例如从 1.8.10 改回 1.8.6 也照样显示“无更新”）。
 async function checkForUpdate({ force = false } = {}) {
   const CACHE_KEY = 'ntp_update_check';
   const INTERVAL = 12 * 60 * 60 * 1000;
@@ -3891,7 +3885,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     setLayoutAttr(layoutVal);
     Storage.set('ntp_layout', layoutVal);
 
-    // 悬挂与否决定"中间"选项的可用性，布局变化后立即重算
+    // 悬挂与否决定"居中"是否生效，布局变化后立即重算
     applyQuicklinkPosition();
 
     if (!searchVisible) {
@@ -3910,8 +3904,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (display) display.classList.toggle('disabled', disabled);
     if (!disabled) return;
     // 收起已展开的面板，避免留下无效浮层
-    display?.classList.remove('active');
-    document.querySelector('.custom-select-dropdown[data-for-select="' + selectId + '"]')?.remove();
+    discardCustomSelectDropdown(selectId);
   }
 
   // 同步"开关关掉后就没意义"的下拉与开关：
@@ -3928,17 +3921,13 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   // 快速链接位置：'bottom' 时固定到页面底部。该模式不支持多行，
   // 因此只把"多行"这一项禁掉，仍允许在一行与关闭之间切换
-  // 'middle'（垂直居中）只在悬挂布局下可用：其它布局按默认处理，
+  // 'middle'（垂直居中）在悬挂布局下生效：其它布局按默认处理，
   // 存储值保留，切回悬挂时还原（与"底部模式暂存多行"同一套处理）
   function applyQuicklinkPosition() {
     const isHanging = (document.body.getAttribute('data-layout') || 'focused') === 'inspirational';
     const effective = (quicklinkPosition === 'middle' && !isHanging) ? 'auto' : quicklinkPosition;
     const pos = (effective === 'bottom' || effective === 'middle') ? effective : 'auto';
     document.body.setAttribute('data-quicklink-position', pos);
-
-    // "中间"选项只在悬挂布局下可选
-    const middleOption = selectQuicklinkPosition ? selectQuicklinkPosition.querySelector('option[value="middle"]') : null;
-    if (middleOption) middleOption.disabled = !isHanging;
 
     let savedRow = Storage.get('ntp_quicklinks', '1');
     // 旧数据里 '0' 曾表示"关闭"，现在关闭由显示开关承担
@@ -3958,14 +3947,15 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (selectQuicklinks) {
       selectQuicklinks.value = effectiveRow;
     }
-    // 把当前位置写回下拉（首次加载时靠这句恢复上次的选择）；
-    // 非悬挂布局下"中间"按默认展示，存储值不动
+    // 下拉回显存储的选择；非悬挂布局下"居中"的实际效果与默认相同
     if (selectQuicklinkPosition) {
-      selectQuicklinkPosition.value = effective;
+      selectQuicklinkPosition.value = (quicklinkPosition === 'bottom' || quicklinkPosition === 'middle')
+        ? quicklinkPosition
+        : 'auto';
     }
     // 禁用状态变了，已建好的下拉丢掉，下次展开时按新状态重建
-    document.querySelector('.custom-select-dropdown[data-for-select="select-quicklinks"]')?.remove();
-    document.querySelector('.custom-select-dropdown[data-for-select="select-quicklink-position"]')?.remove();
+    discardCustomSelectDropdown('select-quicklinks');
+    discardCustomSelectDropdown('select-quicklink-position');
     refreshCustomSelects();
     syncLayoutSelectAvailability();
   }
@@ -5768,6 +5758,6 @@ function updateCustomEngineOption() {
     : (dict.custom || '自定义');
   // 自定义下拉面板的选项文本是构建时固化的：这里主动丢弃它，
   // 下次展开时会按新的 option 文本重建（否则会一直显示旧名字）
-  document.querySelector('.custom-select-dropdown[data-for-select="select-engine"]')?.remove();
+  discardCustomSelectDropdown('select-engine');
   refreshCustomSelects();
 }
