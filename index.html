@@ -622,6 +622,57 @@
       opacity: 0.3;
     }
 
+    /* 行内下拉：与设置行合并，标签在左、当前值+箭头在右 */
+    .setting-row .custom-select-wrapper {
+      width: auto;
+      min-width: 110px;
+      max-width: 60%;
+    }
+
+    .setting-row .custom-select-display {
+      height: 28px;
+      /* 不加框：透明底，视觉上只是「当前值 + 箭头」 */
+      background-color: transparent;
+      border-color: transparent;
+      /* 文字居右、紧贴箭头，不留中间空档 */
+      justify-content: flex-end;
+      gap: 4px;
+      padding-right: 4px;
+    }
+
+    /* 去掉下拉触发器自身的 hover/active 底色，hover 效果交给整行 */
+    .setting-row .custom-select-display:hover,
+    .setting-row .custom-select-display.active {
+      background-color: transparent;
+    }
+
+    .setting-row .custom-select-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 含下拉的整行：负外边距左右顶至卡片边框，hover 方形铺满（与跳转行一致） */
+    .setting-row:has(> .custom-select-wrapper) {
+      width: calc(100% + 24px);
+      box-sizing: border-box;
+      margin: -4px -12px;
+      padding: 6px 12px;
+      min-height: 36px;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background-color 0.08s ease;
+    }
+
+    .setting-row:has(> .custom-select-wrapper):hover {
+      background-color: var(--neutral-fill-rest);
+    }
+
+    /* 行内下拉置灰时，同行左侧标签一起变灰（与旧「标题置灰」行为一致） */
+    .setting-row:has(.custom-select-display.disabled) > .setting-label-group {
+      opacity: 0.3;
+    }
+
     /* 整行不可用时（例如"悬挂"布局下的"显示 Logo"开关） */
     .setting-row.disabled {
       opacity: 0.3;
@@ -721,12 +772,6 @@
       font-size: 13px;
       color: var(--settings-text-primary);
       font-weight: 500;
-    }
-
-    .setting-status-text {
-      font-size: 12px;
-      color: var(--settings-text-secondary);
-      margin-right: 8px;
     }
 
     .switch-container {
@@ -1132,6 +1177,71 @@
 
     .icon-btn-text:hover {
       background-color: var(--modal-border);
+    }
+
+    /* 可点击跳转的设置行：标题与二级页入口合并，右侧 chevron 指向子级。
+       注意：button 即使 display:flex 也是收缩宽度，需显式 calc 撑满；
+       负外边距抵消卡片 12px 内边距，hover 背景方形顶至卡片左右边框 */
+    .settings-nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: calc(100% + 24px);
+      box-sizing: border-box;
+      min-width: 0;
+      min-height: 36px;
+      padding: 6px 12px;
+      margin: -4px -12px;
+      border: none;
+      background-color: transparent;
+      /* 不用圆角：hover 背景方形顶格铺满整行宽度 */
+      border-radius: 0;
+      color: var(--settings-text-primary);
+      font-size: 13px;
+      font-weight: 500;
+      text-align: start;
+      cursor: pointer;
+      transition: background-color 0.08s ease;
+    }
+
+    .settings-nav-row:hover {
+      background-color: var(--neutral-fill-rest);
+    }
+
+    /* 在 flex 设置行内（编辑背景）：宽度交给 flex 分配，
+       左侧负边距保持顶至卡片左缘，右侧止于分隔线 */
+    .setting-row .settings-nav-row {
+      width: auto;
+      flex: 1 1 auto;
+      margin-right: 0;
+    }
+
+    .settings-nav-chevron {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+      color: var(--settings-text-secondary);
+      /* 与下拉「预置」项同一 chevron，旋转 90° 指向右侧子级 */
+      transform: rotate(-90deg);
+      transition: color 0.08s ease;
+    }
+
+    .settings-nav-row:hover .settings-nav-chevron {
+      color: var(--settings-text-primary);
+    }
+
+    /* 跳转行与右侧开关之间的竖线分隔 */
+    .settings-nav-divider {
+      width: 1px;
+      align-self: stretch;
+      margin: 2px 10px;
+      background-color: var(--modal-border);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .settings-nav-chevron {
+        transition: none;
+      }
     }
 
     /* 底部链接样式 */
@@ -2607,13 +2717,12 @@
             <div class="settings-content">
               <!-- 页面布局视图选择 -->
               <div class="settings-card">
-                <div class="settings-card-header">
-                  <span data-i18n="layout">页面布局</span>
-                </div>
-                <button id="btn-open-layout-modal" class="icon-btn-text" type="button">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M20.952 3.048a3.58 3.58 0 0 0-5.06 0L3.94 15a3.1 3.1 0 0 0-.825 1.476L2.02 21.078a.75.75 0 0 0 .904.903l4.601-1.096a3.1 3.1 0 0 0 1.477-.825l11.95-11.95a3.58 3.58 0 0 0 0-5.06m-4 1.06a2.078 2.078 0 1 1 2.94 2.94L19 7.939L16.06 5zM15 6.062L17.94 9l-10 10c-.21.21-.474.357-.763.426l-3.416.814l.813-3.416c.069-.29.217-.554.427-.764z"/></svg>
+                <!-- 标题与跳转合并：整行可点，进入布局设置二级页 -->
+                <button id="btn-open-layout-modal" class="settings-nav-row" type="button">
                   <span data-i18n="editLayout">编辑页面布局</span>
+                  <svg class="settings-nav-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                  </svg>
                 </button>
                 <div class="preset-section-label" data-i18n="presets">预设</div>
                 <div class="layout-presets">
@@ -2648,19 +2757,22 @@
               </div>
 
               <div class="settings-card">
-                <div class="settings-card-title" data-i18n="searchEngine">搜索引擎</div>
-                <div class="custom-select-wrapper">
-                  <select id="select-engine" class="select-box" tabindex="-1" aria-label="搜索引擎">
-                    <option value="bing" data-i18n="bing">Bing</option>
-                    <option value="baidu" data-i18n="baidu">Baidu</option>
-                    <option value="google">Google</option>
-                    <option value="custom" data-i18n="custom">自定义</option>
-                  </select>
-                  <div class="custom-select-display" data-for="select-engine">
-                    <span class="custom-select-text"></span>
-                    <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
-                      <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
-                    </svg>
+                <!-- 标题与下拉合并为同一行：左标签、右当前值 -->
+                <div class="setting-row">
+                  <div class="setting-label-group" data-i18n="searchEngine">搜索引擎</div>
+                  <div class="custom-select-wrapper">
+                    <select id="select-engine" class="select-box" tabindex="-1" aria-label="搜索引擎">
+                      <option value="bing" data-i18n="bing">Bing</option>
+                      <option value="baidu" data-i18n="baidu">Baidu</option>
+                      <option value="google">Google</option>
+                      <option value="custom" data-i18n="custom">自定义</option>
+                    </select>
+                    <div class="custom-select-display" data-for="select-engine">
+                      <span class="custom-select-text"></span>
+                      <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                        <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                      </svg>
+                    </div>
                   </div>
                 </div>
                 <button id="btn-edit-engine" class="icon-btn-text" style="display:none;" type="button">
@@ -2679,7 +2791,6 @@
                     </span>
                   </div>
                   <div class="switch-container">
-                    <span class="setting-status-text" id="status-force-bing-cn" data-i18n="off">关闭</span>
                     <label class="switch">
                       <input type="checkbox" id="toggle-force-bing-cn">
                       <span class="slider"></span>
@@ -2690,7 +2801,6 @@
                 <div class="setting-row" style="margin-top: 8px;">
                   <div class="setting-label-group" data-i18n="saveHistory">保存搜索历史记录</div>
                   <div class="switch-container">
-                    <span class="setting-status-text" id="status-history" data-i18n="on">打开</span>
                     <label class="switch">
                       <input type="checkbox" id="toggle-history-switch" checked>
                       <span class="slider"></span>
@@ -2699,23 +2809,26 @@
                 </div>
               </div>
 
-              <!-- 背景设置卡片 -->
+              <!-- 背景设置卡片：标题跳转 + 开关合并为一行 -->
               <div class="settings-card">
-                <div class="setting-row" style="margin-bottom: 8px;">
-                  <div class="setting-label-group" data-i18n="background">背景</div>
+                <div class="setting-row">
+                  <!-- 左侧：标题 + chevron，整块可点进入背景设置二级页 -->
+                  <button id="btn-open-bg-modal" class="settings-nav-row" type="button">
+                    <span data-i18n="editBackground">编辑背景</span>
+                    <svg class="settings-nav-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                      <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                    </svg>
+                  </button>
+                  <!-- 箭头与开关之间的竖线分隔 -->
+                  <div class="settings-nav-divider" aria-hidden="true"></div>
+                  <!-- 右侧：背景开关 -->
                   <div class="switch-container">
-                    <span class="setting-status-text" id="status-bg" data-i18n="off">关闭</span>
                     <label class="switch">
                       <input type="checkbox" id="toggle-bg-switch">
                       <span class="slider"></span>
                     </label>
                   </div>
                 </div>
-                <button id="btn-open-bg-modal" class="icon-btn-text" type="button">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M20.998 6.25A3.25 3.25 0 0 0 17.748 3H6.25A3.25 3.25 0 0 0 3 6.25v11.499a3.25 3.25 0 0 0 3.25 3.25h4.914l.356-1.424l.02-.076H6.25q-.308-.001-.582-.1l5.807-5.685l.083-.07a.75.75 0 0 1 .966.07l2.079 2.036l1.06-1.06l-2.09-2.048l-.128-.116a2.25 2.25 0 0 0-3.02.116l-5.822 5.7a1.8 1.8 0 0 1-.103-.593v-11.5c0-.966.783-1.75 1.75-1.75h11.499c.966 0 1.75.784 1.75 1.75v4.983c.478-.19.993-.264 1.5-.22zm-3.495 2.502a2.252 2.252 0 1 0-4.504 0a2.252 2.252 0 0 0 4.504 0m-3.004 0a.752.752 0 1 1 1.504 0a.752.752 0 0 1-1.504 0m4.6 3.917l-5.902 5.901a2.7 2.7 0 0 0-.707 1.248l-.457 1.83c-.2.797.522 1.518 1.318 1.319l1.83-.458a2.7 2.7 0 0 0 1.248-.706L22.33 15.9a2.286 2.286 0 0 0-3.233-3.232"/></svg>
-                  <span data-i18n="editBackground">编辑背景</span>
-                </button>
               </div>
 
               <!-- 主题模式 -->
@@ -2739,24 +2852,27 @@
 
               <!-- 页面语言选择卡片 -->
               <div class="settings-card">
-                <div class="settings-card-title" data-i18n="language">页面语言</div>
-                <div class="custom-select-wrapper">
-                  <select id="select-language" class="select-box" tabindex="-1" aria-label="界面语言">
-                    <option value="auto" data-i18n="langAuto">默认（跟随设备）</option>
-                    <option value="en">English</option>
-                    <option value="ja">日本語</option>
-                    <option value="ru">Русский</option>
-                    <option value="zh-CN">中文-简体</option>
-                    <option value="zh-TW">中文-繁體</option>
-                  </select>
-                  <div class="custom-select-display" data-for="select-language">
-                    <span class="custom-select-text"></span>
-                    <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
-                      <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
-                    </svg>
+                <!-- 标题与下拉合并为同一行 -->
+                <div class="setting-row">
+                  <div class="setting-label-group" data-i18n="language">页面语言</div>
+                  <div class="custom-select-wrapper">
+                    <select id="select-language" class="select-box" tabindex="-1" aria-label="界面语言">
+                      <option value="auto" data-i18n="langAuto">默认（跟随设备）</option>
+                      <option value="en">English</option>
+                      <option value="ja">日本語</option>
+                      <option value="ru">Русский</option>
+                      <option value="zh-CN">中文-简体</option>
+                      <option value="zh-TW">中文-繁體</option>
+                    </select>
+                    <div class="custom-select-display" data-for="select-language">
+                      <span class="custom-select-text"></span>
+                      <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                        <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                      </svg>
+                    </div>
                   </div>
                 </div>
-                
+
               </div>
 
             </div>
@@ -2764,7 +2880,7 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.8.10</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.9.0-beta1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
@@ -2786,30 +2902,22 @@
                 <h2 class="settings-title" data-i18n="background">背景</h2>
               </div>
               <div class="settings-content">
-                <!-- 启用背景（总开关，置顶） -->
-                <div class="settings-card">
-                  <div class="setting-row">
-                    <div class="setting-label-group" data-i18n="enableBackground">启用背景</div>
-                    <div class="switch-container">
-                      <span class="setting-status-text" id="status-bg-modal" data-i18n="off">关闭</span>
-                      <label class="switch">
-                        <input type="checkbox" id="toggle-bg-modal-switch">
-                        <span class="slider"></span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
+                <!-- 顶部「启用背景」开关已移除：开关在主面板「编辑背景」行，
+                     本页由壁纸下拉的「关闭」选项控制启停 -->
 
-                <!-- 以下设置依赖背景开启：关闭时整体置灰且不可交互 -->
-                <div id="bg-dependent-settings">
-                  <!-- 壁纸来源：先预览，再用下拉选择，下方按钮随选中项变化 -->
-                  <div class="settings-card">
-                    <div class="settings-card-title" data-i18n="localImage">背景图片</div>
-                    <div class="wallpaper-preview-box" id="wallpaper-preview-container">
-                      <img src="img/background.webp" alt="默认背景预览" style="width:100%;height:100%;object-fit:cover;">
-                    </div>
-                    <div class="custom-select-wrapper" style="margin-top: 10px;">
+                <!-- 壁纸卡片：预览 + 来源下拉（含「关闭」）。
+                     选择任一具体来源都会自动开启背景，因此本卡放在
+                     bg-dependent-settings 之外，背景关闭时下拉仍可操作 -->
+                <div class="settings-card">
+                  <div class="wallpaper-preview-box" id="wallpaper-preview-container">
+                    <img src="img/background.webp" alt="默认背景预览" style="width:100%;height:100%;object-fit:cover;">
+                  </div>
+                  <!-- 标题与下拉合并为同一行 -->
+                  <div class="setting-row" style="margin-top: 10px;">
+                    <div class="setting-label-group" data-i18n="wallpaper">壁纸</div>
+                    <div class="custom-select-wrapper">
                       <select id="select-wallpaper-source" class="select-box" tabindex="-1" aria-label="壁纸来源">
+                        <option value="off" data-i18n="off">关闭</option>
                         <option value="default" data-i18n="defaultWallpaper">默认</option>
                         <option value="bing" data-i18n="bingDaily">必应每日壁纸</option>
                         <option value="local" data-i18n="localFile">本地文件</option>
@@ -2818,24 +2926,26 @@
                       <div class="custom-select-display" data-for="select-wallpaper-source">
                         <span class="custom-select-text"></span>
                         <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
-                          <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 0 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                          <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
                         </svg>
                       </div>
                     </div>
-                    <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
-                    <!-- 「本地文件」显示选择文件；「自定义在线链接」显示编辑链接；恢复默认由下拉选「默认」完成 -->
-                    <div id="wallpaper-file-row" style="display: flex; gap: 8px; margin-top: 10px;">
-                      <button type="button" class="btn btn-secondary" id="btn-upload-wallpaper" style="flex: 1;" data-i18n="uploadFile">选择文件</button>
-                      <button type="button" class="btn btn-secondary" id="btn-edit-online-wallpaper" style="flex: 1; display: none;" data-i18n="editCustomLink">编辑自定义链接</button>
-                    </div>
                   </div>
+                  <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
+                  <!-- 「本地文件」显示选择文件；「自定义在线链接」显示编辑链接；恢复默认由下拉选「默认」完成 -->
+                  <div id="wallpaper-file-row" style="display: flex; gap: 8px; margin-top: 10px;">
+                    <button type="button" class="btn btn-secondary" id="btn-upload-wallpaper" style="flex: 1;" data-i18n="uploadFile">选择文件</button>
+                    <button type="button" class="btn btn-secondary" id="btn-edit-online-wallpaper" style="flex: 1; display: none;" data-i18n="editCustomLink">编辑自定义链接</button>
+                  </div>
+                </div>
 
+                <!-- 以下设置依赖背景开启：关闭时整体置灰且不可交互 -->
+                <div id="bg-dependent-settings">
                   <!-- 第一组：元素可见性（增强元素可见性 + 衬底模糊） -->
                   <div class="settings-card">
                     <div class="setting-row">
                       <div class="setting-label-group" data-i18n="enhancedVisibility">增强元素可见性</div>
                       <div class="switch-container">
-                        <span class="setting-status-text" id="status-enhanced-visibility" data-i18n="off">关闭</span>
                         <label class="switch">
                           <input type="checkbox" id="toggle-enhanced-visibility">
                           <span class="slider"></span>
@@ -2855,7 +2965,6 @@
                         </span>
                       </div>
                       <div class="switch-container">
-                        <span class="setting-status-text" id="status-enhanced-blur" data-i18n="on">打开</span>
                         <label class="switch">
                           <input type="checkbox" id="toggle-enhanced-blur">
                           <span class="slider"></span>
@@ -2870,7 +2979,6 @@
                     <div class="setting-row">
                       <div class="setting-label-group" data-i18n="bgVignette">背景边角晕影</div>
                       <div class="switch-container">
-                        <span class="setting-status-text" id="status-bg-vignette" data-i18n="on">打开</span>
                         <label class="switch">
                           <input type="checkbox" id="toggle-bg-vignette">
                           <span class="slider"></span>
@@ -2890,7 +2998,6 @@
                         </span>
                       </div>
                       <div class="switch-container">
-                        <span class="setting-status-text" id="status-bg-fade-blur" data-i18n="on">打开</span>
                         <label class="switch">
                           <input type="checkbox" id="toggle-bg-fade-blur">
                           <span class="slider"></span>
@@ -2915,30 +3022,31 @@
                   <div class="setting-row">
                     <div class="setting-label-group" data-i18n="showSearchBox">显示搜索框</div>
                     <div class="switch-container">
-                      <span class="setting-status-text" id="status-search-box" data-i18n="on">打开</span>
                       <label class="switch">
                         <input type="checkbox" id="toggle-search-switch" checked>
                         <span class="slider"></span>
                       </label>
                     </div>
                   </div>
-                  <div class="settings-card-title" style="margin-top: 14px;" data-i18n="searchBoxPosition">搜索框位置</div>
-                  <div class="custom-select-wrapper">
-                    <select id="select-layout" class="select-box" tabindex="-1" aria-label="搜索框位置">
-                      <option value="inspirational" data-i18n="layoutHanging">悬挂</option>
-                      <option value="focused" data-i18n="layoutCentered">居中</option>
-                    </select>
-                    <div class="custom-select-display" data-for="select-layout">
-                      <span class="custom-select-text"></span>
-                      <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
-                        <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
-                      </svg>
+                  <!-- 标题与下拉合并为同一行 -->
+                  <div class="setting-row" style="margin-top: 14px;">
+                    <div class="setting-label-group" data-i18n="searchBoxPosition">搜索框位置</div>
+                    <div class="custom-select-wrapper">
+                      <select id="select-layout" class="select-box" tabindex="-1" aria-label="搜索框位置">
+                        <option value="inspirational" data-i18n="layoutHanging">悬挂</option>
+                        <option value="focused" data-i18n="layoutCentered">居中</option>
+                      </select>
+                      <div class="custom-select-display" data-for="select-layout">
+                        <span class="custom-select-text"></span>
+                        <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                          <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                        </svg>
+                      </div>
                     </div>
                   </div>
                   <div class="setting-row" style="margin-top: 12px;">
                     <div class="setting-label-group" data-i18n="showLogo">显示 Logo</div>
                     <div class="switch-container">
-                      <span class="setting-status-text" id="status-logo" data-i18n="on">打开</span>
                       <label class="switch">
                         <input type="checkbox" id="toggle-logo-switch" checked>
                         <span class="slider"></span>
@@ -2951,44 +3059,48 @@
                   <div class="setting-row">
                     <div class="setting-label-group" data-i18n="showQuicklinks">显示快速链接</div>
                     <div class="switch-container">
-                      <span class="setting-status-text" id="status-quicklinks" data-i18n="on">打开</span>
                       <label class="switch">
                         <input type="checkbox" id="toggle-quicklinks-switch" checked>
                         <span class="slider"></span>
                       </label>
                     </div>
                   </div>
-                  <div class="settings-card-title" style="margin-top: 14px;" data-i18n="quicklinkPosition">快速链接位置</div>
-                  <div class="custom-select-wrapper">
-                    <select id="select-quicklink-position" class="select-box" tabindex="-1" aria-label="快速链接位置">
-                      <option value="auto" data-i18n="qlPositionDefault">默认</option>
-                      <option value="bottom" data-i18n="qlPositionBottom">底部</option>
-                      <option value="middle" data-i18n="qlPositionMiddle">居中</option>
-                    </select>
-                    <div class="custom-select-display" data-for="select-quicklink-position">
-                      <span class="custom-select-text"></span>
-                      <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
-                        <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
-                      </svg>
+                  <!-- 标题与下拉合并为同一行 -->
+                  <div class="setting-row" style="margin-top: 14px;">
+                    <div class="setting-label-group" data-i18n="quicklinkPosition">快速链接位置</div>
+                    <div class="custom-select-wrapper">
+                      <select id="select-quicklink-position" class="select-box" tabindex="-1" aria-label="快速链接位置">
+                        <option value="auto" data-i18n="qlPositionDefault">默认</option>
+                        <option value="bottom" data-i18n="qlPositionBottom">底部</option>
+                        <option value="middle" data-i18n="qlPositionMiddle">居中</option>
+                      </select>
+                      <div class="custom-select-display" data-for="select-quicklink-position">
+                        <span class="custom-select-text"></span>
+                        <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                          <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                        </svg>
+                      </div>
                     </div>
                   </div>
-                  <div class="settings-card-title" style="margin-top: 14px;" data-i18n="quicklinkStyle">快速链接样式</div>
-                  <div class="custom-select-wrapper">
-                    <select id="select-quicklinks" class="select-box" tabindex="-1" aria-label="快速链接数量">
-                      <option value="1" data-i18n="rows1">一行</option>
-                      <option value="2" data-i18n="rows2">多行</option>
-                    </select>
-                    <div class="custom-select-display" data-for="select-quicklinks">
-                      <span class="custom-select-text"></span>
-                      <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
-                        <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
-                      </svg>
+                  <!-- 标题与下拉合并为同一行 -->
+                  <div class="setting-row" style="margin-top: 12px;">
+                    <div class="setting-label-group" data-i18n="quicklinkStyle">快速链接样式</div>
+                    <div class="custom-select-wrapper">
+                      <select id="select-quicklinks" class="select-box" tabindex="-1" aria-label="快速链接数量">
+                        <option value="1" data-i18n="rows1">一行</option>
+                        <option value="2" data-i18n="rows2">多行</option>
+                      </select>
+                      <div class="custom-select-display" data-for="select-quicklinks">
+                        <span class="custom-select-text"></span>
+                        <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                          <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                        </svg>
+                      </div>
                     </div>
                   </div>
                   <div class="setting-row" style="margin-top: 12px;">
                     <div class="setting-label-group" data-i18n="showAddButton">在快速链接区域显示添加按钮</div>
                     <div class="switch-container">
-                      <span class="setting-status-text" id="status-add-button" data-i18n="on">打开</span>
                       <label class="switch">
                         <input type="checkbox" id="toggle-add-button-switch" checked>
                         <span class="slider"></span>
@@ -3001,7 +3113,6 @@
                   <div class="setting-row" style="margin-bottom: 12px;">
                     <div class="setting-label-group" data-i18n="showMenuButton">显示菜单按钮</div>
                     <div class="switch-container">
-                      <span class="setting-status-text" id="status-menu-button" data-i18n="on">打开</span>
                       <label class="switch">
                         <input type="checkbox" id="toggle-menu-button-switch" checked>
                         <span class="slider"></span>
@@ -3011,7 +3122,6 @@
                   <div class="setting-row">
                     <div class="setting-label-group" data-i18n="showTimeCapsule">显示时间</div>
                     <div class="switch-container">
-                      <span class="setting-status-text" id="status-time-capsule" data-i18n="off">关闭</span>
                       <label class="switch">
                         <input type="checkbox" id="toggle-time-capsule-switch">
                         <span class="slider"></span>
@@ -3230,7 +3340,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.10 | 更新时间：2026-11-02</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.9.0-beta1 | 更新时间：2026-11-04</p><br>
 
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">

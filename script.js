@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.10';      // 发行版本
+const APP_VERSION = '1.9.0-beta1';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -68,7 +68,7 @@ const i18nData = {
     skipRestore: '恢复提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.10 | 更新时间：2026-11-02',
+    litever: '版本 1.9.0-beta1 | 更新时间：2026-11-04',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -84,6 +84,7 @@ const i18nData = {
     defaultWallpaper: '默认',
     localFile: '本地文件',
     onlineWallpaper: '自定义在线链接',
+    wallpaper: '壁纸',
     uploadFile: '选择文件',
     editCustomLink: '编辑自定义链接',
     editShortcut: '编辑快速链接',
@@ -257,7 +258,7 @@ const i18nData = {
     skipRestore: '恢復提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.10 | 更新時間：2026-11-02',
+    litever: '版本 1.9.0-beta1 | 更新時間：2026-11-04',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -273,6 +274,7 @@ const i18nData = {
     defaultWallpaper: '預設',
     localFile: '本機檔案',
     onlineWallpaper: '自訂線上連結',
+    wallpaper: '桌布',
     uploadFile: '選擇檔案',
     editCustomLink: '編輯自訂連結',
     editShortcut: '編輯快速連結',
@@ -431,7 +433,7 @@ const i18nData = {
     skipRestore: 'Resume reminders',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.10 | Updated: 2026-11-02',
+    litever: 'Version 1.9.0-beta1 | Updated: 2026-11-04',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -447,6 +449,7 @@ const i18nData = {
     defaultWallpaper: 'Default',
     localFile: 'Local file',
     onlineWallpaper: 'Custom online link',
+    wallpaper: 'Wallpaper',
     uploadFile: 'Select file',
     editCustomLink: 'Edit custom link',
     editShortcut: 'Edit quick link',
@@ -606,7 +609,7 @@ const i18nData = {
     skipRestore: '通知を再開',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.10 | 更新日: 2026-11-02',
+    litever: 'バージョン 1.9.0-beta1 | 更新日: 2026-11-04',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -622,6 +625,7 @@ const i18nData = {
     defaultWallpaper: 'デフォルト',
     localFile: 'ローカルファイル',
     onlineWallpaper: 'カスタムオンラインリンク',
+    wallpaper: '壁紙',
     uploadFile: 'ファイルを選択',
     editCustomLink: 'カスタムリンクを編集',
     editShortcut: 'クイックリンクを編集',
@@ -780,7 +784,7 @@ const i18nData = {
     skipRestore: 'Возобновить напоминания',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.10 | Обновлено: 2026-11-02',
+    litever: 'Версия 1.9.0-beta1 | Обновлено: 2026-11-04',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -796,6 +800,7 @@ const i18nData = {
     defaultWallpaper: 'По умолчанию',
     localFile: 'Локальный файл',
     onlineWallpaper: 'Своя онлайн-ссылка',
+    wallpaper: 'Обои',
     uploadFile: 'Выбрать файл',
     editCustomLink: 'Изменить свою ссылку',
     editShortcut: 'Изменить быструю ссылку',
@@ -1677,6 +1682,19 @@ function decodeInput(str) {
         // 挂到 body 上，脱离父容器 overflow 裁剪
         document.body.appendChild(dropdown);
         positionDropdown();
+      }
+
+      // 合并行模式（设置行内嵌下拉）：点击整行任意位置都视为触发下拉，
+      // 行内的开关、按钮、链接、提示图标等子控件除外。
+      // 先阻止冒泡：否则原始点击继续冒泡到 document 的「点外关闭」逻辑，
+      // 会把刚展开的下拉立刻关掉。
+      const hostRow = display.closest('.setting-row');
+      if (hostRow) {
+        hostRow.addEventListener('click', (e) => {
+          if (e.target.closest('.custom-select-display, .custom-select-dropdown, .switch-container, button, a, input, .tooltip-icon')) return;
+          e.stopPropagation();
+          display.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        });
       }
 
       // 点击触发器：切换下拉的展开/收起
@@ -2879,6 +2897,8 @@ document.addEventListener('DOMContentLoaded', () => {
     applyBgVignette();
     applyBgFadeBlur();
     applyBgDependentEnabled();
+    // 同步壁纸来源下拉（背景关闭时显示「关闭」）
+    syncWallpaperSourceSelect();
     // 预览不受背景开关影响，始终显示当前选择的壁纸
     renderWallpaperPreview();
   }
@@ -2974,7 +2994,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 当前壁纸对应的下拉选项值
+  // 背景关闭时返回 'off'，让下拉显示「关闭」选项
   function getWallpaperSourceValue() {
+    if (!bgEnabled) return 'off';
     if (!customWallpaperData) return 'default';
     if (customWallpaperData.type === 'bing_daily') return 'bing';
     const url = customWallpaperData.url || '';
@@ -3654,6 +3676,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // 壁纸来源下拉：切换即切换壁纸来源
   selectWallpaperSource?.addEventListener('change', async () => {
     const value = selectWallpaperSource.value;
+    // 「关闭」= 关闭背景（替代原来的背景开关）
+    if (value === 'off') {
+      if (bgEnabled) {
+        bgEnabled = false;
+        Storage.set('ntp_bg_enabled', false);
+        applyBackgroundState();
+      }
+      updateWallpaperFileRow();
+      renderWallpaperPreview();
+      return;
+    }
+    // 选任一具体来源：确保背景开启（替代原来的开关逻辑）
+    if (!bgEnabled) {
+      bgEnabled = true;
+      Storage.set('ntp_bg_enabled', true);
+      applyBackgroundState();
+    }
     // 新壁纸就绪前先进入加载态，不保留上一张预览
     setPreviewLoading();
     if (value === 'default') {
