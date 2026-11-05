@@ -1,4 +1,4 @@
-const APP_VERSION = '1.9.0-beta1';      // 发行版本
+const APP_VERSION = '1.9.0-beta2';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -68,7 +68,7 @@ const i18nData = {
     skipRestore: '恢复提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.9.0-beta1 | 更新时间：2026-11-04',
+    litever: '版本 1.9.0-beta2 | 更新时间：2026-11-05',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -85,6 +85,18 @@ const i18nData = {
     localFile: '本地文件',
     onlineWallpaper: '自定义在线链接',
     wallpaper: '壁纸',
+    color: '颜色',
+    mdColor: '动态颜色',
+    mdColorOff: '关闭',
+    mdColorWallpaper: '壁纸',
+    mdColorCustom: '手动',
+    mdPresets: '预设配色',
+    mdPresetDefault: '默认',
+    mdPresetBlue: '淡蓝',
+    mdPresetPurple: '丁香紫',
+    mdPresetGreen: '苔绿',
+    mdPresetRed: '陶红',
+    mdHueSlider: '自定义',
     uploadFile: '选择文件',
     editCustomLink: '编辑自定义链接',
     editShortcut: '编辑快速链接',
@@ -258,7 +270,7 @@ const i18nData = {
     skipRestore: '恢復提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.9.0-beta1 | 更新時間：2026-11-04',
+    litever: '版本 1.9.0-beta2 | 更新時間：2026-11-05',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -275,6 +287,18 @@ const i18nData = {
     localFile: '本機檔案',
     onlineWallpaper: '自訂線上連結',
     wallpaper: '桌布',
+    color: '顏色',
+    mdColor: '動態顏色',
+    mdColorOff: '關閉',
+    mdColorWallpaper: '桌布',
+    mdColorCustom: '手動',
+    mdPresets: '預設配色',
+    mdPresetDefault: '預設',
+    mdPresetBlue: '淡藍',
+    mdPresetPurple: '丁香紫',
+    mdPresetGreen: '苔綠',
+    mdPresetRed: '陶紅',
+    mdHueSlider: '自訂',
     uploadFile: '選擇檔案',
     editCustomLink: '編輯自訂連結',
     editShortcut: '編輯快速連結',
@@ -433,7 +457,7 @@ const i18nData = {
     skipRestore: 'Resume reminders',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.9.0-beta1 | Updated: 2026-11-04',
+    litever: 'Version 1.9.0-beta2 | Updated: 2026-11-05',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -450,6 +474,18 @@ const i18nData = {
     localFile: 'Local file',
     onlineWallpaper: 'Custom online link',
     wallpaper: 'Wallpaper',
+    color: 'Color',
+    mdColor: 'Dynamic color',
+    mdColorOff: 'Off',
+    mdColorWallpaper: 'Wallpaper',
+    mdColorCustom: 'Manual',
+    mdPresets: 'Presets',
+    mdPresetDefault: 'Default',
+    mdPresetBlue: 'Pastel blue',
+    mdPresetPurple: 'Lilac',
+    mdPresetGreen: 'Moss',
+    mdPresetRed: 'Terracotta',
+    mdHueSlider: 'Custom',
     uploadFile: 'Select file',
     editCustomLink: 'Edit custom link',
     editShortcut: 'Edit quick link',
@@ -609,7 +645,7 @@ const i18nData = {
     skipRestore: '通知を再開',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.9.0-beta1 | 更新日: 2026-11-04',
+    litever: 'バージョン 1.9.0-beta2 | 更新日: 2026-11-05',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -626,6 +662,18 @@ const i18nData = {
     localFile: 'ローカルファイル',
     onlineWallpaper: 'カスタムオンラインリンク',
     wallpaper: '壁紙',
+    color: '色',
+    mdColor: 'ダイナミックカラー',
+    mdColorOff: 'オフ',
+    mdColorWallpaper: '壁紙',
+    mdColorCustom: '手動',
+    mdPresets: 'プリセット',
+    mdPresetDefault: '既定',
+    mdPresetBlue: 'ペールブルー',
+    mdPresetPurple: 'ライラック',
+    mdPresetGreen: 'モス',
+    mdPresetRed: 'テラコッタ',
+    mdHueSlider: 'カスタム',
     uploadFile: 'ファイルを選択',
     editCustomLink: 'カスタムリンクを編集',
     editShortcut: 'クイックリンクを編集',
@@ -784,7 +832,7 @@ const i18nData = {
     skipRestore: 'Возобновить напоминания',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.9.0-beta1 | Обновлено: 2026-11-04',
+    litever: 'Версия 1.9.0-beta2 | Обновлено: 2026-11-05',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -801,6 +849,18 @@ const i18nData = {
     localFile: 'Локальный файл',
     onlineWallpaper: 'Своя онлайн-ссылка',
     wallpaper: 'Обои',
+    color: 'Цвет',
+    mdColor: 'Динамический цвет',
+    mdColorOff: 'Выкл.',
+    mdColorWallpaper: 'Обои',
+    mdColorCustom: 'Вручную',
+    mdPresets: 'Пресеты',
+    mdPresetDefault: 'По умолчанию',
+    mdPresetBlue: 'Бледно-синий',
+    mdPresetPurple: 'Сиреневый',
+    mdPresetGreen: 'Мшистый',
+    mdPresetRed: 'Терракота',
+    mdHueSlider: 'Свой цвет',
     uploadFile: 'Выбрать файл',
     editCustomLink: 'Изменить свою ссылку',
     editShortcut: 'Изменить быструю ссылку',
@@ -1652,6 +1712,8 @@ function decodeInput(str) {
         dropdown.setAttribute('data-for-select', selectId);
 
         Array.from(nativeSelect.options).forEach((opt, index) => {
+          // 隐藏选项（如「动态颜色」的默认态）只在原生 select 里用于回显，不进下拉面板
+          if (opt.hidden) return;
           const optionEl = document.createElement('div');
           optionEl.className = 'custom-select-option';
           optionEl.textContent = opt.textContent.trim();
@@ -1662,7 +1724,7 @@ function decodeInput(str) {
           dropdown.appendChild(optionEl);
           // 原生 option 被禁用时：只展示、不选中，但依然要吃掉这次点击，
           // 否则事件会冒泡到 document，被当成"点击面板外部"而把设置面板收起来
-          if (opt.disabled) {
+          if (opt.disabled || opt.hasAttribute('data-md-disabled')) {
             optionEl.classList.add('disabled');
             optionEl.addEventListener('click', (e) => e.stopPropagation());
             return;
@@ -1985,9 +2047,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
   const btnCloseLayoutModal = document.getElementById('btn-close-layout-modal');
 
-  // 设置面板内的二级页面（背景 / 布局）
+  // 设置面板内的二级页面（背景 / 布局 / 颜色）
   const settingsPageBg = document.getElementById('settings-page-bg');
   const settingsPageLayout = document.getElementById('settings-page-layout');
+  const settingsPageColor = document.getElementById('settings-page-color');
 
   // 在设置面板内切换页面：'main' 主设置页、'bg' 背景设置、'layout' 布局设置
   // 切换带 0.2s 过渡：新内容淡入 + 面板高度平滑变化
@@ -2056,6 +2119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     popoverSettings?.classList.toggle('in-subpage', !isMain);
     settingsPageBg?.classList.toggle('active', name === 'bg');
     settingsPageLayout?.classList.toggle('active', name === 'layout');
+    settingsPageColor?.classList.toggle('active', name === 'color');
   }
 
   function showSettingsPage(name) {
@@ -2545,6 +2609,443 @@ document.addEventListener('DOMContentLoaded', () => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
+  // ===== MD3 动态配色（material-color-utilities / HCT）=====
+  // 整个模块必须排在 applyTheme 之前：applyTheme 会调用 renderMdSwatches，
+  // 若这些 const 声明在后面就会触发 TDZ（Cannot access 'mdSwatches' before initialization）
+  const MCU_API = window.MCU || null;
+  // 三种模式：off=原版配色；wallpaper=从壁纸提取种子色；custom=自定义种子色。
+  // 同时生成浅色/深色两套 scheme，注入与现有 CSS 变量同名的变量，
+  // 不改变任何现有变量名与选择器结构（最小侵入）。
+  const MD_MODE_KEY = 'ntp_md_color_mode';   // off | wallpaper | custom
+  const MD_SEED_KEY = 'ntp_md_seed';         // 自定义种子色（hex，如 #6750a4）
+  const selectMdMode = document.getElementById('select-md-color-mode');
+  const mdCustomSettings = document.getElementById('md-custom-settings');
+  const mdHueSlider = document.getElementById('md-hue-slider');
+  const mdCustomPanel = document.getElementById('md-custom-panel');
+  const mdHueHandle = document.getElementById('md-hue-handle');
+  const mdSwatches = document.querySelectorAll('.md-swatch');
+  const mdSwatchCustom = document.querySelector('.md-swatch-custom');
+  const btnOpenColorModal = document.getElementById('btn-open-color-modal');
+  const btnCloseColorModal = document.getElementById('btn-close-color-modal');
+
+  // 预设色板渲染：不直接铺种子色（饱和原色刺眼、不符合 MD 观感），
+  // 而是按当前明暗主题取该色相的 tonal 结果：
+  //   卡片底色 = primaryContainer，中央圆点 = onPrimaryContainer
+  // 这样浅色下是淡彩卡片、深色下是深彩卡片，色相可辨又不抢眼。
+  function renderMdSwatches() {
+    // MCU_API 已提前声明（见文件上方），这里可直接使用
+    const api = MCU_API;
+    if (!api) return;
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    mdSwatches.forEach((sw) => {
+      const seed = sw.getAttribute('data-seed');
+      if (!seed) return; // 自定义卡片无种子色
+      try {
+        const scheme = mdScheme(api.argbFromHex(seed), dark);
+        sw.style.backgroundColor = api.hexFromArgb(scheme.primaryContainer);
+        sw.style.setProperty('--swatch-dot', api.hexFromArgb(scheme.onPrimaryContainer));
+      } catch (e) { /* 配色工具未就绪时保持原样 */ }
+    });
+  }
+
+  // 用 DynamicScheme（TonalSpot）生成完整 M3-2023 角色表。
+  // 注：不要用 themeFromSourceColor——它返回的是旧的 Material You 方案，
+  // 不含 surfaceContainer* 系列角色，取值为 undefined 会让变量全变成 #000000。
+  function mdScheme(seedArgb, dark) {
+    return new MCU_API.SchemeTonalSpot(MCU_API.Hct.fromInt(seedArgb), dark, 0.0);
+  }
+
+  // MD3 角色 → 现有 CSS 变量的映射。
+  // 按「层级由低到高」取值：页面底色 < 卡片 < 输入框，保证浅/深两套都有层次、不糊成一片
+  function mdBuildVarText(scheme, dark) {
+    const c = (role) => MCU_API.hexFromArgb(scheme[role]);
+    // M3 状态层：把 on-color 以指定不透明度叠在基色上，而不是换成另一个颜色角色。
+    // hover 8%、focus 10%、pressed 12%（Material 3 state layer 规范值）。
+    const layer = (baseRole, onRole, alpha) => {
+      const b = scheme[baseRole], o = scheme[onRole];
+      if (b == null || o == null) return c(baseRole);
+      const ch = (argb, shift) => (argb >> shift) & 0xff;
+      const mix = (shift) => Math.round(ch(b, shift) * (1 - alpha) + ch(o, shift) * alpha);
+      const argb = (255 << 24) | (mix(16) << 16) | (mix(8) << 8) | mix(0);
+      return MCU_API.hexFromArgb(argb >>> 0);
+    };
+    const vars = {
+      // ===== 表面层 =====
+      '--fill-color': c('surface'),
+      '--fill-popup-color': c('surfaceContainerLow'),
+      '--neutral-layer-floating': c('surfaceContainerLow'),
+      '--modal-bg': c('surfaceContainerLow'),
+      '--settings-card-bg': c('surfaceContainerLow'),
+      '--settings-card-hover': c('surfaceContainer'),
+      '--settings-panel-bg': c('surfaceContainerHigh'),
+      '--suggestion-bg': c('surfaceContainerLow'),
+      '--suggestion-hover': c('surfaceContainerHigh'),
+      '--input-bg': c('surfaceContainerHighest'),
+      // 输入框（仅 MD 开启时生效）：
+      //   常规态与卡片同层（surfaceContainerLow），hover 抬到 surfaceContainerHighest，
+      //   聚焦保持最高档并用 primary 描边。这样深色模式下不再落到旧的 #282828 纯灰。
+      '--input-rest-bg': c('surfaceContainerLow'),
+      '--input-hover-bg': c('surfaceContainerHighest'),
+      '--input-focus-bg': c('surfaceContainerHighest'),
+      '--input-focus-border': c('primary'),
+      '--settings-thumb-bg': c('surfaceContainer'),
+      // ===== 描边 =====
+      '--modal-border': c('outlineVariant'),
+      '--settings-card-border': c('outlineVariant'),
+      '--settings-thumb-border': c('outlineVariant'),
+      '--input-border': c('outlineVariant'),
+      '--input-border-focus': c('outline'),
+      // ===== 文字 =====
+      '--neutral-foreground-rest': c('onSurface'),
+      '--neutral-foreground-secondary': c('onSurfaceVariant'),
+      '--settings-text-primary': c('onSurface'),
+      '--settings-text-secondary': c('onSurfaceVariant'),
+      '--placeholder-color': c('outline'),
+      '--logo-color': c('onSurfaceVariant'),
+      // ===== 强调 =====
+      '--accent-foreground-rest': c('primary'),
+      // 强调色 hover：M3 下同样用 8% onPrimary 状态层，保持同一色相（原来是跳到 tertiary）
+      '--accent-foreground-hover': layer('primary', 'onPrimary', 0.08),
+      '--accent-foreground-invert': c('onPrimary'),
+      // ===== 按钮 =====
+      // 次级按钮（tonal button）：secondaryContainer 底 + onSecondaryContainer 字，
+      // hover 同样叠 8% onSecondaryContainer，保持色相一致
+      '--btn-secondary-bg': c('secondaryContainer'),
+      '--btn-secondary-hover': layer('secondaryContainer', 'onSecondaryContainer', 0.08),
+      '--btn-secondary-text': c('onSecondaryContainer'),
+      // 主按钮：primary 底 + onPrimary 字。
+      // hover 按 M3 state layer 规范叠 8% onPrimary，而不是换到 primaryDim/tertiary 这类别的角色色
+      // M3 slider handle 用 primary（标准做法，浅深模式都清晰，无需描边/阴影）
+      '--md-hue-thumb': c('primary'),
+      '--btn-primary-bg': c('primary'),
+      '--btn-primary-text': c('onPrimary'),
+      '--btn-primary-hover': layer('primary', 'onPrimary', 0.08),
+      // ===== 语义色 =====
+      '--btn-danger-color': c('error'),
+      '--btn-danger-hover': c('errorContainer'),
+      '--suggestion-history-color': c('secondary'),
+      '--suggestion-footer-color': c('tertiary')
+    };
+    return ':root[data-theme="' + (dark ? 'dark' : 'light') + '"]{' +
+      Object.entries(vars).map(([k, v]) => k + ':' + v).join(';') + '}';
+  }
+
+  // 由色相生成种子色（固定饱和度/亮度，保证生成结果稳定可用）
+  function mdHueToSeed(h) {
+    const s = 0.72, l = 0.42;
+    const f = n => {
+      const k = (n + h / 30) % 12;
+      const a = s * Math.min(l, 1 - l);
+      const v = l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+      return Math.round(255 * v).toString(16).padStart(2, '0');
+    };
+    return '#' + f(0) + f(8) + f(4);
+  }
+
+  // 种子色 -> 滑块色相。
+  // 必须与 mdHueToSeed 互逆（HSL 空间），否则回显时滑块位置会与用户选择不一致。
+  // 仅当色相无法从色值可靠还原时（如灰阶/预设原色）才退回 HCT 色相。
+  function mdSeedToHue(hex) {
+    const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || '').trim());
+    if (m) {
+      const n = parseInt(m[1], 16);
+      const r = (n >> 16 & 255) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+      if (d > 0.02) { // 有彩度：按 HSL 反算色相
+        let h;
+        if (max === r) h = ((g - b) / d) % 6;
+        else if (max === g) h = (b - r) / d + 2;
+        else h = (r - g) / d + 4;
+        h = h * 60;
+        if (h < 0) h += 360;
+        return Math.round(h);
+      }
+      return 0; // 灰阶无意义色相
+    }
+    return mdSeedToHueHct(hex);
+  }
+
+  // 旧实现（HCT 色相）：仅作兜底
+  function mdSeedToHueHct(hex) {
+    try {
+      const hct = MCU_API.Hct.fromInt(MCU_API.argbFromHex(hex));
+      return Math.round(hct.hue);
+    } catch (e) { return 220; }
+  }
+
+  // 「跟随壁纸」选项在壁纸未启用时置灰不可选。
+  // 注意：不能给原生 <option> 加 disabled——若它正是当前选中项，
+  // 浏览器会把 select.value 重置为空、连带丢掉用户已保存的模式。
+  // 因此走「视觉置灰 + 点击拦截」：
+  //   1) 给 option 打 data-md-disabled，供自定义下拉渲染灰色样式
+  //   2) change 事件里拦截（键盘/程序化赋值也覆盖到）
+  let mdWallpaperAvailable = true;
+  function syncMdWallpaperOption(available) {
+    if (!selectMdMode) return;
+    mdWallpaperAvailable = available;
+    const opt = selectMdMode.querySelector('option[value="wallpaper"]');
+    if (opt) opt.toggleAttribute('data-md-disabled', !available);
+    // 已缓存的浮层选项同步置灰
+    const dropdown = document.querySelector('.custom-select-dropdown[data-for-select="select-md-color-mode"]');
+    if (dropdown) {
+      const optEl = dropdown.querySelector('.custom-select-option[data-value="wallpaper"]');
+      if (optEl) optEl.classList.toggle('disabled', !available);
+    }
+  }
+
+  // 选出用于取色的壁纸 <img>：优先背景图，其次预览图
+  function pickWallpaperImageEl() {
+    return [
+      document.getElementById('bg-image'),
+      document.querySelector('#wallpaper-preview-container img')
+    ].find(img => img && img.src) || null;
+  }
+
+  // 以 crossOrigin="anonymous" 重新加载同一 URL，保证 canvas 可读像素。
+  // blob:/data: 本地资源直接复用原图，无需重复加载。
+  function loadImageForSampling(url) {
+    if (!url) return Promise.reject(new Error('empty url'));
+    if (/^(blob:|data:)/i.test(url)) {
+      const img = pickWallpaperImageEl();
+      if (img && img.complete && img.naturalWidth > 0) return Promise.resolve(img);
+      return Promise.reject(new Error('local image not ready'));
+    }
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      // 两次尝试：CORS 失败时退回不带 crossOrigin 的普通加载
+      // （此时 canvas 会被污染，取色仍会失败，但至少能给出明确日志）
+      img.crossOrigin = 'anonymous';
+      img.decoding = 'async';
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('load error: ' + url));
+      img.src = url;
+    });
+  }
+
+  // 应用 MD 配色：生成浅/深两套 scheme 并注入 <style>
+  // 取色结果缓存：图片 URL → ARGB，避免重复量化开销
+  // 默认种子色 = 中性灰（对应色板第一格「灰色 · 默认」）
+  const MD_DEFAULT_SEED = '#5f6368';
+  function getMdSeed() { return Storage.get(MD_SEED_KEY, MD_DEFAULT_SEED); }
+
+  const MD_SEED_CACHE = new Map();
+  let mdApplyTimer = null;
+  function applyMdColor() {
+    const storedMode = Storage.get(MD_MODE_KEY, 'off');
+    // 三种状态：off（默认 = 关闭 MD 取色，用原有的黑白主题）/ wallpaper / custom
+    // 壁纸未启用时「壁纸」模式无意义：选项置灰不可选，
+    // 若仍处于该模式则按默认种子色渲染（存储值保持 wallpaper 不变，
+    // 重新开启壁纸后自动恢复跟随，无需用户重设）。
+    // 注意：bgEnabled 在文件更靠后处才用 let 声明，此处若直接读会触发 TDZ
+    // （ReferenceError: Cannot access 'bgEnabled' before initialization），
+    // 且 try/catch 会把它吞成「初始化失败」，导致整个 MD 配色不生效。
+    // 因此这里用 try 包裹，初始化阶段读不到就当作「壁纸未启用」。
+    let wallpaperAvailable = false;
+    try { wallpaperAvailable = !!bgEnabled; } catch (e) { wallpaperAvailable = false; }
+    const mode = (storedMode === 'wallpaper' && wallpaperAvailable) ? 'wallpaper'
+               : (storedMode === 'custom' ? 'custom' : 'off');
+    syncMdWallpaperOption(wallpaperAvailable);
+    let styleEl = document.getElementById('md-color-style');
+    if (mode === 'off' || !MCU_API) {
+      // 默认模式：完全不接管配色，回到页面原本的黑白主题
+      styleEl?.remove();
+      document.documentElement.removeAttribute('data-md-color');
+      // 色板保持可点：即使在默认态也应允许用户直接选色
+      if (selectMdMode) { selectMdMode.value = mode; refreshCustomSelects(); }
+      mdSwatches.forEach((sw) => sw.classList.toggle('active', sw.getAttribute('data-mode') === 'off'));
+      renderMdSwatches();
+      return;
+    }
+
+    const build = (seedArgb) => {
+      const css = mdBuildVarText(mdScheme(seedArgb, false), false) +
+                  mdBuildVarText(mdScheme(seedArgb, true), true);
+      if (!styleEl) {
+        styleEl = document.createElement('style');
+        styleEl.id = 'md-color-style';
+        document.head.appendChild(styleEl);
+      }
+      styleEl.textContent = css;
+      // 给 :root 打标记，供 .input 等「仅 MD 下生效」的规则使用
+      document.documentElement.setAttribute('data-md-color', 'on');
+    };
+
+    if (mode === 'wallpaper') {
+      // 从当前壁纸图片提取种子色。
+      // 关键：远程图（必应每日、自定义在线链接）若直接用页面上的 <img> 取像素，
+      // canvas 会被标记为「污染」(tainted)，getImageData 抛 SecurityError 后静默失败。
+      // 因此远程 URL 一律用 crossOrigin="anonymous" 的临时 Image 重新加载一次再取色。
+      const fallback = getMdSeed();
+      const sourceImg = pickWallpaperImageEl();
+
+      if (!sourceImg || !sourceImg.src) {
+        build(MCU_API.argbFromHex(fallback));
+      } else {
+        const url = sourceImg.currentSrc || sourceImg.src;
+        const cached = MD_SEED_CACHE.get(url);
+        if (cached !== undefined) {
+          build(cached);
+        } else {
+          loadImageForSampling(url).then(
+            img => MCU_API.sourceColorFromImage(img),
+            () => { throw new Error('image reload failed'); }
+          ).then(
+            argb => { MD_SEED_CACHE.set(url, argb); build(argb); },
+            err => {
+              console.warn('壁纸取色失败，回退默认色:', err);
+              // 失败结果也缓存一小段时间，避免反复重试拖慢界面
+              MD_SEED_CACHE.set(url, MCU_API.argbFromHex(fallback));
+              build(MCU_API.argbFromHex(fallback));
+            }
+          );
+        }
+      }
+    } else {
+      build(MCU_API.argbFromHex(getMdSeed()));
+    }
+
+    // 壁纸模式下色板依然可点：选中任一色卡即自动切到「手动」模式
+    if (mdCustomSettings) mdCustomSettings.classList.remove('disabled');
+    if (selectMdMode) {
+      selectMdMode.value = mode;
+      // 程序化改值不会触发 change，需手动把显示文本同步到自定义下拉
+      refreshCustomSelects();
+    }
+    // 选中态：命中等价预设色 -> 该色块选中；否则（滑块调出来的色）高亮末位自定义卡片
+    if (mdSwatches.length) {
+      const seed = getMdSeed().toLowerCase();
+      let matched = false;
+      mdSwatches.forEach((sw) => {
+        const s = sw.getAttribute('data-seed');
+        const isMatch = !!s && s.toLowerCase() === seed;
+        if (isMatch) matched = true;
+        sw.classList.toggle('active', isMatch);
+      });
+      if (mdSwatchCustom) mdSwatchCustom.classList.toggle('active', !matched);
+      if (!matched) setCustomPanelOpen(true);
+    }
+    renderMdSwatches();
+  }
+
+  // 自绘手柄位置：与原生 thumb 的几何一致（M3 手柄宽 4px，沿轨道两端内缩 2px）
+  const MD_HANDLE_W = 4;
+  function updateMdHueHandle() {
+    if (!mdHueSlider || !mdHueHandle || mdCustomPanel?.hidden) return;
+    const w = mdHueSlider.clientWidth;
+    if (!w) return;
+    const ratio = Number(mdHueSlider.value) / Number(mdHueSlider.max || 360);
+    mdHueHandle.style.left = (ratio * (w - MD_HANDLE_W) + MD_HANDLE_W / 2) + 'px';
+  }
+
+  // 滑块拖动：实时重着色（rAF 合帧），松手才落盘
+  if (mdHueSlider) {
+    let raf = null;
+    mdHueSlider.addEventListener('input', () => {
+      updateMdHueHandle();
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const seed = mdHueToSeed(Number(mdHueSlider.value));
+        Storage.set(MD_SEED_KEY, seed);
+        // 默认态下拖滑块 = 主动选色，自动切到「手动」
+        if (Storage.get(MD_MODE_KEY, 'off') === 'off') Storage.set(MD_MODE_KEY, 'custom');
+        applyMdColor();
+      });
+    });
+    mdHueSlider.addEventListener('change', () => {
+      // 注意：这里不要再把滑块回显「校准」到 HCT 色相。
+      // mdHueToSeed 用 HSL 生成颜色，而 mdSeedToHue 读的是 HCT 色相，
+      // 两者在黄绿/青色区可差 40°+，松手后滑块会突然跳走（用户感知为「回弹」）。
+      // 滑块值本身就是用户的真实选择，保持不动。
+      updateMdHueHandle();
+      applyMdColor();
+    });
+  }
+  window.addEventListener('resize', updateMdHueHandle);
+
+  // 末位「自定义」卡片：点击展开/收起色相滑块
+  function setCustomPanelOpen(open) {
+    if (!mdCustomPanel || !mdSwatchCustom) return;
+    mdCustomPanel.hidden = !open;
+    mdSwatchCustom.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) {
+      // 展开后才有布局尺寸，先同步手柄位置（等一帧再量宽）
+      requestAnimationFrame(updateMdHueHandle);
+    }
+  }
+  mdSwatchCustom?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = mdSwatchCustom.getAttribute('aria-expanded') !== 'true';
+    if (open && mdHueSlider) mdHueSlider.value = mdSeedToHue(getMdSeed());
+    updateMdHueHandle();
+    setCustomPanelOpen(open);
+  });
+
+  // 预设色板：点击即以该颜色为种子色（自定义 / 默认卡片单独处理）
+  mdSwatches.forEach(sw => {
+    if (sw.hasAttribute('data-custom')) return;
+    sw.addEventListener('click', () => {
+      // 「默认」卡 = 关闭 MD 取色，回到原生黑白主题
+      if (sw.getAttribute('data-mode') === 'off') {
+        Storage.set(MD_MODE_KEY, 'off');
+        setCustomPanelOpen(false);
+        applyMdColor();
+        return;
+      }
+      Storage.set(MD_SEED_KEY, sw.getAttribute('data-seed'));
+      Storage.set(MD_MODE_KEY, 'custom');
+      if (mdHueSlider) mdHueSlider.value = mdSeedToHue(sw.getAttribute('data-seed'));
+      updateMdHueHandle();
+      setCustomPanelOpen(false);
+      applyMdColor();
+    });
+  });
+
+  // 模式切换（「跟随壁纸」在壁纸关闭时不可选：拦下并回退到原值）
+  selectMdMode?.addEventListener('change', () => {
+    if (selectMdMode.value === 'wallpaper' && !mdWallpaperAvailable) {
+      // 回退到存储中的可用模式（custom / off），避免界面停在不可用项
+      const fallback = Storage.get(MD_MODE_KEY, 'off') === 'wallpaper' ? 'custom' : Storage.get(MD_MODE_KEY, 'off');
+      selectMdMode.value = fallback;
+      refreshCustomSelects();
+      return;
+    }
+    Storage.set(MD_MODE_KEY, selectMdMode.value);
+    applyMdColor();
+  });
+
+  // 「跟随壁纸」模式下壁纸变化后重新取色。
+  // 同时挂 bg-image 的 load（自定义/必应壁纸）与预览图 load（默认壁纸、背景关闭态），
+  // 任意一路就绪都重算一次；applyMdColor 内部会做就绪判断，未就绪时保持上一次结果。
+  ['bg-image', 'wallpaper-preview-container'].forEach(id => {
+    const host = document.getElementById(id);
+    if (!host) return;
+    const onReady = (e) => {
+      const t = e.target;
+      if (!t || t.tagName !== 'IMG') return;
+      if (Storage.get(MD_MODE_KEY, 'off') !== 'wallpaper') return;
+      // 图片已解码后再取色，避免读到空画布
+      if (t.decode) t.decode().catch(() => {}).then(refreshMdColorFromWallpaper);
+      else refreshMdColorFromWallpaper();
+    };
+    host.addEventListener('load', onReady, true);
+  });
+
+  // 颜色二级页跳转
+  btnOpenColorModal?.addEventListener('click', () => {
+    // 打开时把滑块回显为当前种子色的色相
+    if (mdHueSlider) mdHueSlider.value = mdSeedToHue(getMdSeed());
+    updateMdHueHandle();
+    showSettingsPage('color');
+  });
+  btnCloseColorModal?.addEventListener('click', () => showSettingsPage('main'));
+
+  // 初始化（MCU 加载失败则静默保持原配色）
+  try {
+    applyMdColor();
+  } catch (err) {
+    console.warn('MD 配色初始化失败:', err);
+  }
+
   // 应用主题：写 <html data-theme>、同步按钮选中态、同步标签页图标
   function applyTheme() {
     const pref = Storage.get(THEME_KEY, 'auto');
@@ -2572,6 +3073,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 选中项会加粗，文字宽度随之变化，重新量一次
     setupThemeOptionScroll();
+
+    // 明暗切换后色板的 tonal 底色要跟着换一套（renderMdSwatches 定义在下方，
+    // 用 typeof 兜住首次调用的时序）
+    if (typeof renderMdSwatches === 'function') renderMdSwatches();
   }
 
   themeOptionEls.forEach(el => {
@@ -2592,6 +3097,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (err) {
     console.warn('主题初始化失败:', err);
   }
+
 
   // 默认与自定义搜索引擎
   let customEngineConfig = Storage.get('ntp_custom_engine_config', {
@@ -2901,6 +3407,9 @@ document.addEventListener('DOMContentLoaded', () => {
     syncWallpaperSourceSelect();
     // 预览不受背景开关影响，始终显示当前选择的壁纸
     renderWallpaperPreview();
+    // 背景启停影响「跟随壁纸」是否可用，并决定 MD 配色是否需要回退到默认种子色
+    // （用 typeof 防御：本函数可能在 MD 配色模块定义之前就被调用）
+    if (typeof applyMdColor === 'function') applyMdColor();
   }
 
   // 根据"增强可见性"设置与背景开关，切换 body 的 data 属性
@@ -3759,6 +4268,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (toggleBgSwitch) toggleBgSwitch.checked = true;
     if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    // 壁纸已切换到新图：「跟随壁纸」模式下重新取色。
+    // 不等 bg-image 的 load 事件——renderWallpaper 对同源/同 URL 可能复用节点，
+    // 这里统一主动触发更可靠。
+    refreshMdColorFromWallpaper();
+  }
+
+  // 壁纸切换后的取色触发（供 commitWallpaperAsActive 与图片 load 两路调用）
+  function refreshMdColorFromWallpaper() {
+    if (typeof applyMdColor !== 'function') return;
+    if (Storage.get(MD_MODE_KEY, 'off') !== 'wallpaper') return;
+    // 等下一帧，确保 renderWallpaper 已把新 src 写到 <img> 上
+    requestAnimationFrame(() => {
+      const img = pickWallpaperImageEl();
+      if (img && img.src) {
+        // 新 URL 未进入缓存：清掉旧缓存项无关紧要，按 URL 取即可
+        MD_SEED_CACHE.delete(img.currentSrc || img.src);
+      }
+      applyMdColor();
+    });
   }
 
   // 应用保留的本地壁纸。blob URL 每次重新生成，避免与已释放的地址冲突

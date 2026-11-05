@@ -6,6 +6,8 @@
     <meta name="referrer" content="strict-origin">
     <!-- 首帧加载渲染设置 -->
     <script src="early.js"></script>
+    <!-- Material Design 3 配色引擎（material-color-utilities，IIFE 打包，暴露全局 MCU） -->
+    <script src="mcu.js"></script>
     <title data-i18n="pageTitle">新标签页</title>
     <meta name="description" content="可定制的浏览器类原生起始页-简洁无需多言" />
     <style>
@@ -496,6 +498,9 @@
       gap: 10px;
     }
 
+    /* 同一卡片内部的上下分块：块与块之间留出与卡片间距一致的 10px。
+       用 padding-top 而非 margin：.settings-nav-row 的 hover 负外边距会吃掉 margin，
+       导致视觉间距变小。用 padding 可保证无论 hover 与否都是精确的 10px。 */
     /* 设置卡片样式 */
     .settings-card {
       background-color: var(--settings-card-bg);
@@ -906,6 +911,13 @@
       background-color: var(--input-bg);        /* 凹槽底色 */
     }
 
+    /* 主题滑块若紧跟在同一卡片的颜色分块之后，留出 10px 空隙（与卡片间距一致）。
+       颜色按钮带 -4px 的负 margin（用于 hover 顶到卡片边缘），会吃掉一半间距，
+       所以这里用 10px + 4px 补偿，实测视觉空隙正好 10px。 */
+    .settings-card > .settings-subblock + .theme-switch {
+      margin-top: 14px;
+    }
+
     /* 滑块：由 idx-N 类驱动位移，切换时平滑滑动
        （宽度 = (100% − 2×3 padding − 2×2 gap) / 3） */
     .theme-switch::before {
@@ -1224,6 +1236,189 @@
       /* 与下拉「预置」项同一 chevron，旋转 90° 指向右侧子级 */
       transform: rotate(-90deg);
       transition: color 0.08s ease;
+    }
+
+    /* ===== MD3 预设色板 =====
+       每个色块不是直接铺种子色（饱和原色很刺眼），
+       而是按 M3 的做法用「 tonal 容器色 + 同色系圆点」表达：
+       容器 = 该色相的 primaryContainer（tone 90/30），
+       圆点 = onPrimaryContainer（tone 10/90），保证明暗对比且色调柔和。*/
+    .md-preset-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .md-swatch {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 10px;
+      border: 1px solid var(--settings-card-border);
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      transition: transform 0.1s ease;
+      /* 底色由 JS 按 data-seed 生成 tonal 色写入（见 script.js 色板渲染） */
+    }
+
+    /* 色块中央的小圆点：该色调的强调色 */
+    .md-swatch::after {
+      content: '';
+      width: 38%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background-color: var(--swatch-dot, transparent);
+      transition: transform 0.1s ease;
+    }
+
+    .md-swatch:hover::after {
+      transform: scale(1.15);
+    }
+
+    /* 选中：外圈描边（用主题强调色，与 MD 选区风格一致） */
+    .md-swatch.active {
+      box-shadow: 0 0 0 2px var(--settings-card-bg), 0 0 0 4px var(--accent-foreground-rest);
+    }
+
+    /* ===== 首位「默认」卡片 =====
+       代表关闭 MD 取色时的原生黑白主题：
+       用「浅底深点」半黑半白（上下分割）表达，而不是某个色相。*/
+    .md-swatch-default {
+      background: linear-gradient(180deg, #f5f3f0 0 50%, #262320 50% 100%);
+    }
+
+    .md-swatch-default::after {
+      background-color: #262320;
+      box-shadow: 0 0 0 2px #f5f3f0;
+    }
+
+    :root[data-theme="dark"] .md-swatch-default {
+      background: linear-gradient(180deg, #262320 0 50%, #f5f3f0 50% 100%);
+    }
+
+    :root[data-theme="dark"] .md-swatch-default::after {
+      background-color: #f5f3f0;
+      box-shadow: 0 0 0 2px #262320;
+    }
+
+    /* ===== 末位「自定义」卡片：虚线描边 + 加号，点击展开滑块 ===== */
+    .md-swatch-custom {
+      background-color: transparent;
+      border: 1.5px dashed var(--settings-card-border);
+      color: var(--settings-text-secondary);
+    }
+
+    .md-swatch-custom::after { display: none; }
+
+    .md-swatch-custom svg {
+      width: 18px;
+      height: 18px;
+      transition: transform 0.16s ease, color 0.1s ease;
+    }
+
+    .md-swatch-custom:hover {
+      border-color: var(--settings-text-secondary);
+      color: var(--settings-text-primary);
+    }
+
+    /* 展开态：加号旋转成叉号，虚线变实线 */
+    .md-swatch-custom[aria-expanded="true"] {
+      border-style: solid;
+      border-color: var(--accent-foreground-rest);
+      color: var(--accent-foreground-rest);
+    }
+
+    .md-swatch-custom[aria-expanded="true"] svg {
+      transform: rotate(45deg);
+    }
+
+    /* 展开的自定义面板 */
+    .md-custom-panel {
+      /* 不能 overflow:hidden——会把两端的手柄裁掉 */
+      margin-top: 12px;
+      animation: mdPanelIn 0.16s ease-out;
+    }
+
+    .md-custom-panel[hidden] { display: none; }
+
+    @keyframes mdPanelIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 壁纸模式下色板依然可直接点击选色（选中即自动切到「手动」），不置灰 */
+
+    /* ===== M3E 色相滑块 =====
+       原生 thumb 被浏览器钳制在轨道高度内（无法做出「略高于轨道」的效果），
+       因此手柄改为覆盖层 div：位置由 JS 按滑块值同步，pointer-events:none 不挡拖拽。*/
+    .md-hue-wrap {
+      position: relative;
+      width: 100%;
+      height: 44px;              /* = 手柄高度 */
+    }
+
+    /* 轨道：M3 标准 16dp 高、8dp 圆角；保留色相彩虹渐变作为可选的色相映射 */
+    .md-hue-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      position: absolute;
+      left: 0;
+      top: 10px;                 /* (44-24)/2：轨道垂直居中 */
+      width: 100%;
+      height: 24px;
+      border-radius: 6px;
+      outline: none;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      margin: 0;
+      background:
+        linear-gradient(to right,
+          #ff0000 0%, #ff9900 12%, #ffff00 24%, #33cc33 38%,
+          #00bcd4 52%, #2196f3 66%, #673ab7 82%, #ff0000 100%)
+        center / 100% 24px no-repeat;
+    }
+
+    /* 原生 thumb 隐形，仅保留几何占位（真实手柄用覆盖层绘制） */
+    .md-hue-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 4px;
+      height: 44px;
+      background: transparent;
+      border: none;
+      cursor: grab;
+    }
+
+    .md-hue-slider:active::-webkit-slider-thumb { cursor: grabbing; }
+
+    .md-hue-slider::-moz-range-thumb {
+      width: 4px;
+      height: 44px;
+      background: transparent;
+      border: none;
+    }
+
+    /* M3 handle：4×44dp 细竖条，primary 主题色，圆角 2dp，上下各留 6dp 间隙
+       （间隙通过不铺满轨道区域实现：手柄虽高 44，但轨道只占中间 16，天然形成缝） */
+    .md-hue-handle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 44px;
+      border-radius: 2px;
+      background-color: var(--md-hue-thumb, var(--accent-foreground-rest));
+      border: none;
+      box-sizing: border-box;
+      pointer-events: none;      /* 拖拽事件全部交给原生 input */
+      transform: translateX(-50%);
+      will-change: left;
     }
 
     .settings-nav-row:hover .settings-nav-chevron {
@@ -1988,17 +2183,35 @@
 
     /* ===== 深色主题下的输入框配色 =====
        与浅色镜像：常规比按钮更暗、hover 变亮到按钮色、聚焦落到原 hover 档。
-       只覆盖输入框，不动其它控件与变量 */
+       只覆盖输入框，不动其它控件与变量
+       注意：MD 配色开启时这些硬编码灰会被 --input-* 系列覆盖（见下方 MD 段），
+       这里保留 var(...) 回退以保证关闭 MD 时观感不变 */
     :root[data-theme="dark"] .input {
-      background-color: #282828;
+      background-color: var(--input-rest-bg, #282828);
     }
 
     :root[data-theme="dark"] .input:hover:not(:focus) {
-      background-color: var(--btn-secondary-bg);
+      background-color: var(--input-hover-bg, var(--btn-secondary-bg));
     }
 
     :root[data-theme="dark"] .input:focus {
-      background-color: var(--input-bg);
+      background-color: var(--input-focus-bg, var(--input-bg));
+    }
+
+    /* ===== MD 配色开启时的输入框（浅/深通用）=====
+       常规态与卡片同层，hover 抬升一档，聚焦保持最高档 + primary 描边。
+       :root 上的 data-md-color 由 MD 引擎写入，关闭 MD 时这些规则整体不生效 */
+    :root[data-md-color="on"] .input {
+      background-color: var(--input-rest-bg);
+    }
+
+    :root[data-md-color="on"] .input:hover:not(:focus) {
+      background-color: var(--input-hover-bg);
+    }
+
+    :root[data-md-color="on"] .input:focus {
+      background-color: var(--input-focus-bg);
+      border-color: var(--input-focus-border);
     }
 
     /* 错误态：整圈描边换成警示色 */
@@ -2052,27 +2265,28 @@
       transition: background-color 0.08s ease, filter 0.08s ease;
     }
 
-    /* 强调按钮样式 */
+    /* 强调按钮样式
+       开启 MD 配色时由 --btn-primary-* 接管；未开启时回退到原有强调色变量 */
     .btn-primary {
-      background-color: var(--accent-foreground-rest);
-      color: var(--accent-foreground-invert);
+      background-color: var(--btn-primary-bg, var(--accent-foreground-rest));
+      color: var(--btn-primary-text, var(--accent-foreground-invert));
       border: 1px solid transparent;
-       
+
     }
 
     .btn-primary:hover {
-      background-color: var(--accent-foreground-hover);
+      background-color: var(--btn-primary-hover, var(--accent-foreground-hover));
       filter: none;
     }
 
-    /* 次级按钮样式 */
+    /* 次级按钮样式（MD 下为 tonal button：secondaryContainer 底） */
     .btn-secondary {
       background-color: var(--btn-secondary-bg);
-      color: var(--neutral-foreground-rest);
+      color: var(--btn-secondary-text, var(--neutral-foreground-rest));
     }
 
     .btn-secondary:hover {
-      background-color: var(--modal-border);
+      background-color: var(--btn-secondary-hover, var(--modal-border));
     }
 
     :root[data-theme="dark"] .btn-secondary {
@@ -2724,7 +2938,6 @@
                     <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
                   </svg>
                 </button>
-                <div class="preset-section-label" data-i18n="presets">预设</div>
                 <div class="layout-presets">
                   <div class="preset-card" data-layout-val="inspirational" id="preset-inspirational">
                     <div class="preset-thumb">
@@ -2831,23 +3044,33 @@
                 </div>
               </div>
 
-              <!-- 主题模式 -->
+              <!-- 主题模式（系统/浅色/深色）：一级菜单直接可切换 -->
               <div class="settings-card">
-                <div class="settings-card-title" data-i18n="themeMode">主题模式</div>
-                <div class="theme-switch" id="theme-switch" role="radiogroup" aria-label="主题模式">
-                  <button type="button" class="theme-option" data-theme-val="auto" role="radio" aria-checked="true">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="1.9" y="2.6" width="12.2" height="8.2" rx="1.4"/><path d="M5.4 13.4h5.2" stroke-linecap="round"/></svg>
-                    <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeAuto">系统</span></span>
-                  </button>
-                  <button type="button" class="theme-option" data-theme-val="light" role="radio" aria-checked="false">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3.1" fill="currentColor" stroke="none"/><path d="M8 1.4v1.4M8 13.2v1.4M14.6 8h-1.4M2.8 8H1.4M12.7 3.3l-1 1M4.3 11.7l-1 1M12.7 12.7l-1-1M4.3 4.3l-1-1"/></svg>
-                    <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeLight">浅色</span></span>
-                  </button>
-                  <button type="button" class="theme-option" data-theme-val="dark" role="radio" aria-checked="false">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.6 9.8A5.8 5.8 0 0 1 6.2 2.4a5.9 5.9 0 1 0 7.4 7.4Z"/></svg>
-                    <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeDark">深色</span></span>
-                  </button>
+                <!-- 颜色跳转与主题滑块上下分块，中间留出与卡片间距一致的 10px 空隙 -->
+                <div class="settings-subblock">
+                <!-- 颜色：跳转到颜色设置二级页（同一卡片，置于主题滑块上方） -->
+                <button id="btn-open-color-modal" class="settings-nav-row" type="button">
+                  <span data-i18n="color">颜色</span>
+                  <svg class="settings-nav-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                  </svg>
+                </button>
                 </div>
+
+                <div class="theme-switch" id="theme-switch" role="radiogroup" aria-label="主题模式">
+                    <button type="button" class="theme-option" data-theme-val="auto" role="radio" aria-checked="true">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="1.9" y="2.6" width="12.2" height="8.2" rx="1.4"/><path d="M5.4 13.4h5.2" stroke-linecap="round"/></svg>
+                      <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeAuto">系统</span></span>
+                    </button>
+                    <button type="button" class="theme-option" data-theme-val="light" role="radio" aria-checked="false">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3.1" fill="currentColor" stroke="none"/><path d="M8 1.4v1.4M8 13.2v1.4M14.6 8h-1.4M2.8 8H1.4M12.7 3.3l-1 1M4.3 11.7l-1 1M12.7 12.7l-1-1M4.3 4.3l-1-1"/></svg>
+                      <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeLight">浅色</span></span>
+                    </button>
+                    <button type="button" class="theme-option" data-theme-val="dark" role="radio" aria-checked="false">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.6 9.8A5.8 5.8 0 0 1 6.2 2.4a5.9 5.9 0 1 0 7.4 7.4Z"/></svg>
+                      <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeDark">深色</span></span>
+                    </button>
+                  </div>
               </div>
 
               <!-- 页面语言选择卡片 -->
@@ -2880,7 +3103,7 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.9.0-beta1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.9.0-beta2</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
@@ -3131,6 +3354,64 @@
                 </div>
               </div>
             </div>
+            <!-- ===== 二级页：颜色设置 ===== -->
+            <div id="settings-page-color" class="settings-page">
+              <div class="settings-header">
+                <button class="settings-back-btn" id="btn-close-color-modal" type="button" title="返回" data-i18n-title="back">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10.53 3.22a.75.75 0 0 1 0 1.06L6.81 8l3.72 3.72a.75.75 0 1 1-1.06 1.06L5.75 8.53a.75.75 0 0 1 0-1.06l3.72-3.72a.75.75 0 0 1 1.06 0z"/></svg>
+                </button>
+                <h2 class="settings-title" data-i18n="color">颜色</h2>
+              </div>
+              <div class="settings-content">
+                <!-- 动态颜色：壁纸 / 手动 -->
+                <div class="settings-card">
+                  <div class="setting-row">
+                    <div class="setting-label-group" data-i18n="mdColor">动态颜色</div>
+                    <div class="custom-select-wrapper">
+                      <select id="select-md-color-mode" class="select-box" tabindex="-1" aria-label="动态颜色">
+                        <option value="wallpaper" data-i18n="mdColorWallpaper">壁纸</option>
+                        <option value="custom" data-i18n="mdColorCustom">手动</option>
+                        <!-- 默认态（关闭 MD 取色）不在下拉中展示，仅用于回显色板第一格 -->
+                        <option value="off" data-i18n="mdPresetDefault" data-md-hidden hidden></option>
+                      </select>
+                      <div class="custom-select-display" data-for="select-md-color-mode">
+                        <span class="custom-select-text"></span>
+                        <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                          <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 手动模式下的种子色设置：预设色板（末位为自定义卡片） -->
+                  <div id="md-custom-settings">
+                    <div class="settings-card-title" style="margin-top: 14px;" data-i18n="mdPresets">预设配色</div>
+                    <!-- 色块底色与圆点色由 JS 按种子色生成 MD3 tonal 结果写入 -->
+                    <div class="md-preset-grid">
+                      <button type="button" class="md-swatch md-swatch-default" data-mode="off" title="默认" data-i18n-title="mdPresetDefault"></button>
+                      <button type="button" class="md-swatch" data-seed="#0b57d0" title="淡蓝" data-i18n-title="mdPresetBlue"></button>
+                      <button type="button" class="md-swatch" data-seed="#6750a4" title="丁香紫" data-i18n-title="mdPresetPurple"></button>
+                      <button type="button" class="md-swatch" data-seed="#006c4c" title="苔绿" data-i18n-title="mdPresetGreen"></button>
+                      <button type="button" class="md-swatch" data-seed="#b3261e" title="陶红" data-i18n-title="mdPresetRed"></button>
+                      <button type="button" class="md-swatch md-swatch-custom active" data-custom="1" title="自定义" data-i18n-title="mdColorCustom" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </button>
+                    </div>
+
+                    <!-- 自定义面板：默认折叠，点末位「+」卡片展开 -->
+                    <div class="md-custom-panel" id="md-custom-panel" hidden>
+                      <div class="md-hue-wrap">
+                        <input type="range" id="md-hue-slider" class="md-hue-slider" min="0" max="360" step="1" value="220" aria-label="色相">
+                        <!-- 自绘 M3E 竖条手柄：原生 thumb 设为透明，位置由 JS 按 value 同步 -->
+                        <div class="md-hue-handle" id="md-hue-handle" aria-hidden="true"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -3340,7 +3621,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.9.0-beta1 | 更新时间：2026-11-04</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.9.0-beta2 | 更新时间：2026-11-05</p><br>
 
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
