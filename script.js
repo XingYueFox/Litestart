@@ -2632,11 +2632,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // 而是按当前明暗主题取该色相的 tonal 结果：
   //   卡片底色 = primaryContainer，中央圆点 = onPrimaryContainer
   // 这样浅色下是淡彩卡片、深色下是深彩卡片，色相可辨又不抢眼。
+  // 上次已渲染的色板标识，避免重复构造配色方案
+  let lastSwatchKey = '';
   function renderMdSwatches() {
     // MCU_API 已提前声明（见文件上方），这里可直接使用
     const api = MCU_API;
     if (!api) return;
     const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    // 同一主题下色板的取色结果不变，重复渲染会反复构造配色方案
+    const swatchKey = (dark ? 'dark' : 'light') + '|' +
+      Array.prototype.map.call(mdSwatches, (sw) => sw.getAttribute('data-seed') || '').join(',');
+    if (swatchKey === lastSwatchKey) return;
+    lastSwatchKey = swatchKey;
     mdSwatches.forEach((sw) => {
       const seed = sw.getAttribute('data-seed');
       if (!seed) return; // 自定义卡片无种子色
@@ -2651,8 +2658,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // 用 DynamicScheme（TonalSpot）生成完整 M3-2023 角色表。
   // 注：不要用 themeFromSourceColor——它返回的是旧的 Material You 方案，
   // 不含 surfaceContainer* 系列角色，取值为 undefined 会让变量全变成 #000000。
+  // 配色方案构造较慢，按「种子色 + 明暗」缓存，避免重复计算。
+  const MD_SCHEME_CACHE = new Map();
   function mdScheme(seedArgb, dark) {
-    return new MCU_API.SchemeTonalSpot(MCU_API.Hct.fromInt(seedArgb), dark, 0.0);
+    const key = seedArgb + (dark ? '|d' : '|l');
+    let scheme = MD_SCHEME_CACHE.get(key);
+    if (!scheme) {
+      scheme = new MCU_API.SchemeTonalSpot(MCU_API.Hct.fromInt(seedArgb), dark, 0.0);
+      if (MD_SCHEME_CACHE.size > 32) MD_SCHEME_CACHE.clear();
+      MD_SCHEME_CACHE.set(key, scheme);
+    }
+    return scheme;
   }
 
   // MD3 角色 → 现有 CSS 变量的映射。
@@ -2830,6 +2846,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const MD_SEED_CACHE = new Map();
   let mdApplyTimer = null;
+  // 上次已应用的配色标识，避免重复重建样式表
+  let lastMdAppliedKey = '';
+
+  // 取色：先把图片缩到小画布再量化，避免对全尺寸位图生成百万级像素数组
+  function sampleImageColor(img) {
+    const api = MCU_API;
+    if (!api || !img) return null;
+    const SIZE = 112;
+    let canvas, ctx;
+    try {
+      canvas = document.createElement('canvas');
+      canvas.width = SIZE;
+      canvas.height = SIZE;
+      ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return null;
+      ctx.drawImage(img, 0, 0, SIZE, SIZE);
+    } catch (e) {
+      return null;
+    }
+    const data = ctx.getImageData(0, 0, SIZE, SIZE).data;
+    const pixels = new Array(data.length / 4);
+    for (let i = 0, j = 0; i < data.length; i += 4, j++) {
+      pixels[j] = ((255 << 24) | (data[i] << 16) | (data[i + 1] << 8) | data[i + 2]) >>> 0;
+    }
+    try {
+      const quantized = api.QuantizerCelebi.quantize(pixels, 128);
+      const ranked = api.Score.score(quantized);
+      return ranked && ranked.length ? ranked[0] : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   function applyMdColor() {
     const storedMode = Storage.get(MD_MODE_KEY, 'off');
     // 三种状态：off（默认 = 关闭 MD 取色，用原有的黑白主题）/ wallpaper / custom
@@ -2858,8 +2907,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const build = (seedArgb) => {
-      const css = mdBuildVarText(mdScheme(seedArgb, false), false) +
-                  mdBuildVarText(mdScheme(seedArgb, true), true);
+      // 同一份配色不重复生成：applyMdColor 会被主题切换、壁纸切换等多处调用
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const applyKey = mode + '|' + seedArgb + '|' + (isDark ? 'dark' : 'light');
+      if (applyKey === lastMdAppliedKey) return;
+      lastMdAppliedKey = applyKey;
+      // 只生成当前主题的变量段；另一主题在切换时重新生成
+      const css = mdBuildVarText(mdScheme(seedArgb, isDark), isDark);
       if (!styleEl) {
         styleEl = document.createElement('style');
         styleEl.id = 'md-color-style';
@@ -2878,28 +2932,40 @@ document.addEventListener('DOMContentLoaded', () => {
       const fallback = getMdSeed();
       const sourceImg = pickWallpaperImageEl();
 
-      if (!sourceImg || !sourceImg.src) {
-        build(MCU_API.argbFromHex(fallback));
-      } else {
+      const sampleWallpaper = () => {
+        if (!sourceImg || !sourceImg.src) {
+          build(MCU_API.argbFromHex(fallback));
+          return;
+        }
         const url = sourceImg.currentSrc || sourceImg.src;
         const cached = MD_SEED_CACHE.get(url);
         if (cached !== undefined) {
           build(cached);
-        } else {
-          loadImageForSampling(url).then(
-            img => MCU_API.sourceColorFromImage(img),
-            () => { throw new Error('image reload failed'); }
-          ).then(
-            argb => { MD_SEED_CACHE.set(url, argb); build(argb); },
-            err => {
-              console.warn('壁纸取色失败，回退默认色:', err);
-              // 失败结果也缓存一小段时间，避免反复重试拖慢界面
-              MD_SEED_CACHE.set(url, MCU_API.argbFromHex(fallback));
-              build(MCU_API.argbFromHex(fallback));
-            }
-          );
+          return;
         }
-      }
+        loadImageForSampling(url).then(
+          img => sampleImageColor(img) ?? MCU_API.argbFromHex(fallback),
+          () => { throw new Error('image reload failed'); }
+        ).then(
+          argb => { MD_SEED_CACHE.set(url, argb); build(argb); },
+          err => {
+            console.warn('壁纸取色失败，回退默认色:', err);
+            // 失败结果也缓存一小段时间，避免反复重试拖慢界面
+            MD_SEED_CACHE.set(url, MCU_API.argbFromHex(fallback));
+            build(MCU_API.argbFromHex(fallback));
+          }
+        );
+      };
+      // 量化与配色重建都是同步重活：
+      // 先让出 400ms 等壁纸的展开动画（0.3s）播完，再进空闲队列执行
+      const scheduleSampling = () => {
+        if (typeof requestIdleCallback === 'function') {
+          requestIdleCallback(sampleWallpaper, { timeout: 2000 });
+        } else {
+          setTimeout(sampleWallpaper, 0);
+        }
+      };
+      setTimeout(scheduleSampling, 400);
     } else {
       build(MCU_API.argbFromHex(getMdSeed()));
     }
@@ -3046,6 +3112,16 @@ document.addEventListener('DOMContentLoaded', () => {
     console.warn('MD 配色初始化失败:', err);
   }
 
+  // 边角晕影只在深色模式渲染，浅色模式下对应开关置灰
+  function syncBgVignetteRow() {
+    const row = toggleBgVignette ? toggleBgVignette.closest('.setting-row') : null;
+    if (!row) return;
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    row.classList.toggle('disabled', !isDark);
+    if (isDark) row.removeAttribute('inert');
+    else row.setAttribute('inert', '');
+  }
+
   // 应用主题：写 <html data-theme>、同步按钮选中态、同步标签页图标
   function applyTheme() {
     const pref = Storage.get(THEME_KEY, 'auto');
@@ -3077,6 +3153,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 明暗切换后色板的 tonal 底色要跟着换一套（renderMdSwatches 定义在下方，
     // 用 typeof 兜住首次调用的时序）
     if (typeof renderMdSwatches === 'function') renderMdSwatches();
+    // 配色变量按当前主题生成，切主题后需要按新主题重建一次
+    if (typeof applyMdColor === 'function') applyMdColor();
+    // 边角晕影只在深色模式渲染，浅色下对应开关置灰
+    syncBgVignetteRow();
   }
 
   themeOptionEls.forEach(el => {
@@ -3382,13 +3462,10 @@ document.addEventListener('DOMContentLoaded', () => {
       renderWallpaper();
     } else {
       document.body.classList.remove('bg-enabled');
-      // 关闭背景时清除 .loaded，确保下次开启能从透明渐入
       if (bgVideo) {
-        bgVideo.classList.remove('loaded');
         bgVideo.style.display = 'none';
       }
       if (bgImage) {
-        bgImage.classList.remove('loaded');
         bgImage.style.display = 'none';
       }
       if (bgOverlay) {
@@ -3626,27 +3703,64 @@ document.addEventListener('DOMContentLoaded', () => {
     else renderPreview('img/background.webp', '默认背景预览');
   }
 
+  // 进入动画：可见区域从中心扩展，遮罩由 .revealing 驱动
+  function playReveal(el) {
+    if (!el) return;
+    el.classList.remove('revealing', 'paused');
+    // 先挂遮罩并暂停在起点：此时元素被完全遮住，不会出现无遮罩的中间态
+    el.classList.add('revealing', 'paused');
+    el.classList.remove('pending');
+    void el.offsetWidth;
+    // 等两帧让图片完成绘制，再解除暂停，动画从起点开始
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.classList.remove('paused');
+      });
+    });
+  }
+
+  // 媒体完全就绪后才显示并播放动画；failDelay 仅用于防止永久挂起
+  function revealWhenReady(el, failDelay) {
+    if (!el) return;
+    el.classList.add('pending');   // 就绪前不显示
+    let done = false;
+    let onEnough = null;
+    const run = () => {
+      if (done) return;
+      done = true;
+      if (onEnough) el.removeEventListener('progress', onEnough);
+      playReveal(el);
+    };
+    if (el.tagName === 'VIDEO') {
+      // HAVE_ENOUGH_DATA：足以流畅播放到底，而不是仅仅能播第一帧
+      onEnough = () => {
+        if (el.readyState >= 4) run();
+      };
+      el.addEventListener('canplaythrough', onEnough, { once: true });
+      el.addEventListener('progress', onEnough);
+    } else if (typeof el.decode === 'function') {
+      el.decode().then(run).catch(run);
+    } else {
+      el.addEventListener('load', run, { once: true });
+    }
+    // 加载失败时也要显示，避免一直空白
+    el.addEventListener('error', run, { once: true });
+    setTimeout(run, failDelay);
+  }
+
   // 根据自定义壁纸数据，渲染视频/图片背景到页面和预览容器
-  // 渐入逻辑：先移除 .loaded 让元素透明 → 设置 src → 等就绪 → 加上 .loaded 触发 transition
-  //
-  // 渲染令牌：decode() 绑定的是调用时的图片，若连续切换壁纸，
-  // 上一张图的回调可能先跑完并提前加上 .loaded（新图尚未就绪就显形、动画也被消耗）。
-  // 每次渲染递增，过期回调直接丢弃。
-  let wallpaperRenderToken = 0;
-  // 就绪兜底：decode() / canplay 可能因网络问题长时间挂起，
-  // 超时后强制显示，避免背景一直停在透明状态（此时不会有渐入动画，但至少可见）。
-  const WALLPAPER_READY_TIMEOUT = 8000;
+  // 图片与视频都直接显示，进入时播放中心扩展动画
   function renderWallpaper() {
-    // 每次进入背景设置页都会调用本函数。若壁纸没变，重设 src 会让浏览器重新加载
-    // 并再播一遍"渐入 + 模糊"，所以要能识别出"还是同一张"并跳过重设。
+    // 每次进入背景设置页都会调用本函数。若壁纸没变，重设 src 会让浏览器重新加载，
+    // 所以要能识别出"还是同一张"并跳过重设。
     const wpKey = customWallpaperData
       ? (customWallpaperData.type || 'image') + '|' + (customWallpaperData.url || '')
       : 'default';
     // 元素当前是否真的显示着壁纸：关闭背景时会被 display:none，
     // 但壁纸标识不变，只比对 key 会把"重新开启背景"误判成重复渲染而跳过。
     const wallpaperShown =
-      !!(bgImage && bgImage.style.display !== 'none' && bgImage.classList.contains('loaded')) ||
-      !!(bgVideo && bgVideo.style.display !== 'none' && bgVideo.classList.contains('loaded'));
+      !!(bgImage && bgImage.style.display !== 'none') ||
+      !!(bgVideo && bgVideo.style.display !== 'none');
     const alreadyRendered = (wpKey === renderedWallpaperKey) && wallpaperShown;
     const isFirstRender = (renderedWallpaperKey === null);
     renderedWallpaperKey = wpKey;
@@ -3669,26 +3783,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!alreadyRendered) {
         if (bgVideo) {
           bgVideo.style.display = 'none';
-          bgVideo.classList.remove('loaded');
         }
         if (bgImage) {
-          bgImage.classList.remove('loaded');
           bgImage.style.display = 'block';
           bgImage.src = 'img/background.webp';
-          // 默认背景就绪后渐入（decode 保证已解码且异步完成，见文件内说明）
-          const token = ++wallpaperRenderToken;
-          // settled 保证就绪回调与超时回调只生效一次
-          let settled = false;
-          const showDefaultBg = () => {
-            if (settled) return;
-            settled = true;
-            if (token !== wallpaperRenderToken) return;   // 期间又渲染过别的，丢弃
-            void bgImage.offsetWidth;   // 强制样式计算，确保上面的 remove('loaded') 已生效
-            bgImage.classList.add('loaded');
-            bgOverlay?.classList.add('loaded');
-          };
-          setTimeout(showDefaultBg, WALLPAPER_READY_TIMEOUT);
-          bgImage.decode().then(showDefaultBg).catch(showDefaultBg);
+          bgOverlay?.classList.add('loaded');
+          revealWhenReady(bgImage, 15000);
         }
       }
       syncWallpaperSourceSelect();
@@ -3702,28 +3802,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!alreadyRendered) {
         if (bgImage) {
           bgImage.style.display = 'none';
-          bgImage.classList.remove('loaded');
         }
         if (bgVideo) {
-          bgVideo.classList.remove('loaded');
           bgVideo.style.display = 'block';
           bgVideo.src = customWallpaperData.url;
-          // 视频缓冲到可播放时再渐入
-          const token = ++wallpaperRenderToken;
-          // settled 保证就绪回调与超时回调只生效一次
-          let settled = false;
-          const onCanPlay = () => {
-            if (settled) return;
-            settled = true;
-            if (token !== wallpaperRenderToken) return;   // 期间又渲染过别的，丢弃
-            void bgVideo.offsetWidth;   // 强制样式计算，确保上面的 remove('loaded') 已生效
-            bgVideo.classList.add('loaded');
-            bgOverlay?.classList.add('loaded');
-            bgVideo.removeEventListener('canplay', onCanPlay);
-            bgVideo.play().catch(() => {});
-          };
-          setTimeout(onCanPlay, WALLPAPER_READY_TIMEOUT);
-          bgVideo.addEventListener('canplay', onCanPlay);
+          bgOverlay?.classList.add('loaded');
+          bgVideo.play().catch(() => {});
+          revealWhenReady(bgVideo, 15000);
         }
       }
 
@@ -3742,30 +3827,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!alreadyRendered) {
         if (bgVideo) {
           bgVideo.style.display = 'none';
-          bgVideo.classList.remove('loaded');
         }
         if (bgImage) {
-          bgImage.classList.remove('loaded');
           bgImage.style.display = 'block';
           bgImage.src = customWallpaperData.url;
-          // 图片就绪后渐入。
-          // 用 decode() 而非 load + complete 判断：
-          //   · 必定异步完成，不会与上面的 remove('loaded') 落在同一帧
-          //   · src 未变时浏览器不派发 load，decode() 仍会 resolve
-          //   · 避免 complete / naturalWidth 读到上一张图的状态
-          const token = ++wallpaperRenderToken;
-          // settled 保证就绪回调与超时回调只生效一次
-          let settled = false;
-          const showWallpaper = () => {
-            if (settled) return;
-            settled = true;
-            if (token !== wallpaperRenderToken) return;   // 期间又渲染过别的，丢弃
-            void bgImage.offsetWidth;   // 强制样式计算，确保上面的 remove('loaded') 已生效
-            bgImage.classList.add('loaded');
-            bgOverlay?.classList.add('loaded');
-          };
-          setTimeout(showWallpaper, WALLPAPER_READY_TIMEOUT);
-          bgImage.decode().then(showWallpaper).catch(showWallpaper);
+          bgOverlay?.classList.add('loaded');
+          revealWhenReady(bgImage, 15000);
         }
       }
 
