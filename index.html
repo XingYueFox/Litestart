@@ -186,13 +186,13 @@
 
     #bg-video.revealing, #bg-image.revealing {
       -webkit-mask-image: radial-gradient(ellipse at center,
-        #000 calc(var(--bg-reveal) * 0.35), transparent var(--bg-reveal));
+        #000 calc(var(--bg-reveal) * 0.3), transparent var(--bg-reveal));
       mask-image: radial-gradient(ellipse at center,
-        #000 calc(var(--bg-reveal) * 0.35), transparent var(--bg-reveal));
-      /* 椭圆的长短轴跟随元素宽高比，横向铺展；遮罩从半径的 35% 处开始渐隐，
-         到 100% 处完全透明，65% 的范围用于柔化边缘。
-         终值 600% 时实心区达到半径的 210%，展开完成后屏幕内保持完整不透明 */
-      animation: bg-reveal 1.1s ease-out both, bg-fade-in 0.45s ease-out both;
+        #000 calc(var(--bg-reveal) * 0.3), transparent var(--bg-reveal));
+      /* 椭圆的长短轴跟随元素宽高比，横向铺展；遮罩从半径的 30% 处开始渐隐，
+         到 100% 处完全透明，70% 的范围用于柔化边缘。
+         终值 600% 时实心区达到半径的 180%，展开完成后屏幕内保持完整不透明 */
+      animation: bg-reveal 1.3s ease-out both, bg-fade-in 0.6s ease-out both;
     }
 
     /* 扩展：可见区域的半径增大 */
@@ -201,9 +201,9 @@
       to   { --bg-reveal: 600%; }
     }
 
-    /* 渐显：整体不透明度提升，比扩展先结束 */
+    /* 渐显：整体不透明度提升，与扩展同时推进、先结束 */
     @keyframes bg-fade-in {
-      from { opacity: 0.4; }
+      from { opacity: 0; }
       to   { opacity: 1; }
     }
 

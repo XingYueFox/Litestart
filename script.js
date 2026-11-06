@@ -2433,7 +2433,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgDependentSettings = document.getElementById('bg-dependent-settings');
 
   const bgVideo = document.getElementById('bg-video');
-  const bgImage = document.getElementById('bg-image');
+  // 换壁纸时会重建 <img>，以便再次触发 Element Timing 的首次绘制上报
+  let bgImage = document.getElementById('bg-image');
   const bgOverlay = document.getElementById('bg-overlay');
 
   // ===== 关于弹窗的更新提示 =====
@@ -3719,7 +3720,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 媒体完全就绪后才显示并播放动画；failDelay 仅用于防止永久挂起
+  // 媒体就绪后立即播放动画；failDelay 仅用于防止永久挂起
   function revealWhenReady(el, failDelay) {
     if (!el) return;
     el.classList.add('pending');   // 就绪前不显示
