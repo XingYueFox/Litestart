@@ -2698,6 +2698,12 @@ document.addEventListener('DOMContentLoaded', () => {
       '--suggestion-bg': c('surfaceContainerLow'),
       '--suggestion-hover': c('surfaceContainerHigh'),
       '--input-bg': c('surfaceContainerHighest'),
+      // 搜索框悬停底色：surfaceContainer 比常态的 surfaceContainerLow 深一档（深色模式则浅一档）
+      '--search-box-bg-hover': c('surfaceContainer'),
+      // 增强可见性衬底：surfaceContainerLowest 为浅色模式最亮、深色模式最暗的一档
+      '--enhanced-visibility-bg': c('surfaceContainerLowest') + '73',
+      '--enhanced-visibility-bg-hover': c('surfaceContainerLowest') + 'A6',
+      '--enhanced-visibility-logo-bg': c('surfaceContainerLowest') + '99',
       // 输入框（仅 MD 开启时生效）：
       //   常规态与卡片同层（surfaceContainerLow），hover 抬到 surfaceContainerHighest，
       //   聚焦保持最高档并用 primary 描边。这样深色模式下不再落到旧的 #282828 纯灰。
@@ -2846,9 +2852,16 @@ document.addEventListener('DOMContentLoaded', () => {
   function getMdSeed() { return Storage.get(MD_SEED_KEY, MD_DEFAULT_SEED); }
 
   const MD_SEED_CACHE = new Map();
+  // 取色算法变更时递增此值，使旧结果失效
+  const MD_SEED_CACHE_VERSION = 2;
+  const mdSeedCacheKey = (url) => MD_SEED_CACHE_VERSION + '|' + url;
   let mdApplyTimer = null;
   // 上次已应用的配色标识，避免重复重建样式表
   let lastMdAppliedKey = '';
+  // 配色过渡计时器：过渡类只保留到本次换色结束
+  let mdTransitionTimer = null;
+  // 背景进入动画计时器：控制搜索框阴影的出现时机
+  let bgRevealTimer = null;
 
   // 取色：先把图片缩到小画布再量化，避免对全尺寸位图生成百万级像素数组
   function sampleImageColor(img) {
@@ -2873,8 +2886,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     try {
       const quantized = api.QuantizerCelebi.quantize(pixels, 128);
-      const ranked = api.Score.score(quantized);
-      return ranked && ranked.length ? ranked[0] : null;
+      // 先取面积占比最高的若干色块，再从中选饱和度最高的一档
+      const entries = [];
+      quantized.forEach((count, argb) => entries.push([argb, count]));
+      if (!entries.length) return null;
+      entries.sort((a, b) => b[1] - a[1]);
+      const limit = Math.min(entries.length, Math.ceil(entries.length * 0.25));
+      let best = entries[0][0];
+      let bestScore = -1;
+      for (let i = 0; i < limit; i++) {
+        const argb = entries[i][0];
+        const count = entries[i][1];
+        const r = (argb >> 16) & 0xff, g = (argb >> 8) & 0xff, b = argb & 0xff;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        const sat = max === 0 ? 0 : (max - min) / max;
+        // 面积开方后参与加权，压缩面积差异的量级
+        const score = sat * Math.sqrt(count);
+        if (score > bestScore) {
+          bestScore = score;
+          best = argb;
+        }
+      }
+      return best;
     } catch (e) {
       return null;
     }
@@ -2920,9 +2953,15 @@ document.addEventListener('DOMContentLoaded', () => {
         styleEl.id = 'md-color-style';
         document.head.appendChild(styleEl);
       }
+      // 变量替换会让全页颜色突变，替换前后临时开启过渡类
+      document.body.classList.add('md-color-transition');
       styleEl.textContent = css;
       // 给 :root 打标记，供 .input 等「仅 MD 下生效」的规则使用
       document.documentElement.setAttribute('data-md-color', 'on');
+      clearTimeout(mdTransitionTimer);
+      mdTransitionTimer = setTimeout(() => {
+        document.body.classList.remove('md-color-transition');
+      }, 1700);
     };
 
     if (mode === 'wallpaper') {
@@ -2938,8 +2977,11 @@ document.addEventListener('DOMContentLoaded', () => {
           build(MCU_API.argbFromHex(fallback));
           return;
         }
-        const url = sourceImg.currentSrc || sourceImg.src;
-        const cached = MD_SEED_CACHE.get(url);
+        // 用 src 而不是 currentSrc：后者指向当前已加载完成的资源，
+        // 新图尚未下载完时仍是上一张的地址
+        const url = sourceImg.src || sourceImg.currentSrc;
+        const cacheKey = mdSeedCacheKey(url);
+        const cached = MD_SEED_CACHE.get(cacheKey);
         if (cached !== undefined) {
           build(cached);
           return;
@@ -2948,11 +2990,16 @@ document.addEventListener('DOMContentLoaded', () => {
           img => sampleImageColor(img) ?? MCU_API.argbFromHex(fallback),
           () => { throw new Error('image reload failed'); }
         ).then(
-          argb => { MD_SEED_CACHE.set(url, argb); build(argb); },
+          argb => {
+            if (MD_SEED_CACHE.size > 32) MD_SEED_CACHE.clear();
+            MD_SEED_CACHE.set(cacheKey, argb);
+            build(argb);
+          },
           err => {
             console.warn('壁纸取色失败，回退默认色:', err);
-            // 失败结果也缓存一小段时间，避免反复重试拖慢界面
-            MD_SEED_CACHE.set(url, MCU_API.argbFromHex(fallback));
+            // 失败结果同样缓存，避免反复重试
+            if (MD_SEED_CACHE.size > 32) MD_SEED_CACHE.clear();
+            MD_SEED_CACHE.set(cacheKey, MCU_API.argbFromHex(fallback));
             build(MCU_API.argbFromHex(fallback));
           }
         );
@@ -3463,6 +3510,8 @@ document.addEventListener('DOMContentLoaded', () => {
       renderWallpaper();
     } else {
       document.body.classList.remove('bg-enabled');
+      // 无背景时不播放进入动画，立即结束阴影延迟期
+      document.body.classList.remove('bg-revealing');
       if (bgVideo) {
         bgVideo.style.display = 'none';
       }
@@ -3712,6 +3761,12 @@ document.addEventListener('DOMContentLoaded', () => {
     el.classList.add('revealing', 'paused');
     el.classList.remove('pending');
     void el.offsetWidth;
+    // 背景动画期间隐藏搜索框阴影，播完后再出现
+    document.body.classList.add('bg-revealing');
+    clearTimeout(bgRevealTimer);
+    bgRevealTimer = setTimeout(() => {
+      document.body.classList.remove('bg-revealing');
+    }, 1400);
     // 等两帧让图片完成绘制，再解除暂停，动画从起点开始
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -4351,7 +4406,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const img = pickWallpaperImageEl();
       if (img && img.src) {
         // 新 URL 未进入缓存：清掉旧缓存项无关紧要，按 URL 取即可
-        MD_SEED_CACHE.delete(img.currentSrc || img.src);
+        MD_SEED_CACHE.delete(mdSeedCacheKey(img.src || img.currentSrc));
       }
       applyMdColor();
     });

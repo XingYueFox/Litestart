@@ -67,7 +67,11 @@
       --dropdown-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
       --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.04);
       --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.10);
+      /* 增强可见性下的搜索框阴影：半径与常态一致，浓度更高 */
+      --search-box-shadow-enhanced: 0 0 14px rgba(0, 0, 0, 0.18);
       --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+      /* 搜索框悬停底色：浅色略深，深色略浅 */
+      --search-box-bg-hover: #f3f3f3;
       /* 搜索框基准宽度，窄屏媒体查询中覆盖此值 */
       --search-width: 720px;
       --modal-mask: rgba(0, 0, 0, 0.52);
@@ -133,7 +137,9 @@
 
         --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.09);
         --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.20);
+        --search-box-shadow-enhanced: 0 0 14px rgba(0, 0, 0, 0.34);
         --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.13);
+        --search-box-bg-hover: #333333;
     }
 
     html {
@@ -147,6 +153,24 @@
       background-color: var(--fill-color);
       color: var(--neutral-foreground-rest);
       font-family: var(--font-family);
+    }
+
+    /* 动态取色应用期间临时开启颜色过渡，避免整页配色突变。
+       同时保留尺寸与位移的过渡，避免覆盖搜索框等元素的布局动画 */
+    body.md-color-transition,
+    body.md-color-transition *,
+    body.md-color-transition *::before,
+    body.md-color-transition *::after {
+      transition: background-color 1.5s ease, color 1.5s ease, border-color 1.5s ease, fill 1.5s ease, stroke 1.5s ease, box-shadow 1.5s ease, width 0.15s ease, height 0.15s ease, transform 0.15s ease, opacity 0.15s ease !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body.md-color-transition,
+      body.md-color-transition *,
+      body.md-color-transition *::before,
+      body.md-color-transition *::after {
+        transition: none !important;
+      }
     }
 
     /* 壁纸背景层容器 */
@@ -306,10 +330,6 @@
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .quicklink-title {
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
-    }
-
-    body.bg-enabled[data-enhanced-visibility="true"] #search-container #fakebox:hover {
-      box-shadow: 0 0 0 3px var(--enhanced-visibility-bg-hover);
     }
 
     /* 开启背景时外层容器透明，露出壁纸 */
@@ -1604,6 +1624,11 @@
       transition: border-radius 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, outline 0.15s ease;
     }
 
+    /* 悬停时底色微调：浅色略深，深色略浅 */
+    #fakebox:hover {
+      background-color: var(--search-box-bg-hover);
+    }
+
     #fakebox #searchbutton {
       fill: none;
       stroke: var(--neutral-foreground-secondary);
@@ -1658,12 +1683,17 @@
 
     /* 搜索框展开联想下拉词条面板：与面板分离，底部保留小圆角 */
     #search-container.suggestions-open #fakebox {
-      border-bottom-left-radius: 8px;
-      border-bottom-right-radius: 8px;
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
     }
 
-    /* 有壁纸并开启增强可见性时，搜索框已有衬底，不再叠加阴影 */
+    /* 有壁纸并开启增强可见性时，壁纸内容复杂，搜索框叠加一层阴影提升层次 */
     body[data-enhanced-visibility="true"] #search-container #fakebox {
+      box-shadow: var(--search-box-shadow-enhanced);
+    }
+
+    /* 背景进入动画期间不显示搜索框阴影，动画结束后再出现 */
+    body.bg-revealing #search-container #fakebox {
       box-shadow: none;
     }
 
@@ -1672,12 +1702,12 @@
     #suggestions-box {
       display: block;
       position: absolute;
-      top: 58px;
+      top: 56px;
       left: 0;
       right: 0;
       background-color: var(--suggestion-bg);
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
       /* 只向下投影，避免与搜索框的阴影在间隔处叠加 */
@@ -2365,7 +2395,7 @@
       ntp-shell { min-width: auto; }
       #search-container { --search-width: 90%; }
       #fakebox { height: 32px; }
-      #suggestions-box { top: 38px; }
+      #suggestions-box { top: 36px; }
       #fakebox #placeholder { font-size: 12px; line-height: 16px; }
       #fakebox svg { width: 16px; height: 16px; }
       #logo-icon { width: 48px; height: 48px; }
@@ -2873,7 +2903,7 @@
     </style>
 </head>
 
-<body data-layout="focused">
+<body data-layout="focused" class="bg-revealing">
     <!-- 视频/图片背景容器 -->
     <div id="background-container">
       <video id="bg-video" autoplay loop muted playsinline></video>
