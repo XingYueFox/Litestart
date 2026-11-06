@@ -86,7 +86,7 @@ const i18nData = {
     onlineWallpaper: '自定义在线链接',
     wallpaper: '壁纸',
     color: '颜色',
-    mdColor: '动态颜色',
+    mdColor: '自适应颜色',
     mdColorOff: '关闭',
     mdColorWallpaper: '壁纸',
     mdColorCustom: '手动',
@@ -288,7 +288,7 @@ const i18nData = {
     onlineWallpaper: '自訂線上連結',
     wallpaper: '桌布',
     color: '顏色',
-    mdColor: '動態顏色',
+    mdColor: '自適應顏色',
     mdColorOff: '關閉',
     mdColorWallpaper: '桌布',
     mdColorCustom: '手動',
@@ -475,7 +475,7 @@ const i18nData = {
     onlineWallpaper: 'Custom online link',
     wallpaper: 'Wallpaper',
     color: 'Color',
-    mdColor: 'Dynamic color',
+    mdColor: 'Adaptive color',
     mdColorOff: 'Off',
     mdColorWallpaper: 'Wallpaper',
     mdColorCustom: 'Manual',
@@ -663,7 +663,7 @@ const i18nData = {
     onlineWallpaper: 'カスタムオンラインリンク',
     wallpaper: '壁紙',
     color: '色',
-    mdColor: 'ダイナミックカラー',
+    mdColor: 'アダプティブカラー',
     mdColorOff: 'オフ',
     mdColorWallpaper: '壁紙',
     mdColorCustom: '手動',
@@ -850,7 +850,7 @@ const i18nData = {
     onlineWallpaper: 'Своя онлайн-ссылка',
     wallpaper: 'Обои',
     color: 'Цвет',
-    mdColor: 'Динамический цвет',
+    mdColor: 'Адаптивный цвет',
     mdColorOff: 'Выкл.',
     mdColorWallpaper: 'Обои',
     mdColorCustom: 'Вручную',
@@ -2633,8 +2633,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 预设色板渲染：不直接铺种子色（饱和原色刺眼、不符合 MD 观感），
   // 而是按当前明暗主题取该色相的 tonal 结果：
-  //   卡片底色 = primaryContainer，中央圆点 = onPrimaryContainer
-  // 这样浅色下是淡彩卡片、深色下是深彩卡片，色相可辨又不抢眼。
+  //   卡片下半 = primaryContainer，中央圆点 = onPrimaryContainer，上半固定为白
   // 上次已渲染的色板标识，避免重复构造配色方案
   let lastSwatchKey = '';
   function renderMdSwatches() {
@@ -2651,8 +2650,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const seed = sw.getAttribute('data-seed');
       if (!seed) return; // 自定义卡片无种子色
       try {
-        const scheme = mdScheme(api.argbFromHex(seed), dark);
-        sw.style.backgroundColor = api.hexFromArgb(scheme.primaryContainer);
+        const seedArgb = api.argbFromHex(seed);
+        const scheme = mdScheme(seedArgb, dark);
+        const seedHct = api.Hct.fromInt(seedArgb);
+        // 上半：浅色取该色最淡的一档，深色取最深的一档；下半用 primaryContainer
+        const topTone = dark ? 15 : 95;
+        const top = api.Hct.from(seedHct.hue, seedHct.chroma, topTone).toInt();
+        sw.style.setProperty('--swatch-top', api.hexFromArgb(top));
+        sw.style.setProperty('--swatch-bg', api.hexFromArgb(scheme.primaryContainer));
         sw.style.setProperty('--swatch-dot', api.hexFromArgb(scheme.onPrimaryContainer));
       } catch (e) { /* 配色工具未就绪时保持原样 */ }
     });
@@ -2881,26 +2886,38 @@ document.addEventListener('DOMContentLoaded', () => {
       pixels[j] = ((255 << 24) | (data[i] << 16) | (data[i + 1] << 8) | data[i + 2]) >>> 0;
     }
     try {
-      const quantized = api.QuantizerCelebi.quantize(pixels, 128);
-      // 按面积加权求平均色相、彩度、明度并合成种子色。
-      // 色相用向量求和，得到连续值且不受 0/360 跨界影响；彩度取加权平均并设下限
-      let sumX = 0, sumY = 0, sumChroma = 0, sumTone = 0, total = 0;
+      const quantized = api.QuantizerCelebi.quantize(pixels, 64);
+      // 按面积加权求平均色相、饱和度、明度，并合成种子色。
+      // 色相用向量求和，避免 0/360 跨界；饱和度与明度设上下限
+      let sumX = 0, sumY = 0, sumSat = 0, sumLight = 0, total = 0;
       quantized.forEach((count, argb) => {
-        const hct = api.Hct.fromInt(argb);
-        if (hct.chroma < 4) return;
-        const rad = (hct.hue * Math.PI) / 180;
+        const r = (argb >> 16) & 0xff, g = (argb >> 8) & 0xff, b = argb & 0xff;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+        if (d < 12) return;
+        let h;
+        if (max === r) h = ((g - b) / d) % 6;
+        else if (max === g) h = (b - r) / d + 2;
+        else h = (r - g) / d + 4;
+        h *= 60;
+        if (h < 0) h += 360;
+        const rad = (h * Math.PI) / 180;
         sumX += Math.cos(rad) * count;
         sumY += Math.sin(rad) * count;
-        sumChroma += hct.chroma * count;
-        sumTone += hct.tone * count;
+        sumSat += (d / max) * count;
+        sumLight += ((max + min) / 510) * count;
         total += count;
       });
       if (!total) return null;
       let hue = (Math.atan2(sumY, sumX) * 180) / Math.PI;
       if (hue < 0) hue += 360;
-      const chroma = Math.max(sumChroma / total, 48);
-      const tone = Math.min(90, Math.max(40, sumTone / total));
-      return api.Hct.from(hue, chroma, tone).toInt();
+      const sat = Math.max(sumSat / total, 0.36);
+      const light = Math.min(0.74, Math.max(0.38, sumLight / total));
+      // HSL -> ARGB
+      const k = (n) => (n + hue / 30) % 12;
+      const a = sat * Math.min(light, 1 - light);
+      const f = (n) => light - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
+      const to255 = (v) => Math.round(255 * Math.max(0, Math.min(1, v)));
+      return ((255 << 24) | (to255(f(0)) << 16) | (to255(f(8)) << 8) | to255(f(4))) >>> 0;
     } catch (e) {
       return null;
     }
@@ -2908,8 +2925,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function applyMdColor() {
     const storedMode = Storage.get(MD_MODE_KEY, 'wallpaper');
-    // 两种来源：wallpaper（从壁纸取色）/ custom（用预设色板的种子色）。
-    // 壁纸未启用时无法取色，退回 custom
+    // 模式优先级：off（原生主题）> wallpaper（壁纸取色，需背景启用）> custom（色板种子色）
     let wallpaperAvailable = false;
     try {
       wallpaperAvailable = !!bgEnabled;
@@ -2917,8 +2933,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // 初始化阶段 bgEnabled 尚未声明，退回读取存储值
       wallpaperAvailable = !!Storage.get('ntp_bg_enabled', false);
     }
-    const mode = (storedMode === 'wallpaper' && wallpaperAvailable) ? 'wallpaper'
-               : (storedMode === 'off' ? 'off' : 'custom');
+    const mode = storedMode === 'off' ? 'off'
+               : (storedMode === 'wallpaper' && wallpaperAvailable ? 'wallpaper' : 'custom');
     syncMdWallpaperOption(wallpaperAvailable);
     if (toggleMdDynamic) toggleMdDynamic.checked = (mode === 'wallpaper');
     if (mdCustomSettings) {
@@ -2994,8 +3010,8 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         );
       };
-      // 量化与配色重建都是同步重活：
-      // 先让出 400ms 等壁纸的展开动画（0.3s）播完，再进空闲队列执行
+      // 取色是同步重活，推迟到背景进入动画（1.3s + 渐显 0.6s）之后再执行，
+      // 避免与遮罩动画争抢主线程
       const scheduleSampling = () => {
         if (typeof requestIdleCallback === 'function') {
           requestIdleCallback(sampleWallpaper, { timeout: 2000 });
@@ -3003,7 +3019,7 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(sampleWallpaper, 0);
         }
       };
-      setTimeout(scheduleSampling, 400);
+      setTimeout(scheduleSampling, 1500);
     } else {
       build(MCU_API.argbFromHex(getMdSeed()));
     }

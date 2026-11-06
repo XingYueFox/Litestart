@@ -21,6 +21,9 @@
       --fill-color: #f5f5f5;   /* 页面主背景色 */
       --fill-popup-color: #ffffff;   /* 下拉菜单/弹窗主背景色；※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --neutral-layer-floating: #ffffff;   /* 浮动层背景色 (搜索框/图标) */
+      /* 无背景时浮动层（搜索框、快速链接图标）的固定底色，不参与动态取色 */
+      --plain-floating-bg: #ffffff;
+      --plain-floating-bg-hover: #f3f3f3;
       --modal-bg: #ffffff;   /* ※ 深色下比卡片更暗一档，与上面几个不同值 */
       --settings-panel-bg: #EEEEEE;   /* ※ 与 --btn-secondary-bg 同值（浅色 #EEEEEE / 深色不同） */
       --settings-card-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
@@ -90,6 +93,8 @@
         --fill-color: #232323;
         --fill-popup-color: #2b2b2b;
         --neutral-layer-floating: #2b2b2b;
+        --plain-floating-bg: #2b2b2b;
+        --plain-floating-bg-hover: #333333;
         
         --neutral-foreground-rest: #f5f5f5;
         --neutral-foreground-secondary: #adadad;
@@ -1253,23 +1258,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: transparent;
-      transition: transform 0.1s ease;
-      /* 底色由 JS 按 data-seed 生成 tonal 色写入（见 script.js 色板渲染） */
+      /* 上下分割：上半为浅色最淡/深色最深，下半为 primaryContainer */
+      background: linear-gradient(180deg, var(--swatch-top, transparent) 0 50%, var(--swatch-bg, transparent) 50% 100%);
+      /* 两个变量由 JS 按 data-seed 生成 tonal 色写入（见 script.js 色板渲染） */
     }
 
-    /* 色块中央的小圆点：该色调的强调色 */
+    /* 悬停：与选中态同构的双环，外环为半透明灰 */
+    .md-swatch:hover {
+      box-shadow: 0 0 0 2px var(--settings-card-bg), 0 0 0 4px rgba(128, 128, 128, 0.45);
+    }
+
+    /* 色块中央的圆角方块：该色调的强调色 */
     .md-swatch::after {
       content: '';
       width: 38%;
       aspect-ratio: 1 / 1;
-      border-radius: 50%;
+      border-radius: 30%;
       background-color: var(--swatch-dot, transparent);
-      transition: transform 0.1s ease;
-    }
-
-    .md-swatch:hover::after {
-      transform: scale(1.15);
     }
 
     /* 选中：外圈描边（用主题强调色，与 MD 选区风格一致） */
@@ -1279,28 +1284,27 @@
 
     /* ===== 首位「默认」卡片 =====
        代表关闭 MD 取色时的原生黑白主题：
-       用「浅底深点」半黑半白（上下分割）表达，而不是某个色相。*/
+       浅色为白底黑点，深色为黑底白点。*/
     .md-swatch-default {
-      background: linear-gradient(180deg, #f5f3f0 0 50%, #262320 50% 100%);
+      background: #ffffff;
     }
 
     .md-swatch-default::after {
       background-color: #262320;
-      box-shadow: 0 0 0 2px #f5f3f0;
     }
 
     :root[data-theme="dark"] .md-swatch-default {
-      background: linear-gradient(180deg, #262320 0 50%, #f5f3f0 50% 100%);
+      background: #262320;
     }
 
     :root[data-theme="dark"] .md-swatch-default::after {
       background-color: #f5f3f0;
-      box-shadow: 0 0 0 2px #262320;
     }
 
     /* ===== 末位「自定义」卡片：虚线描边 + 加号，点击展开滑块 ===== */
     .md-swatch-custom {
-      background-color: transparent;
+      /* 覆盖色块的上下分割底色 */
+      background: none;
       border: 1.5px dashed var(--settings-card-border);
       color: var(--settings-text-secondary);
     }
@@ -1601,6 +1605,16 @@
       position: relative;
       padding: 0 10px 0 15px;
       transition: border-radius 0.15s ease, box-shadow 0.5s ease, background-color 0.15s ease, border-color 0.15s ease, outline 0.15s ease;
+    }
+
+    /* 浅色模式下无背景时，浮动层使用固定底色，不跟随动态取色；文字仍按配色渲染 */
+    :root[data-theme="light"] body:not(.bg-enabled) #fakebox,
+    :root[data-theme="light"] body:not(.bg-enabled) .quicklink-icon {
+      background-color: var(--plain-floating-bg);
+    }
+
+    :root[data-theme="light"] body:not(.bg-enabled) #fakebox:hover:not(:focus-within) {
+      background-color: var(--plain-floating-bg-hover);
     }
 
     /* 悬停时底色微调：浅色略深，深色略浅；选中后不再变化 */
@@ -3412,7 +3426,7 @@
                 <!-- 动态颜色开关：开启时从壁纸取色，下方预设置灰 -->
                 <div class="settings-card">
                   <div class="setting-row">
-                    <div class="setting-label-group" data-i18n="mdColor">动态颜色</div>
+                    <div class="setting-label-group" data-i18n="mdColor">自适应颜色</div>
                     <div class="switch-container">
                       <label class="switch">
                         <input type="checkbox" id="toggle-md-dynamic">
