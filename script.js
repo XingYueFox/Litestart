@@ -2627,7 +2627,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 三种模式：off=原版配色；wallpaper=从壁纸提取种子色；custom=自定义种子色。
   // 同时生成浅色/深色两套 scheme，注入与现有 CSS 变量同名的变量，
   // 不改变任何现有变量名与选择器结构（最小侵入）。
-  const MD_MODE_KEY = 'ntp_md_color_mode';   // wallpaper | custom
+  const MD_MODE_KEY = 'ntp_md_color_mode';   // wallpaper | custom | off
+  const MD_PREV_MODE_KEY = 'ntp_md_prev_mode'; // 进入壁纸取色前的模式，用于关闭开关时还原
   const MD_SEED_KEY = 'ntp_md_seed';         // 自定义种子色（hex，如 #6750a4）
   const toggleMdDynamic = document.getElementById('toggle-md-dynamic');
   const mdCustomSettings = document.getElementById('md-custom-settings');
@@ -2974,6 +2975,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // 默认模式：不接管配色，回到页面原生黑白主题
       styleEl?.remove();
       document.documentElement.removeAttribute('data-md-color');
+      // 清空缓存键：否则回到 off 前的同一个配色时会被判为「已应用」而跳过重建
+      lastMdAppliedKey = '';
       mdSwatches.forEach((sw) => sw.classList.toggle('active', sw.getAttribute('data-mode') === 'off'));
       renderMdSwatches();
       return;
@@ -3049,6 +3052,14 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(scheduleSampling, 1500);
     } else {
       build(MCU_API.argbFromHex(getMdSeed()));
+    }
+
+    // 遵循壁纸取色时不参与色板选中判断：此时配色来自壁纸，
+    // 用旧的手动种子色去比对会把选中态错误地指向某个预设
+    if (mode === 'wallpaper') {
+      setCustomPanelOpen(false);
+      renderMdSwatches();
+      return;
     }
 
     // 选中态：命中等价预设色 -> 该色块选中；否则（滑块调出来的色）高亮末位自定义卡片
@@ -3146,11 +3157,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (toggleMdDynamic.checked) {
+      // 记录进入壁纸取色前的模式，关闭开关时原样还原（含「默认」这一档）
+      const cur = Storage.get(MD_MODE_KEY, 'custom');
+      if (cur !== 'wallpaper') Storage.set(MD_PREV_MODE_KEY, cur);
       Storage.set(MD_MODE_KEY, 'wallpaper');
     } else {
-      // 关闭后沿用色板此前选定的「默认」或某个种子色
-      const last = Storage.get(MD_MODE_KEY, 'custom');
-      Storage.set(MD_MODE_KEY, last === 'off' ? 'off' : 'custom');
+      const prev = Storage.get(MD_PREV_MODE_KEY, 'custom');
+      Storage.set(MD_MODE_KEY, prev === 'off' ? 'off' : 'custom');
     }
     applyMdColor();
   });
