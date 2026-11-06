@@ -24,6 +24,17 @@ const logos = {
   custom: ``
 };
 
+// 界面语言的存储键与读取入口
+const LANG_KEY = 'liteStart_language';
+
+// 「预置」图标选择状态：当前选中的图标 id 与风格
+let iconPresetId = '';
+let iconPresetStyle = 'filled';
+
+function getSavedLang() {
+  return localStorage.getItem(LANG_KEY) || 'auto';
+}
+
 // 语言字典
 const i18nData = {
   'zh-CN': {
@@ -49,7 +60,6 @@ const i18nData = {
     presets: '预设',
     background: '背景',
     enableBackground: '启用背景',
-    editBackground: '编辑背景',
     language: '页面语言',
     langAuto: '默认（跟随设备）',
     cookieNotice: '隐私政策',
@@ -171,8 +181,7 @@ const i18nData = {
     forceBingCNDesc: '<b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。',
     enhancedVisibility: '增强元素可见性',
     enhancedBlur: '衬底启用模糊',
-    bgVignette: '背景边角晕影',
-    bgFadeBlur: '背景渐显模糊',
+    bgVignette: '深色模式边角晕影',
     enhancedBlurTip: '此选项可能会对设备功耗有轻微影响。',
     addlink: '添加',
     addQuicklink: '添加快速链接',
@@ -251,7 +260,6 @@ const i18nData = {
     presets: '預設',
     background: '背景',
     enableBackground: '啟用背景',
-    editBackground: '編輯背景',
     language: '頁面語言',
     langAuto: '預設（隨設備設定）',
     cookieNotice: '隱私政策',
@@ -373,8 +381,7 @@ const i18nData = {
     forceBingCNDesc: '<b>開啟</b>：強制使用必應中國版<br><b>關閉</b>：根據網路環境自動選擇。<br>此選項可以避免代理設定導致 www.bing.com 無法自動跳轉到 cn.bing.com。',
     enhancedVisibility: '增強元素可見性',
     enhancedBlur: '襯底啟用模糊',
-    bgVignette: '背景邊角暈影',
-    bgFadeBlur: '背景漸顯模糊',
+    bgVignette: '深色模式邊角暈影',
     enhancedBlurTip: '此選項可能會對裝置耗電有輕微影響。',
     addlink: '新增',
     addQuicklink: '新增快速連結',
@@ -438,7 +445,6 @@ const i18nData = {
 
     background: 'Background',
     enableBackground: 'Enable background',
-    editBackground: 'Edit background',
     language: 'Language',
     langAuto: 'Default (System)',
     cookieNotice: 'Privacy Policy',
@@ -560,8 +566,7 @@ const i18nData = {
     forceBingCNDesc: '<b>On</b>: Forces cn.bing.com<br><b>Off</b>: Automatically selects based on network conditions.<br>This option prevents proxy settings from interfering with automatic redirection of www.bing.com to cn.bing.com.',
     enhancedVisibility: 'Enhance Element Visibility',
     enhancedBlur: 'Enable backdrop blur',
-    bgVignette: 'Background vignette',
-    bgFadeBlur: 'Blur-in on background load',
+    bgVignette: 'Dark mode vignette',
     enhancedBlurTip: 'This option may slightly increase power consumption.',
     addlink: 'Add',
     addQuicklink: 'Add quicklink',
@@ -626,7 +631,6 @@ const i18nData = {
 
     background: '背景',
     enableBackground: '背景を有効にする',
-    editBackground: '背景を編集',
     language: '言語',
     langAuto: 'デフォルト（システムに従う）',
     cookieNotice: 'プライバシーポリシー',
@@ -748,8 +752,7 @@ const i18nData = {
     forceBingCNDesc: '<b>ON</b>：cn.bing.com を強制使用<br><b>OFF</b>：ネットワーク環境に応じて自動的に選択<br>このオプションにより、プロキシ設定による www.bing.com から cn.bing.com への自動リダイレクトの妨げを防ぎます。',
     enhancedVisibility: '要素の視認性を向上',
     enhancedBlur: '下地のぼかしを有効化',
-    bgVignette: '背景のビネット',
-    bgFadeBlur: '背景読み込み時のぼかし',
+    bgVignette: 'ダークモードのビネット',
     enhancedBlurTip: 'このオプションは消費電力にわずかな影響を与える可能性があります。',
     addlink: '追加',
     addQuicklink: 'クイックリンクを追加',
@@ -813,7 +816,6 @@ const i18nData = {
 
     background: 'Фон',
     enableBackground: 'Включить фон',
-    editBackground: 'Изменить фон',
     language: 'Язык',
     langAuto: 'По умолчанию (системный)',
     cookieNotice: 'Политика конфиденциальности',
@@ -934,8 +936,7 @@ const i18nData = {
     forceBingCNDesc: '<b>Вкл.</b>: Принудительно использует cn.bing.com<br><b>Выкл.</b>: Автоматический выбор в зависимости от сетевых условий<br>Этот параметр предотвращает проблемы с прокси, мешающие автоматическому редиректу www.bing.com на cn.bing.com.',
     enhancedVisibility: 'Повысить видимость элементов',
     enhancedBlur: 'Размытие подложки',
-    bgVignette: 'Виньетка фона',
-    bgFadeBlur: 'Размытие при загрузке фона',
+    bgVignette: 'Виньетка тёмной темы',
     enhancedBlurTip: 'Эта опция может незначительно увеличить энергопотребление.',
     addlink: 'Добавить',
     addQuicklink: 'Добавить быструю ссылку',
@@ -999,6 +1000,11 @@ function getResolvedLanguageCode(langConfig) {
 }
 
 // 界面渲染函数
+// 按当前存储的语言重新应用一次文案
+function reapplyLanguage() {
+  applyLanguage(getSavedLang());
+}
+
 function applyLanguage(langConfig) {
   const langCode = getResolvedLanguageCode(langConfig);
   const dict = i18nData[langCode] || i18nData['zh-CN'];
@@ -1050,99 +1056,6 @@ function applyLanguage(langConfig) {
       el.setAttribute('aria-label', dict[key]);
     }
   });
-
-  // 5.刷新特殊状态开闭文本
-  const statusHist = document.getElementById('status-history');
-  if (statusHist) {
-    const isChecked = document.getElementById('toggle-history-switch').checked;
-    statusHist.innerText = isChecked ? dict.on : dict.off;
-  }
-  
-  const statusBg = document.getElementById('status-bg');
-  if (statusBg) {
-    const isChecked = document.getElementById('toggle-bg-switch').checked;
-    statusBg.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  const statusBgModal = document.getElementById('status-bg-modal');
-  if (statusBgModal) {
-    const isChecked = document.getElementById('toggle-bg-modal-switch').checked;
-    statusBgModal.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  // 6.刷新时间状态文本
-  const statusTimeCapsule = document.getElementById('status-time-capsule');
-  if (statusTimeCapsule) {
-    const isChecked = document.getElementById('toggle-time-capsule-switch')?.checked || false;
-    statusTimeCapsule.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  // 7.刷新菜单按钮状态文本
-  const statusMenuBtn = document.getElementById('status-menu-button');
-  if (statusMenuBtn) {
-    const isChecked = document.getElementById('toggle-menu-button-switch')?.checked ?? true;
-    statusMenuBtn.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  // 8.刷新显示标题开关状态文本
-  const statusLogo = document.getElementById('status-logo');
-  if (statusLogo) {
-    const isChecked = document.getElementById('toggle-logo-switch')?.checked ?? true;
-    statusLogo.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  // 8.1 刷新快速链接"添加"按钮开关状态文本
-  const statusAddButton = document.getElementById('status-add-button');
-  if (statusAddButton) {
-    const isChecked = document.getElementById('toggle-add-button-switch')?.checked ?? true;
-    statusAddButton.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  // 8.1.1 刷新"显示快速链接"开关状态文本
-  const statusQuicklinks = document.getElementById('status-quicklinks');
-  if (statusQuicklinks) {
-    const isChecked = document.getElementById('toggle-quicklinks-switch')?.checked ?? true;
-    statusQuicklinks.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  // 8.2 刷新"显示搜索框"开关状态文本
-  const statusSearchBox = document.getElementById('status-search-box');
-  if (statusSearchBox) {
-    const isChecked = document.getElementById('toggle-search-switch')?.checked ?? true;
-    statusSearchBox.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  // 9.强制使用必应中国版开关状态文本
-  const statusForceBingCN = document.getElementById('status-force-bing-cn');
-  if (statusForceBingCN) {
-    const isChecked = document.getElementById('toggle-force-bing-cn')?.checked || false;
-    statusForceBingCN.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  // 10.刷新增强元素可见性状态文本
-  const statusEnhancedVisibility = document.getElementById('status-enhanced-visibility');
-  if (statusEnhancedVisibility) {
-    const isChecked = document.getElementById('toggle-enhanced-visibility')?.checked || false;
-    statusEnhancedVisibility.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  const statusEnhancedBlur = document.getElementById('status-enhanced-blur');
-  if (statusEnhancedBlur) {
-    const isChecked = document.getElementById('toggle-enhanced-blur')?.checked || false;
-    statusEnhancedBlur.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  const statusBgVignette = document.getElementById('status-bg-vignette');
-  if (statusBgVignette) {
-    const isChecked = document.getElementById('toggle-bg-vignette')?.checked ?? true;
-    statusBgVignette.innerText = isChecked ? dict.on : dict.off;
-  }
-
-  const statusBgFadeBlur = document.getElementById('status-bg-fade-blur');
-  if (statusBgFadeBlur) {
-    const isChecked = document.getElementById('toggle-bg-fade-blur')?.checked || false;
-    statusBgFadeBlur.innerText = isChecked ? dict.on : dict.off;
-  }
 
   // 11.刷新自定义下拉选项文本
   refreshCustomSelects();
@@ -1616,6 +1529,52 @@ function decodeInput(str) {
     dd.style.visibility = '';
   }
 
+  // 收起所有展开中的自定义下拉浮层；exceptDisplay 对应的那一个保留
+  function closeAllDropdowns(exceptDisplay) {
+    document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
+      if (exceptDisplay && dd._display === exceptDisplay) return;
+      dd.classList.remove('active');
+      clearDropdownInlineStyles(dd);
+      dd._display?.classList.remove('active');
+    });
+  }
+
+  // 按可用空间摆放下拉面板：宽度贴合内容、与触发器右边缘对齐、必要时向上展开。
+  // 返回是否向上展开，供展开动画决定起始位移方向
+  function placeDropdown(display, dd) {
+    const rect = display.getBoundingClientRect();
+    dd.style.width = 'auto';
+    const dropdownHeight = dd.offsetHeight;
+    const dropdownWidth = dd.offsetWidth;
+    const left = Math.max(4, Math.min(rect.right - dropdownWidth, window.innerWidth - dropdownWidth - 4));
+    const spaceBelow = window.innerHeight - rect.bottom - 4;
+    const spaceAbove = rect.top - 4;
+
+    let top;
+    let openingUp = false;
+    if (spaceBelow >= dropdownHeight) {
+      top = rect.bottom + 4;
+    } else if (spaceAbove > spaceBelow && spaceAbove > 0) {
+      top = Math.max(4, rect.top - dropdownHeight - 4);
+      openingUp = true;
+    } else {
+      // 空间都不足时，选择可见区域更大的方向，并夹紧到视口内
+      const belowClamped = Math.min(rect.bottom + 4, window.innerHeight - dropdownHeight - 4);
+      const aboveClamped = Math.max(4, rect.top - dropdownHeight - 4);
+      const belowVisible = window.innerHeight - belowClamped - 4;
+      const aboveVisible = aboveClamped + dropdownHeight;
+      if (belowVisible >= aboveVisible) {
+        top = belowClamped;
+      } else {
+        top = aboveClamped;
+        openingUp = true;
+      }
+    }
+    dd.style.top = top + 'px';
+    dd.style.left = left + 'px';
+    return openingUp;
+  }
+
   function initCustomSelects() {
     const displays = document.querySelectorAll('.custom-select-display');
     displays.forEach(display => {
@@ -1628,13 +1587,7 @@ function decodeInput(str) {
 
       // 关闭所有其他已打开的下拉（除了 exceptDisplay 对应的那个）
       function closeAll(exceptDisplay) {
-        document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
-          if (dd._display !== exceptDisplay) {
-            dd.classList.remove('active');
-            clearDropdownInlineStyles(dd);
-            dd._display.classList.remove('active');
-          }
-        });
+        closeAllDropdowns(exceptDisplay);
       }
 
       // 将原生 select 的选中项文本同步到自定义显示组件
@@ -1649,48 +1602,7 @@ function decodeInput(str) {
       // 返回值：dropdown._openingUp = true 表示向上展开
       function positionDropdown() {
         if (!dropdown) return;
-        const rect = display.getBoundingClientRect();
-        // 面板宽度贴合选项内容，不跟随按钮宽度
-        dropdown.style.width = 'auto';
-
-        const dropdownHeight = dropdown.offsetHeight;
-        const dropdownWidth = dropdown.offsetWidth;
-        // 与按钮右边缘对齐，并夹紧到视口内
-        const alignedLeft = () => Math.max(4, Math.min(rect.right - dropdownWidth, window.innerWidth - dropdownWidth - 4));
-        const spaceBelow = window.innerHeight - rect.bottom - 4;
-        const spaceAbove = rect.top - 4;
-
-        let openingUp = false;
-
-        // 优先在下方展开（空间充足时）
-        if (spaceBelow >= dropdownHeight) {
-          dropdown.style.top = rect.bottom + 4 + 'px';
-          dropdown.style.left = alignedLeft() + 'px';
-        } else if (spaceAbove > spaceBelow && spaceAbove > 0) {
-          // 上方空间比下方大，且上方有空间，则向上展开
-          dropdown.style.top = Math.max(4, rect.top - dropdownHeight - 4) + 'px';
-          dropdown.style.left = alignedLeft() + 'px';
-          openingUp = true;
-        } else {
-          // 空间都不足时，选择可见区域更大的方向，并夹紧到视口内
-          const belowTop = rect.bottom + 4;
-          const belowClamped = Math.min(belowTop, window.innerHeight - dropdownHeight - 4);
-          const aboveTop = rect.top - dropdownHeight - 4;
-          const aboveClamped = Math.max(4, aboveTop);
-
-          const belowVisible = window.innerHeight - belowClamped - 4;
-          const aboveVisible = aboveClamped + dropdownHeight;
-
-          if (belowVisible >= aboveVisible) {
-            dropdown.style.top = belowClamped + 'px';
-          } else {
-            dropdown.style.top = aboveClamped + 'px';
-            openingUp = true;
-          }
-          dropdown.style.left = alignedLeft() + 'px';
-        }
-
-        dropdown._openingUp = openingUp;
+        dropdown._openingUp = placeDropdown(display, dropdown);
       }
 
       // 激活下拉面板
@@ -1800,11 +1712,7 @@ function decodeInput(str) {
       const isClickOnDropdown = e.target.closest('.custom-select-dropdown');
       const isClickOnDisplay = e.target.closest('.custom-select-display');
       if (!isClickOnDropdown && !isClickOnDisplay) {
-        document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
-          dd.classList.remove('active');
-          clearDropdownInlineStyles(dd);
-          dd._display.classList.remove('active');
-        });
+        closeAllDropdowns();
       }
       // 同步收掉关于页「更新」拆分按钮弹出的菜单
       window.dispatchEvent(new Event('liteStart:hideFloatingLayers'));
@@ -1813,11 +1721,7 @@ function decodeInput(str) {
     // ESC 键关闭所有下拉
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
-          dd.classList.remove('active');
-          clearDropdownInlineStyles(dd);
-          dd._display.classList.remove('active');
-        });
+        closeAllDropdowns();
       }
     });
 
@@ -1841,36 +1745,8 @@ function decodeInput(str) {
           display.classList.remove('active');
           return;
         }
-        // 面板宽度贴合选项内容，不跟随按钮宽度
-        dd.style.width = 'auto';
-        const dropdownHeight = dd.offsetHeight;
-        const dropdownWidth = dd.offsetWidth;
-        // 与按钮右边缘对齐，并夹紧到视口内
-        const alignedLeft = Math.max(4, Math.min(rect.right - dropdownWidth, window.innerWidth - dropdownWidth - 4));
-        const spaceBelow = window.innerHeight - rect.bottom - 4;
-        const spaceAbove = rect.top - 4;
-
-        if (spaceBelow >= dropdownHeight) {
-          dd.style.top = rect.bottom + 4 + 'px';
-          dd.style.left = alignedLeft + 'px';
-        } else if (spaceAbove > spaceBelow && spaceAbove > 0) {
-          dd.style.top = Math.max(4, rect.top - dropdownHeight - 4) + 'px';
-          dd.style.left = alignedLeft + 'px';
-        } else {
-          const belowTop = rect.bottom + 4;
-          const belowClamped = Math.min(belowTop, window.innerHeight - dropdownHeight - 4);
-          const aboveTop = rect.top - dropdownHeight - 4;
-          const aboveClamped = Math.max(4, aboveTop);
-          const belowVisible = window.innerHeight - belowClamped - 4;
-          const aboveVisible = aboveClamped + dropdownHeight;
-          if (belowVisible >= aboveVisible) {
-            dd.style.top = belowClamped + 'px';
-          } else {
-            dd.style.top = aboveClamped + 'px';
-          }
-          dd.style.left = alignedLeft + 'px';
-        }
-    });
+        placeDropdown(display, dd);
+      });
   }
 
   const settingsPanel = document.getElementById('popover-settings');
@@ -2428,10 +2304,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
   const toggleEnhancedBlur = document.getElementById('toggle-enhanced-blur');
   const toggleBgVignette = document.getElementById('toggle-bg-vignette');
-  const toggleBgFadeBlur = document.getElementById('toggle-bg-fade-blur');
   
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
-  const toggleBgModalSwitch = document.getElementById('toggle-bg-modal-switch');
   const wallpaperPreviewContainer = document.getElementById('wallpaper-preview-container');
   const btnUploadWallpaper = document.getElementById('btn-upload-wallpaper');
   const btnEditOnlineWallpaper = document.getElementById('btn-edit-online-wallpaper');
@@ -2963,6 +2837,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const mode = storedMode === 'off' ? 'off'
                : (storedMode === 'wallpaper' && wallpaperAvailable ? 'wallpaper' : 'custom');
+    // 非壁纸取色时同步记录当前模式，保证关闭开关时能还原到同一档
+    if (storedMode !== 'wallpaper' && Storage.get(MD_PREV_MODE_KEY) !== storedMode) {
+      Storage.set(MD_PREV_MODE_KEY, storedMode);
+    }
     syncMdWallpaperOption(wallpaperAvailable);
     if (toggleMdDynamic) toggleMdDynamic.checked = (mode === 'wallpaper');
     if (mdCustomSettings) {
@@ -3292,11 +3170,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnWaffle?.addEventListener('click', (e) => {
     e.stopPropagation();
+    // 顶栏按钮的点击会阻断 document 上的关闭逻辑，这里显式收起搜索建议，
+    // 否则建议面板会与弹出面板同时显示
+    closeSuggestions();
     togglePopover(popoverWaffle, popoverSettings);
   });
 
   btnSettings?.addEventListener('click', (e) => {
     e.stopPropagation();
+    closeSuggestions();
     togglePopover(popoverSettings, popoverWaffle);
     // 打开时保留上次所在的页面（点外部收起不会重置页面状态，刷新页面才会回到主设置页），
     // 这里只同步一下滚动条，避免高度变化后滑块位置不对
@@ -3459,10 +3341,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
   // 默认开启
   let enhancedBlur = Storage.get('ntp_enhanced_blur', true);
-  // 背景边角晕影默认开启，所以缺省值是 true
+  // 深色模式边角晕影默认开启，所以缺省值是 true
   let bgVignette = Storage.get('ntp_bg_vignette', true);
-  // 背景渐显模糊默认开启（用默认壁纸时会自动关掉，见 renderWallpaper）
-  let bgFadeBlur = Storage.get('ntp_bg_fade_blur', true);
   let searchVisible = Storage.get('ntp_search_visible', true);
   let showLogo = Storage.get('ntp_show_logo', true);
   // 快速链接区"添加"按钮的显隐（默认关闭）
@@ -3524,7 +3404,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = enhancedVisibility;
   if (toggleEnhancedBlur) toggleEnhancedBlur.checked = enhancedBlur;
   if (toggleBgVignette) toggleBgVignette.checked = bgVignette;
-  if (toggleBgFadeBlur) toggleBgFadeBlur.checked = bgFadeBlur;
 
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
@@ -3544,7 +3423,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 背景显隐及渲染逻辑
   function applyBackgroundState() {
     if (toggleBgSwitch) toggleBgSwitch.checked = bgEnabled;
-    if (toggleBgModalSwitch) toggleBgModalSwitch.checked = bgEnabled;
     if (toggleBgMaster) toggleBgMaster.checked = bgEnabled;
 
     if (bgEnabled) {
@@ -3570,7 +3448,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     applyEnhancedVisibility();
     applyBgVignette();
-    applyBgFadeBlur();
     applyBgDependentEnabled();
     // 同步壁纸来源下拉（背景关闭时显示「关闭」）
     syncWallpaperSourceSelect();
@@ -3599,13 +3476,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.removeAttribute('data-enhanced-blur');
     }
 
-    // 状态文案与勾选框同源
-    const statusBlur = document.getElementById('status-enhanced-blur');
-    if (statusBlur) {
-      const d = currentDict();
-      statusBlur.innerText = (toggleEnhancedBlur && toggleEnhancedBlur.checked) ? d.on : d.off;
-    }
-
     // 该行始终显示：增强可见性关闭时整行置灰（复用 .setting-row.disabled 的样式），
     // 不再显隐，因此也不需要高度过渡
     const blurRow = document.getElementById('enhanced-blur-row');
@@ -3620,18 +3490,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 背景关闭时，依赖背景的设置（选择图片 / 在线内容）整体置灰且不可交互
-  // 背景边角晕影：只切换 body 上的标记，具体遮罩在 CSS 里换掉 radial 那层
+  // 深色模式边角晕影：只切换 body 上的标记，具体遮罩在 CSS 里换掉 radial 那层
   function applyBgVignette() {
     if (bgVignette) {
       document.body.removeAttribute('data-bg-vignette');
     } else {
       document.body.setAttribute('data-bg-vignette', 'off');
-    }
-    // 状态文案与开关同源，避免出现"开关关闭、文案打开"
-    const status = document.getElementById('status-bg-vignette');
-    if (status) {
-      const d = currentDict();
-      status.innerText = bgVignette ? d.on : d.off;
     }
   }
 
@@ -3643,21 +3507,6 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.set('ntp_bg_vignette', true);
     if (toggleBgVignette) toggleBgVignette.checked = true;
     applyBgVignette();
-  }
-
-  // 背景渐显模糊：只切换 body 上的标记，具体动画在 CSS 里
-  function applyBgFadeBlur() {
-    if (bgFadeBlur) {
-      document.body.setAttribute('data-bg-fade-blur', 'true');
-    } else {
-      document.body.removeAttribute('data-bg-fade-blur');
-    }
-    // 状态文案与开关同源，避免"开关关闭、文案打开"
-    const status = document.getElementById('status-bg-fade-blur');
-    if (status) {
-      const d = currentDict();
-      status.innerText = bgFadeBlur ? d.on : d.off;
-    }
   }
 
   function applyBgDependentEnabled() {
@@ -3860,22 +3709,7 @@ document.addEventListener('DOMContentLoaded', () => {
       !!(bgImage && bgImage.style.display !== 'none') ||
       !!(bgVideo && bgVideo.style.display !== 'none');
     const alreadyRendered = (wpKey === renderedWallpaperKey) && wallpaperShown;
-    const isFirstRender = (renderedWallpaperKey === null);
     renderedWallpaperKey = wpKey;
-
-    // 壁纸换了时同步「背景渐显模糊」：
-    //   默认壁纸 → 关闭；本地文件 / 必应每日 / 自定义链接 → 打开。
-    // 首次渲染只在存储里还没有用户选择时才套用，避免覆盖用户手动关掉的结果。
-    const hasStoredChoice = localStorage.getItem('ntp_bg_fade_blur') !== null;
-    if (!alreadyRendered && (!isFirstRender || !hasStoredChoice)) {
-      const wantFadeBlur = !!customWallpaperData;
-      if (bgFadeBlur !== wantFadeBlur) {
-        bgFadeBlur = wantFadeBlur;
-        Storage.set('ntp_bg_fade_blur', wantFadeBlur);
-        if (toggleBgFadeBlur) toggleBgFadeBlur.checked = wantFadeBlur;
-      }
-      applyBgFadeBlur();
-    }
 
     if (!customWallpaperData) {
       if (!alreadyRendered) {
@@ -3890,7 +3724,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
       syncWallpaperSourceSelect();
-      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      reapplyLanguage();
       return;
     }
 
@@ -4035,12 +3869,11 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_enhanced_visibility',
     'ntp_enhanced_blur',
     'ntp_bg_vignette',
-    'ntp_bg_fade_blur',
     'ntp_custom_engine_config',
     'ntp_custom_wallpaper'
   ];
   // 以纯字符串保存的设置项（界面语言），导入时需要原样写回
-  const RAW_CONFIG_KEYS = ['liteStart_language'];
+  const RAW_CONFIG_KEYS = [LANG_KEY];
   // 恢复配置时只接受 Litestart 自己的键，避免写入无关数据
   const RESTORABLE_KEY_PATTERN = /^(ntp_|liteStart_)/;
 
@@ -4229,33 +4062,24 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.set('ntp_bg_enabled', bgEnabled);
     applyBackgroundState();
     if (bgEnabled) ensureBingDailyFresh();
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    reapplyLanguage();
   }
 
   toggleBgSwitch?.addEventListener('change', onBgEnabledToggle);
   toggleBgMaster?.addEventListener('change', onBgEnabledToggle);
 
-  toggleBgModalSwitch?.addEventListener('change', (e) => {
-    bgEnabled = e.target.checked;
-    Storage.set('ntp_bg_enabled', bgEnabled);
-    if (bgEnabled) resetBgVignette();     // 重新开启背景时，晕影复位为打开
-    applyBackgroundState();
-    if (bgEnabled) ensureBingDailyFresh();
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
-  });
-
   toggleEnhancedVisibility?.addEventListener('change', (e) => {
     enhancedVisibility = e.target.checked;
     Storage.set('ntp_enhanced_visibility', enhancedVisibility);
     applyEnhancedVisibility();
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    reapplyLanguage();
   });
 
   toggleEnhancedBlur?.addEventListener('change', (e) => {
     enhancedBlur = e.target.checked;
     Storage.set('ntp_enhanced_blur', enhancedBlur);
     applyEnhancedVisibility();
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    reapplyLanguage();
   });
 
   toggleBgVignette?.addEventListener('change', (e) => {
@@ -4264,17 +4088,11 @@ document.addEventListener('DOMContentLoaded', () => {
     applyBgVignette();
   });
 
-  toggleBgFadeBlur?.addEventListener('change', (e) => {
-    bgFadeBlur = e.target.checked;
-    Storage.set('ntp_bg_fade_blur', bgFadeBlur);
-    applyBgFadeBlur();
-  });
-
   // 背景设置：在设置面板内切换到二级页（不再弹窗）
   btnOpenBgModal?.addEventListener('click', () => {
     showSettingsPage('bg');
     renderWallpaper();
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    reapplyLanguage();
   });
 
   // 背景二级页标题栏的返回按钮：回到主设置页
@@ -4423,8 +4241,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resetBgVignette();
     applyBackgroundState();
     if (toggleBgSwitch) toggleBgSwitch.checked = true;
-    if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    reapplyLanguage();
     // 壁纸已切换到新图：「跟随壁纸」模式下重新取色。
     // 不等 bg-image 的 load 事件——renderWallpaper 对同源/同 URL 可能复用节点，
     // 这里统一主动触发更可靠。
@@ -4588,8 +4405,7 @@ document.addEventListener('DOMContentLoaded', () => {
   resetBgVignette();
   applyBackgroundState();
   if (toggleBgSwitch) toggleBgSwitch.checked = true;
-  if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
-  applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+  reapplyLanguage();
   closeOnlineModal();
 });
 
@@ -4790,7 +4606,7 @@ inputOnlineUrl?.addEventListener('input', () => {
 
     // 同步界面（开关勾选、状态文字、下拉文本）
     applySearchVisibility();
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    reapplyLanguage();
 
     // 按当前配置重新判定选中态
     syncLayoutPresetSelection();
@@ -4846,11 +4662,7 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   // 关闭弹窗内所有已展开的自定义下拉
   function closeLayoutDropdowns() {
-    document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
-      dd.classList.remove('active');
-      clearDropdownInlineStyles(dd);
-      if (dd._display) dd._display.classList.remove('active');
-    });
+    closeAllDropdowns();
   }
 
   // 布局二级页返回：回到主设置页
@@ -4869,7 +4681,7 @@ inputOnlineUrl?.addEventListener('input', () => {
         : 'hidden';
     }
     showSettingsPage('layout');
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    reapplyLanguage();
   });
 
   btnCloseLayoutModal?.addEventListener('click', closeLayoutModal);
@@ -4897,7 +4709,7 @@ inputOnlineUrl?.addEventListener('input', () => {
   toggleForceBingCN?.addEventListener('change', (e) => {
     forceBingCN = e.target.checked;
     Storage.set('ntp_force_bing_cn', forceBingCN);
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto'); 
+    reapplyLanguage(); 
   });
 
   btnEditEngine?.addEventListener('click', () => {
@@ -4907,7 +4719,7 @@ inputOnlineUrl?.addEventListener('input', () => {
   toggleHistorySwitch?.addEventListener('change', (e) => {
     historyEnabled = e.target.checked;
     Storage.set('ntp_history_enabled', historyEnabled);
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    reapplyLanguage();
     fetchAndShowSuggestions();
   });
 
@@ -4935,41 +4747,28 @@ inputOnlineUrl?.addEventListener('input', () => {
 
     // 时间开关事件
   const toggleTimeCapsuleSwitch = document.getElementById('toggle-time-capsule-switch');
-  const statusTimeCapsuleText = document.getElementById('status-time-capsule');
 
   if (toggleTimeCapsuleSwitch) {
     toggleTimeCapsuleSwitch.checked = showTimeCapsule;
-    // 初始状态文字
-    const savedLang = localStorage.getItem('liteStart_language') || 'auto';
-    const dict = i18nData[getResolvedLanguageCode(savedLang)] || i18nData['zh-CN'];
-    if (statusTimeCapsuleText) {
-      statusTimeCapsuleText.innerText = showTimeCapsule ? dict.on : dict.off;
-    }
 
     toggleTimeCapsuleSwitch.addEventListener('change', (e) => {
       showTimeCapsule = e.target.checked;
       Storage.set('ntp_show_time_capsule', showTimeCapsule);
-      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      reapplyLanguage();
       applyTimeCapsuleVisibility();
     });
   }
 
   // 菜单按钮开关事件
   const toggleMenuButtonSwitch = document.getElementById('toggle-menu-button-switch');
-  const statusMenuButtonText = document.getElementById('status-menu-button');
 
   if (toggleMenuButtonSwitch) {
     toggleMenuButtonSwitch.checked = showMenuButton;
-    const savedLang = localStorage.getItem('liteStart_language') || 'auto';
-    const dict = i18nData[getResolvedLanguageCode(savedLang)] || i18nData['zh-CN'];
-    if (statusMenuButtonText) {
-      statusMenuButtonText.innerText = showMenuButton ? dict.on : dict.off;
-    }
 
     toggleMenuButtonSwitch.addEventListener('change', (e) => {
       showMenuButton = e.target.checked;
       Storage.set('ntp_show_menu_button', showMenuButton);
-      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      reapplyLanguage();
       applyMenuButtonVisibility();
     });
   }
@@ -4983,7 +4782,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       Storage.set('ntp_search_visible', searchVisible);
       applySearchVisibility();
       syncLayoutPresetSelection();
-      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      reapplyLanguage();
     });
   }
 
@@ -4996,7 +4795,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       Storage.set('ntp_show_logo', showLogo);
       applyLogoVisibility();
       syncLayoutPresetSelection();
-      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      reapplyLanguage();
     });
   }
 
@@ -5010,7 +4809,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       applyQuicklinkPosition();
       renderQuicklinks(true);
       syncLayoutPresetSelection();
-      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      reapplyLanguage();
     });
   }
 
@@ -5022,7 +4821,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       showAddButton = e.target.checked;
       Storage.set('ntp_show_add_button', showAddButton);
       renderQuicklinks(true);
-      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      reapplyLanguage();
     });
   }
 
@@ -5332,7 +5131,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     const label = quicklinksElem.querySelector('.quicklink-add-btn .quicklink-title');
     if (!label) return;
     const dict = window._i18nDict
-      || i18nData[getResolvedLanguageCode(localStorage.getItem('liteStart_language') || 'auto')]
+      || i18nData[getResolvedLanguageCode(localStorage.getItem(LANG_KEY) || 'auto')]
       || i18nData['zh-CN'];
     if (dict && dict.addlink !== undefined) label.textContent = dict.addlink;
   }
@@ -5652,7 +5451,7 @@ function onDrop(e) {
     Storage.set('ntp_show_add_button', false);
     if (toggleAddButtonSwitch) toggleAddButtonSwitch.checked = false;
     renderQuicklinks(true);
-    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+    reapplyLanguage();
     modalAddButtonHidden?.classList.add('active');
   }
 
@@ -5733,9 +5532,9 @@ function onDrop(e) {
   function markSelectedIconPreset() {
     if (!iconPresetPanel) return;
     iconPresetPanel.querySelectorAll('.icon-preset-item').forEach(btn => {
-      const style = window.__iconPresetStyle === 'regular' ? 'regular' : 'filled';
+      const style = iconPresetStyle === 'regular' ? 'regular' : 'filled';
       btn.classList.toggle('selected',
-        btn.dataset.iconId === window.__iconPresetId && btn.dataset.variant === style);
+        btn.dataset.iconId === iconPresetId && btn.dataset.variant === style);
     });
   }
 
@@ -5785,17 +5584,13 @@ function onDrop(e) {
   iconPresetPanel?.addEventListener('click', (e) => {
     const btn = e.target instanceof Element ? e.target.closest('.icon-preset-item') : null;
     if (!btn) return;
-    window.__iconPresetId = btn.dataset.iconId || '';
-    window.__iconPresetStyle = btn.dataset.variant === 'regular' ? 'regular' : 'filled';
+    iconPresetId = btn.dataset.iconId || '';
+    iconPresetStyle = btn.dataset.variant === 'regular' ? 'regular' : 'filled';
     if (selectIconMode) selectIconMode.value = 'preset';
     updateIconPresetOption();
     markSelectedIconPreset();
     hideIconPresetPanel();
-    // 收起自定义下拉浮层
-    document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
-      dd.classList.remove('active');
-      dd._display?.classList.remove('active');
-    });
+    closeAllDropdowns();
   });
 
   hideIconPresetPanel();
@@ -5806,8 +5601,8 @@ function onDrop(e) {
     if (inputName) inputName.value = '';
     if (inputUrl) inputUrl.value = '';
     if (selectIconMode) selectIconMode.value = 'auto';
-    window.__iconPresetId = '';
-    window.__iconPresetStyle = 'filled';
+    iconPresetId = '';
+    iconPresetStyle = 'filled';
     hideIconPresetPanel();           // 收掉上一次残留的宫格面板
     updateIconPresetOption();        // 同步下拉的显示文本
     clearErrors();
@@ -5830,8 +5625,8 @@ function onDrop(e) {
     if (selectIconMode) {
       selectIconMode.value = (item.iconMode === 'text' || item.iconMode === 'preset') ? item.iconMode : 'auto';
     }
-    window.__iconPresetId = item.iconPreset || '';
-    window.__iconPresetStyle = item.iconPresetStyle === 'regular' ? 'regular' : 'filled';
+    iconPresetId = item.iconPreset || '';
+    iconPresetStyle = item.iconPresetStyle === 'regular' ? 'regular' : 'filled';
     hideIconPresetPanel();
     updateIconPresetOption();
     clearErrors();
@@ -5872,9 +5667,9 @@ function onDrop(e) {
     const title = sanitizeInput(inputName.value.trim());
     const rawIconMode = selectIconMode?.value;
     const iconMode = (rawIconMode === 'text' || rawIconMode === 'preset') ? rawIconMode : 'auto';
-    const iconPreset = iconMode === 'preset' ? (window.__iconPresetId || '') : '';
-    const iconPresetStyle = iconMode === 'preset'
-      ? (window.__iconPresetStyle === 'regular' ? 'regular' : 'filled')
+    const iconPreset = iconMode === 'preset' ? (iconPresetId || '') : '';
+    const savedPresetStyle = iconMode === 'preset'
+      ? (iconPresetStyle === 'regular' ? 'regular' : 'filled')
       : '';
     // URL 原样保存：它只会被赋给 href/src 这类属性，不经过 HTML 解析；
     // 在这里转义会把含 & 的地址（多个查询参数）写坏
@@ -5920,7 +5715,7 @@ function onDrop(e) {
     if (currentEditingId) {
       const itemIndex = quicklinksList.findIndex(item => item.id === currentEditingId);
       if (itemIndex !== -1) {
-        quicklinksList[itemIndex] = { ...quicklinksList[itemIndex], title, url, iconMode, iconPreset, iconPresetStyle };
+        quicklinksList[itemIndex] = { ...quicklinksList[itemIndex], title, url, iconMode, iconPreset, iconPresetStyle: savedPresetStyle };
       }
     } else {
       const newItem = {
@@ -5929,7 +5724,7 @@ function onDrop(e) {
         url,
         iconMode,
         iconPreset,
-        iconPresetStyle
+        iconPresetStyle: savedPresetStyle
       };
       quicklinksList.push(newItem);
     }
@@ -6177,14 +5972,14 @@ searchInput?.addEventListener('input', () => {
   }
 
   // 语言选择与应用初始化
-  const savedLang = localStorage.getItem('liteStart_language') || 'auto';
+  const savedLang = getSavedLang();
   // 若存的是已下架的语言（例如 zh-WY），回落到"跟随设备"
   const initialLang = (savedLang === 'auto' || i18nData[savedLang]) ? savedLang : 'auto';
   if (selectLanguage) {
     selectLanguage.value = initialLang;
     selectLanguage.addEventListener('change', (e) => {
       const val = e.target.value;
-      localStorage.setItem('liteStart_language', val);
+      localStorage.setItem(LANG_KEY, val);
       applyLanguage(val);
       renderWallpaper();      // 同步刷新壁纸类型标题（该文本由脚本写入，不随 data-i18n 自动更新）
     });
@@ -6382,7 +6177,7 @@ function iconPresetKey(id) {
 
 // 取当前语言字典（供顶层函数使用）
 function currentDict() {
-  return i18nData[getResolvedLanguageCode(localStorage.getItem('liteStart_language') || 'auto')] || i18nData['zh-CN'];
+  return currentDict();
 }
 
 // 刷新「预置」选项的显示文本，并在触发器上补一个已选图标。
@@ -6402,9 +6197,9 @@ function updateIconPresetOption() {
   const textEl = sel.closest('.custom-select-wrapper')?.querySelector('.custom-select-text');
   if (!textEl) return;
   textEl.querySelector('.custom-select-preset-icon')?.remove();
-  const id = window.__iconPresetId || '';
+  const id = iconPresetId || '';
   if (sel.value !== 'preset' || !id) return;
-  const body = quicklinkPresetBody(id, window.__iconPresetStyle);
+  const body = quicklinkPresetBody(id, iconPresetStyle);
   if (!body) return;
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('class', 'custom-select-preset-icon');
@@ -6456,7 +6251,7 @@ function isTonight() {
 function applySearchPlaceholder() {
   const el = document.getElementById('placeholder');
   if (!el) return;
-  const dict = i18nData[getResolvedLanguageCode(localStorage.getItem('liteStart_language') || 'auto')] || i18nData['zh-CN'];
+  const dict = currentDict();
   // 优先级：愚人节彩蛋 > 今晚 > 今天；任一模板缺失都会自动回退，不会出现空白
   const tpl = (isAprilFools() && dict.searchPlaceholderAprilFool)
     || (isTonight() && dict.searchPlaceholderNight)
@@ -6474,7 +6269,7 @@ function updateCustomEngineOption() {
   if (!sel) return;
   const opt = sel.querySelector('option[value="custom"]');
   if (!opt) return;
-  const dict = i18nData[getResolvedLanguageCode(localStorage.getItem('liteStart_language') || 'auto')] || i18nData['zh-CN'];
+  const dict = currentDict();
   const cfg = Storage.get('ntp_custom_engine_config', {}) || {};
   const name = cfg.name;
   opt.textContent = name
