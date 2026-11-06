@@ -2895,24 +2895,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     try {
       const quantized = api.QuantizerCelebi.quantize(pixels, 64);
-      // 按面积加权求平均色相、饱和度、明度，并合成种子色。
-      // 色相用向量求和，避免 0/360 跨界；饱和度与明度设上下限
-      let sumX = 0, sumY = 0, sumSat = 0, sumLight = 0, total = 0;
-      quantized.forEach((count, argb) => {
+      // 取画面中占比最大的色相族：色相按 10 度分桶累加面积，选出面积最大的桶，
+      // 再在该桶内按面积加权求平均色相、饱和度、明度并合成种子色
+      const BUCKET = 10;
+      const bucketSum = new Array(360 / BUCKET).fill(0);
+      const hctOf = (argb) => {
         const r = (argb >> 16) & 0xff, g = (argb >> 8) & 0xff, b = argb & 0xff;
         const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
-        if (d < 12) return;
+        if (d < 12) return null;
         let h;
         if (max === r) h = ((g - b) / d) % 6;
         else if (max === g) h = (b - r) / d + 2;
         else h = (r - g) / d + 4;
         h *= 60;
         if (h < 0) h += 360;
-        const rad = (h * Math.PI) / 180;
+        return { hue: h, sat: d / max, light: (max + min) / 510 };
+      };
+      quantized.forEach((count, argb) => {
+        const c = hctOf(argb);
+        if (!c) return;
+        bucketSum[Math.floor(c.hue / BUCKET) % bucketSum.length] += count;
+      });
+      let bestBucket = -1, bestBucketSum = 0;
+      for (let i = 0; i < bucketSum.length; i++) {
+        if (bucketSum[i] > bestBucketSum) { bestBucketSum = bucketSum[i]; bestBucket = i; }
+      }
+      if (bestBucket < 0) return null;
+      // 该桶内的加权平均（色相用向量求和，避免 0/360 跨界）
+      let sumX = 0, sumY = 0, sumSat = 0, sumLight = 0, total = 0;
+      quantized.forEach((count, argb) => {
+        const c = hctOf(argb);
+        if (!c) return;
+        if (Math.floor(c.hue / BUCKET) % bucketSum.length !== bestBucket) return;
+        const rad = (c.hue * Math.PI) / 180;
         sumX += Math.cos(rad) * count;
         sumY += Math.sin(rad) * count;
-        sumSat += (d / max) * count;
-        sumLight += ((max + min) / 510) * count;
+        sumSat += c.sat * count;
+        sumLight += c.light * count;
         total += count;
       });
       if (!total) return null;
