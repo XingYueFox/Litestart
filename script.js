@@ -2693,17 +2693,21 @@ document.addEventListener('DOMContentLoaded', () => {
       '--neutral-layer-floating': c('surfaceContainerLow'),
       '--modal-bg': c('surfaceContainerLow'),
       '--settings-card-bg': c('surfaceContainerLow'),
-      '--settings-card-hover': c('surfaceContainer'),
+      '--settings-card-hover': c('surfaceContainerHigh'),
+      // 按钮/选项的悬停填充：onSurface 带透明度叠在任意底色上，色相跟随当前配色
+      '--neutral-fill-hover': c('onSurface') + '1C',
+      '--neutral-fill-rest': c('onSurface') + '0D',
       '--settings-panel-bg': c('surfaceContainerHigh'),
       '--suggestion-bg': c('surfaceContainerLow'),
-      '--suggestion-hover': c('surfaceContainerHigh'),
+      '--suggestion-hover': c('surfaceContainerHighest'),
       '--input-bg': c('surfaceContainerHighest'),
       // 搜索框悬停底色：surfaceContainer 比常态的 surfaceContainerLow 深一档（深色模式则浅一档）
       '--search-box-bg-hover': c('surfaceContainer'),
       // 增强可见性衬底：surfaceContainerLowest 为浅色模式最亮、深色模式最暗的一档
-      '--enhanced-visibility-bg': c('surfaceContainerLowest') + '73',
-      '--enhanced-visibility-bg-hover': c('surfaceContainerLowest') + 'A6',
-      '--enhanced-visibility-logo-bg': c('surfaceContainerLowest') + '99',
+      // 浅色模式下透明度更高，让衬底更接近纯白
+      '--enhanced-visibility-bg': c('surfaceContainerLowest') + (dark ? '73' : '99'),
+      '--enhanced-visibility-bg-hover': c('surfaceContainerLowest') + (dark ? 'A6' : 'C7'),
+      '--enhanced-visibility-logo-bg': c('surfaceContainerLowest') + (dark ? '99' : 'B8'),
       // 输入框（仅 MD 开启时生效）：
       //   常规态与卡片同层（surfaceContainerLow），hover 抬到 surfaceContainerHighest，
       //   聚焦保持最高档并用 primary 描边。这样深色模式下不再落到旧的 #282828 纯灰。

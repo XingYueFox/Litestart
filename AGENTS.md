@@ -48,6 +48,40 @@
 
 批量改注释后应校验变量数量与取值，避免静默丢失定义。
 
+## 颜色系统
+
+颜色分三层，改动时必须遵守。
+
+**① CSS 变量**（`index.html` 的 `:root` 与 `:root[data-theme="dark"]`）
+
+界面所有会被动态取色影响的颜色都定义为变量，浅色/深色各一套。写样式时只用 `var(--x)`，不要内联色值。
+
+**② 动态取色映射**（`script.js` 的 `mdBuildVarText`）
+
+开启动态取色后，上述变量由该函数按 Material 3 角色重新赋值。**新增颜色变量时必须同步在此映射**，否则开启取色后该处颜色不跟随。
+
+映射用的角色要与变量语义对应：
+
+| 用途 | 角色 |
+| --- | --- |
+| 页面底色 | `surface` |
+| 卡片、浮层、弹窗底色 | `surfaceContainerLow` / `surfaceContainerHigh` |
+| 悬停加深 | `surfaceContainerHigh` / `surfaceContainerHighest` |
+| 文字 | `onSurface` / `onSurfaceVariant` |
+| 描边 | `outlineVariant` / `outline` |
+| 需要半透明叠加 | `c('onSurface') + <两位十六进制 alpha>` |
+
+半透明叠加用 `c(角色) + 'XX'` 拼成 8 位色值，不要写成固定 `rgba()`，否则取色后不带配色色相。
+
+**③ 允许内联硬编码的情形**
+
+- 遮罩、阴影、光晕（`rgba(0, 0, 0, x)`）
+- 与配色无关的黑白示意（如主题预览缩略图）
+- 色板预设种子值（`data-seed`）
+- 变量自身的默认值
+
+除上述之外，任何界面颜色都不应内联 `rgba()` 或十六进制。
+
 ## 版本号
 
 `manifest.version` 只接受 1–4 段纯数字，带后缀会被商店拒绝，因此拆成两个字段：
