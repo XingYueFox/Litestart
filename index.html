@@ -659,10 +659,10 @@
       padding: 0 8px;
     }
 
+    /* 去掉下拉触发器自身的 hover/active 底色，hover 效果交给整行 */
     .setting-row .custom-select-display:hover,
-    .setting-row .custom-select-display.active,
-    .setting-row:has(> .custom-select-wrapper):hover .custom-select-display {
-      background-color: var(--modal-border);
+    .setting-row .custom-select-display.active {
+      background-color: transparent;
     }
 
     .setting-row .custom-select-text {
@@ -683,7 +683,15 @@
       transition: background-color 0.08s ease;
     }
 
-    /* 悬停高亮由行内下拉自身承担 */
+    /* 悬停：整行铺底，与跳转行一致 */
+    .setting-row:has(> .custom-select-wrapper):hover {
+      background-color: var(--neutral-fill-rest);
+    }
+
+    /* 行内下拉展开时，整行保持底色以便定位 */
+    .setting-row:has(> .custom-select-wrapper):has(.custom-select-display.active) {
+      background-color: var(--neutral-fill-rest);
+    }
 
     /* 行内下拉置灰时，同行左侧标签一起变灰（与旧「标题置灰」行为一致） */
     .setting-row:has(.custom-select-display.disabled) > .setting-label-group {
@@ -720,6 +728,8 @@
       box-shadow: var(--dropdown-shadow);
       z-index: 2000;
       max-height: 260px;
+      /* 太窄的菜单读起来局促：给一个下限，同时不超过 260px */
+      min-width: 100px;
       max-width: 260px;
       overflow-y: auto;
       opacity: 0;
@@ -1169,7 +1179,7 @@
       justify-content: center;
       gap: 6px;
       width: 100%;
-      height: 32px;
+      height: 36px;
       /* 纯平风格：与"选择文件""恢复默认"等次级按钮同款灰底，无描边 */
       border: 1px solid transparent;
       background-color: var(--btn-secondary-bg);
@@ -1218,9 +1228,9 @@
       margin-right: 0;
     }
 
-    /* 跳转行整行不加悬停底色，反馈只落在右侧箭头上 */
+    /* 整行悬停底色：负外边距让底色铺满卡片宽度 */
     .settings-nav-row:hover {
-      background-color: transparent;
+      background-color: var(--neutral-fill-rest);
     }
 
     .settings-nav-chevron {
@@ -1419,10 +1429,9 @@
       will-change: left;
     }
 
-    /* 悬停时只高亮右侧箭头 */
+    /* 悬停时箭头只做颜色加深，底色反馈由整行承担 */
     .settings-nav-row:hover .settings-nav-chevron {
       color: var(--settings-text-primary);
-      background-color: var(--modal-border);
     }
 
     /* 跳转行与右侧开关之间的竖线分隔 */
@@ -2311,8 +2320,8 @@
     }
 
     .btn {
-      height: 32px;
-      padding: 0 20px;
+      height: 36px;
+      padding: 0 22px;
       border-radius: 6px;
       font-size: 14px;
       font-weight: 500;
@@ -3168,7 +3177,7 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.9.0-beta2</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.9.0-beta3</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
@@ -3668,7 +3677,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.9.0-beta2 | 更新时间：2026-11-05</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.9.0-beta3 | 更新时间：2026-11-07</p><br>
 
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
