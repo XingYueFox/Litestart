@@ -62,9 +62,6 @@
       --suggestion-footer-color: #0078d4;
 
       /* ===== 阴影与遮罩 ===== */
-      /* 状态过渡时长：--md-dur 供配色过渡使用，--md-fast 供交互控件使用 */
-      --md-dur: 0.08s;
-      --md-fast: 0.08s;
       --shadow2: 0 0 3px rgba(0, 0, 0, 0.05), 0 0 6px rgba(0, 0, 0, 0.06);
       --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 0 16px rgba(0, 0, 0, 0.14);
       --dropdown-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
@@ -159,68 +156,6 @@
       background-color: var(--fill-color);
       color: var(--neutral-foreground-rest);
       font-family: var(--font-family);
-    }
-
-    /* 配色切换期间把状态过渡时长临时拉长，由 --md-dur 统一控制 */
-    html.md-color-transition {
-      --md-dur: 1.5s;
-    }
-
-    /* 配色过渡：颜色类属性跟随 --md-dur，尺寸/位移保持固定值 */
-    @media (prefers-reduced-motion: no-preference) {
-      html.md-color-transition,
-      html.md-color-transition *,
-      html.md-color-transition *::before,
-      html.md-color-transition *::after {
-        transition:
-          background-color var(--md-dur) ease,
-          color var(--md-dur) ease,
-          border-color var(--md-dur) ease,
-          fill var(--md-dur) ease,
-          stroke var(--md-dur) ease,
-          box-shadow var(--md-dur) ease,
-          width 0.15s ease,
-          height 0.15s ease,
-          transform 0.15s ease,
-          opacity 0.15s ease,
-          border-radius 0.15s ease,
-          outline 0.15s ease !important;
-      }
-
-      /* 交互控件引用 --md-fast，保持快速反馈；新增控件时追加类名 */
-      html.md-color-transition :is(
-        .quicklink-item, .quicklink-add-icon, .quicklink-edit-btn, .quicklink-menu-item,
-        .custom-select-option, .custom-select-display,
-        .suggestion-item, .clear-history-btn,
-        .btn, .btn-primary, .btn-secondary, .btn-danger,
-        .icon-btn-text, .settings-nav-row, .settings-nav-chevron, .settings-back-btn, .setting-row,
-        .waffle-menu-item, .manage-option, .icon-preset-item, .update-skip-item,
-        .preset-card, .theme-option,
-        .md-swatch, .md-swatch-default, .md-swatch-custom,
-        .md-hue-slider, .md-hue-handle,
-        .switch, .slider, .input,
-        .update-split-main, .update-split-toggle, .header-button, .tooltip-icon
-      ) {
-        transition:
-          background-color var(--md-fast) ease,
-          color var(--md-fast) ease,
-          border-color var(--md-fast) ease,
-          fill var(--md-fast) ease,
-          stroke var(--md-fast) ease,
-          box-shadow var(--md-fast) ease,
-          transform var(--md-fast) ease !important;
-      }
-
-      /* 开关手柄与色块选中圆点：状态变化由伪元素承担 */
-      html.md-color-transition .slider::before,
-      html.md-color-transition .md-swatch::after {
-        transition: transform var(--md-fast) ease, background-color var(--md-fast) ease, opacity var(--md-fast) ease !important;
-      }
-    }
-
-    /* 背景媒体由 animation 驱动 opacity 与遮罩，不参与配色过渡 */
-    html.md-color-transition :is(#bg-image, #bg-video) {
-      transition: none !important;
     }
 
     /* 壁纸背景层容器 */
@@ -1671,11 +1606,6 @@
     /* 悬停时底色微调：浅色略深，深色略浅；选中后不再变化 */
     #fakebox:hover:not(:focus-within) {
       background-color: var(--search-box-bg-hover);
-    }
-
-    /* 配色过渡期间搜索框按配色时长过渡底色与阴影 */
-    html.md-color-transition #fakebox {
-      transition: background-color 1.5s ease, box-shadow 1.5s ease;
     }
 
     #fakebox #searchbutton {

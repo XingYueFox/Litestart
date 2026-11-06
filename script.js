@@ -2856,10 +2856,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let mdApplyTimer = null;
   // 上次已应用的配色标识，避免重复重建样式表
   let lastMdAppliedKey = '';
-  // 上次的配色来源（模式 + 种子色，不含明暗），用于区分配色变化与主题切换
-  let lastMdSeedKey = '';
-  // 配色过渡计时器：过渡类只保留到本次换色结束
-  let mdTransitionTimer = null;
   // 背景进入动画计时器：控制搜索框阴影的出现时机
   let bgRevealTimer = null;
 
@@ -2953,26 +2949,9 @@ document.addEventListener('DOMContentLoaded', () => {
         styleEl.id = 'md-color-style';
         document.head.appendChild(styleEl);
       }
-      // 变量定义在 :root 上，过渡类也需挂在 documentElement
-      // 只有配色本身变化才开启过渡；单纯切换明暗主题时不加
-      const seedKey = mode + '|' + seedArgb;
-      const paletteChanged = seedKey !== lastMdSeedKey;
-      lastMdSeedKey = seedKey;
-      document.documentElement.classList.toggle('md-color-transition', paletteChanged);
-      const applyCss = () => {
-        styleEl.textContent = css;
-        // 给 :root 打标记，供 .input 等「仅 MD 下生效」的规则使用
-        document.documentElement.setAttribute('data-md-color', 'on');
-        clearTimeout(mdTransitionTimer);
-        if (paletteChanged) {
-          mdTransitionTimer = setTimeout(() => {
-            document.documentElement.classList.remove('md-color-transition');
-          }, 1700);
-        }
-      };
-      // 过渡类需先渲染一帧，再写入新变量，否则同一帧替换不会产生过渡
-      if (paletteChanged) requestAnimationFrame(applyCss);
-      else applyCss();
+      styleEl.textContent = css;
+      // 给 :root 打标记，供 .input 等「仅 MD 下生效」的规则使用
+      document.documentElement.setAttribute('data-md-color', 'on');
     };
 
     if (mode === 'wallpaper') {
@@ -3207,9 +3186,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 明暗切换后色板的 tonal 底色要跟着换一套（renderMdSwatches 定义在下方，
     // 用 typeof 兜住首次调用的时序）
     if (typeof renderMdSwatches === 'function') renderMdSwatches();
-    // 切主题只换明暗，配色来源未变：先清掉可能残留的配色过渡类，避免主题切换被拉成慢过渡
-    clearTimeout(mdTransitionTimer);
-    document.documentElement.classList.remove('md-color-transition');
     // 配色变量按当前主题生成，切主题后需要按新主题重建一次
     if (typeof applyMdColor === 'function') applyMdColor();
     // 边角晕影只在深色模式渲染，浅色下对应开关置灰
