@@ -1650,9 +1650,13 @@ function decodeInput(str) {
       function positionDropdown() {
         if (!dropdown) return;
         const rect = display.getBoundingClientRect();
-        dropdown.style.width = rect.width + 'px';
+        // 面板宽度贴合选项内容，不跟随按钮宽度
+        dropdown.style.width = 'auto';
 
         const dropdownHeight = dropdown.offsetHeight;
+        const dropdownWidth = dropdown.offsetWidth;
+        // 与按钮右边缘对齐，并夹紧到视口内
+        const alignedLeft = () => Math.max(4, Math.min(rect.right - dropdownWidth, window.innerWidth - dropdownWidth - 4));
         const spaceBelow = window.innerHeight - rect.bottom - 4;
         const spaceAbove = rect.top - 4;
 
@@ -1661,11 +1665,11 @@ function decodeInput(str) {
         // 优先在下方展开（空间充足时）
         if (spaceBelow >= dropdownHeight) {
           dropdown.style.top = rect.bottom + 4 + 'px';
-          dropdown.style.left = rect.left + 'px';
+          dropdown.style.left = alignedLeft() + 'px';
         } else if (spaceAbove > spaceBelow && spaceAbove > 0) {
           // 上方空间比下方大，且上方有空间，则向上展开
           dropdown.style.top = Math.max(4, rect.top - dropdownHeight - 4) + 'px';
-          dropdown.style.left = rect.left + 'px';
+          dropdown.style.left = alignedLeft() + 'px';
           openingUp = true;
         } else {
           // 空间都不足时，选择可见区域更大的方向，并夹紧到视口内
@@ -1683,7 +1687,7 @@ function decodeInput(str) {
             dropdown.style.top = aboveClamped + 'px';
             openingUp = true;
           }
-          dropdown.style.left = rect.left + 'px';
+          dropdown.style.left = alignedLeft() + 'px';
         }
 
         dropdown._openingUp = openingUp;
@@ -1837,17 +1841,21 @@ function decodeInput(str) {
           display.classList.remove('active');
           return;
         }
-        dd.style.width = rect.width + 'px';
+        // 面板宽度贴合选项内容，不跟随按钮宽度
+        dd.style.width = 'auto';
         const dropdownHeight = dd.offsetHeight;
+        const dropdownWidth = dd.offsetWidth;
+        // 与按钮右边缘对齐，并夹紧到视口内
+        const alignedLeft = Math.max(4, Math.min(rect.right - dropdownWidth, window.innerWidth - dropdownWidth - 4));
         const spaceBelow = window.innerHeight - rect.bottom - 4;
         const spaceAbove = rect.top - 4;
 
         if (spaceBelow >= dropdownHeight) {
           dd.style.top = rect.bottom + 4 + 'px';
-          dd.style.left = rect.left + 'px';
+          dd.style.left = alignedLeft + 'px';
         } else if (spaceAbove > spaceBelow && spaceAbove > 0) {
           dd.style.top = Math.max(4, rect.top - dropdownHeight - 4) + 'px';
-          dd.style.left = rect.left + 'px';
+          dd.style.left = alignedLeft + 'px';
         } else {
           const belowTop = rect.bottom + 4;
           const belowClamped = Math.min(belowTop, window.innerHeight - dropdownHeight - 4);
@@ -1860,7 +1868,7 @@ function decodeInput(str) {
           } else {
             dd.style.top = aboveClamped + 'px';
           }
-          dd.style.left = rect.left + 'px';
+          dd.style.left = alignedLeft + 'px';
         }
     });
   }

@@ -646,11 +646,12 @@
     /* 行内下拉：与设置行合并，标签在左、当前值+箭头在右 */
     .setting-row .custom-select-wrapper {
       width: auto;
-      min-width: 110px;
       max-width: 60%;
     }
 
     .setting-row .custom-select-display {
+      /* 宽度贴合可见文字与箭头，悬停高亮只包裹这部分 */
+      width: auto;
       height: 28px;
       /* 不加框：透明底，视觉上只是「当前值 + 箭头」 */
       background-color: transparent;
@@ -658,13 +659,13 @@
       /* 文字居右、紧贴箭头，不留中间空档 */
       justify-content: flex-end;
       gap: 4px;
-      padding-right: 4px;
+      padding: 0 8px;
     }
 
-    /* 去掉下拉触发器自身的 hover/active 底色，hover 效果交给整行 */
     .setting-row .custom-select-display:hover,
-    .setting-row .custom-select-display.active {
-      background-color: transparent;
+    .setting-row .custom-select-display.active,
+    .setting-row:has(> .custom-select-wrapper):hover .custom-select-display {
+      background-color: var(--modal-border);
     }
 
     .setting-row .custom-select-text {
@@ -673,7 +674,7 @@
       text-overflow: ellipsis;
     }
 
-    /* 含下拉的整行：负外边距左右顶至卡片边框，hover 方形铺满（与跳转行一致） */
+    /* 含下拉的整行：负外边距左右顶至卡片边框，保持整行可点击 */
     .setting-row:has(> .custom-select-wrapper) {
       width: calc(100% + 24px);
       box-sizing: border-box;
@@ -685,9 +686,7 @@
       transition: background-color 0.08s ease;
     }
 
-    .setting-row:has(> .custom-select-wrapper):hover {
-      background-color: var(--neutral-fill-hover);
-    }
+    /* 悬停高亮由行内下拉自身承担 */
 
     /* 行内下拉置灰时，同行左侧标签一起变灰（与旧「标题置灰」行为一致） */
     .setting-row:has(.custom-select-display.disabled) > .setting-label-group {
@@ -724,6 +723,7 @@
       box-shadow: var(--dropdown-shadow);
       z-index: 2000;
       max-height: 260px;
+      max-width: 260px;
       overflow-y: auto;
       opacity: 0;
       visibility: hidden;
@@ -1213,10 +1213,6 @@
       transition: background-color 0.08s ease;
     }
 
-    .settings-nav-row:hover {
-      background-color: var(--neutral-fill-rest);
-    }
-
     /* 在 flex 设置行内（编辑背景）：宽度交给 flex 分配，
        左侧负边距保持顶至卡片左缘，右侧止于分隔线 */
     .setting-row .settings-nav-row {
@@ -1225,14 +1221,23 @@
       margin-right: 0;
     }
 
+    /* 跳转行整行不加悬停底色，反馈只落在右侧箭头上 */
+    .settings-nav-row:hover {
+      background-color: transparent;
+    }
+
     .settings-nav-chevron {
       width: 12px;
       height: 12px;
+      /* 与行内下拉按钮一致的内边距与圆角 */
+      padding: 8px;
+      box-sizing: content-box;
+      border-radius: 6px;
       flex-shrink: 0;
       color: var(--settings-text-secondary);
       /* 与下拉「预置」项同一 chevron，旋转 90° 指向右侧子级 */
       transform: rotate(-90deg);
-      transition: color 0.08s ease;
+      transition: color 0.08s ease, background-color 0.08s ease;
     }
 
     /* ===== MD3 预设色板 =====
@@ -1417,8 +1422,10 @@
       will-change: left;
     }
 
+    /* 悬停时只高亮右侧箭头 */
     .settings-nav-row:hover .settings-nav-chevron {
       color: var(--settings-text-primary);
+      background-color: var(--modal-border);
     }
 
     /* 跳转行与右侧开关之间的竖线分隔 */
