@@ -2431,6 +2431,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const selectWallpaperSource = document.getElementById('select-wallpaper-source');
   const wallpaperFileRow = document.getElementById('wallpaper-file-row');
   const bgDependentSettings = document.getElementById('bg-dependent-settings');
+  const wallpaperSourceCard = document.getElementById('wallpaper-source-card');
+  const toggleBgMaster = document.getElementById('toggle-bg-master');
 
   const bgVideo = document.getElementById('bg-video');
   // 换壁纸时会重建 <img>，以便再次触发 Element Timing 的首次绘制上报
@@ -2617,9 +2619,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 三种模式：off=原版配色；wallpaper=从壁纸提取种子色；custom=自定义种子色。
   // 同时生成浅色/深色两套 scheme，注入与现有 CSS 变量同名的变量，
   // 不改变任何现有变量名与选择器结构（最小侵入）。
-  const MD_MODE_KEY = 'ntp_md_color_mode';   // off | wallpaper | custom
+  const MD_MODE_KEY = 'ntp_md_color_mode';   // wallpaper | custom
   const MD_SEED_KEY = 'ntp_md_seed';         // 自定义种子色（hex，如 #6750a4）
-  const selectMdMode = document.getElementById('select-md-color-mode');
+  const toggleMdDynamic = document.getElementById('toggle-md-dynamic');
   const mdCustomSettings = document.getElementById('md-custom-settings');
   const mdHueSlider = document.getElementById('md-hue-slider');
   const mdCustomPanel = document.getElementById('md-custom-panel');
@@ -2800,24 +2802,16 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) { return 220; }
   }
 
-  // 「跟随壁纸」选项在壁纸未启用时置灰不可选。
-  // 注意：不能给原生 <option> 加 disabled——若它正是当前选中项，
-  // 浏览器会把 select.value 重置为空、连带丢掉用户已保存的模式。
-  // 因此走「视觉置灰 + 点击拦截」：
-  //   1) 给 option 打 data-md-disabled，供自定义下拉渲染灰色样式
-  //   2) change 事件里拦截（键盘/程序化赋值也覆盖到）
   let mdWallpaperAvailable = true;
+  // 壁纸不可用时「动态颜色」开关整行置灰且不可交互
   function syncMdWallpaperOption(available) {
-    if (!selectMdMode) return;
     mdWallpaperAvailable = available;
-    const opt = selectMdMode.querySelector('option[value="wallpaper"]');
-    if (opt) opt.toggleAttribute('data-md-disabled', !available);
-    // 已缓存的浮层选项同步置灰
-    const dropdown = document.querySelector('.custom-select-dropdown[data-for-select="select-md-color-mode"]');
-    if (dropdown) {
-      const optEl = dropdown.querySelector('.custom-select-option[data-value="wallpaper"]');
-      if (optEl) optEl.classList.toggle('disabled', !available);
-    }
+    if (!toggleMdDynamic) return;
+    const row = toggleMdDynamic.closest('.setting-row');
+    if (!row) return;
+    row.classList.toggle('disabled', !available);
+    if (available) row.removeAttribute('inert');
+    else row.setAttribute('inert', '');
   }
 
   // 选出用于取色的壁纸 <img>：优先背景图，其次预览图
@@ -2862,6 +2856,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let mdApplyTimer = null;
   // 上次已应用的配色标识，避免重复重建样式表
   let lastMdAppliedKey = '';
+  // 上次的配色来源（模式 + 种子色，不含明暗），用于区分配色变化与主题切换
+  let lastMdSeedKey = '';
   // 配色过渡计时器：过渡类只保留到本次换色结束
   let mdTransitionTimer = null;
   // 背景进入动画计时器：控制搜索框阴影的出现时机
@@ -2890,55 +2886,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     try {
       const quantized = api.QuantizerCelebi.quantize(pixels, 128);
-      // 先取面积占比最高的若干色块，再从中选饱和度最高的一档
-      const entries = [];
-      quantized.forEach((count, argb) => entries.push([argb, count]));
-      if (!entries.length) return null;
-      entries.sort((a, b) => b[1] - a[1]);
-      const limit = Math.min(entries.length, Math.ceil(entries.length * 0.25));
-      let best = entries[0][0];
-      let bestScore = -1;
-      for (let i = 0; i < limit; i++) {
-        const argb = entries[i][0];
-        const count = entries[i][1];
-        const r = (argb >> 16) & 0xff, g = (argb >> 8) & 0xff, b = argb & 0xff;
-        const max = Math.max(r, g, b), min = Math.min(r, g, b);
-        const sat = max === 0 ? 0 : (max - min) / max;
-        // 面积开方后参与加权，压缩面积差异的量级
-        const score = sat * Math.sqrt(count);
-        if (score > bestScore) {
-          bestScore = score;
-          best = argb;
-        }
-      }
-      return best;
+      // 按面积加权求平均色相、彩度、明度并合成种子色。
+      // 色相用向量求和，得到连续值且不受 0/360 跨界影响；彩度取加权平均并设下限
+      let sumX = 0, sumY = 0, sumChroma = 0, sumTone = 0, total = 0;
+      quantized.forEach((count, argb) => {
+        const hct = api.Hct.fromInt(argb);
+        if (hct.chroma < 4) return;
+        const rad = (hct.hue * Math.PI) / 180;
+        sumX += Math.cos(rad) * count;
+        sumY += Math.sin(rad) * count;
+        sumChroma += hct.chroma * count;
+        sumTone += hct.tone * count;
+        total += count;
+      });
+      if (!total) return null;
+      let hue = (Math.atan2(sumY, sumX) * 180) / Math.PI;
+      if (hue < 0) hue += 360;
+      const chroma = Math.max(sumChroma / total, 48);
+      const tone = Math.min(90, Math.max(40, sumTone / total));
+      return api.Hct.from(hue, chroma, tone).toInt();
     } catch (e) {
       return null;
     }
   }
 
   function applyMdColor() {
-    const storedMode = Storage.get(MD_MODE_KEY, 'off');
-    // 三种状态：off（默认 = 关闭 MD 取色，用原有的黑白主题）/ wallpaper / custom
-    // 壁纸未启用时「壁纸」模式无意义：选项置灰不可选，
-    // 若仍处于该模式则按默认种子色渲染（存储值保持 wallpaper 不变，
-    // 重新开启壁纸后自动恢复跟随，无需用户重设）。
-    // 注意：bgEnabled 在文件更靠后处才用 let 声明，此处若直接读会触发 TDZ
-    // （ReferenceError: Cannot access 'bgEnabled' before initialization），
-    // 且 try/catch 会把它吞成「初始化失败」，导致整个 MD 配色不生效。
-    // 因此这里用 try 包裹，初始化阶段读不到就当作「壁纸未启用」。
+    const storedMode = Storage.get(MD_MODE_KEY, 'wallpaper');
+    // 两种来源：wallpaper（从壁纸取色）/ custom（用预设色板的种子色）。
+    // 壁纸未启用时无法取色，退回 custom
     let wallpaperAvailable = false;
-    try { wallpaperAvailable = !!bgEnabled; } catch (e) { wallpaperAvailable = false; }
+    try {
+      wallpaperAvailable = !!bgEnabled;
+    } catch (e) {
+      // 初始化阶段 bgEnabled 尚未声明，退回读取存储值
+      wallpaperAvailable = !!Storage.get('ntp_bg_enabled', false);
+    }
     const mode = (storedMode === 'wallpaper' && wallpaperAvailable) ? 'wallpaper'
-               : (storedMode === 'custom' ? 'custom' : 'off');
+               : (storedMode === 'off' ? 'off' : 'custom');
     syncMdWallpaperOption(wallpaperAvailable);
+    if (toggleMdDynamic) toggleMdDynamic.checked = (mode === 'wallpaper');
+    if (mdCustomSettings) {
+      mdCustomSettings.classList.toggle('disabled', mode === 'wallpaper');
+      if (mode === 'wallpaper') mdCustomSettings.setAttribute('inert', '');
+      else mdCustomSettings.removeAttribute('inert');
+    }
     let styleEl = document.getElementById('md-color-style');
     if (mode === 'off' || !MCU_API) {
-      // 默认模式：完全不接管配色，回到页面原本的黑白主题
+      // 默认模式：不接管配色，回到页面原生黑白主题
       styleEl?.remove();
       document.documentElement.removeAttribute('data-md-color');
-      // 色板保持可点：即使在默认态也应允许用户直接选色
-      if (selectMdMode) { selectMdMode.value = mode; refreshCustomSelects(); }
       mdSwatches.forEach((sw) => sw.classList.toggle('active', sw.getAttribute('data-mode') === 'off'));
       renderMdSwatches();
       return;
@@ -2957,15 +2953,26 @@ document.addEventListener('DOMContentLoaded', () => {
         styleEl.id = 'md-color-style';
         document.head.appendChild(styleEl);
       }
-      // 变量替换会让全页颜色突变，替换前后临时开启过渡类
-      document.body.classList.add('md-color-transition');
-      styleEl.textContent = css;
-      // 给 :root 打标记，供 .input 等「仅 MD 下生效」的规则使用
-      document.documentElement.setAttribute('data-md-color', 'on');
-      clearTimeout(mdTransitionTimer);
-      mdTransitionTimer = setTimeout(() => {
-        document.body.classList.remove('md-color-transition');
-      }, 1700);
+      // 变量定义在 :root 上，过渡类也需挂在 documentElement
+      // 只有配色本身变化才开启过渡；单纯切换明暗主题时不加
+      const seedKey = mode + '|' + seedArgb;
+      const paletteChanged = seedKey !== lastMdSeedKey;
+      lastMdSeedKey = seedKey;
+      document.documentElement.classList.toggle('md-color-transition', paletteChanged);
+      const applyCss = () => {
+        styleEl.textContent = css;
+        // 给 :root 打标记，供 .input 等「仅 MD 下生效」的规则使用
+        document.documentElement.setAttribute('data-md-color', 'on');
+        clearTimeout(mdTransitionTimer);
+        if (paletteChanged) {
+          mdTransitionTimer = setTimeout(() => {
+            document.documentElement.classList.remove('md-color-transition');
+          }, 1700);
+        }
+      };
+      // 过渡类需先渲染一帧，再写入新变量，否则同一帧替换不会产生过渡
+      if (paletteChanged) requestAnimationFrame(applyCss);
+      else applyCss();
     };
 
     if (mode === 'wallpaper') {
@@ -3022,13 +3029,6 @@ document.addEventListener('DOMContentLoaded', () => {
       build(MCU_API.argbFromHex(getMdSeed()));
     }
 
-    // 壁纸模式下色板依然可点：选中任一色卡即自动切到「手动」模式
-    if (mdCustomSettings) mdCustomSettings.classList.remove('disabled');
-    if (selectMdMode) {
-      selectMdMode.value = mode;
-      // 程序化改值不会触发 change，需手动把显示文本同步到自定义下拉
-      refreshCustomSelects();
-    }
     // 选中态：命中等价预设色 -> 该色块选中；否则（滑块调出来的色）高亮末位自定义卡片
     if (mdSwatches.length) {
       const seed = getMdSeed().toLowerCase();
@@ -3064,8 +3064,8 @@ document.addEventListener('DOMContentLoaded', () => {
       raf = requestAnimationFrame(() => {
         const seed = mdHueToSeed(Number(mdHueSlider.value));
         Storage.set(MD_SEED_KEY, seed);
-        // 默认态下拖滑块 = 主动选色，自动切到「手动」
-        if (Storage.get(MD_MODE_KEY, 'off') === 'off') Storage.set(MD_MODE_KEY, 'custom');
+        // 拖滑块属于手动取色
+        Storage.set(MD_MODE_KEY, 'custom');
         applyMdColor();
       });
     });
@@ -3098,11 +3098,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setCustomPanelOpen(open);
   });
 
-  // 预设色板：点击即以该颜色为种子色（自定义 / 默认卡片单独处理）
+  // 预设色板：点击即以该颜色为种子色；「默认」卡回到原生黑白主题
   mdSwatches.forEach(sw => {
     if (sw.hasAttribute('data-custom')) return;
     sw.addEventListener('click', () => {
-      // 「默认」卡 = 关闭 MD 取色，回到原生黑白主题
       if (sw.getAttribute('data-mode') === 'off') {
         Storage.set(MD_MODE_KEY, 'off');
         setCustomPanelOpen(false);
@@ -3118,16 +3117,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 模式切换（「跟随壁纸」在壁纸关闭时不可选：拦下并回退到原值）
-  selectMdMode?.addEventListener('change', () => {
-    if (selectMdMode.value === 'wallpaper' && !mdWallpaperAvailable) {
-      // 回退到存储中的可用模式（custom / off），避免界面停在不可用项
-      const fallback = Storage.get(MD_MODE_KEY, 'off') === 'wallpaper' ? 'custom' : Storage.get(MD_MODE_KEY, 'off');
-      selectMdMode.value = fallback;
-      refreshCustomSelects();
+  // 动态颜色开关：开启时从壁纸取色，关闭时回到色板选定的模式
+  toggleMdDynamic?.addEventListener('change', () => {
+    if (toggleMdDynamic.checked && !mdWallpaperAvailable) {
+      toggleMdDynamic.checked = false;
       return;
     }
-    Storage.set(MD_MODE_KEY, selectMdMode.value);
+    if (toggleMdDynamic.checked) {
+      Storage.set(MD_MODE_KEY, 'wallpaper');
+    } else {
+      // 关闭后沿用色板此前选定的「默认」或某个种子色
+      const last = Storage.get(MD_MODE_KEY, 'custom');
+      Storage.set(MD_MODE_KEY, last === 'off' ? 'off' : 'custom');
+    }
     applyMdColor();
   });
 
@@ -3140,7 +3142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const onReady = (e) => {
       const t = e.target;
       if (!t || t.tagName !== 'IMG') return;
-      if (Storage.get(MD_MODE_KEY, 'off') !== 'wallpaper') return;
+      if (Storage.get(MD_MODE_KEY, 'wallpaper') !== 'wallpaper') return;
       // 图片已解码后再取色，避免读到空画布
       if (t.decode) t.decode().catch(() => {}).then(refreshMdColorFromWallpaper);
       else refreshMdColorFromWallpaper();
@@ -3205,6 +3207,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 明暗切换后色板的 tonal 底色要跟着换一套（renderMdSwatches 定义在下方，
     // 用 typeof 兜住首次调用的时序）
     if (typeof renderMdSwatches === 'function') renderMdSwatches();
+    // 切主题只换明暗，配色来源未变：先清掉可能残留的配色过渡类，避免主题切换被拉成慢过渡
+    clearTimeout(mdTransitionTimer);
+    document.documentElement.classList.remove('md-color-transition');
     // 配色变量按当前主题生成，切主题后需要按新主题重建一次
     if (typeof applyMdColor === 'function') applyMdColor();
     // 边角晕影只在深色模式渲染，浅色下对应开关置灰
@@ -3508,6 +3513,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyBackgroundState() {
     if (toggleBgSwitch) toggleBgSwitch.checked = bgEnabled;
     if (toggleBgModalSwitch) toggleBgModalSwitch.checked = bgEnabled;
+    if (toggleBgMaster) toggleBgMaster.checked = bgEnabled;
 
     if (bgEnabled) {
       document.body.classList.add('bg-enabled');
@@ -3623,20 +3629,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function applyBgDependentEnabled() {
-    if (!bgDependentSettings) return;
-    if (bgEnabled) {
-      bgDependentSettings.classList.remove('disabled');
-      bgDependentSettings.removeAttribute('inert');
-    } else {
-      bgDependentSettings.classList.add('disabled');
-      bgDependentSettings.setAttribute('inert', '');
-    }
+    const rows = [bgDependentSettings, wallpaperSourceCard].filter(Boolean);
+    rows.forEach((el) => {
+      if (bgEnabled) {
+        el.classList.remove('disabled');
+        el.removeAttribute('inert');
+      } else {
+        el.classList.add('disabled');
+        el.setAttribute('inert', '');
+      }
+    });
   }
 
   // 当前壁纸对应的下拉选项值
-  // 背景关闭时返回 'off'，让下拉显示「关闭」选项
   function getWallpaperSourceValue() {
-    if (!bgEnabled) return 'off';
     if (!customWallpaperData) return 'default';
     if (customWallpaperData.type === 'bing_daily') return 'bing';
     const url = customWallpaperData.url || '';
@@ -3770,7 +3776,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearTimeout(bgRevealTimer);
     bgRevealTimer = setTimeout(() => {
       document.body.classList.remove('bg-revealing');
-    }, 1400);
+    }, 500);
     // 等两帧让图片完成绘制，再解除暂停，动画从起点开始
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -4186,13 +4192,16 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   // 背景开关同步响应
-  toggleBgSwitch?.addEventListener('change', (e) => {
+  function onBgEnabledToggle(e) {
     bgEnabled = e.target.checked;
     Storage.set('ntp_bg_enabled', bgEnabled);
     applyBackgroundState();
     if (bgEnabled) ensureBingDailyFresh();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
-  });
+  }
+
+  toggleBgSwitch?.addEventListener('change', onBgEnabledToggle);
+  toggleBgMaster?.addEventListener('change', onBgEnabledToggle);
 
   toggleBgModalSwitch?.addEventListener('change', (e) => {
     bgEnabled = e.target.checked;
@@ -4312,18 +4321,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 壁纸来源下拉：切换即切换壁纸来源
   selectWallpaperSource?.addEventListener('change', async () => {
     const value = selectWallpaperSource.value;
-    // 「关闭」= 关闭背景（替代原来的背景开关）
-    if (value === 'off') {
-      if (bgEnabled) {
-        bgEnabled = false;
-        Storage.set('ntp_bg_enabled', false);
-        applyBackgroundState();
-      }
-      updateWallpaperFileRow();
-      renderWallpaperPreview();
-      return;
-    }
-    // 选任一具体来源：确保背景开启（替代原来的开关逻辑）
+    // 选任一具体来源：确保背景开启
     if (!bgEnabled) {
       bgEnabled = true;
       Storage.set('ntp_bg_enabled', true);
@@ -4404,7 +4402,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 壁纸切换后的取色触发（供 commitWallpaperAsActive 与图片 load 两路调用）
   function refreshMdColorFromWallpaper() {
     if (typeof applyMdColor !== 'function') return;
-    if (Storage.get(MD_MODE_KEY, 'off') !== 'wallpaper') return;
+    if (Storage.get(MD_MODE_KEY, 'wallpaper') !== 'wallpaper') return;
     // 等下一帧，确保 renderWallpaper 已把新 src 写到 <img> 上
     requestAnimationFrame(() => {
       const img = pickWallpaperImageEl();

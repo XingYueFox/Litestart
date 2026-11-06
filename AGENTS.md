@@ -82,6 +82,43 @@
 
 除上述之外，任何界面颜色都不应内联 `rgba()` 或十六进制。
 
+## 配色过渡
+
+动态取色应用配色时，`script.js` 会给 `<html>` 加 `md-color-transition` 类，1.7 秒后移除。该类存在期间，`index.html` 顶部有两条联动规则：
+
+**① 通用规则**
+
+```css
+html.md-color-transition, html.md-color-transition *, ... {
+  transition: background-color 1.5s ease, ..., width 0.15s ease, ... !important;
+}
+```
+
+颜色类属性（`background-color`、`color`、`border-color`、`fill`、`stroke`、`box-shadow`）走 1.5s，用于让整页配色平滑过渡；尺寸与位移类（`width`、`height`、`transform`、`opacity`、`border-radius`、`outline`）保持 0.15s。
+
+**② 交互元素例外清单**
+
+```css
+html.md-color-transition :is(.quicklink-item, .btn-primary, .md-swatch, .switch, ...) { ... 0.08s ... }
+```
+
+因为 `transition` 无法"追加"只能整体覆盖，通用规则会把交互元素的悬停反馈也从 0.08s 拉到 1.5s。这份 `:is()` 清单内的元素用更高优先级把时长改回 0.08s。清单内同时包含 `transform`，用于开关手柄位移、色块缩放这类动效。
+
+**③ 伪元素例外**
+
+```css
+html.md-color-transition .slider::before,
+html.md-color-transition .md-swatch::after { ... 0.08s ... }
+```
+
+开关手柄（`.slider::before`）和色块选中圆点（`.md-swatch::after`）的状态变化画在伪元素上，`:is()` 无法覆盖伪元素，因此单列一条。
+
+**维护要求**
+
+新增任何带悬停或激活态颜色变化的交互元素（按钮、列表项、卡片、开关、色块、选项等）时，**必须**把它的类名追加到对应清单。状态由伪元素承担的，追加到伪元素清单。遗漏的后果是：该元素在配色切换后的 1.7 秒内，交互反馈会被拖慢到 1.5 秒。
+
+清单是白名单，不是黑名单——没被列出的元素一律按 1.5s 处理。判断标准是"该元素是否有 `:hover` / `.active` 之类的状态会改变外观"。
+
 ## 版本号
 
 `manifest.version` 只接受 1–4 段纯数字，带后缀会被商店拒绝，因此拆成两个字段：

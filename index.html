@@ -62,6 +62,9 @@
       --suggestion-footer-color: #0078d4;
 
       /* ===== 阴影与遮罩 ===== */
+      /* 状态过渡时长：--md-dur 供配色过渡使用，--md-fast 供交互控件使用 */
+      --md-dur: 0.08s;
+      --md-fast: 0.08s;
       --shadow2: 0 0 3px rgba(0, 0, 0, 0.05), 0 0 6px rgba(0, 0, 0, 0.06);
       --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 0 16px rgba(0, 0, 0, 0.14);
       --dropdown-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
@@ -69,6 +72,8 @@
       --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.10);
       /* 增强可见性下的搜索框阴影：半径与常态一致，浓度更高 */
       --search-box-shadow-enhanced: 0 0 14px rgba(0, 0, 0, 0.18);
+      /* 无背景时的搜索框阴影：纯色底上需要比壁纸场景更实一点 */
+      --search-box-shadow-plain: 0 0 14px rgba(0, 0, 0, 0.09);
       --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
       /* 搜索框悬停底色：浅色略深，深色略浅 */
       --search-box-bg-hover: #f3f3f3;
@@ -138,6 +143,7 @@
         --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.09);
         --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.20);
         --search-box-shadow-enhanced: 0 0 14px rgba(0, 0, 0, 0.34);
+        --search-box-shadow-plain: 0 0 14px rgba(0, 0, 0, 0.18);
         --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.13);
         --search-box-bg-hover: #333333;
     }
@@ -155,23 +161,66 @@
       font-family: var(--font-family);
     }
 
-    /* 动态取色应用期间临时开启颜色过渡，避免整页配色突变。
-       :where() 把特异性降为 0，任何自带 transition 的元素都以自身声明为准，
-       仅没有过渡声明的元素才套用这里的值 */
-    :where(body.md-color-transition),
-    :where(body.md-color-transition) *,
-    :where(body.md-color-transition) *::before,
-    :where(body.md-color-transition) *::after {
-      transition: background-color 1.5s ease, color 1.5s ease, border-color 1.5s ease, fill 1.5s ease, stroke 1.5s ease, box-shadow 1.5s ease;
+    /* 配色切换期间把状态过渡时长临时拉长，由 --md-dur 统一控制 */
+    html.md-color-transition {
+      --md-dur: 1.5s;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      body.md-color-transition,
-      body.md-color-transition *,
-      body.md-color-transition *::before,
-      body.md-color-transition *::after {
-        transition: none !important;
+    /* 配色过渡：颜色类属性跟随 --md-dur，尺寸/位移保持固定值 */
+    @media (prefers-reduced-motion: no-preference) {
+      html.md-color-transition,
+      html.md-color-transition *,
+      html.md-color-transition *::before,
+      html.md-color-transition *::after {
+        transition:
+          background-color var(--md-dur) ease,
+          color var(--md-dur) ease,
+          border-color var(--md-dur) ease,
+          fill var(--md-dur) ease,
+          stroke var(--md-dur) ease,
+          box-shadow var(--md-dur) ease,
+          width 0.15s ease,
+          height 0.15s ease,
+          transform 0.15s ease,
+          opacity 0.15s ease,
+          border-radius 0.15s ease,
+          outline 0.15s ease !important;
       }
+
+      /* 交互控件引用 --md-fast，保持快速反馈；新增控件时追加类名 */
+      html.md-color-transition :is(
+        .quicklink-item, .quicklink-add-icon, .quicklink-edit-btn, .quicklink-menu-item,
+        .custom-select-option, .custom-select-display,
+        .suggestion-item, .clear-history-btn,
+        .btn, .btn-primary, .btn-secondary, .btn-danger,
+        .icon-btn-text, .settings-nav-row, .settings-nav-chevron, .settings-back-btn, .setting-row,
+        .waffle-menu-item, .manage-option, .icon-preset-item, .update-skip-item,
+        .preset-card, .theme-option,
+        .md-swatch, .md-swatch-default, .md-swatch-custom,
+        .md-hue-slider, .md-hue-handle,
+        .switch, .slider, .input,
+        .update-split-main, .update-split-toggle, .header-button, .tooltip-icon
+      ) {
+        transition:
+          background-color var(--md-fast) ease,
+          color var(--md-fast) ease,
+          border-color var(--md-fast) ease,
+          fill var(--md-fast) ease,
+          stroke var(--md-fast) ease,
+          box-shadow var(--md-fast) ease,
+          transform var(--md-fast) ease !important;
+      }
+
+      /* 开关手柄与色块选中圆点：状态变化由伪元素承担 */
+      html.md-color-transition .slider::before,
+      html.md-color-transition .md-swatch::after {
+        transition: transform var(--md-fast) ease, background-color var(--md-fast) ease, opacity var(--md-fast) ease !important;
+      }
+    }
+
+    /* 背景媒体由 animation 驱动 opacity 与遮罩，不参与配色过渡 */
+    html.md-color-transition :is(#bg-image, #bg-video) {
+      transition: none !important;
     }
 
     /* 壁纸背景层容器 */
@@ -1616,16 +1665,16 @@
       cursor: text;
       position: relative;
       padding: 0 10px 0 15px;
-      transition: border-radius 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, outline 0.15s ease;
+      transition: border-radius 0.15s ease, box-shadow 0.5s ease, background-color 0.15s ease, border-color 0.15s ease, outline 0.15s ease;
     }
 
-    /* 悬停时底色微调：浅色略深，深色略浅 */
-    #fakebox:hover {
+    /* 悬停时底色微调：浅色略深，深色略浅；选中后不再变化 */
+    #fakebox:hover:not(:focus-within) {
       background-color: var(--search-box-bg-hover);
     }
 
     /* 配色过渡期间搜索框按配色时长过渡底色与阴影 */
-    body.md-color-transition #fakebox {
+    html.md-color-transition #fakebox {
       transition: background-color 1.5s ease, box-shadow 1.5s ease;
     }
 
@@ -1696,6 +1745,11 @@
        用同结构的透明阴影而非 none，保证 box-shadow 可插值 */
     body.bg-revealing #search-container #fakebox {
       box-shadow: 0 0 14px transparent;
+    }
+
+    /* 无背景时纯色底上需要更实的阴影；选中态由上方规则覆盖 */
+    body:not(.bg-enabled) #fakebox {
+      box-shadow: var(--search-box-shadow-plain);
     }
 
     /* 搜索框联想面板：与搜索框留出间隔，顶部为小圆角。
@@ -2887,6 +2941,12 @@
       transition: opacity 0.2s ease;
     }
 
+    /* 动态颜色开启时预设色板置灰 */
+    #md-custom-settings.disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
     /* 依赖背景开启的设置 */
     #bg-dependent-settings {
       display: flex;
@@ -2895,7 +2955,8 @@
       transition: opacity 0.1s ease;
     }
 
-    #bg-dependent-settings.disabled {
+    #bg-dependent-settings.disabled,
+    #wallpaper-source-card.disabled {
       opacity: 0.25;
       filter: grayscale(0.4);
       pointer-events: none;
@@ -3075,7 +3136,7 @@
                 <div class="setting-row">
                   <!-- 左侧：标题 + chevron，整块可点进入背景设置二级页 -->
                   <button id="btn-open-bg-modal" class="settings-nav-row" type="button">
-                    <span data-i18n="editBackground">编辑背景</span>
+                    <span data-i18n="background">背景</span>
                     <svg class="settings-nav-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                       <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
                     </svg>
@@ -3173,13 +3234,21 @@
                 <h2 class="settings-title" data-i18n="background">背景</h2>
               </div>
               <div class="settings-content">
-                <!-- 顶部「启用背景」开关已移除：开关在主面板「编辑背景」行，
-                     本页由壁纸下拉的「关闭」选项控制启停 -->
-
-                <!-- 壁纸卡片：预览 + 来源下拉（含「关闭」）。
-                     选择任一具体来源都会自动开启背景，因此本卡放在
-                     bg-dependent-settings 之外，背景关闭时下拉仍可操作 -->
+                <!-- 背景总开关：关闭时下方所有背景设置置灰且不可交互 -->
                 <div class="settings-card">
+                  <div class="setting-row">
+                    <div class="setting-label-group" data-i18n="background">背景</div>
+                    <div class="switch-container">
+                      <label class="switch">
+                        <input type="checkbox" id="toggle-bg-master">
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 壁纸卡片：预览 + 来源下拉 -->
+                <div class="settings-card" id="wallpaper-source-card">
                   <div class="wallpaper-preview-box" id="wallpaper-preview-container">
                     <img src="img/background.webp" alt="默认背景预览" style="width:100%;height:100%;object-fit:cover;">
                   </div>
@@ -3188,7 +3257,6 @@
                     <div class="setting-label-group" data-i18n="wallpaper">壁纸</div>
                     <div class="custom-select-wrapper">
                       <select id="select-wallpaper-source" class="select-box" tabindex="-1" aria-label="壁纸来源">
-                        <option value="off" data-i18n="off">关闭</option>
                         <option value="default" data-i18n="defaultWallpaper">默认</option>
                         <option value="bing" data-i18n="bingDaily">必应每日壁纸</option>
                         <option value="local" data-i18n="localFile">本地文件</option>
@@ -3411,29 +3479,23 @@
                 <h2 class="settings-title" data-i18n="color">颜色</h2>
               </div>
               <div class="settings-content">
-                <!-- 动态颜色：壁纸 / 手动 -->
+                <!-- 动态颜色开关：开启时从壁纸取色，下方预设置灰 -->
                 <div class="settings-card">
                   <div class="setting-row">
                     <div class="setting-label-group" data-i18n="mdColor">动态颜色</div>
-                    <div class="custom-select-wrapper">
-                      <select id="select-md-color-mode" class="select-box" tabindex="-1" aria-label="动态颜色">
-                        <option value="wallpaper" data-i18n="mdColorWallpaper">壁纸</option>
-                        <option value="custom" data-i18n="mdColorCustom">手动</option>
-                        <!-- 默认态（关闭 MD 取色）不在下拉中展示，仅用于回显色板第一格 -->
-                        <option value="off" data-i18n="mdPresetDefault" data-md-hidden hidden></option>
-                      </select>
-                      <div class="custom-select-display" data-for="select-md-color-mode">
-                        <span class="custom-select-text"></span>
-                        <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
-                          <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
-                        </svg>
-                      </div>
+                    <div class="switch-container">
+                      <label class="switch">
+                        <input type="checkbox" id="toggle-md-dynamic">
+                        <span class="slider"></span>
+                      </label>
                     </div>
                   </div>
+                </div>
 
-                  <!-- 手动模式下的种子色设置：预设色板（末位为自定义卡片） -->
+                <!-- 预设色板：动态颜色关闭时决定主题色（末位为自定义卡片） -->
+                <div class="settings-card">
                   <div id="md-custom-settings">
-                    <div class="settings-card-title" style="margin-top: 14px;" data-i18n="mdPresets">预设配色</div>
+                    <div class="settings-card-title" data-i18n="mdPresets">预设配色</div>
                     <!-- 色块底色与圆点色由 JS 按种子色生成 MD3 tonal 结果写入 -->
                     <div class="md-preset-grid">
                       <button type="button" class="md-swatch md-swatch-default" data-mode="off" title="默认" data-i18n-title="mdPresetDefault"></button>
