@@ -6177,7 +6177,7 @@ function iconPresetKey(id) {
 
 // 取当前语言字典（供顶层函数使用）
 function currentDict() {
-  return currentDict();
+  return i18nData[getResolvedLanguageCode(getSavedLang())] || i18nData['zh-CN'];
 }
 
 // 刷新「预置」选项的显示文本，并在触发器上补一个已选图标。
