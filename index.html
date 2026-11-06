@@ -18,15 +18,18 @@
       --header-height: 50px;
 
       /* ===== 表面／背景层（从页面底色到浮层，由低到高） ===== */
-      --fill-color: #f7f7f7;   /* 页面主背景色 */
+      --fill-color: #f5f5f5;   /* 页面主背景色 */
       --fill-popup-color: #ffffff;   /* 下拉菜单/弹窗主背景色；※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --neutral-layer-floating: #ffffff;   /* 浮动层背景色 (搜索框/图标) */
+      /* 无背景时浮动层（搜索框、快速链接图标）的固定底色，不参与动态取色 */
+      --plain-floating-bg: #ffffff;
+      --plain-floating-bg-hover: #f3f3f3;
       --modal-bg: #ffffff;   /* ※ 深色下比卡片更暗一档，与上面几个不同值 */
       --settings-panel-bg: #EEEEEE;   /* ※ 与 --btn-secondary-bg 同值（浅色 #EEEEEE / 深色不同） */
       --settings-card-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
-      --settings-card-hover: #f9f9f9;
+      --settings-card-hover: #f0f0f0;
       --suggestion-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
-      --suggestion-hover: #f0f0f0;   /* ※ 与 --accent-foreground-invert 同值（仅浅色） */
+      --suggestion-hover: #ebebeb;   /* ※ 与 --accent-foreground-invert 同值（仅浅色） */
       --input-bg: #F2F2F2;
       --settings-thumb-bg: #d5d9de;
 
@@ -55,31 +58,43 @@
       --btn-danger-color: #d13438;   /* 危险/删除操作文字色 */
       --btn-danger-hover: #fde8e8;   /* 危险按钮 Hover 背景 */
       --neutral-fill-rest: rgba(0, 0, 0, 0.04);   /* 按钮常规浅灰填充 */
-      --neutral-fill-hover: rgba(0, 0, 0, 0.08);   /* 按钮 Hover 填充 */
+      --neutral-fill-hover: rgba(0, 0, 0, 0.11);   /* 按钮 Hover 填充 */
 
       /* ===== 建议列表语义色 ===== */
       --suggestion-history-color: #5c2d91;
       --suggestion-footer-color: #0078d4;
 
       /* ===== 阴影与遮罩 ===== */
-      --shadow2: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
-      --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14);
-      --dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-      --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.16), 0 2px 7px rgba(0, 0, 0, 0.22);
+      --shadow2: 0 0 3px rgba(0, 0, 0, 0.05), 0 0 6px rgba(0, 0, 0, 0.06);
+      --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 0 16px rgba(0, 0, 0, 0.14);
+      --dropdown-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
+      --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.04);
+      --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.10);
+      /* 增强可见性下的搜索框阴影：半径与常态一致，浓度更高 */
+      --search-box-shadow-enhanced: 0 0 14px rgba(0, 0, 0, 0.18);
+      /* 无背景时的搜索框阴影：纯色底上需要比壁纸场景更实一点 */
+      --search-box-shadow-plain: 0 0 14px rgba(0, 0, 0, 0.09);
+      --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+      /* 搜索框悬停底色：浅色略深，深色略浅 */
+      --search-box-bg-hover: #f3f3f3;
+      /* 搜索框基准宽度，窄屏媒体查询中覆盖此值 */
+      --search-width: 720px;
       --modal-mask: rgba(0, 0, 0, 0.52);
 
       /* ===== 背景图上的半透明层 ===== */
-      --enhanced-visibility-bg: rgba(255, 255, 255, 0.45);
-      --enhanced-visibility-bg-hover: rgba(255, 255, 255, 0.65);
-      --enhanced-visibility-logo-bg: rgba(255, 255, 255, 0.6);
+      --enhanced-visibility-bg: rgba(255, 255, 255, 0.60);
+      --enhanced-visibility-bg-hover: rgba(255, 255, 255, 0.78);
+      --enhanced-visibility-logo-bg: rgba(255, 255, 255, 0.72);
     
     }
 
     /* 暗色主题颜色库（由 <html data-theme> 驱动，见设置里的「主题模式」） */
     :root[data-theme="dark"] {
-        --fill-color: #1f1f1f;
+        --fill-color: #232323;
         --fill-popup-color: #2b2b2b;
         --neutral-layer-floating: #2b2b2b;
+        --plain-floating-bg: #2b2b2b;
+        --plain-floating-bg-hover: #333333;
         
         --neutral-foreground-rest: #f5f5f5;
         --neutral-foreground-secondary: #adadad;
@@ -87,12 +102,12 @@
         --placeholder-color: #8f8f8f;
 
         --neutral-fill-rest: rgba(255, 255, 255, 0.06);
-        --neutral-fill-hover: rgba(255, 255, 255, 0.12);
+        --neutral-fill-hover: rgba(255, 255, 255, 0.16);
 
-        --shadow2: 0 0 2px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28);
-        --shadow16: 0 0 2px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.28);
+        --shadow2: 0 0 3px rgba(0, 0, 0, 0.10), 0 0 6px rgba(0, 0, 0, 0.12);
+        --shadow16: 0 0 2px rgba(0, 0, 0, 0.24), 0 0 16px rgba(0, 0, 0, 0.28);
 
-        --dropdown-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.22);
+        --dropdown-shadow: 0 0 14px rgba(0, 0, 0, 0.4), 0 0 4px rgba(0, 0, 0, 0.22);
         --dropdown-border: #4c4c4c;
 
         --modal-bg: #242424;
@@ -110,7 +125,7 @@
         --settings-panel-bg: #242424;
         --settings-card-bg: #2b2b2b;
         --settings-card-border: #3d3d3d;
-        --settings-card-hover: #353535;
+        --settings-card-hover: #3a3a3a;
         --settings-text-primary: #e3e3e3;
         --settings-text-secondary: #9e9e9e;
         --settings-thumb-bg: #212121;
@@ -123,11 +138,16 @@
         --enhanced-visibility-logo-bg: rgba(0, 0, 0, 0.6);
 
         --suggestion-bg: #2b2b2b;
-        --suggestion-hover: #3d3d3d;
+        --suggestion-hover: #454545;
         --suggestion-history-color: #b182e6;
         --suggestion-footer-color: #4f8cf6;
 
-        --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.28), 0 3px 9px rgba(0, 0, 0, 0.38);
+        --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.09);
+        --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.20);
+        --search-box-shadow-enhanced: 0 0 14px rgba(0, 0, 0, 0.34);
+        --search-box-shadow-plain: 0 0 14px rgba(0, 0, 0, 0.18);
+        --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.13);
+        --search-box-bg-hover: #333333;
     }
 
     html {
@@ -156,9 +176,7 @@
       pointer-events: none;
     }
 
-    /* 背景图/视频 —— 默认透明，加载完成后加 .loaded 渐入（0.2s）；
-       开启「背景渐显模糊」时再叠一层"由糊到清"。
-       过渡只定义在 .loaded 上，移除时不播反向动画。 */
+    /* 背景图/视频 —— 直接显示；进入时由 .revealing 播放中心扩展 */
     #bg-video, #bg-image {
       position: absolute;
       top: 0;
@@ -167,53 +185,64 @@
       height: 100%;
       object-fit: cover;
       display: none;
+    }
+
+    /* 进入动画：可见区域从中心扩展到全屏，边缘为大范围羽化 */
+    @property --bg-reveal {
+      syntax: '<percentage>';
+      initial-value: 600%;
+      inherits: false;
+    }
+
+    /* 媒体就绪前不显示：避免加载过程中就露出半张图 */
+    #bg-video.pending, #bg-image.pending {
       opacity: 0;
     }
 
-    #bg-video.loaded, #bg-image.loaded {
-      opacity: 1;
-      transition: opacity 0.2s ease-in;
+    /* 暂停在动画起点：用于图片绘制完成前保持不可见 */
+    #bg-video.paused, #bg-image.paused {
+      animation-play-state: paused;
     }
 
-    /* 背景渐显模糊实现 */
-    body[data-bg-fade-blur="true"] #bg-video,
-    body[data-bg-fade-blur="true"] #bg-image {
-      filter: blur(24px);
-      transform: scale(1.06);
+    #bg-video.revealing, #bg-image.revealing {
+      -webkit-mask-image: radial-gradient(ellipse at center,
+        #000 calc(var(--bg-reveal) * 0.3), transparent var(--bg-reveal));
+      mask-image: radial-gradient(ellipse at center,
+        #000 calc(var(--bg-reveal) * 0.3), transparent var(--bg-reveal));
+      /* 椭圆的长短轴跟随元素宽高比，横向铺展；遮罩从半径的 30% 处开始渐隐，
+         到 100% 处完全透明，70% 的范围用于柔化边缘。
+         终值 600% 时实心区达到半径的 180%，展开完成后屏幕内保持完整不透明 */
+      animation: bg-reveal 1.3s ease-out both, bg-fade-in 0.6s ease-out both;
     }
 
-    body[data-bg-fade-blur="true"] #bg-video.loaded,
-    body[data-bg-fade-blur="true"] #bg-image.loaded {
-      opacity: 1;
-      filter: blur(0);
-      transform: scale(1);
-      transition: opacity 0.2s ease-in, filter 0.4s ease-out, transform 0.4s ease-out;
+    /* 扩展：可见区域的半径增大 */
+    @keyframes bg-reveal {
+      from { --bg-reveal: 0%; }
+      to   { --bg-reveal: 600%; }
     }
 
-    /* 开启"减少动态效果"时不做模糊动画，只保留最基础的渐入 */
+    /* 渐显：整体不透明度提升，与扩展同时推进、先结束 */
+    @keyframes bg-fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* 开启"减少动态效果"时直接显示 */
     @media (prefers-reduced-motion: reduce) {
-      body[data-bg-fade-blur="true"] #bg-video,
-      body[data-bg-fade-blur="true"] #bg-image {
-        filter: none;
-        transform: none;
-      }
-      body[data-bg-fade-blur="true"] #bg-video.loaded,
-      body[data-bg-fade-blur="true"] #bg-image.loaded {
-        transition: opacity 0.2s ease-in;
+      #bg-video.revealing, #bg-image.revealing {
+        animation: none;
+        --bg-reveal: 600%;
       }
     }
 
-    /* 浅色模式下遮罩 */
+    /* 浅色模式下遮罩：只保留整体色调，不含边角晕影 */
     #bg-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      /* 第一层是整体色调，第二层是边角晕影（可通过"背景边角晕影"开关整体关闭） */
-      background:
-        linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
-        var(--bg-vignette, radial-gradient(circle at center, rgba(255,255,255,0) 60%, rgba(255,255,255,0.20) 100%));
+      background: rgba(255, 255, 255, 0.1);
       display: none;
       opacity: 0;
       transition: opacity 0.2s ease-in;
@@ -223,12 +252,12 @@
       opacity: 1;
     }
 
-    /* 关闭"背景边角晕影"：把那个 radial 层替换成 none（两层渐变里只留整体色调） */
+    /* 关闭"背景边角晕影"：把深色遮罩里的 radial 层替换成 none */
     body[data-bg-vignette="off"] {
       --bg-vignette: none;
     }
 
-    /* 暗色模式下遮罩 */
+    /* 暗色模式下遮罩：整体色调 + 边角晕影 */
     :root[data-theme="dark"] body.bg-enabled #bg-overlay {
       background:
         linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
@@ -291,10 +320,6 @@
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .quicklink-title {
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
-    }
-
-    body.bg-enabled[data-enhanced-visibility="true"] #fakebox:hover {
-      box-shadow: 0 0 0 3px var(--enhanced-visibility-bg-hover);
     }
 
     /* 开启背景时外层容器透明，露出壁纸 */
@@ -511,15 +536,6 @@
       box-sizing: border-box;
     }
 
-    .settings-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--settings-text-primary);
-    }
-
     .settings-card-title {
       font-size: 13px;
       font-weight: 500;
@@ -630,11 +646,12 @@
     /* 行内下拉：与设置行合并，标签在左、当前值+箭头在右 */
     .setting-row .custom-select-wrapper {
       width: auto;
-      min-width: 110px;
       max-width: 60%;
     }
 
     .setting-row .custom-select-display {
+      /* 宽度贴合可见文字与箭头，悬停高亮只包裹这部分 */
+      width: auto;
       height: 28px;
       /* 不加框：透明底，视觉上只是「当前值 + 箭头」 */
       background-color: transparent;
@@ -642,13 +659,13 @@
       /* 文字居右、紧贴箭头，不留中间空档 */
       justify-content: flex-end;
       gap: 4px;
-      padding-right: 4px;
+      padding: 0 8px;
     }
 
-    /* 去掉下拉触发器自身的 hover/active 底色，hover 效果交给整行 */
     .setting-row .custom-select-display:hover,
-    .setting-row .custom-select-display.active {
-      background-color: transparent;
+    .setting-row .custom-select-display.active,
+    .setting-row:has(> .custom-select-wrapper):hover .custom-select-display {
+      background-color: var(--modal-border);
     }
 
     .setting-row .custom-select-text {
@@ -657,7 +674,7 @@
       text-overflow: ellipsis;
     }
 
-    /* 含下拉的整行：负外边距左右顶至卡片边框，hover 方形铺满（与跳转行一致） */
+    /* 含下拉的整行：负外边距左右顶至卡片边框，保持整行可点击 */
     .setting-row:has(> .custom-select-wrapper) {
       width: calc(100% + 24px);
       box-sizing: border-box;
@@ -669,9 +686,7 @@
       transition: background-color 0.08s ease;
     }
 
-    .setting-row:has(> .custom-select-wrapper):hover {
-      background-color: var(--neutral-fill-rest);
-    }
+    /* 悬停高亮由行内下拉自身承担 */
 
     /* 行内下拉置灰时，同行左侧标签一起变灰（与旧「标题置灰」行为一致） */
     .setting-row:has(.custom-select-display.disabled) > .setting-label-group {
@@ -708,6 +723,7 @@
       box-shadow: var(--dropdown-shadow);
       z-index: 2000;
       max-height: 260px;
+      max-width: 260px;
       overflow-y: auto;
       opacity: 0;
       visibility: hidden;
@@ -1009,14 +1025,6 @@
       flex-shrink: 0;
     }
 
-    /* 预设区的小标题 */
-    .preset-section-label {
-      margin-top: 14px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--settings-text-secondary);
-    }
-
     .layout-presets {
       position: relative;
       display: flex;
@@ -1081,26 +1089,15 @@
       transition: border-color 0.08s, background-color 0.08s;
     }
 
-    /* 悬停一律"加深"：未选中项叠一层黑 */
+    /* 悬停一律加深 */
     .theme-option:hover,
     .preset-card:hover {
-      background-color: rgba(0, 0, 0, 0.04);
+      background-color: var(--settings-card-hover);
     }
 
-    /* 深色主题下比例更大 */
-    :root[data-theme="dark"] .theme-option:hover,
-    :root[data-theme="dark"] .preset-card:hover {
-      background-color: rgba(0, 0, 0, 0.14);
-    }
-
-    /* 已选中项不参与上面的叠黑（背景由滑块承担，叠黑会盖在滑块上显得变色） */
+    /* 已选中项不参与上面的加深（背景由滑块承担） */
     .theme-option.active:hover,
     .preset-card.active:hover {
-      background-color: transparent;
-    }
-
-    :root[data-theme="dark"] .theme-option.active:hover,
-    :root[data-theme="dark"] .preset-card.active:hover {
       background-color: transparent;
     }
 
@@ -1216,10 +1213,6 @@
       transition: background-color 0.08s ease;
     }
 
-    .settings-nav-row:hover {
-      background-color: var(--neutral-fill-rest);
-    }
-
     /* 在 flex 设置行内（编辑背景）：宽度交给 flex 分配，
        左侧负边距保持顶至卡片左缘，右侧止于分隔线 */
     .setting-row .settings-nav-row {
@@ -1228,14 +1221,23 @@
       margin-right: 0;
     }
 
+    /* 跳转行整行不加悬停底色，反馈只落在右侧箭头上 */
+    .settings-nav-row:hover {
+      background-color: transparent;
+    }
+
     .settings-nav-chevron {
       width: 12px;
       height: 12px;
+      /* 与行内下拉按钮一致的内边距与圆角 */
+      padding: 8px;
+      box-sizing: content-box;
+      border-radius: 6px;
       flex-shrink: 0;
       color: var(--settings-text-secondary);
       /* 与下拉「预置」项同一 chevron，旋转 90° 指向右侧子级 */
       transform: rotate(-90deg);
-      transition: color 0.08s ease;
+      transition: color 0.08s ease, background-color 0.08s ease;
     }
 
     /* ===== MD3 预设色板 =====
@@ -1261,23 +1263,23 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: transparent;
-      transition: transform 0.1s ease;
-      /* 底色由 JS 按 data-seed 生成 tonal 色写入（见 script.js 色板渲染） */
+      /* 上下分割：上半为浅色最淡/深色最深，下半为 primaryContainer */
+      background: linear-gradient(180deg, var(--swatch-top, transparent) 0 50%, var(--swatch-bg, transparent) 50% 100%);
+      /* 两个变量由 JS 按 data-seed 生成 tonal 色写入（见 script.js 色板渲染） */
     }
 
-    /* 色块中央的小圆点：该色调的强调色 */
+    /* 悬停：与选中态同构的双环，外环为半透明灰 */
+    .md-swatch:hover {
+      box-shadow: 0 0 0 2px var(--settings-card-bg), 0 0 0 4px rgba(128, 128, 128, 0.45);
+    }
+
+    /* 色块中央的圆角方块：该色调的强调色 */
     .md-swatch::after {
       content: '';
       width: 38%;
       aspect-ratio: 1 / 1;
-      border-radius: 50%;
+      border-radius: 30%;
       background-color: var(--swatch-dot, transparent);
-      transition: transform 0.1s ease;
-    }
-
-    .md-swatch:hover::after {
-      transform: scale(1.15);
     }
 
     /* 选中：外圈描边（用主题强调色，与 MD 选区风格一致） */
@@ -1287,28 +1289,27 @@
 
     /* ===== 首位「默认」卡片 =====
        代表关闭 MD 取色时的原生黑白主题：
-       用「浅底深点」半黑半白（上下分割）表达，而不是某个色相。*/
+       浅色为白底黑点，深色为黑底白点。*/
     .md-swatch-default {
-      background: linear-gradient(180deg, #f5f3f0 0 50%, #262320 50% 100%);
+      background: #ffffff;
     }
 
     .md-swatch-default::after {
       background-color: #262320;
-      box-shadow: 0 0 0 2px #f5f3f0;
     }
 
     :root[data-theme="dark"] .md-swatch-default {
-      background: linear-gradient(180deg, #262320 0 50%, #f5f3f0 50% 100%);
+      background: #262320;
     }
 
     :root[data-theme="dark"] .md-swatch-default::after {
       background-color: #f5f3f0;
-      box-shadow: 0 0 0 2px #262320;
     }
 
     /* ===== 末位「自定义」卡片：虚线描边 + 加号，点击展开滑块 ===== */
     .md-swatch-custom {
-      background-color: transparent;
+      /* 覆盖色块的上下分割底色 */
+      background: none;
       border: 1.5px dashed var(--settings-card-border);
       color: var(--settings-text-secondary);
     }
@@ -1421,8 +1422,10 @@
       will-change: left;
     }
 
+    /* 悬停时只高亮右侧箭头 */
     .settings-nav-row:hover .settings-nav-chevron {
       color: var(--settings-text-primary);
+      background-color: var(--modal-border);
     }
 
     /* 跳转行与右侧开关之间的竖线分隔 */
@@ -1482,7 +1485,8 @@
 
     #inner {
       display: grid;
-      grid-template-rows: 1fr auto 72px 46px 32px 32px auto 1fr;
+      /* 底部弹性行略大于顶部，使 logo/搜索框/快速链接整体略高于几何中心 */
+      grid-template-rows: 1fr auto 72px 52px 18px 18px auto 1.2fr;
       justify-items: center;
       position: absolute;
       top: 0;
@@ -1537,6 +1541,11 @@
       fill: var(--logo-color);
     }
 
+    /* 增强可见性下浅色模式的 Logo 文字用较深的灰色 */
+    :root[data-theme="light"] body.bg-enabled[data-enhanced-visibility="true"] #logo-text-path {
+      fill: var(--neutral-foreground-secondary);
+    }
+
     .google-logo-img, .baidu-logo-img {
       height: 90px;
       max-width: 400px;
@@ -1566,8 +1575,19 @@
     #search-container {
       grid-row: 4;
       position: relative;
-      width: 760px;
+      width: var(--search-width);
       z-index: 5;
+      /* 悬停与选中时按基准宽度加长，高度始终保持不变 */
+      transition: width 0.15s ease;
+    }
+
+    /* 悬停轻微变长，选中时更长 */
+    #search-container:hover {
+      width: calc(var(--search-width) + 11px);
+    }
+
+    #search-container:focus-within {
+      width: calc(var(--search-width) + 36px);
     }
 
     #search-container.suggestions-open, #search-container:focus-within {
@@ -1581,21 +1601,38 @@
       width: 100%;
       box-sizing: border-box;
       background-color: var(--neutral-layer-floating);
-      border-radius: 22px;
-      height: 46px;
+      border-radius: 26px;
+      height: 52px;
       gap: 7px;
       color: var(--neutral-foreground-rest);
-      box-shadow: var(--shadow2);
-      border: 1px solid transparent;
+      /* 常态一圈很弱的扩散阴影，选中态更大更实一点 */
+      box-shadow: var(--search-box-shadow);
       user-select: none;
       cursor: text;
       position: relative;
-      padding: 0 14px 0 11px;
-      transition: border-radius 0.08s ease, box-shadow 0.08s ease, background-color 0.08s ease, border-color 0.08s ease, outline 0.08s ease;
+      padding: 0 10px 0 15px;
+      transition: border-radius 0.15s ease, box-shadow 0.5s ease, background-color 0.15s ease, border-color 0.15s ease, outline 0.15s ease;
+    }
+
+    /* 浅色模式下无背景时，浮动层使用固定底色，不跟随动态取色；文字仍按配色渲染 */
+    :root[data-theme="light"] body:not(.bg-enabled) #fakebox,
+    :root[data-theme="light"] body:not(.bg-enabled) .quicklink-icon {
+      background-color: var(--plain-floating-bg);
+    }
+
+    :root[data-theme="light"] body:not(.bg-enabled) #fakebox:hover:not(:focus-within) {
+      background-color: var(--plain-floating-bg-hover);
+    }
+
+    /* 悬停时底色微调：浅色略深，深色略浅；选中后不再变化 */
+    #fakebox:hover:not(:focus-within) {
+      background-color: var(--search-box-bg-hover);
     }
 
     #fakebox #searchbutton {
-      fill: var(--neutral-foreground-rest);
+      fill: none;
+      stroke: var(--neutral-foreground-secondary);
+      opacity: 0.85;
       flex-shrink: 0;
     }
 
@@ -1614,8 +1651,8 @@
 
     #search-input {
       position: absolute;
-      left: 42px;
-      right: 14px;
+      left: 46px;
+      right: 10px;
       top: 0;
       bottom: 0;
       border: none;
@@ -1639,30 +1676,48 @@
       display: none;
     }
 
-    #fakebox:hover {
-      box-shadow: var(--search-box-hover-shadow);
+    /* 选中态：阴影范围更大、透明度略高 */
+    #search-container:focus-within #fakebox {
+      box-shadow: var(--search-box-shadow-active);
     }
 
-    /* 搜索框展开联想下拉词条面板 */
+    /* 搜索框展开联想下拉词条面板：与面板分离，底部保留小圆角 */
     #search-container.suggestions-open #fakebox {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      border-bottom-left-radius: 6px;
+      border-bottom-right-radius: 6px;
     }
 
-    /* 搜索框联想面板：初始隐藏并上移 4px，.suggestions-open 时归位。
-       visibility 延迟 0.08s 切换，保证过渡播完再隐藏 */
+    /* 有壁纸并开启增强可见性时，壁纸内容复杂，搜索框叠加一层阴影提升层次 */
+    body[data-enhanced-visibility="true"] #search-container #fakebox {
+      box-shadow: var(--search-box-shadow-enhanced);
+    }
+
+    /* 背景进入动画期间不显示搜索框阴影，动画结束后淡入。
+       用同结构的透明阴影而非 none，保证 box-shadow 可插值 */
+    body.bg-revealing #search-container #fakebox {
+      box-shadow: 0 0 14px transparent;
+    }
+
+    /* 无背景时纯色底上需要更实的阴影；选中态由上方规则覆盖 */
+    body:not(.bg-enabled) #fakebox {
+      box-shadow: var(--search-box-shadow-plain);
+    }
+
+    /* 搜索框联想面板：与搜索框留出间隔，顶部为小圆角。
+       初始隐藏并上移，.suggestions-open 时归位；visibility 延迟切换保证过渡播完再隐藏 */
     #suggestions-box {
       display: block;
       position: absolute;
-      top: 46px;
+      top: 56px;
       left: 0;
       right: 0;
       background-color: var(--suggestion-bg);
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-      border-top: 1px solid var(--modal-border);
+      /* 只向下投影，避免与搜索框的阴影在间隔处叠加 */
+      box-shadow: var(--suggestions-shadow);
       overflow: hidden;
       z-index: 100;
       opacity: 0;
@@ -1819,7 +1874,6 @@
       align-items: center;
       justify-content: center;
       font-weight: 600;
-      box-shadow: var(--shadow2);
       overflow: hidden;
       font-size: 14px;
     }
@@ -1969,12 +2023,11 @@
     .quicklink-add-icon {
       background-color: var(--neutral-layer-floating);
       border: none;
-      box-shadow: var(--shadow2);
     }
 
     /* 展望模式布局排布 */
     :is(html, body)[data-layout="inspirational"] #inner {
-      grid-template-rows: minmax(78px, 15%) 46px 32px 1fr auto 12%;
+      grid-template-rows: minmax(78px, 15%) 52px 32px 1fr auto 12%;
     }
 
     :is(html, body)[data-layout="inspirational"] #logo {
@@ -2330,15 +2383,15 @@
 
     /* 响应式适配：ntp-quicklinks 宽度由脚本按列数计算 */
     @media (max-width: 1267px) {
-      #search-container { width: 528px; }
+      #search-container { --search-width: 528px; }
     }
 
     @media (max-width: 955px) {
-      #search-container { width: 400px; }
+      #search-container { --search-width: 400px; }
     }
 
     @media (max-width: 643px) {
-      #search-container { width: 343px; }
+      #search-container { --search-width: 343px; }
       #header { padding: 0 12px; }
       #logo-text { width: 100px; }
       #logo-icon { height: 32px; }
@@ -2346,9 +2399,9 @@
 
     @media (max-width: 343px) {
       ntp-shell { min-width: auto; }
-      #search-container { width: 90%; }
+      #search-container { --search-width: 90%; }
       #fakebox { height: 32px; }
-      #suggestions-box { top: 32px; }
+      #suggestions-box { top: 36px; }
       #fakebox #placeholder { font-size: 12px; line-height: 16px; }
       #fakebox svg { width: 16px; height: 16px; }
       #logo-icon { width: 48px; height: 48px; }
@@ -2450,7 +2503,7 @@
       line-height: 1.5;
       padding: 8px 12px;
       border-radius: 6px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      box-shadow: 0 0 16px rgba(0,0,0,0.25);
       max-width: 260px;
       white-space: normal;
       word-break: normal;
@@ -2839,6 +2892,12 @@
       transition: opacity 0.2s ease;
     }
 
+    /* 动态颜色开启时预设色板置灰 */
+    #md-custom-settings.disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
     /* 依赖背景开启的设置 */
     #bg-dependent-settings {
       display: flex;
@@ -2847,7 +2906,8 @@
       transition: opacity 0.1s ease;
     }
 
-    #bg-dependent-settings.disabled {
+    #bg-dependent-settings.disabled,
+    #wallpaper-source-card.disabled {
       opacity: 0.25;
       filter: grayscale(0.4);
       pointer-events: none;
@@ -2856,7 +2916,7 @@
     </style>
 </head>
 
-<body data-layout="focused">
+<body data-layout="focused" class="bg-revealing">
     <!-- 视频/图片背景容器 -->
     <div id="background-container">
       <video id="bg-video" autoplay loop muted playsinline></video>
@@ -3027,7 +3087,7 @@
                 <div class="setting-row">
                   <!-- 左侧：标题 + chevron，整块可点进入背景设置二级页 -->
                   <button id="btn-open-bg-modal" class="settings-nav-row" type="button">
-                    <span data-i18n="editBackground">编辑背景</span>
+                    <span data-i18n="background">背景</span>
                     <svg class="settings-nav-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                       <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
                     </svg>
@@ -3125,13 +3185,21 @@
                 <h2 class="settings-title" data-i18n="background">背景</h2>
               </div>
               <div class="settings-content">
-                <!-- 顶部「启用背景」开关已移除：开关在主面板「编辑背景」行，
-                     本页由壁纸下拉的「关闭」选项控制启停 -->
-
-                <!-- 壁纸卡片：预览 + 来源下拉（含「关闭」）。
-                     选择任一具体来源都会自动开启背景，因此本卡放在
-                     bg-dependent-settings 之外，背景关闭时下拉仍可操作 -->
+                <!-- 背景总开关：关闭时下方所有背景设置置灰且不可交互 -->
                 <div class="settings-card">
+                  <div class="setting-row">
+                    <div class="setting-label-group" data-i18n="background">背景</div>
+                    <div class="switch-container">
+                      <label class="switch">
+                        <input type="checkbox" id="toggle-bg-master">
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 壁纸卡片：预览 + 来源下拉 -->
+                <div class="settings-card" id="wallpaper-source-card">
                   <div class="wallpaper-preview-box" id="wallpaper-preview-container">
                     <img src="img/background.webp" alt="默认背景预览" style="width:100%;height:100%;object-fit:cover;">
                   </div>
@@ -3140,7 +3208,6 @@
                     <div class="setting-label-group" data-i18n="wallpaper">壁纸</div>
                     <div class="custom-select-wrapper">
                       <select id="select-wallpaper-source" class="select-box" tabindex="-1" aria-label="壁纸来源">
-                        <option value="off" data-i18n="off">关闭</option>
                         <option value="default" data-i18n="defaultWallpaper">默认</option>
                         <option value="bing" data-i18n="bingDaily">必应每日壁纸</option>
                         <option value="local" data-i18n="localFile">本地文件</option>
@@ -3363,29 +3430,23 @@
                 <h2 class="settings-title" data-i18n="color">颜色</h2>
               </div>
               <div class="settings-content">
-                <!-- 动态颜色：壁纸 / 手动 -->
+                <!-- 动态颜色开关：开启时从壁纸取色，下方预设置灰 -->
                 <div class="settings-card">
                   <div class="setting-row">
-                    <div class="setting-label-group" data-i18n="mdColor">动态颜色</div>
-                    <div class="custom-select-wrapper">
-                      <select id="select-md-color-mode" class="select-box" tabindex="-1" aria-label="动态颜色">
-                        <option value="wallpaper" data-i18n="mdColorWallpaper">壁纸</option>
-                        <option value="custom" data-i18n="mdColorCustom">手动</option>
-                        <!-- 默认态（关闭 MD 取色）不在下拉中展示，仅用于回显色板第一格 -->
-                        <option value="off" data-i18n="mdPresetDefault" data-md-hidden hidden></option>
-                      </select>
-                      <div class="custom-select-display" data-for="select-md-color-mode">
-                        <span class="custom-select-text"></span>
-                        <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
-                          <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
-                        </svg>
-                      </div>
+                    <div class="setting-label-group" data-i18n="mdColor">自适应颜色</div>
+                    <div class="switch-container">
+                      <label class="switch">
+                        <input type="checkbox" id="toggle-md-dynamic">
+                        <span class="slider"></span>
+                      </label>
                     </div>
                   </div>
+                </div>
 
-                  <!-- 手动模式下的种子色设置：预设色板（末位为自定义卡片） -->
+                <!-- 预设色板：动态颜色关闭时决定主题色（末位为自定义卡片） -->
+                <div class="settings-card">
                   <div id="md-custom-settings">
-                    <div class="settings-card-title" style="margin-top: 14px;" data-i18n="mdPresets">预设配色</div>
+                    <div class="settings-card-title" data-i18n="mdPresets">预设配色</div>
                     <!-- 色块底色与圆点色由 JS 按种子色生成 MD3 tonal 结果写入 -->
                     <div class="md-preset-grid">
                       <button type="button" class="md-swatch md-swatch-default" data-mode="off" title="默认" data-i18n-title="mdPresetDefault"></button>
@@ -3424,9 +3485,9 @@
         <!-- 搜索框容器 -->
         <div id="search-container">
           <div id="fakebox" role="searchbox" tabindex="0" aria-label="今天想用 Bing 搜索什么？" data-i18n-aria="searchPlaceholder">
-            <svg aria-hidden="true" id="searchbutton" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 2.75a7.25 7.25 0 015.63 11.82l4.9 4.9a.75.75 0 01-.98 1.13l-.08-.07-4.9-4.9A7.25 7.25 0 1110 2.75zm0 1.5a5.75 5.75 0 100 11.5 5.75 5.75 0 000-11.5z">
-              </path>
+            <svg aria-hidden="true" id="searchbutton" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="10.5" cy="10.5" r="6.6"></circle>
+              <path d="M15.6 15.6 20.2 20.2"></path>
             </svg>
             <div id="placeholder" aria-hidden="true" data-i18n="searchPlaceholder">
               今天想用 Bing 搜索什么？
