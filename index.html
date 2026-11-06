@@ -18,7 +18,7 @@
       --header-height: 50px;
 
       /* ===== 表面／背景层（从页面底色到浮层，由低到高） ===== */
-      --fill-color: #f7f7f7;   /* 页面主背景色 */
+      --fill-color: #f5f5f5;   /* 页面主背景色 */
       --fill-popup-color: #ffffff;   /* 下拉菜单/弹窗主背景色；※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --neutral-layer-floating: #ffffff;   /* 浮动层背景色 (搜索框/图标) */
       --modal-bg: #ffffff;   /* ※ 深色下比卡片更暗一档，与上面几个不同值 */
@@ -66,8 +66,10 @@
       --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 0 16px rgba(0, 0, 0, 0.14);
       --dropdown-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
       --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.04);
-      --search-box-shadow-active: 0 0 22px rgba(0, 0, 0, 0.06);
+      --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.10);
       --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+      /* 搜索框基准宽度，窄屏媒体查询中覆盖此值 */
+      --search-width: 720px;
       --modal-mask: rgba(0, 0, 0, 0.52);
 
       /* ===== 背景图上的半透明层 ===== */
@@ -79,7 +81,7 @@
 
     /* 暗色主题颜色库（由 <html data-theme> 驱动，见设置里的「主题模式」） */
     :root[data-theme="dark"] {
-        --fill-color: #1f1f1f;
+        --fill-color: #232323;
         --fill-popup-color: #2b2b2b;
         --neutral-layer-floating: #2b2b2b;
         
@@ -130,7 +132,7 @@
         --suggestion-footer-color: #4f8cf6;
 
         --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.09);
-        --search-box-shadow-active: 0 0 22px rgba(0, 0, 0, 0.13);
+        --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.20);
         --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.13);
     }
 
@@ -306,7 +308,7 @@
       backdrop-filter: blur(10px);
     }
 
-    body.bg-enabled[data-enhanced-visibility="true"] #fakebox:hover {
+    body.bg-enabled[data-enhanced-visibility="true"] #search-container #fakebox:hover {
       box-shadow: 0 0 0 3px var(--enhanced-visibility-bg-hover);
     }
 
@@ -1563,20 +1565,19 @@
     #search-container {
       grid-row: 4;
       position: relative;
-      width: 720px;
+      width: var(--search-width);
       z-index: 5;
-      /* 选中时横向拉长并轻微放大；用缩放而非改宽度，窄屏下也不会超出 */
-      transform-origin: top center;
-      transition: transform 0.15s ease;
+      /* 悬停与选中时按基准宽度加长，高度始终保持不变 */
+      transition: width 0.15s ease;
     }
 
-    /* 悬停只轻微放大；选中时再横向拉长 */
+    /* 悬停轻微变长，选中时更长 */
     #search-container:hover {
-      transform: scale(1.01);
+      width: calc(var(--search-width) + 11px);
     }
 
     #search-container:focus-within {
-      transform: scale(1.05, 1.01);
+      width: calc(var(--search-width) + 36px);
     }
 
     #search-container.suggestions-open, #search-container:focus-within {
@@ -1837,7 +1838,6 @@
       align-items: center;
       justify-content: center;
       font-weight: 600;
-      box-shadow: var(--shadow2);
       overflow: hidden;
       font-size: 14px;
     }
@@ -1987,7 +1987,6 @@
     .quicklink-add-icon {
       background-color: var(--neutral-layer-floating);
       border: none;
-      box-shadow: var(--shadow2);
     }
 
     /* 展望模式布局排布 */
@@ -2348,15 +2347,15 @@
 
     /* 响应式适配：ntp-quicklinks 宽度由脚本按列数计算 */
     @media (max-width: 1267px) {
-      #search-container { width: 528px; }
+      #search-container { --search-width: 528px; }
     }
 
     @media (max-width: 955px) {
-      #search-container { width: 400px; }
+      #search-container { --search-width: 400px; }
     }
 
     @media (max-width: 643px) {
-      #search-container { width: 343px; }
+      #search-container { --search-width: 343px; }
       #header { padding: 0 12px; }
       #logo-text { width: 100px; }
       #logo-icon { height: 32px; }
@@ -2364,7 +2363,7 @@
 
     @media (max-width: 343px) {
       ntp-shell { min-width: auto; }
-      #search-container { width: 90%; }
+      #search-container { --search-width: 90%; }
       #fakebox { height: 32px; }
       #suggestions-box { top: 38px; }
       #fakebox #placeholder { font-size: 12px; line-height: 16px; }
