@@ -6,7 +6,7 @@
 
 去除繁杂，Litestart旨在为您提供无缝，快速，轻便的体验
 
-[<u>简体中文</u>] | <a href="README_EN.md">English</a>
+[<u>简体中文</u>] | <a href="docs/README_EN.md">English</a>
 
 
 ## 快速开始

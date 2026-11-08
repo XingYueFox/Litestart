@@ -1,12 +1,12 @@
 # Litestart
 
-<img src="docs/pics/1112B.webp" alt="main_banner" height="300px" />
+<img src="pics/1112B.webp" alt="main_banner" height="300px" />
 
 <strong>A customizable, Native-like new tab page for desktop browsers</strong>
 
 Cutting out the clutter, Litestart aims to provide you with a seamless, fast, and lightweight experience.
 
-<a href="README.md">简体中文</a> | [<u>English</u>]
+<a href="../README.md">简体中文</a> | [<u>English</u>]
 ⚠The translation might not be 100% accurate!
 
 
@@ -15,7 +15,7 @@ Cutting out the clutter, Litestart aims to provide you with a seamless, fast, an
 
 It is recommended to obtain and update Litestart from the plugin store
 
-<a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc"><img src="docs/get/edge-addon.webp" alt="Get it from Microsoft Edge" height="48"></a>&nbsp;&nbsp;<a href="https://addons.mozilla.org/firefox/addon/litestart/"><img src="docs/get/ff-addon.webp" alt="Get it from Firefox ADD-ON" height="48"></a>
+<a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc"><img src="get/edge-addon.webp" alt="Get it from Microsoft Edge" height="48"></a>&nbsp;&nbsp;<a href="https://addons.mozilla.org/firefox/addon/litestart/"><img src="get/ff-addon.webp" alt="Get it from Firefox ADD-ON" height="48"></a>
 
 ***
 Or use file import
@@ -29,7 +29,7 @@ Or use file import
 
 ## About Litestart
 
-<img alt="215014" src="docs/pics/2002.webp" />
+<img alt="215014" src="pics/2002.webp" />
 
 - A customizable, native-like browser start page designed for desktop browsers.
 - In contrast to typical pages, this one contains no extraneous online content, which improves the loading speed of new tabs.
@@ -42,7 +42,7 @@ Or use file import
 - Customize the background, search engine, and layout.
 - Pin any websites you want to keep on this page.
 - Or set any wallpaper you like.
-<img alt="Function Preview" src="docs/pics/2010.webp" />
+<img alt="Function Preview" src="pics/2010.webp" />
 
 
 ## System & Browser Compatibility

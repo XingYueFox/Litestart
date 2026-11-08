@@ -1,4 +1,4 @@
-const APP_VERSION = '1.9.0-beta3';      // 发行版本
+const APP_VERSION = '27.0.91';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -78,7 +78,7 @@ const i18nData = {
     skipRestore: '恢复提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.9.0-beta3 | 更新时间：2026-11-07',
+    litever: '版本 27.0.91 | 更新时间：2026-11-08',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -278,7 +278,7 @@ const i18nData = {
     skipRestore: '恢復提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.9.0-beta3 | 更新時間：2026-11-07',
+    litever: '版本 27.0.91 | 更新時間：2026-11-08',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -463,7 +463,7 @@ const i18nData = {
     skipRestore: 'Resume reminders',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.9.0-beta3 | Updated: 2026-11-07',
+    litever: 'Version 27.0.91 | Updated: 2026-11-08',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -649,7 +649,7 @@ const i18nData = {
     skipRestore: '通知を再開',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.9.0-beta3 | 更新日: 2026-11-07',
+    litever: 'バージョン 27.0.91 | 更新日: 2026-11-08',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -834,7 +834,7 @@ const i18nData = {
     skipRestore: 'Возобновить напоминания',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.9.0-beta3 | Обновлено: 2026-11-07',
+    litever: 'Версия 27.0.91 | Обновлено: 2026-11-08',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -1361,7 +1361,9 @@ async function saveWallpaperData(data) {
     await WallpaperDB.save(blob);
     const meta = {
       type: data.type,
-      source: data.source
+      source: data.source,
+      // 壁纸内容标识：壁纸取色缓存按它区分同一张图与换图
+      mdId: Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
     };
     Storage.set('ntp_custom_wallpaper', meta);
     return true;
@@ -2735,7 +2737,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 应用 MD 配色：生成浅/深两套 scheme 并注入 <style>
   // 取色结果缓存：图片 URL → ARGB，避免重复量化开销
-  // 默认种子色 = 中性灰（对应色板第一格「灰色 · 默认」）
+  // 默认种子色 = 中性灰（与色板「淡蓝」预设同值）
   const MD_DEFAULT_SEED = '#5f6368';
   function getMdSeed() { return Storage.get(MD_SEED_KEY, MD_DEFAULT_SEED); }
 
@@ -2743,6 +2745,33 @@ document.addEventListener('DOMContentLoaded', () => {
   // 取色算法变更时递增此值，使旧结果失效
   const MD_SEED_CACHE_VERSION = 2;
   const mdSeedCacheKey = (url) => MD_SEED_CACHE_VERSION + '|' + url;
+
+  // 壁纸取色的持久缓存：壁纸标识 → 种子色，跨会话复用，命中即无需采样
+  const MD_WALLPAPER_SEED_KEY = 'ntp_md_wallpaper_seed';
+
+  // 壁纸标识：内置壁纸固定；远程壁纸按 URL（URL 不变即同一张图）；本地壁纸取保存时生成的内容标识
+  function mdWallpaperSeedId() {
+    const meta = Storage.get('ntp_custom_wallpaper', null);
+    if (!meta) return 'default';
+    if (isRemoteWallpaper(meta) && meta.url) return 'url|' + meta.url;
+    return 'local|' + (meta.mdId || 'legacy');
+  }
+
+  // 内置壁纸的取色结果（img/background.webp 固定不变，首次加载即可上色）；图片替换后需重新取值
+  const MD_DEFAULT_WALLPAPER_SEED = '#a5bad5';
+
+  function readMdWallpaperSeed(id) {
+    const rec = Storage.get(MD_WALLPAPER_SEED_KEY, null);
+    if (rec && rec.v === MD_SEED_CACHE_VERSION && rec.id === id && rec.seed) return rec.seed;
+    if (id === 'default') return MD_DEFAULT_WALLPAPER_SEED;
+    return null;
+  }
+
+  // 采样结果落盘：壁纸在采样期间被换掉时丢弃，避免旧结果覆盖新壁纸的缓存
+  function storeMdWallpaperSeed(id, seedHex) {
+    if (id !== mdWallpaperSeedId()) return;
+    Storage.set(MD_WALLPAPER_SEED_KEY, { v: MD_SEED_CACHE_VERSION, id: id, seed: seedHex });
+  }
   let mdApplyTimer = null;
   // 上次已应用的配色标识，避免重复重建样式表
   let lastMdAppliedKey = '';
@@ -2828,7 +2857,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function applyMdColor() {
-    const storedMode = Storage.get(MD_MODE_KEY, 'wallpaper');
+    const storedMode = Storage.get(MD_MODE_KEY, 'off');
     // 模式优先级：off（原生主题）> wallpaper（壁纸取色，需背景启用）> custom（色板种子色）
     let wallpaperAvailable = false;
     try {
@@ -2887,6 +2916,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // 因此远程 URL 一律用 crossOrigin="anonymous" 的临时 Image 重新加载一次再取色。
       const fallback = getMdSeed();
       const sourceImg = pickWallpaperImageEl();
+      const seedId = mdWallpaperSeedId();
+      const storedSeed = readMdWallpaperSeed(seedId);
 
       const sampleWallpaper = () => {
         if (!sourceImg || !sourceImg.src) {
@@ -2909,6 +2940,7 @@ document.addEventListener('DOMContentLoaded', () => {
           argb => {
             if (MD_SEED_CACHE.size > 32) MD_SEED_CACHE.clear();
             MD_SEED_CACHE.set(cacheKey, argb);
+            storeMdWallpaperSeed(seedId, MCU_API.hexFromArgb(argb));
             build(argb);
           },
           err => {
@@ -2929,7 +2961,12 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(sampleWallpaper, 0);
         }
       };
-      setTimeout(scheduleSampling, 1500);
+      if (storedSeed) {
+        // 命中持久缓存：直接按上次的种子色上色，不采样
+        build(MCU_API.argbFromHex(storedSeed));
+      } else {
+        setTimeout(scheduleSampling, 1500);
+      }
     } else {
       build(MCU_API.argbFromHex(getMdSeed()));
     }
@@ -3038,11 +3075,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (toggleMdDynamic.checked) {
       // 记录进入壁纸取色前的模式，关闭开关时原样还原（含「默认」这一档）
-      const cur = Storage.get(MD_MODE_KEY, 'custom');
+      const cur = Storage.get(MD_MODE_KEY, 'off');
       if (cur !== 'wallpaper') Storage.set(MD_PREV_MODE_KEY, cur);
       Storage.set(MD_MODE_KEY, 'wallpaper');
     } else {
-      const prev = Storage.get(MD_PREV_MODE_KEY, 'custom');
+      const prev = Storage.get(MD_PREV_MODE_KEY, 'off');
       Storage.set(MD_MODE_KEY, prev === 'off' ? 'off' : 'custom');
     }
     applyMdColor();
@@ -3057,7 +3094,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const onReady = (e) => {
       const t = e.target;
       if (!t || t.tagName !== 'IMG') return;
-      if (Storage.get(MD_MODE_KEY, 'wallpaper') !== 'wallpaper') return;
+      if (Storage.get(MD_MODE_KEY, 'off') !== 'wallpaper') return;
       // 图片已解码后再取色，避免读到空画布
       if (t.decode) t.decode().catch(() => {}).then(refreshMdColorFromWallpaper);
       else refreshMdColorFromWallpaper();
@@ -4253,7 +4290,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 壁纸切换后的取色触发（供 commitWallpaperAsActive 与图片 load 两路调用）
   function refreshMdColorFromWallpaper() {
     if (typeof applyMdColor !== 'function') return;
-    if (Storage.get(MD_MODE_KEY, 'wallpaper') !== 'wallpaper') return;
+    if (Storage.get(MD_MODE_KEY, 'off') !== 'wallpaper') return;
     // 等下一帧，确保 renderWallpaper 已把新 src 写到 <img> 上
     requestAnimationFrame(() => {
       const img = pickWallpaperImageEl();

@@ -6,6 +6,18 @@
 > 用户当次的具体指令与本文档冲突时，以当次指令为准，并在完成后说明冲突点。
 > 本文档未覆盖的情况遵循三条原则：改动最小、不做未要求的变更、改完自检。
 
+## 目录
+
+| 位置 | 存放内容 |
+| --- | --- |
+| 根目录 | `index.html`、`manifest.json`、`manifest-fx.json`、`README.md`、`LICENSE`、`NOTICE`、`AGENTS.md` |
+| `js/` | 全部脚本：`early.js`（首帧前置）、`script.js`（主逻辑）、`mcu.js`（Material Color Utilities，第三方，不改） |
+| `img/` | 图标、壁纸、界面图片 |
+| `_locales/` | 多语言文案 |
+| `docs/` | 文档与信息文件：`README_EN.md`、`legal/`（隐私政策及历史许可证）、`pics/`（截图）、`get/`（商店下载图） |
+
+`docs/` 只放文档类内容。脚本、图片等运行所需文件不得放入 `docs/`，新增脚本一律加入 `js/`，并在 `index.html` 中以 `js/…` 引用。
+
 ## 注释
 
 只说明「当前是什么」。不写改动史、理由论证、主观评价、口语。
@@ -56,7 +68,7 @@
 
 界面所有会被动态取色影响的颜色都定义为变量，浅色/深色各一套。写样式时只用 `var(--x)`，不要内联色值。
 
-**② 动态取色映射**（`script.js` 的 `mdBuildVarText`）
+**② 动态取色映射**（`js/script.js` 的 `mdBuildVarText`）
 
 开启动态取色后，上述变量由该函数按 Material 3 角色重新赋值。**新增颜色变量时必须同步在此映射**，否则开启取色后该处颜色不跟随。
 
@@ -95,12 +107,12 @@
 
 | 位置 | 说明 |
 | --- | --- |
-| `script.js` 的 `APP_VERSION` | 一处 |
-| `script.js` 五语种 `litever` | 含更新日期，日期取发布当天 |
+| `js/script.js` 的 `APP_VERSION` | 一处 |
+| `js/script.js` 五语种 `litever` | 含更新日期，日期取发布当天 |
 | `index.html` 页脚 `LiteStart x.y.z` | 一处 |
 | `index.html` 设置页版本行 | 与 `litever` 同格式 |
 
 替换时注意：
 
-- `index.html` 与 `script.js` 的 Logo `<path>` 数据里含形如 `1.8.1`、`1.8.2` 的绘图坐标，不能按版本号替换
+- `index.html` 与 `js/script.js` 的 Logo `<path>` 数据里含形如 `1.8.1`、`1.8.2` 的绘图坐标，不能按版本号替换
 - 逐文件断言出现次数后再替换，避免误伤
