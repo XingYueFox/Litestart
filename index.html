@@ -1914,8 +1914,9 @@
       -webkit-user-select: none;
     }
 
-    .quicklink-item:hover {
-      /* 悬停使用较明显的填充档 */
+    /* 悬停使用较明显的填充档；右键菜单展开期间由 .menu-open 维持同一状态 */
+    .quicklink-item:hover,
+    .quicklink-item.menu-open {
       background-color: var(--neutral-fill-hover);
     }
 
@@ -1975,7 +1976,9 @@
       z-index: 2;
     }
 
-    .quicklink-item:hover .quicklink-edit-btn {
+    /* 编辑按钮随悬停出现；右键菜单展开期间同样保持可见 */
+    .quicklink-item:hover .quicklink-edit-btn,
+    .quicklink-item.menu-open .quicklink-edit-btn {
       opacity: 1;
     }
 

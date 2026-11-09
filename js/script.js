@@ -5147,7 +5147,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       e.preventDefault();
       e.stopPropagation();          // 别让 document 上的关闭逻辑立刻把菜单收掉
       const r = editBtn.getBoundingClientRect();
-      showQuicklinkMenu(item, r.left, r.bottom + 4);
+      showQuicklinkMenu(item, r.left, r.bottom + 4, false, linkElem);
     });
 
     return linkElem;
@@ -5430,13 +5430,23 @@ function onDrop(e) {
       item.classList.remove('selected');
       item.removeAttribute('aria-current');
     });
+    // 菜单打开期间触发元素保持高亮，收起时一并撤销
+    quicklinkMenu?._sourceEl?.classList.remove('menu-open');
+    if (quicklinkMenu) quicklinkMenu._sourceEl = null;
     quicklinkMenuTarget = null;
   }
 
   // 在指定位置弹出菜单（三个点按钮与右键共用同一套）
   // forAddButton 为真时只显示针对添加按钮的项
-  function showQuicklinkMenu(link, left, top, forAddButton) {
+  // sourceEl 为触发菜单的元素，菜单展开期间保持它的悬停态
+  function showQuicklinkMenu(link, left, top, forAddButton, sourceEl) {
     if (!quicklinkMenu) return;
+    // 连续右键不同项时先撤掉上一次的高亮
+    if (quicklinkMenu._sourceEl && quicklinkMenu._sourceEl !== sourceEl) {
+      quicklinkMenu._sourceEl.classList.remove('menu-open');
+    }
+    quicklinkMenu._sourceEl = sourceEl || null;
+    sourceEl?.classList.add('menu-open');
     quicklinkMenuTarget = link;
     quicklinkMenu.querySelectorAll('.quicklink-menu-item').forEach(item => {
       item.hidden = forAddButton ? item.dataset.action !== 'hide-add' : item.dataset.action === 'hide-add';
@@ -5456,12 +5466,12 @@ function onDrop(e) {
     if (!item) return;
     e.preventDefault();
     if (item.classList.contains('quicklink-add-btn')) {
-      showQuicklinkMenu(null, e.clientX, e.clientY, true);
+      showQuicklinkMenu(null, e.clientX, e.clientY, true, item);
       return;
     }
     const link = quicklinksList.find(x => x.id === item.getAttribute('data-id'));
     if (!link) return;
-    showQuicklinkMenu(link, e.clientX, e.clientY);
+    showQuicklinkMenu(link, e.clientX, e.clientY, false, item);
   });
 
   quicklinkMenu?.addEventListener('click', (e) => {
