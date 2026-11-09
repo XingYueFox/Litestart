@@ -5930,21 +5930,28 @@ function onDrop(e) {
   // 取联想词：扩展环境交给 background 代取并解析，网页环境返回 null 由调用方走 JSONP。
   // 扩展页面的 fetch 受 CORS 限制，而三家接口都不返回 CORS 头，只能由 service worker 代取
   async function requestSuggestFromProxy(engine, query) {
-    const runtime = (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id)
-      ? chrome.runtime
-      : null;
+    const runtime = (typeof chrome !== 'undefined' && chrome.runtime &&
+      typeof chrome.runtime.sendMessage === 'function') ? chrome.runtime : null;
     if (!runtime) return null;
     const reply = await new Promise(resolve => {
       try {
         runtime.sendMessage({ type: 'liteSuggest', engine, query }, res => {
           // 没有接收方时 lastError 会被置位，此处按失败处理并回退
-          resolve(runtime.lastError ? null : (res || null));
+          if (runtime.lastError) {
+            console.warn('联想词代理不可用:', runtime.lastError.message);
+            resolve(null);
+          } else {
+            resolve(res || null);
+          }
         });
       } catch (e) {
+        console.warn('联想词代理调用异常:', e);
         resolve(null);
       }
     });
-    return (reply && reply.ok) ? reply.items : null;
+    if (reply && reply.ok) return reply.items;
+    if (reply && reply.error) console.warn('联想词代理返回失败:', reply.error);
+    return null;
   }
 
   // 解析必应 qsonhs 接口返回的数据结构
