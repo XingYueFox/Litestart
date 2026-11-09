@@ -5927,6 +5927,26 @@ function onDrop(e) {
     });
   }
 
+  // 取联想词：扩展环境交给 background 代取并解析，网页环境返回 null 由调用方走 JSONP。
+  // 扩展页面的 fetch 受 CORS 限制，而三家接口都不返回 CORS 头，只能由 service worker 代取
+  async function requestSuggestFromProxy(engine, query) {
+    const runtime = (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id)
+      ? chrome.runtime
+      : null;
+    if (!runtime) return null;
+    const reply = await new Promise(resolve => {
+      try {
+        runtime.sendMessage({ type: 'liteSuggest', engine, query }, res => {
+          // 没有接收方时 lastError 会被置位，此处按失败处理并回退
+          resolve(runtime.lastError ? null : (res || null));
+        });
+      } catch (e) {
+        resolve(null);
+      }
+    });
+    return (reply && reply.ok) ? reply.items : null;
+  }
+
   // 解析必应 qsonhs 接口返回的数据结构
   function parseBingSuggestions(data) {
     const results = data?.AS?.Results || [];
@@ -5936,13 +5956,18 @@ function onDrop(e) {
 
   // 解析百度 su 接口返回的数据结构
   function parseBaiduSuggestions(data) {
+    const grouped = (data?.g || []).map(item => item?.q).filter(Boolean);
+    if (grouped.length) return grouped;
     return Array.isArray(data?.s) ? data.s : [];
   }
 
-  // 通过 JSONP 获取搜索联想建议（跨引擎、跨环境通用）
+  // 获取搜索联想建议：扩展环境经 background 代理，网页环境走 JSONP
   async function fetchSearchSuggestions(engine, query) {
     const q = encodeURIComponent(query);
     try {
+      const proxied = await requestSuggestFromProxy(engine, query);
+      if (proxied) return proxied;
+
       if (engine === 'baidu') {
         const data = await jsonpFetch(`https://suggestion.baidu.com/su?wd=${q}&p=3&cb={cb}`, { charset: 'gbk' });
         return parseBaiduSuggestions(data);
