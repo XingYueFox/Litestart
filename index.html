@@ -1785,6 +1785,55 @@
       text-overflow: ellipsis;
     }
 
+    /* 词条右侧「填入搜索框」按钮：平时隐形但保留占位，悬停/键盘选中时淡入。
+       颜色取当前主题强调色（随壁纸动态取色），按钮自身无 hover/active 反馈 */
+    .suggestion-fill {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      margin-right: -8px;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--accent-foreground-rest);
+      opacity: 0;
+      visibility: hidden;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: opacity 0.12s ease, visibility 0s linear 0.12s;
+    }
+
+    .suggestion-item:hover .suggestion-fill,
+    .suggestion-item.selected .suggestion-fill {
+      opacity: 0.9;
+      visibility: visible;
+      transition: opacity 0.12s ease, visibility 0s linear 0s;
+    }
+
+    /* 覆盖全局 button:hover 的底色，按钮自身不提供任何悬停/按下反馈 */
+    .suggestion-fill:hover,
+    .suggestion-fill:active {
+      background-color: transparent;
+    }
+
+    /* 图标为单一路径填充绘制，避免描边接缝；此处清掉列表统一的 fill/opacity 覆盖 */
+    .suggestion-item .suggestion-fill svg,
+    .suggestion-item.history .suggestion-fill svg {
+      fill: currentColor;
+      opacity: 1;
+    }
+
+    /* 触屏设备无 hover，直接常驻显示 */
+    @media (hover: none) {
+      .suggestion-fill {
+        opacity: 0.7;
+        visibility: visible;
+      }
+    }
+
     .suggestions-footer {
       padding: 10px 16px 12px;
       border-top: 1px solid var(--modal-border);
@@ -3177,7 +3226,7 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 27.0.91</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 27.0.92</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/docs/legal/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
@@ -3677,7 +3726,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 27.0.91 | 更新时间：2026-11-08</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 27.0.92 | 更新时间：2026-11-09</p><br>
 
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
