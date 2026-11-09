@@ -1,4 +1,4 @@
-const APP_VERSION = '27.0.91';      // 发行版本
+const APP_VERSION = '27.0.92';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -78,7 +78,7 @@ const i18nData = {
     skipRestore: '恢复提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 27.0.91 | 更新时间：2026-11-08',
+    litever: '版本 27.0.92 | 更新时间：2026-11-09',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -90,6 +90,7 @@ const i18nData = {
     themeLight: '浅色',
     themeDark: '深色',
     searchInput: '搜索输入框',
+    fillSuggestion: '填入搜索框',
     clearSearchHistory: '清除搜索历史记录',
     defaultWallpaper: '默认',
     localFile: '本地文件',
@@ -278,7 +279,7 @@ const i18nData = {
     skipRestore: '恢復提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 27.0.91 | 更新時間：2026-11-08',
+    litever: '版本 27.0.92 | 更新時間：2026-11-09',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -290,6 +291,7 @@ const i18nData = {
     themeLight: '淺色',
     themeDark: '深色',
     searchInput: '搜尋輸入框',
+    fillSuggestion: '填入搜尋框',
     clearSearchHistory: '清除搜尋紀錄',
     defaultWallpaper: '預設',
     localFile: '本機檔案',
@@ -463,7 +465,7 @@ const i18nData = {
     skipRestore: 'Resume reminders',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 27.0.91 | Updated: 2026-11-08',
+    litever: 'Version 27.0.92 | Updated: 2026-11-09',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -475,6 +477,7 @@ const i18nData = {
     themeLight: 'Light',
     themeDark: 'Dark',
     searchInput: 'Search input',
+    fillSuggestion: 'Fill into search box',
     clearSearchHistory: 'Clear search history',
     defaultWallpaper: 'Default',
     localFile: 'Local file',
@@ -649,7 +652,7 @@ const i18nData = {
     skipRestore: '通知を再開',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 27.0.91 | 更新日: 2026-11-08',
+    litever: 'バージョン 27.0.92 | 更新日: 2026-11-09',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -661,6 +664,7 @@ const i18nData = {
     themeLight: 'ライト',
     themeDark: 'ダーク',
     searchInput: '検索入力ボックス',
+    fillSuggestion: '検索ボックスに入力',
     clearSearchHistory: '検索履歴を消去',
     defaultWallpaper: 'デフォルト',
     localFile: 'ローカルファイル',
@@ -834,7 +838,7 @@ const i18nData = {
     skipRestore: 'Возобновить напоминания',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 27.0.91 | Обновлено: 2026-11-08',
+    litever: 'Версия 27.0.92 | Обновлено: 2026-11-09',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -846,6 +850,7 @@ const i18nData = {
     themeLight: 'Светлая',
     themeDark: 'Тёмная',
     searchInput: 'Поле поиска',
+    fillSuggestion: 'Вставить в поле поиска',
     clearSearchHistory: 'Очистить историю поиска',
     defaultWallpaper: 'По умолчанию',
     localFile: 'Локальный файл',
@@ -5833,7 +5838,33 @@ function onDrop(e) {
       // 历史项入库时已转义，只需转义来自接口的建议词
       const labelText = itemObj.isHistory ? itemObj.text : sanitizeInput(itemObj.text);
       li.innerHTML = `${itemObj.isHistory ? historySvgIcon : searchSvgIcon}<span class="suggestion-text">${labelText}</span>`;
-      
+
+      // 右侧「填入搜索框」按钮：悬停或键盘选中时显现，点击只填充不直接搜索
+      const fillBtn = document.createElement('button');
+      fillBtn.type = 'button';
+      fillBtn.className = 'suggestion-fill';
+      const fillLabel = (window._i18nDict && window._i18nDict.fillSuggestion) || '填入搜索框';
+      fillBtn.title = fillLabel;
+      fillBtn.setAttribute('aria-label', fillLabel);
+      fillBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6h8.6L6 14.6Z"/><path d="M6.92 5.08 18.52 16.68 16.68 18.52 5.08 6.92Z"/></svg>`;
+      // mousedown 阻止默认行为：避免按钮抢走输入框焦点（保持光标在框内）
+      fillBtn.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+      fillBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const text = decodeInput(itemObj.text);
+        if (searchInput) {
+          searchInput.value = text;
+          searchInput.focus();
+          try { searchInput.setSelectionRange(text.length, text.length); } catch (err) { /* 忽略 */ }
+          // 触发 input 事件：同步 fakebox 的 has-value 状态并按新词刷新联想
+          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      });
+      li.appendChild(fillBtn);
+
       li.addEventListener('click', () => {
         if (searchInput) searchInput.value = decodeInput(itemObj.text);
         doSearch(decodeInput(itemObj.text));   // 搜索要用原文，不能用转义后的实体
@@ -5849,25 +5880,80 @@ function onDrop(e) {
     searchContainer?.classList.add('suggestions-open');
   }
 
-  // 扩展专用的异步 Fetch 搜索
+  // JSONP 工具：动态插入 <script> 跨域获取数据
+  // 网页 / file:// / 扩展页面三种环境通用（JSONP 不受 CORS 限制）
+  let jsonpSeq = 0;
+  function jsonpFetch(url, { timeout = 5000, charset } = {}) {
+    return new Promise((resolve, reject) => {
+      const cbName = `__litestartSugCb${Date.now()}_${jsonpSeq++}`;
+      const script = document.createElement('script');
+      if (charset) script.setAttribute('charset', charset);
+      let settled = false;
+      const cleanup = () => {
+        clearTimeout(timer);
+        try { delete window[cbName]; } catch (e) { window[cbName] = undefined; }
+        script.remove();
+      };
+      const timer = setTimeout(() => {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        reject(new Error('JSONP 请求超时'));
+      }, timeout);
+      window[cbName] = (data) => {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        resolve(data);
+      };
+      script.onerror = () => {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        reject(new Error('JSONP 请求失败'));
+      };
+      script.src = url.replace('{cb}', cbName);
+      document.head.appendChild(script);
+    });
+  }
+
+  // 解析必应 qsonhs 接口返回的数据结构
+  function parseBingSuggestions(data) {
+    const results = data?.AS?.Results || [];
+    const items = results.flatMap(r => (r?.Suggests || []).map(s => s?.Txt).filter(Boolean));
+    return [...new Set(items)];
+  }
+
+  // 解析百度 su 接口返回的数据结构
+  function parseBaiduSuggestions(data) {
+    return Array.isArray(data?.s) ? data.s : [];
+  }
+
+  // 通过 JSONP 获取搜索联想建议（跨引擎、跨环境通用）
   async function fetchSearchSuggestions(engine, query) {
+    const q = encodeURIComponent(query);
     try {
-      if (engine === 'baidu' || engine === 'bing') {
-        const response = await fetch(`https://suggestion.baidu.com/su?wd=${encodeURIComponent(query)}&p=3`);
-        const buffer = await response.arrayBuffer();
-        const decoder = new TextDecoder('gbk'); // 百度联想词通常返回 GBK 编码
-        const text = decoder.decode(buffer);
-        const match = text.match(/s:\[(.*?)\]/);
-        if (match && match[1]) {
-          return match[1].split(',').map(item => item.replace(/^"|"$/g, '').trim()).filter(Boolean);
+      if (engine === 'baidu') {
+        const data = await jsonpFetch(`https://suggestion.baidu.com/su?wd=${q}&p=3&cb={cb}`, { charset: 'gbk' });
+        return parseBaiduSuggestions(data);
+      }
+      if (engine === 'bing') {
+        try {
+          const data = await jsonpFetch(`https://api.bing.com/qsonhs.aspx?type=cb&q=${q}&cb={cb}`);
+          return parseBingSuggestions(data);
+        } catch (bingError) {
+          console.warn('必应联想词获取失败，回退到百度词条:', bingError);
+          const data = await jsonpFetch(`https://suggestion.baidu.com/su?wd=${q}&p=3&cb={cb}`, { charset: 'gbk' });
+          return parseBaiduSuggestions(data);
         }
-      } else if (engine === 'google') {
-        const response = await fetch(`https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}`);
-        const data = await response.json();
+      }
+      if (engine === 'google') {
+        const data = await jsonpFetch(`https://suggestqueries.google.com/complete/search?client=youtube&q=${q}&callback={cb}`);
         if (Array.isArray(data) && Array.isArray(data[1])) {
-          return data[1];
+          // client=youtube 返回 [词, 相关度] 二元组数组，client=chrome 返回纯字符串数组，两者都兼容
+          return data[1].map(item => Array.isArray(item) ? item[0] : item).filter(Boolean);
         }
-      } 
+      }
     } catch (e) {
       console.warn('获取搜索联想建议词条失败:', e);
     }
