@@ -5801,7 +5801,7 @@ function onDrop(e) {
   }
 
   const historySvgIcon = `<svg width="18" height="18" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6a7 7 0 1 1 7 7 7.07 7.07 0 0 1-6-3.37l-1.44 1.44A8.95 8.95 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>`;
-  const searchSvgIcon = `<svg width="18" height="18" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>`;
+  const searchSvgIcon = `<svg width="18" height="18" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M378-329q-108.16 0-183.08-75Q120-479 120-585t75-181q75-75 181.5-75t181 75Q632-691 632-584.85 632-542 618-502q-14 40-42 75l242 240q9 8.56 9 21.78T818-143q-9 9-22.22 9-13.22 0-21.78-9L533-384q-30 26-69.96 40.5Q423.08-329 378-329Zm-1-60q81.25 0 138.13-57.5Q572-504 572-585t-56.87-138.5Q458.25-781 377-781q-82.08 0-139.54 57.5Q180-666 180-585t57.46 138.5Q294.92-389 377-389Z"/></svg>`;
 
   // 关闭搜索联想下拉面板，重置选中索引
   function closeSuggestions() {
@@ -5846,7 +5846,7 @@ function onDrop(e) {
       const fillLabel = (window._i18nDict && window._i18nDict.fillSuggestion) || '填入搜索框';
       fillBtn.title = fillLabel;
       fillBtn.setAttribute('aria-label', fillLabel);
-      fillBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 6h8.6L6 14.6Z"/><path d="M6.92 5.08 18.52 16.68 16.68 18.52 5.08 6.92Z"/></svg>`;
+      fillBtn.innerHTML = `<svg width="20" height="20" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M260-658v264q0 13-8.5 21.5T230-364q-13 0-21.5-8.5T200-394v-336q0-13 8.5-21.5T230-760h336q13 0 21.5 8.5T596-730q0 13-8.5 21.5T566-700H302l477 477q9 9 9 21t-9 21q-9 9-21 9t-21-9L260-658Z"/></svg>`;
       // mousedown 阻止默认行为：避免按钮抢走输入框焦点（保持光标在框内）
       fillBtn.addEventListener('mousedown', (e) => {
         e.preventDefault();
