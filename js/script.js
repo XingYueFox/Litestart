@@ -220,7 +220,7 @@ const i18nData = {
     searchBoxPosition: '搜索框位置',
     showSearchBox: '显示搜索框',
     quicklinkPosition: '快速链接位置',
-    qlPositionDefault: '默认',
+    qlPositionDefault: '跟随搜索框',
     qlPositionBottom: '底部',
     qlPositionMiddle: '居中',
     layoutHanging: '悬挂',
@@ -407,7 +407,7 @@ const i18nData = {
     searchBoxPosition: '搜尋框位置',
     showSearchBox: '顯示搜尋框',
     quicklinkPosition: '快速連結位置',
-    qlPositionDefault: '預設',
+    qlPositionDefault: '跟隨搜尋框',
     qlPositionBottom: '底部',
     qlPositionMiddle: '居中',
     layoutHanging: '懸掛',
@@ -593,7 +593,7 @@ const i18nData = {
     searchBoxPosition: 'Search Box Position',
     showSearchBox: 'Show search box',
     quicklinkPosition: 'Quicklink position',
-    qlPositionDefault: 'Default',
+    qlPositionDefault: 'Follow search box',
     qlPositionBottom: 'Bottom',
     qlPositionMiddle: 'Center',
     layoutHanging: 'Hanging',
@@ -780,7 +780,7 @@ const i18nData = {
     searchBoxPosition: '検索ボックスの位置',
     showSearchBox: '検索ボックスを表示',
     quicklinkPosition: 'クイックリンクの位置',
-    qlPositionDefault: '既定',
+    qlPositionDefault: '検索ボックスに合わせる',
     qlPositionBottom: '下部',
     qlPositionMiddle: '中央',
     layoutHanging: 'ハンギング',
@@ -965,7 +965,7 @@ const i18nData = {
     searchBoxPosition: 'Положение поисковой строки',
     showSearchBox: 'Показывать поисковую строку',
     quicklinkPosition: 'Положение быстрых ссылок',
-    qlPositionDefault: 'По умолчанию',
+    qlPositionDefault: 'Следовать за полем поиска',
     qlPositionBottom: 'Внизу',
     qlPositionMiddle: 'По центру',
     layoutHanging: 'Подвесной',
@@ -3361,15 +3361,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedLayout = Storage.get('ntp_layout', 'focused');
   // 快速链接的"样式"（一行 / 多行）与"是否显示"现在分开：
   // 旧版本用 ntp_quicklinks = '0' 表示关闭，这里迁移成"样式=一行 + 显示开关关闭"
-  let savedQuicklinksRow = Storage.get('ntp_quicklinks', '1');
+  let savedQuicklinksRow = Storage.get('ntp_quicklinks', '2');
   let showQuicklinks = Storage.get('ntp_show_quicklinks', null);
   if (showQuicklinks === null) {
     showQuicklinks = savedQuicklinksRow !== '0';
     Storage.set('ntp_show_quicklinks', showQuicklinks);
   }
   if (savedQuicklinksRow === '0') {
-    savedQuicklinksRow = '1';
-    Storage.set('ntp_quicklinks', '1');
+    savedQuicklinksRow = '2';
+    Storage.set('ntp_quicklinks', '2');
+  }
+
+  // 一次性迁移：快速链接改为胶囊样式后默认多行，旧版的一行设置统一重置为多行
+  const QUICKLINK_ROWS_MIGRATION_KEY = 'ntp_quicklinks_rows_v2';
+  if (!Storage.get(QUICKLINK_ROWS_MIGRATION_KEY)) {
+    if (savedQuicklinksRow === '1') {
+      savedQuicklinksRow = '2';
+      Storage.set('ntp_quicklinks', '2');
+    }
+    Storage.set(QUICKLINK_ROWS_MIGRATION_KEY, true);
   }
   // 快速链接位置：'auto' 跟随布局；'bottom' 固定在页面底部（该模式强制一行）
   let quicklinkPosition = Storage.get('ntp_quicklink_position', 'auto');
@@ -4506,16 +4516,16 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 快速链接位置：'bottom' 时固定到页面底部。该模式不支持多行，
   // 因此只把"多行"这一项禁掉，仍允许在一行与关闭之间切换
   // 'middle'（垂直居中）在悬挂布局下生效：其它布局按默认处理，
-  // 存储值保留，切回悬挂时还原（与"底部模式暂存多行"同一套处理）
+  // 存储值保留，切回悬挂时还原
   function applyQuicklinkPosition() {
     const isHanging = (document.body.getAttribute('data-layout') || 'focused') === 'inspirational';
     const effective = (quicklinkPosition === 'middle' && !isHanging) ? 'auto' : quicklinkPosition;
     const pos = (effective === 'bottom' || effective === 'middle') ? effective : 'auto';
     document.body.setAttribute('data-quicklink-position', pos);
 
-    let savedRow = Storage.get('ntp_quicklinks', '1');
+    let savedRow = Storage.get('ntp_quicklinks', '2');
     // 旧数据里 '0' 曾表示"关闭"，现在关闭由显示开关承担
-    if (savedRow === '0') savedRow = '1';
+    if (savedRow === '0') savedRow = '2';
     // 底部模式下若之前存的是"多行"，按一行处理（存储值保留，切回默认时还原）
     const effectiveRow = (effective === 'bottom' && savedRow === '2') ? '1' : savedRow;
 
@@ -4533,6 +4543,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     }
     // 下拉回显存储的选择；非悬挂布局下"居中"的实际效果与默认相同
     if (selectQuicklinkPosition) {
+      // 回显实际生效的位置：展望模式下会显示为默认
       selectQuicklinkPosition.value = (quicklinkPosition === 'bottom' || quicklinkPosition === 'middle')
         ? quicklinkPosition
         : 'auto';
@@ -4600,7 +4611,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       layout: 'inspirational',
       searchVisible: true,
       showLogo: false,
-      quicklinkPosition: 'middle',
+      quicklinkPosition: 'auto',
       showQuicklinks: true
     },
     focused: {
@@ -5270,7 +5281,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     const contentWidth = quicklinksWidthForColumns(widthColumns);
     // 缓存键必须带上标题与网址：只改名称时项数与 id 都没变，
     // 否则这里会被判成"无需重建"，界面要刷新才更新
-    const renderKey = [rows, perRow, showAddButton ? '1' : '0', quicklinksList.length,
+    const renderKey = [rows, perRow, document.body.getAttribute('data-quicklink-position') || '', showAddButton ? '1' : '0', quicklinksList.length,
       quicklinksList.map(i => i.id + '~' + i.title + '~' + i.url + '~' + (i.iconMode || 'auto') + '~' + (i.iconPreset || '') + '~' + (i.iconPresetStyle || '')).join(';')].join('|');
     const widthChanged = quicklinksElem.style.getPropertyValue('--quicklinks-content-width') !== contentWidth + 'px';
 

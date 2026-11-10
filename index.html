@@ -1924,7 +1924,8 @@
       align-items: center;
       /* 多行贴容器顶部，间距恒为 gap，行高不被拉伸 */
       align-content: flex-start;
-      gap: 18px;
+      --quicklink-gap: 18px;
+      gap: var(--quicklink-gap);
       overflow: visible;
     }
 
@@ -3449,7 +3450,7 @@
                     <div class="setting-label-group" data-i18n="quicklinkPosition">快速链接位置</div>
                     <div class="custom-select-wrapper">
                       <select id="select-quicklink-position" class="select-box" tabindex="-1" aria-label="快速链接位置">
-                        <option value="auto" data-i18n="qlPositionDefault">默认</option>
+                        <option value="auto" data-i18n="qlPositionDefault">跟随搜索框</option>
                         <option value="bottom" data-i18n="qlPositionBottom">底部</option>
                         <option value="middle" data-i18n="qlPositionMiddle">居中</option>
                       </select>
