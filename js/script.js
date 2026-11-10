@@ -70,7 +70,7 @@ const i18nData = {
     xingyuefox: '星月_Fox',
     AomiRaku: '羽梦千景',
     forYou: '为您呈现',
-    disclaimer: '请注意，此网页与 Microsoft 无关。',
+    disclaimer: '此扩展与 Microsoft 无关。',
     aboutTitle: '关于 Litestart',
     download: '下载',
     updateOptions: '更新选项',
@@ -183,6 +183,10 @@ const i18nData = {
     enhancedVisibility: '增强元素可见性',
     enhancedBlur: '衬底启用模糊',
     bgVignette: '深色模式边角晕影',
+    editBackgroundEntry: '编辑背景',
+    newQuicklink: '新建快速链接',
+    dontRemindAgain: '不再提醒',
+    gotIt: '好',
     enhancedBlurTip: '此选项可能会对设备功耗有轻微影响。',
     addlink: '添加',
     addQuicklink: '添加快速链接',
@@ -220,16 +224,16 @@ const i18nData = {
     searchBoxPosition: '搜索框位置',
     showSearchBox: '显示搜索框',
     quicklinkPosition: '快速链接位置',
-    qlPositionDefault: '默认',
+    qlPositionDefault: '跟随搜索框',
     qlPositionBottom: '底部',
     qlPositionMiddle: '居中',
     layoutHanging: '悬挂',
     layoutCentered: '居中',
     showLogo: '显示 Logo',
-    showAddButton: '在快速链接区域显示添加按钮',
+    showAddButton: '显示添加按钮',
     hideAddButton: '隐藏此按钮',
     addButtonHiddenTitle: '添加按钮已隐藏',
-    addButtonHiddenDesc: '添加按钮已隐藏，请在 页面左上角菜单 中添加快速链接。<br>也可在 设置 - 编辑页面布局 中重新开启此按钮。',
+    addButtonHiddenDesc: '添加按钮已隐藏，可右键空白处新建快速链接。<br>也可在 设置 - 编辑页面布局 中重新开启此按钮。',
     ok: '确定',
 
     //自定义搜索引擎图片部分
@@ -271,7 +275,7 @@ const i18nData = {
     xingyuefox: '星月_Fox',
     AomiRaku: '羽梦千景',
     forYou: '為您呈現',
-    disclaimer: '請注意，此網頁與 Microsoft 無關。',
+    disclaimer: '此擴充功能與 Microsoft 無關。',
     aboutTitle: '關於 Litestart',
     download: '下載',
     updateOptions: '更新選項',
@@ -384,6 +388,10 @@ const i18nData = {
     enhancedVisibility: '增強元素可見性',
     enhancedBlur: '襯底啟用模糊',
     bgVignette: '深色模式邊角暈影',
+    editBackgroundEntry: '編輯背景',
+    newQuicklink: '新建快速連結',
+    dontRemindAgain: '不再提醒',
+    gotIt: '好',
     enhancedBlurTip: '此選項可能會對裝置耗電有輕微影響。',
     addlink: '新增',
     addQuicklink: '新增快速連結',
@@ -407,16 +415,16 @@ const i18nData = {
     searchBoxPosition: '搜尋框位置',
     showSearchBox: '顯示搜尋框',
     quicklinkPosition: '快速連結位置',
-    qlPositionDefault: '預設',
+    qlPositionDefault: '跟隨搜尋框',
     qlPositionBottom: '底部',
     qlPositionMiddle: '居中',
     layoutHanging: '懸掛',
     layoutCentered: '居中',
     showLogo: '顯示 Logo',
-    showAddButton: '在快速連結區域顯示新增按鈕',
+    showAddButton: '顯示新增按鈕',
     hideAddButton: '隱藏此按鈕',
     addButtonHiddenTitle: '新增按鈕已隱藏',
-    addButtonHiddenDesc: '新增按鈕已隱藏，請在 頁面左上角選單 中新增快速連結。<br>也可在 設定 - 編輯頁面佈局 中重新開啟此按鈕。',
+    addButtonHiddenDesc: '新增按鈕已隱藏，可右鍵空白處新增快速連結。<br>也可在 設定 - 編輯頁面佈局 中重新開啟此按鈕。',
     ok: '確定',
     customTitleImage: '自訂標題圖片',
     selectImageFile: '選擇圖片',
@@ -457,7 +465,7 @@ const i18nData = {
     xingyuefox: 'XingYue_Fox',
     AomiRaku: 'Raku Inkyetta',
     forYou: '',
-    disclaimer: 'Note: This page is not affiliated with Microsoft.',
+    disclaimer: 'This extension is not affiliated with Microsoft.',
     aboutTitle: 'About Litestart',
     download: 'Download',
     updateOptions: 'Update options',
@@ -570,6 +578,10 @@ const i18nData = {
     enhancedVisibility: 'Enhance Element Visibility',
     enhancedBlur: 'Enable backdrop blur',
     bgVignette: 'Dark mode vignette',
+    editBackgroundEntry: 'Edit background',
+    newQuicklink: 'New quicklink',
+    dontRemindAgain: "Don't remind again",
+    gotIt: 'OK',
     enhancedBlurTip: 'This option may slightly increase power consumption.',
     addlink: 'Add',
     addQuicklink: 'Add quicklink',
@@ -593,16 +605,16 @@ const i18nData = {
     searchBoxPosition: 'Search Box Position',
     showSearchBox: 'Show search box',
     quicklinkPosition: 'Quicklink position',
-    qlPositionDefault: 'Default',
+    qlPositionDefault: 'Follow search box',
     qlPositionBottom: 'Bottom',
     qlPositionMiddle: 'Center',
     layoutHanging: 'Hanging',
     layoutCentered: 'Centered',
     showLogo: 'Show logo',
-    showAddButton: 'Show add button in quicklinks area',
+    showAddButton: 'Show add button',
     hideAddButton: 'Hide this button',
     addButtonHiddenTitle: 'Add button hidden',
-    addButtonHiddenDesc: 'The add button is hidden. Create quicklinks from the menu at the top-left corner.<br>You can also re-enable it in Settings - Edit Layout.',
+    addButtonHiddenDesc: 'The add button is hidden. Right-click the background to create a quicklink.<br>You can also re-enable it in Settings - Edit Layout.',
     ok: 'OK',
     customTitleImage: 'Custom Title Image',
     selectImageFile: 'Select Image',
@@ -644,7 +656,7 @@ const i18nData = {
     xingyuefox: 'XingYue_Fox',
     AomiRaku: 'Raku Inkyetta',
     forYou: '',
-    disclaimer: '注: このページは Microsoft とは関係ありません。',
+    disclaimer: 'この拡張機能は Microsoft とは関係ありません。',
     aboutTitle: 'Litestart について',
     download: 'ダウンロード',
     updateOptions: '更新オプション',
@@ -757,6 +769,10 @@ const i18nData = {
     enhancedVisibility: '要素の視認性を向上',
     enhancedBlur: '下地のぼかしを有効化',
     bgVignette: 'ダークモードのビネット',
+    editBackgroundEntry: '背景を編集',
+    newQuicklink: 'クイックリンクを新規作成',
+    dontRemindAgain: '今後表示しない',
+    gotIt: 'OK',
     enhancedBlurTip: 'このオプションは消費電力にわずかな影響を与える可能性があります。',
     addlink: '追加',
     addQuicklink: 'クイックリンクを追加',
@@ -780,16 +796,16 @@ const i18nData = {
     searchBoxPosition: '検索ボックスの位置',
     showSearchBox: '検索ボックスを表示',
     quicklinkPosition: 'クイックリンクの位置',
-    qlPositionDefault: '既定',
+    qlPositionDefault: '検索ボックスに合わせる',
     qlPositionBottom: '下部',
     qlPositionMiddle: '中央',
     layoutHanging: 'ハンギング',
     layoutCentered: '中央',
     showLogo: 'ロゴを表示',
-    showAddButton: 'クイックリンクに追加ボタンを表示',
+    showAddButton: '追加ボタンを表示',
     hideAddButton: 'このボタンを非表示',
     addButtonHiddenTitle: '追加ボタンを非表示にしました',
-    addButtonHiddenDesc: '追加ボタンは非表示です。左上のメニューからクイックリンクを作成してください。<br>「設定 - レイアウトを編集」で再度有効にできます。',
+    addButtonHiddenDesc: '追加ボタンは非表示です。背景を右クリックしてクイックリンクを作成できます。<br>「設定 - レイアウトを編集」で再度有効にできます。',
     ok: 'OK',
     customTitleImage: 'カスタムタイトル画像',
     selectImageFile: '画像を選択',
@@ -830,7 +846,7 @@ const i18nData = {
     xingyuefox: 'XingYue_Fox',
     AomiRaku: 'Raku Inkyetta',
     forYou: '',
-    disclaimer: 'Примечание: Эта страница не связана с Microsoft.',
+    disclaimer: 'Это расширение не связано с Microsoft.',
     aboutTitle: 'О Litestart',
     download: 'Скачать',
     updateOptions: 'Параметры обновления',
@@ -942,6 +958,10 @@ const i18nData = {
     enhancedVisibility: 'Повысить видимость элементов',
     enhancedBlur: 'Размытие подложки',
     bgVignette: 'Виньетка тёмной темы',
+    editBackgroundEntry: 'Изменить фон',
+    newQuicklink: 'Создать быструю ссылку',
+    dontRemindAgain: 'Больше не напоминать',
+    gotIt: 'Хорошо',
     enhancedBlurTip: 'Эта опция может незначительно увеличить энергопотребление.',
     addlink: 'Добавить',
     addQuicklink: 'Добавить быструю ссылку',
@@ -960,21 +980,21 @@ const i18nData = {
     refreshNow: 'Обновить сейчас',
     restoreDoneTitle: 'Восстановление завершено',
     restoreDoneDesc: 'Настройки восстановлены. Страница будет обновлена для применения всех параметров.',
-        layout: 'Макет',
+    layout: 'Макет',
     editLayout: 'Изменить макет',
     searchBoxPosition: 'Положение поисковой строки',
     showSearchBox: 'Показывать поисковую строку',
     quicklinkPosition: 'Положение быстрых ссылок',
-    qlPositionDefault: 'По умолчанию',
+    qlPositionDefault: 'Следовать за полем поиска',
     qlPositionBottom: 'Внизу',
     qlPositionMiddle: 'По центру',
     layoutHanging: 'Подвесной',
     layoutCentered: 'По центру',
     showLogo: 'Показывать логотип',
-    showAddButton: 'Кнопка добавления в быстрых ссылках',
+    showAddButton: 'Показать кнопку добавления',
     hideAddButton: 'Скрыть кнопку',
     addButtonHiddenTitle: 'Кнопка добавления скрыта',
-    addButtonHiddenDesc: 'Кнопка добавления скрыта. Создавайте быстрые ссылки через меню в левом верхнем углу.<br>Её можно снова включить в разделе «Настройки — Изменить макет».',
+    addButtonHiddenDesc: 'Кнопка добавления скрыта. Создайте быструю ссылку правым щелчком по фону.<br>Её можно снова включить в разделе «Настройки — Изменить макет».',
     ok: 'ОК',
     // ...
     bing: 'Bing',
@@ -1493,7 +1513,7 @@ function quicklinkPresetBody(id, style) {
 // 颜色跟随 .quicklink-icon 的文字色，于是在深色主题下自动变成浅色。
 const SITE_ICON_OVERRIDES = {
   "github.com": {
-    viewBox: "0 0 512 512",
+    viewBox: "-8 -8 528 528",
     body: "<path fill=\"currentColor\" fill-rule=\"evenodd\" d=\"M256 6.3C114.6 6.3 0 120.9 0 262.3c0 113.3 73.3 209 175 242.9c12.8 2.2 17.6-5.4 17.6-12.2c0-6.1-.3-26.2-.3-47.7c-64.3 11.8-81-15.7-86.1-30.1c-2.9-7.4-15.4-30.1-26.2-36.2c-9-4.8-21.8-16.6-.3-17c20.2-.3 34.6 18.6 39.4 26.2c23 38.7 59.8 27.8 74.6 21.1c2.2-16.6 9-27.8 16.3-34.2c-57-6.4-116.5-28.5-116.5-126.4c0-27.8 9.9-50.9 26.2-68.8c-2.6-6.4-11.5-32.6 2.6-67.8c0 0 21.4-6.7 70.4 26.2c20.5-5.8 42.2-8.6 64-8.6s43.5 2.9 64 8.6c49-33.3 70.4-26.2 70.4-26.2c14.1 35.2 5.1 61.4 2.6 67.8c16.3 17.9 26.2 40.6 26.2 68.8c0 98.2-59.8 120-116.8 126.4c9.3 8 17.3 23.4 17.3 47.4c0 34.2-.3 61.8-.3 70.4c0 6.7 4.8 14.7 17.6 12.2C438.7 471.3 512 375.3 512 262.3c0-141.4-114.6-256-256-256\"/>"
   }
 };
@@ -2491,6 +2511,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentEditingId = null;
   let draggedId = null;//拖拽实现
+let previewDropKey = null;//实时预览的落点键，避免同一位置重复移动
   let selectedSuggestionIndex = -1;
 
   // ===== 主题模式（跟随系统 / 浅色 / 深色）=====
@@ -2517,7 +2538,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const mdCustomSettings = document.getElementById('md-custom-settings');
   const mdHueSlider = document.getElementById('md-hue-slider');
   const mdCustomPanel = document.getElementById('md-custom-panel');
-  const mdHueHandle = document.getElementById('md-hue-handle');
   const mdSwatches = document.querySelectorAll('.md-swatch');
   const mdSwatchCustom = document.querySelector('.md-swatch-custom');
   const btnOpenColorModal = document.getElementById('btn-open-color-modal');
@@ -2590,6 +2610,7 @@ document.addEventListener('DOMContentLoaded', () => {
       '--fill-color': c('surface'),
       '--fill-popup-color': c('surfaceContainerLow'),
       '--neutral-layer-floating': c('surfaceContainerLow'),
+      '--neutral-layer-floating-hover': c('surfaceContainerHighest'),
       '--modal-bg': c('surfaceContainerLow'),
       '--settings-card-bg': c('surfaceContainerLow'),
       '--settings-card-hover': c('surfaceContainerHigh'),
@@ -2780,7 +2801,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 上次已应用的配色标识，避免重复重建样式表
   let lastMdAppliedKey = '';
   // 背景进入动画计时器：控制搜索框阴影的出现时机
-  let bgRevealTimer = null;
 
   // 取色：先把图片缩到小画布再量化，避免对全尺寸位图生成百万级像素数组
   function sampleImageColor(img) {
@@ -2999,21 +3019,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMdSwatches();
   }
 
-  // 自绘手柄位置：与原生 thumb 的几何一致（M3 手柄宽 4px，沿轨道两端内缩 2px）
-  const MD_HANDLE_W = 4;
-  function updateMdHueHandle() {
-    if (!mdHueSlider || !mdHueHandle || mdCustomPanel?.hidden) return;
-    const w = mdHueSlider.clientWidth;
-    if (!w) return;
-    const ratio = Number(mdHueSlider.value) / Number(mdHueSlider.max || 360);
-    mdHueHandle.style.left = (ratio * (w - MD_HANDLE_W) + MD_HANDLE_W / 2) + 'px';
-  }
 
   // 滑块拖动：实时重着色（rAF 合帧），松手才落盘
   if (mdHueSlider) {
     let raf = null;
     mdHueSlider.addEventListener('input', () => {
-      updateMdHueHandle();
       if (raf) cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const seed = mdHueToSeed(Number(mdHueSlider.value));
@@ -3028,11 +3038,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // mdHueToSeed 用 HSL 生成颜色，而 mdSeedToHue 读的是 HCT 色相，
       // 两者在黄绿/青色区可差 40°+，松手后滑块会突然跳走（用户感知为「回弹」）。
       // 滑块值本身就是用户的真实选择，保持不动。
-      updateMdHueHandle();
       applyMdColor();
     });
   }
-  window.addEventListener('resize', updateMdHueHandle);
 
   // 末位「自定义」卡片：点击展开/收起色相滑块
   function setCustomPanelOpen(open) {
@@ -3041,14 +3049,12 @@ document.addEventListener('DOMContentLoaded', () => {
     mdSwatchCustom.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (open) {
       // 展开后才有布局尺寸，先同步手柄位置（等一帧再量宽）
-      requestAnimationFrame(updateMdHueHandle);
     }
   }
   mdSwatchCustom?.addEventListener('click', (e) => {
     e.stopPropagation();
     const open = mdSwatchCustom.getAttribute('aria-expanded') !== 'true';
     if (open && mdHueSlider) mdHueSlider.value = mdSeedToHue(getMdSeed());
-    updateMdHueHandle();
     setCustomPanelOpen(open);
   });
 
@@ -3065,7 +3071,6 @@ document.addEventListener('DOMContentLoaded', () => {
       Storage.set(MD_SEED_KEY, sw.getAttribute('data-seed'));
       Storage.set(MD_MODE_KEY, 'custom');
       if (mdHueSlider) mdHueSlider.value = mdSeedToHue(sw.getAttribute('data-seed'));
-      updateMdHueHandle();
       setCustomPanelOpen(false);
       applyMdColor();
     });
@@ -3110,7 +3115,6 @@ document.addEventListener('DOMContentLoaded', () => {
   btnOpenColorModal?.addEventListener('click', () => {
     // 打开时把滑块回显为当前种子色的色相
     if (mdHueSlider) mdHueSlider.value = mdSeedToHue(getMdSeed());
-    updateMdHueHandle();
     showSettingsPage('color');
   });
   btnCloseColorModal?.addEventListener('click', () => showSettingsPage('main'));
@@ -3152,10 +3156,6 @@ document.addEventListener('DOMContentLoaded', () => {
       themeSwitchEl.classList.add('idx-' + idx);
     }
 
-    const link = document.getElementById('favicon');
-    if (link) {
-      link.href = (resolved === 'dark' ? 'img/icon_d.svg' : 'img/icon_l.svg') + '?r=' + Math.random();
-    }
 
     // 选中项会加粗，文字宽度随之变化，重新量一次
     setupThemeOptionScroll();
@@ -3360,15 +3360,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const savedLayout = Storage.get('ntp_layout', 'focused');
   // 快速链接的"样式"（一行 / 多行）与"是否显示"现在分开：
   // 旧版本用 ntp_quicklinks = '0' 表示关闭，这里迁移成"样式=一行 + 显示开关关闭"
-  let savedQuicklinksRow = Storage.get('ntp_quicklinks', '1');
+  let savedQuicklinksRow = Storage.get('ntp_quicklinks', '2');
   let showQuicklinks = Storage.get('ntp_show_quicklinks', null);
   if (showQuicklinks === null) {
     showQuicklinks = savedQuicklinksRow !== '0';
     Storage.set('ntp_show_quicklinks', showQuicklinks);
   }
   if (savedQuicklinksRow === '0') {
-    savedQuicklinksRow = '1';
-    Storage.set('ntp_quicklinks', '1');
+    savedQuicklinksRow = '2';
+    Storage.set('ntp_quicklinks', '2');
+  }
+
+  // 一次性迁移：快速链接改为胶囊样式后默认多行，旧版的一行设置统一重置为多行
+  const QUICKLINK_ROWS_MIGRATION_KEY = 'ntp_quicklinks_rows_v2';
+  if (!Storage.get(QUICKLINK_ROWS_MIGRATION_KEY)) {
+    if (savedQuicklinksRow === '1') {
+      savedQuicklinksRow = '2';
+      Storage.set('ntp_quicklinks', '2');
+    }
+    Storage.set(QUICKLINK_ROWS_MIGRATION_KEY, true);
   }
   // 快速链接位置：'auto' 跟随布局；'bottom' 固定在页面底部（该模式强制一行）
   let quicklinkPosition = Storage.get('ntp_quicklink_position', 'auto');
@@ -3474,7 +3484,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       document.body.classList.remove('bg-enabled');
       // 无背景时不播放进入动画，立即结束阴影延迟期
-      document.body.classList.remove('bg-revealing');
       if (bgVideo) {
         bgVideo.style.display = 'none';
       }
@@ -3695,12 +3704,6 @@ document.addEventListener('DOMContentLoaded', () => {
     el.classList.add('revealing', 'paused');
     el.classList.remove('pending');
     void el.offsetWidth;
-    // 背景动画期间隐藏搜索框阴影，播完后再出现
-    document.body.classList.add('bg-revealing');
-    clearTimeout(bgRevealTimer);
-    bgRevealTimer = setTimeout(() => {
-      document.body.classList.remove('bg-revealing');
-    }, 500);
     // 等两帧让图片完成绘制，再解除暂停，动画从起点开始
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -4505,16 +4508,16 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 快速链接位置：'bottom' 时固定到页面底部。该模式不支持多行，
   // 因此只把"多行"这一项禁掉，仍允许在一行与关闭之间切换
   // 'middle'（垂直居中）在悬挂布局下生效：其它布局按默认处理，
-  // 存储值保留，切回悬挂时还原（与"底部模式暂存多行"同一套处理）
+  // 存储值保留，切回悬挂时还原
   function applyQuicklinkPosition() {
     const isHanging = (document.body.getAttribute('data-layout') || 'focused') === 'inspirational';
     const effective = (quicklinkPosition === 'middle' && !isHanging) ? 'auto' : quicklinkPosition;
     const pos = (effective === 'bottom' || effective === 'middle') ? effective : 'auto';
     document.body.setAttribute('data-quicklink-position', pos);
 
-    let savedRow = Storage.get('ntp_quicklinks', '1');
+    let savedRow = Storage.get('ntp_quicklinks', '2');
     // 旧数据里 '0' 曾表示"关闭"，现在关闭由显示开关承担
-    if (savedRow === '0') savedRow = '1';
+    if (savedRow === '0') savedRow = '2';
     // 底部模式下若之前存的是"多行"，按一行处理（存储值保留，切回默认时还原）
     const effectiveRow = (effective === 'bottom' && savedRow === '2') ? '1' : savedRow;
 
@@ -4532,6 +4535,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     }
     // 下拉回显存储的选择；非悬挂布局下"居中"的实际效果与默认相同
     if (selectQuicklinkPosition) {
+      // 回显实际生效的位置：展望模式下会显示为默认
       selectQuicklinkPosition.value = (quicklinkPosition === 'bottom' || quicklinkPosition === 'middle')
         ? quicklinkPosition
         : 'auto';
@@ -4599,7 +4603,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       layout: 'inspirational',
       searchVisible: true,
       showLogo: false,
-      quicklinkPosition: 'middle',
+      quicklinkPosition: 'auto',
       showQuicklinks: true
     },
     focused: {
@@ -5037,9 +5041,9 @@ inputOnlineUrl?.addEventListener('input', () => {
   //=====快捷方式自适应计算--开始=====
 
   // 单个快捷方式项的宽度
-  const QUICKLINK_ITEM_WIDTH = 80;
+  const QUICKLINK_ITEM_WIDTH = 104;
   // 项与项之间的间距
-  const QUICKLINK_GAP = 10;
+  const QUICKLINK_GAP = 18;
   // 页面左右各保留的安全边距
   const QUICKLINK_SIDE_MARGIN = 16;
   // 单行模式：每行最多显示的项数，超出的项与"添加"按钮都不再渲染
@@ -5119,11 +5123,6 @@ inputOnlineUrl?.addEventListener('input', () => {
     linkElem.innerHTML = `
       <div class="quicklink-icon">${iconContent}</div>
       <span class="quicklink-title">${safeTitle}</span>
-      <button type="button" class="quicklink-edit-btn" title="${sanitizeInput(currentDict().editShortcut || '编辑快速链接')}" data-i18n-title="editShortcut">
-        <svg width="14" height="14" viewBox="0 -960 960 960" xmlns="http://www.w3.org/2000/svg">
-          <path fill="currentColor" d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/>
-        </svg>
-      </button>
     `;
 
     // 站点图标加载失败时回退为首字符
@@ -5140,14 +5139,75 @@ inputOnlineUrl?.addEventListener('input', () => {
     linkElem.addEventListener('dragenter', onDragEnter);
     linkElem.addEventListener('dragleave', onDragLeave);
     linkElem.addEventListener('drop', onDrop);
+    // 触屏：长按呼出菜单；长按后继续拖动则进入排序
+    let touchTimer = null;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchLongPress = false;
+    let touchDragging = false;
+    let touchTarget = null;
+    const LONG_PRESS_MS = 500;      // 长按判定时长
+    const MOVE_THRESHOLD = 10;      // 超过该位移视为移动，取消长按判定
 
-    const editBtn = linkElem.querySelector('.quicklink-edit-btn');
-    editBtn?.addEventListener('click', (e) => {
+    linkElem.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+      touchLongPress = false;
+      touchDragging = false;
+      touchTarget = null;
+      clearTimeout(touchTimer);
+      touchTimer = setTimeout(() => {
+        touchLongPress = true;
+        if (navigator.vibrate) navigator.vibrate(10);
+        showQuicklinkMenu(item, touchStartX, touchStartY, false, linkElem);
+      }, LONG_PRESS_MS);
+    }, { passive: true });
+
+    linkElem.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      if (!t) return;
+      const moved = Math.hypot(t.clientX - touchStartX, t.clientY - touchStartY);
+
+      if (!touchLongPress) {
+        // 长按判定前移动，视为滑动而非长按
+        if (moved > MOVE_THRESHOLD) clearTimeout(touchTimer);
+        return;
+      }
+      if (!touchDragging && moved > MOVE_THRESHOLD) {
+        // 长按后开始移动：收起菜单，改判为排序
+        touchDragging = true;
+        hideQuicklinkMenu();
+        draggedId = item.id;
+        linkElem.classList.add('dragging');
+      }
+      if (!touchDragging) return;
       e.preventDefault();
-      e.stopPropagation();          // 别让 document 上的关闭逻辑立刻把菜单收掉
-      const r = editBtn.getBoundingClientRect();
-      showQuicklinkMenu(item, r.left, r.bottom + 4, false, linkElem);
-    });
+      const hit = document.elementFromPoint(t.clientX, t.clientY);
+      const target = hit && hit.closest ? hit.closest('.quicklink-item') : null;
+      if (target && target.dataset.id && target.dataset.id !== item.id) {
+        touchTarget = target;
+        previewDropPosition(target, t.clientX);
+      }
+    }, { passive: false });
+
+    const endTouch = () => {
+      clearTimeout(touchTimer);
+      if (touchDragging) {
+        commitDropOrder();
+      }
+      linkElem.classList.remove('dragging');
+      draggedId = null;
+      previewDropKey = null;
+      touchLongPress = false;
+      touchDragging = false;
+      touchTarget = null;
+    };
+    linkElem.addEventListener('touchend', endTouch, { passive: true });
+    linkElem.addEventListener('touchcancel', endTouch, { passive: true });
+
+
 
     return linkElem;
   }
@@ -5211,7 +5271,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     const contentWidth = quicklinksWidthForColumns(widthColumns);
     // 缓存键必须带上标题与网址：只改名称时项数与 id 都没变，
     // 否则这里会被判成"无需重建"，界面要刷新才更新
-    const renderKey = [rows, perRow, showAddButton ? '1' : '0', quicklinksList.length,
+    const renderKey = [rows, perRow, document.body.getAttribute('data-quicklink-position') || '', showAddButton ? '1' : '0', quicklinksList.length,
       quicklinksList.map(i => i.id + '~' + i.title + '~' + i.url + '~' + (i.iconMode || 'auto') + '~' + (i.iconPreset || '') + '~' + (i.iconPresetStyle || '')).join(';')].join('|');
     const widthChanged = quicklinksElem.style.getPropertyValue('--quicklinks-content-width') !== contentWidth + 'px';
 
@@ -5270,7 +5330,7 @@ function onDragEnd(e) {
   const item = e.currentTarget;
   item.classList.remove('dragging');
   // 清理所有高亮
-  document.querySelectorAll('.quicklink-item.drag-over').forEach(el => {
+  document.querySelectorAll('.quicklink-item').forEach(el => {
     el.classList.remove('drag-over');
     el.removeAttribute('data-drop');
   });
@@ -5278,17 +5338,59 @@ function onDragEnd(e) {
 }
 
 // 按鼠标落在目标项的左半/右半，决定"插到前面"还是"插到后面"
-function updateDropIndicator(target, clientX) {
+// 拖动中把被拖拽项实时插到目标位置，形成半透明预览
+function previewDropPosition(target, clientX) {
   const rect = target.getBoundingClientRect();
   const after = clientX > rect.left + rect.width / 2;
-  document.querySelectorAll('.quicklink-item.drag-over').forEach(el => {
-    if (el !== target) {
-      el.classList.remove('drag-over');
-      el.removeAttribute('data-drop');
-    }
+  const draggedEl = document.querySelector('.quicklink-item.dragging');
+  if (!draggedEl || draggedEl === target) return false;
+
+  const key = target.dataset.id + (after ? ':after' : ':before');
+  if (key === previewDropKey) return false;
+  previewDropKey = key;
+
+  // 记录移动前的布局，供 FLIP 动画计算位移
+  const moving = Array.from(quicklinksElem.querySelectorAll('.quicklink-item'));
+  const beforeRects = new Map();
+  moving.forEach(el => beforeRects.set(el, el.getBoundingClientRect()));
+
+  if (after) {
+    target.after(draggedEl);
+  } else {
+    target.before(draggedEl);
+  }
+
+  // FLIP：其余项从旧位置滑到新位置，形成让位动画
+  moving.forEach(el => {
+    if (el === draggedEl) return;
+    const first = beforeRects.get(el);
+    const last = el.getBoundingClientRect();
+    const dx = first.left - last.left;
+    const dy = first.top - last.top;
+    if (!dx && !dy) return;
+    el.animate(
+      [
+        { transform: 'translate(' + dx + 'px, ' + dy + 'px)' },
+        { transform: 'translate(0, 0)' }
+      ],
+      { duration: 160, easing: 'ease-out' }
+    );
   });
-  target.classList.add('drag-over');
-  target.setAttribute('data-drop', after ? 'after' : 'before');
+  return true;
+}
+
+// 松手时按 DOM 当前顺序回写数组，完成排序
+function commitDropOrder() {
+  if (!quicklinksElem) return;
+  const ids = Array.from(quicklinksElem.querySelectorAll('.quicklink-item[data-id]'))
+    .map(el => el.dataset.id);
+  if (!ids.length || ids.length !== quicklinksList.length) return;
+  const byId = new Map(quicklinksList.map(item => [item.id, item]));
+  const reordered = ids.map(id => byId.get(id)).filter(Boolean);
+  if (reordered.length !== quicklinksList.length) return;
+  quicklinksList = reordered;
+  Storage.set('ntp_quicklinks_list', quicklinksList);
+  renderQuicklinks(true);
 }
 
 function onDragOver(e) {
@@ -5298,7 +5400,7 @@ function onDragOver(e) {
   const target = e.currentTarget;
   const targetId = target.dataset.id;
   if (targetId && targetId !== draggedId) {
-    updateDropIndicator(target, e.clientX);
+    previewDropPosition(target, e.clientX);
   }
 }
 
@@ -5308,7 +5410,7 @@ function onDragEnter(e) {
   const targetId = target.dataset.id;
   // 只有快速链接（有 data-id）且不是被拖拽自身时，才显示落点
   if (targetId && targetId !== draggedId) {
-    updateDropIndicator(target, e.clientX);
+    previewDropPosition(target, e.clientX);
   }
 }
 
@@ -5323,40 +5425,14 @@ function onDragLeave(e) {
   target.removeAttribute('data-drop');
 }
 
+
 function onDrop(e) {
   e.preventDefault();
   const target = e.currentTarget;
   const after = target.getAttribute('data-drop') === 'after';
   target.classList.remove('drag-over');
   target.removeAttribute('data-drop');
-
-  const targetId = target.dataset.id;
-  if (!targetId || !draggedId || targetId === draggedId) {
-    return;
-  }
-
-  // 查找两个元素在数组中的位置
-  const draggedIndex = quicklinksList.findIndex(item => item.id === draggedId);
-  let targetIndex = quicklinksList.findIndex(item => item.id === targetId);
-
-  if (draggedIndex === -1 || targetIndex === -1) {
-    return;
-  }
-
-  const [draggedItem] = quicklinksList.splice(draggedIndex, 1);
-  // 取走后，其后的目标整体前移一位
-  if (draggedIndex < targetIndex) {
-    targetIndex -= 1;
-  }
-  // 落在目标项右半 → 插到它后面
-  if (after) {
-    targetIndex += 1;
-  }
-  quicklinksList.splice(targetIndex, 0, draggedItem);
-
-  // 持久化并重新渲染
-  Storage.set('ntp_quicklinks_list', quicklinksList);
-  renderQuicklinks();
+  commitDropOrder();
 }
 // ========== 拖拽事件处理函数结束 ==========
 
@@ -5420,12 +5496,122 @@ function onDrop(e) {
 
   // ===== 快速链接的右键菜单：在新标签页打开 / 复制链接 / 编辑 =====
   const quicklinkMenu = document.getElementById('quicklink-menu');
+  const backgroundMenu = document.getElementById('background-menu');
+
+  // 通用右键菜单：先定位，下一帧再显示，保证淡入有起点
+  function showContextMenu(menuEl, x, y) {
+    if (!menuEl) return;
+    menuEl.classList.remove('active');
+    const rect = menuEl.getBoundingClientRect();
+    if (x + rect.width > window.innerWidth - 8) x = window.innerWidth - rect.width - 8;
+    if (y + rect.height > window.innerHeight - 8) y = window.innerHeight - rect.height - 8;
+    menuEl.style.left = Math.max(8, x) + 'px';
+    menuEl.style.top = Math.max(8, y) + 'px';
+    requestAnimationFrame(() => menuEl.classList.add('active'));
+  }
+
+  function hideContextMenu(menuEl) {
+    menuEl?.classList.remove('active');
+  }
+  // 空白处右键：屏蔽浏览器菜单，改为页面自己的菜单
+  // 右键与长按都不接管的交互区域
+  const contextMenuExclude = [
+    '#header', '#popover-settings', '#popover-waffle',
+    '#search-container', 'ntp-quicklinks', '.quicklink-item',
+    '.modal-overlay', '.modal-dialog', '.context-menu'
+  ].join(',');
+
+  document.addEventListener('contextmenu', (e) => {
+    if (e.defaultPrevented) return;                       // 快速链接已自行处理
+    const target = e.target instanceof Element ? e.target : null;
+    if (!target) return;
+    // 输入控件保留浏览器原生菜单
+    if (target.closest('input, textarea, select, [contenteditable="true"]')) return;
+    // 其余位置一律屏蔽浏览器菜单
+    e.preventDefault();
+    // 右键外部时收起已展开的面板，与左键点击一致
+    if (!target.closest('#popover-settings, #popover-waffle, #settings, #waffle')) {
+      popoverSettings?.classList.remove('active');
+      popoverWaffle?.classList.remove('active');
+    }
+    // 交互区域不弹出页面菜单，只有背景与空白处才弹
+    if (target.closest(contextMenuExclude)) return;
+    hideQuicklinkMenu();
+    showContextMenu(backgroundMenu, e.clientX, e.clientY);
+  });
+
+  // 空白处长按：触屏上与右键等价，呼出同一个菜单
+  const BACKGROUND_LONG_PRESS = 500;
+  const BACKGROUND_MOVE_THRESHOLD = 10;
+  let backgroundTouchTimer = 0;
+  let backgroundTouchX = 0;
+  let backgroundTouchY = 0;
+
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    const target = e.target instanceof Element ? e.target : null;
+    if (!target) return;
+    if (target.closest('input, textarea, select, [contenteditable="true"]')) return;
+    if (target.closest(contextMenuExclude)) return;
+    const t = e.touches[0];
+    backgroundTouchX = t.clientX;
+    backgroundTouchY = t.clientY;
+    clearTimeout(backgroundTouchTimer);
+    backgroundTouchTimer = setTimeout(() => {
+      if (navigator.vibrate) navigator.vibrate(10);
+      hideQuicklinkMenu();
+      showContextMenu(backgroundMenu, backgroundTouchX, backgroundTouchY);
+    }, BACKGROUND_LONG_PRESS);
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    if (!t) return;
+    if (Math.hypot(t.clientX - backgroundTouchX, t.clientY - backgroundTouchY) > BACKGROUND_MOVE_THRESHOLD) {
+      clearTimeout(backgroundTouchTimer);
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => {
+    clearTimeout(backgroundTouchTimer);
+  }, { passive: true });
+
+  document.addEventListener('touchcancel', () => {
+    clearTimeout(backgroundTouchTimer);
+  }, { passive: true });
+
+  // 背景菜单的动作
+  backgroundMenu?.addEventListener('click', (e) => {
+    const btn = e.target instanceof Element ? e.target.closest('.context-menu-item') : null;
+    if (!btn) return;
+    // 阻止冒泡到 document 的点击处理，否则刚打开的面板会被立刻收起
+    e.stopPropagation();
+    const action = btn.dataset.action;
+    hideContextMenu(backgroundMenu);
+    if (action === 'edit-background') {
+      const wasOpen = !!popoverSettings?.classList.contains('active');
+      // 面板未展开时先触发打开，让展开过渡完整播放
+      if (!wasOpen) btnSettings?.click();
+      const applyBackgroundPage = () => {
+        showSettingsPage('bg');
+        renderWallpaper();
+        reapplyLanguage();
+      };
+      // 面板刚展开时延后切页，避免切页的高度处理打断展开动画
+      if (wasOpen) applyBackgroundPage();
+      else setTimeout(applyBackgroundPage, 120);
+    } else if (action === 'add-quicklink') {
+      openAddModal();
+    }
+  });
+
+
   let quicklinkMenuTarget = null;
 
   function hideQuicklinkMenu() {
     quicklinkMenu?.classList.remove('active');
     // 收起时清掉选中态，下次弹出不会残留高亮
-    quicklinkMenu?.querySelectorAll('.quicklink-menu-item').forEach(item => {
+    quicklinkMenu?.querySelectorAll('.context-menu-item').forEach(item => {
       item.classList.remove('selected');
       item.removeAttribute('aria-current');
     });
@@ -5440,6 +5626,8 @@ function onDrop(e) {
   // sourceEl 为触发菜单的元素，菜单展开期间保持它的悬停态
   function showQuicklinkMenu(link, left, top, forAddButton, sourceEl) {
     if (!quicklinkMenu) return;
+    // 先撤掉显示状态：菜单已开着时右键别处，也要先消失再重新淡入
+    quicklinkMenu.classList.remove('active');
     // 连续右键不同项时先撤掉上一次的高亮
     if (quicklinkMenu._sourceEl && quicklinkMenu._sourceEl !== sourceEl) {
       quicklinkMenu._sourceEl.classList.remove('menu-open');
@@ -5447,17 +5635,17 @@ function onDrop(e) {
     quicklinkMenu._sourceEl = sourceEl || null;
     sourceEl?.classList.add('menu-open');
     quicklinkMenuTarget = link;
-    quicklinkMenu.querySelectorAll('.quicklink-menu-item').forEach(item => {
+    quicklinkMenu.querySelectorAll('.context-menu-item').forEach(item => {
       item.hidden = forAddButton ? item.dataset.action !== 'hide-add' : item.dataset.action === 'hide-add';
       item.classList.remove('selected');
       item.removeAttribute('aria-current');
     });
-    quicklinkMenu.classList.add('active');
     const rect = quicklinkMenu.getBoundingClientRect();
     if (left + rect.width > window.innerWidth - 8) left = window.innerWidth - rect.width - 8;
     if (top + rect.height > window.innerHeight - 8) top = window.innerHeight - rect.height - 8;
     quicklinkMenu.style.left = Math.max(8, left) + 'px';
     quicklinkMenu.style.top = Math.max(8, top) + 'px';
+    requestAnimationFrame(() => quicklinkMenu.classList.add('active'));
   }
 
   quicklinksElem?.addEventListener('contextmenu', (e) => {
@@ -5474,7 +5662,7 @@ function onDrop(e) {
   });
 
   quicklinkMenu?.addEventListener('click', (e) => {
-    const btn = e.target instanceof Element ? e.target.closest('.quicklink-menu-item') : null;
+    const btn = e.target instanceof Element ? e.target.closest('.context-menu-item') : null;
     if (!btn) return;
     // 点击时先落到该项上（视觉与键盘导航一致），再执行动作并收起
     setQuicklinkMenuItemSelected(btn);
@@ -5498,34 +5686,45 @@ function onDrop(e) {
   // 隐藏添加按钮：等同于关闭设置中的开关，并给出重新开启的入口说明
   const modalAddButtonHidden = document.getElementById('modal-add-button-hidden');
   const btnAddButtonHiddenOk = document.getElementById('btn-add-button-hidden-ok');
+  const btnAddButtonHiddenMute = document.getElementById('btn-add-button-hidden-mute');
 
+  // 隐藏添加按钮后的说明弹窗；用户选择"不再提醒"后不再弹出
+  const ADD_BUTTON_NOTICE_KEY = 'ntp_add_button_notice_muted';
   function hideQuicklinkAddButton() {
     showAddButton = false;
     Storage.set('ntp_show_add_button', false);
     if (toggleAddButtonSwitch) toggleAddButtonSwitch.checked = false;
     renderQuicklinks(true);
     reapplyLanguage();
-    modalAddButtonHidden?.classList.add('active');
+    if (!Storage.get(ADD_BUTTON_NOTICE_KEY, false)) {
+      modalAddButtonHidden?.classList.add('active');
+    }
   }
 
   btnAddButtonHiddenOk?.addEventListener('click', () => {
+    modalAddButtonHidden?.classList.remove('active');
+  });
+
+  btnAddButtonHiddenMute?.addEventListener('click', () => {
+    // 记住选择：此后隐藏添加按钮不再弹出说明
+    Storage.set(ADD_BUTTON_NOTICE_KEY, true);
     modalAddButtonHidden?.classList.remove('active');
   });
   modalAddButtonHidden?.addEventListener('click', (e) => {
     if (e.target === modalAddButtonHidden) modalAddButtonHidden.classList.remove('active');
   });
 
-  // 点空白处、按 Esc、失焦、改变窗口大小都收起
-  document.addEventListener('click', (e) => {
-    if (!quicklinkMenu?.classList.contains('active')) return;
-    if (e.target instanceof Element && e.target.closest('.quicklink-menu')) return;
+  // 指针按下即收起菜单：捕获阶段执行，不受控件自身 stopPropagation 影响
+  document.addEventListener('pointerdown', (e) => {
+    if (e.target instanceof Element && e.target.closest('.context-menu')) return;
     hideQuicklinkMenu();
-  });
+    hideContextMenu(backgroundMenu);
+  }, true);
   // 选中项按选项菜单的规则：单选、铺满整项、加粗强调色。
   // 菜单内的当前选中项以 aria-current 标记，供样式与键盘导航共用。
   function setQuicklinkMenuItemSelected(item) {
     if (!quicklinkMenu) return;
-    quicklinkMenu.querySelectorAll('.quicklink-menu-item').forEach(el => {
+    quicklinkMenu.querySelectorAll('.context-menu-item').forEach(el => {
       const on = el === item;
       el.classList.toggle('selected', on);
       if (on) el.setAttribute('aria-current', 'true');
@@ -5537,7 +5736,7 @@ function onDrop(e) {
   quicklinkMenu?.addEventListener('keydown', (e) => {
     if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
     e.preventDefault();
-    const items = Array.from(quicklinkMenu.querySelectorAll('.quicklink-menu-item'))
+    const items = Array.from(quicklinkMenu.querySelectorAll('.context-menu-item'))
       .filter(el => !el.hidden);
     if (!items.length) return;
     const cur = items.findIndex(el => el.getAttribute('aria-current') === 'true');
@@ -5552,6 +5751,7 @@ function onDrop(e) {
   // 关闭所有临时浮层（右键菜单 + 预置宫格）
   function hideQuicklinkPopups() {
     hideQuicklinkMenu();
+    hideContextMenu(backgroundMenu);
     hideIconPresetPanel();
   }
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideQuicklinkPopups(); });
@@ -5664,11 +5864,6 @@ function onDrop(e) {
     setTimeout(() => inputName?.focus(), 50);
   }
 
-  // 左上角菜单里的"添加快速链接"：与快速链接区的"添加"按钮同功能，始终可用
-  document.getElementById('btn-add-quicklink')?.addEventListener('click', () => {
-    popoverWaffle?.classList.remove('active');
-    openAddModal();
-  });
 
   // 打开"编辑快速链接"弹窗，填充当前数据并显示删除按钮
   function openEditModal(item) {

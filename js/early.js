@@ -53,12 +53,12 @@
   // 5) 快速链接行数：提前写到 <html>，让首帧按最终行数占位。
   //    容器在渲染前是 rows="0"、不占网格行，渲染后撑开会把居中布局的搜索框顶上去。
   try {
-    var qlRow = JSON.parse(localStorage.getItem('ntp_quicklinks') || '"1"');
+    var qlRow = JSON.parse(localStorage.getItem('ntp_quicklinks') || '"2"');
     var qlShow = JSON.parse(localStorage.getItem('ntp_show_quicklinks') || 'null');
     var qlPos = JSON.parse(localStorage.getItem('ntp_quicklink_position') || '"auto"');
     var qlList = JSON.parse(localStorage.getItem('ntp_quicklinks_list') || '[]');
     if (qlShow === null) qlShow = qlRow !== '0';   // 旧数据用 '0' 表示关闭
-    if (qlRow === '0') qlRow = '1';
+    if (qlRow === '0') qlRow = '2';
     var qlVw = document.documentElement.clientWidth || window.innerWidth || 0;
     // 严格按布尔判断，避免存储里出现字符串 'false' 时被当作真值
     var qlEnabled = (qlShow === null) ? (qlRow !== '0') : (qlShow === true || qlShow === 'true');
