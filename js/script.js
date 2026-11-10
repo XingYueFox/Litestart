@@ -2564,13 +2564,10 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       try {
         const seedArgb = api.argbFromHex(seed);
         const scheme = mdScheme(seedArgb, dark);
-        const seedHct = api.Hct.fromInt(seedArgb);
-        // 上半：浅色取该色最淡的一档，深色取最深的一档；下半用 primaryContainer
-        const topTone = dark ? 15 : 95;
-        const top = api.Hct.from(seedHct.hue, seedHct.chroma, topTone).toInt();
-        sw.style.setProperty('--swatch-top', api.hexFromArgb(top));
-        sw.style.setProperty('--swatch-bg', api.hexFromArgb(scheme.primaryContainer));
-        sw.style.setProperty('--swatch-dot', api.hexFromArgb(scheme.onPrimaryContainer));
+        // Chrome 风格 T 形三色块：顶块为强调色，下两块为 primary/secondaryContainer
+        sw.style.setProperty('--swatch-c1', api.hexFromArgb(scheme.primary));
+        sw.style.setProperty('--swatch-c2', api.hexFromArgb(scheme.primaryContainer));
+        sw.style.setProperty('--swatch-c3', api.hexFromArgb(scheme.secondaryContainer));
       } catch (e) { /* 配色工具未就绪时保持原样 */ }
     });
   }
