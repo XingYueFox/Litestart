@@ -5558,6 +5558,11 @@ function onDrop(e) {
     if (target.closest('input, textarea, select, [contenteditable="true"]')) return;
     // 其余位置一律屏蔽浏览器菜单
     e.preventDefault();
+    // 右键外部时收起已展开的面板，与左键点击一致
+    if (!target.closest('#popover-settings, #popover-waffle, #settings, #waffle')) {
+      popoverSettings?.classList.remove('active');
+      popoverWaffle?.classList.remove('active');
+    }
     // 交互区域不弹出页面菜单，只有背景与空白处才弹
     if (target.closest(contextMenuExclude)) return;
     hideQuicklinkMenu();
@@ -5738,12 +5743,12 @@ function onDrop(e) {
     if (e.target === modalAddButtonHidden) modalAddButtonHidden.classList.remove('active');
   });
 
-  // 点空白处、按 Esc、失焦、改变窗口大小都收起
-  document.addEventListener('click', (e) => {
+  // 指针按下即收起菜单：捕获阶段执行，不受控件自身 stopPropagation 影响
+  document.addEventListener('pointerdown', (e) => {
     if (e.target instanceof Element && e.target.closest('.context-menu')) return;
     hideQuicklinkMenu();
     hideContextMenu(backgroundMenu);
-  });
+  }, true);
   // 选中项按选项菜单的规则：单选、铺满整项、加粗强调色。
   // 菜单内的当前选中项以 aria-current 标记，供样式与键盘导航共用。
   function setQuicklinkMenuItemSelected(item) {
