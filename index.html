@@ -21,6 +21,7 @@
       --fill-color: #f5f5f5;   /* 页面主背景色 */
       --fill-popup-color: #ffffff;   /* 下拉菜单/弹窗主背景色；※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --neutral-layer-floating: #ffffff;   /* 浮动层背景色 (搜索框/图标) */
+      --neutral-layer-floating-hover: #f3f3f3;   /* 浮动层悬停底色 */
       /* 无背景时浮动层（搜索框、快速链接图标）的固定底色，不参与动态取色 */
       --plain-floating-bg: #ffffff;
       --plain-floating-bg-hover: #f3f3f3;
@@ -67,6 +68,8 @@
       --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 0 16px rgba(0, 0, 0, 0.14);
       --dropdown-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
       --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.04);
+      /* 快速链接胶囊：与搜索框同系阴影，半径略小 */
+      --quicklink-shadow: 0 0 8px rgba(0, 0, 0, 0.03);
       --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.10);
       /* 增强可见性下的搜索框阴影：半径与常态一致，浓度更高 */
       --search-box-shadow-enhanced: 0 0 14px rgba(0, 0, 0, 0.18);
@@ -91,6 +94,7 @@
         --fill-color: #232323;
         --fill-popup-color: #2b2b2b;
         --neutral-layer-floating: #2b2b2b;
+        --neutral-layer-floating-hover: #333333;
         --plain-floating-bg: #2b2b2b;
         --plain-floating-bg-hover: #333333;
         
@@ -138,6 +142,7 @@
         --suggestion-footer-color: #4f8cf6;
 
         --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.09);
+        --quicklink-shadow: 0 0 8px rgba(0, 0, 0, 0.07);
         --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.20);
         --search-box-shadow-enhanced: 0 0 14px rgba(0, 0, 0, 0.34);
         --search-box-shadow-plain: 0 0 14px rgba(0, 0, 0, 0.18);
@@ -313,18 +318,10 @@
     }
 
 
-    /* 增强可见性：链接名称垫底，与 Logo 同档 */
-    body.bg-enabled[data-enhanced-visibility="true"] .quicklink-title {
-      background-color: var(--enhanced-visibility-logo-bg);
-      border-radius: 4px;
-      padding: 3px 5px;
-    }
-
     /* 启用衬底模糊 */
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .header-button,
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #logo,
-    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #time-display,
-    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .quicklink-title {
+    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #time-display {
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
     }
@@ -1656,8 +1653,7 @@
     }
 
     /* 浅色模式下无背景时，浮动层使用固定底色，不跟随动态取色；文字仍按配色渲染 */
-    :root[data-theme="light"] body:not(.bg-enabled) #fakebox,
-    :root[data-theme="light"] body:not(.bg-enabled) .quicklink-icon {
+    :root[data-theme="light"] body:not(.bg-enabled) #fakebox {
       background-color: var(--plain-floating-bg);
     }
 
@@ -1725,6 +1721,16 @@
     #search-container.suggestions-open #fakebox {
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
+    }
+
+    /* 开启背景时，快速链接胶囊叠加与搜索框同系的阴影 */
+    body.bg-enabled .quicklink-item {
+      box-shadow: var(--quicklink-shadow);
+    }
+
+    /* 增强可见性下壁纸更复杂，阴影加深一档 */
+    body.bg-enabled[data-enhanced-visibility="true"] .quicklink-item {
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
     }
 
     /* 有壁纸并开启增强可见性时，壁纸内容复杂，搜索框叠加一层阴影提升层次 */
@@ -1918,7 +1924,7 @@
       align-items: center;
       /* 多行贴容器顶部，间距恒为 gap，行高不被拉伸 */
       align-content: flex-start;
-      gap: 10px;
+      gap: 18px;
       overflow: visible;
     }
 
@@ -1942,19 +1948,21 @@
     .quicklink-item {
       position: relative;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
-      width: 80px;
+      width: auto;
+      max-width: 140px;
+      min-width: 0;
       flex-shrink: 0;              /* 防止被 flex 压缩宽度*/
-      padding: 6px 2px;
+      padding: 4px 18px 4px 9px;
       box-sizing: border-box;
-      border-radius: 8px;
+      border-radius: 999px;
+      background-color: var(--neutral-layer-floating);
       text-decoration: none;
       color: var(--neutral-foreground-rest);
       font-size: 12px;
       gap: 6px;
-      transition: background-color 0.1s;
       /* 只禁"选中文字"，不动拖拽：触屏长按拖拽（HTML5 drag）依赖原生手势，
          一旦加 -webkit-touch-callout: none / -webkit-user-drag: none 就会失效 */
       user-select: none;
@@ -1968,41 +1976,53 @@
       -webkit-user-select: none;
     }
 
-    /* 悬停使用较明显的填充档；右键菜单展开期间由 .menu-open 维持同一状态 */
+    /* 悬停与菜单展开：图标块和文字块一起加深 */
     .quicklink-item:hover,
     .quicklink-item.menu-open {
-      background-color: var(--neutral-fill-hover);
+      background-color: var(--neutral-layer-floating-hover);
     }
 
     .quicklink-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background-color: var(--neutral-layer-floating);
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      border-radius: 0;
+      background: none;
+      transition: background-color 0.1s;
       color: var(--neutral-foreground-rest);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 600;
-      overflow: hidden;
+      overflow: visible;
       font-size: 14px;
     }
 
     .quicklink-icon img {
-      width: 22px;
-      height: 22px;
+      width: 18px;
+      height: 18px;
       object-fit: contain;
     }
 
     /* 站点图标覆盖（如 GitHub）：尺寸与 img 一致，颜色用 currentColor 跟随主题 */
     .quicklink-site-icon {
-      width: 22px;
-      height: 22px;
+      width: 18px;
+      height: 18px;
       display: block;
     }
 
     .quicklink-title {
-      max-width: 74px;
+      width: auto;
+      min-width: 0;
+      min-height: auto;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      line-height: 1;
+      padding: 0;
+      border-radius: 0;
+      background: none;
+      
       font-size: 13px;          /* 比 .quicklink-item 继承来的 12px 大一号 */
       overflow: hidden;
       text-overflow: ellipsis;
@@ -2133,7 +2153,7 @@
     }
 
     .quicklink-add-icon {
-      background-color: var(--neutral-layer-floating);
+      background: none;
       border: none;
     }
 
