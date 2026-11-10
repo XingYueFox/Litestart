@@ -1280,29 +1280,40 @@
       width: 100%;
       aspect-ratio: 1 / 1;
       border-radius: 10px;
-      border: 1px solid var(--settings-card-border);
+      border: none;
       cursor: pointer;
+      /* 满格填充：色块通铺到卡片边缘，圆角由 overflow 裁切 */
       padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      /* 上下分割：上半为浅色最淡/深色最深，下半为 primaryContainer */
-      background: linear-gradient(180deg, var(--swatch-top, transparent) 0 50%, var(--swatch-bg, transparent) 50% 100%);
-      /* 两个变量由 JS 按 data-seed 生成 tonal 色写入（见 script.js 色板渲染） */
+      display: grid;
+      /* 覆盖 button 的 UA 默认 align-items:center，否则空 span 高度为 0 */
+      align-items: stretch;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1.15fr 1fr;
+      gap: 0;
+      background: transparent;
+      overflow: hidden;
+      /* Chrome 风格 T 形三色块：上为横贯主色块，下为两个并排辅色块，
+         三个变量由 JS 按 data-seed 生成 M3 角色色写入（见 script.js 色板渲染） */
+    }
+
+    /* 顶部横贯色块：主题强调色 */
+    .md-swatch-top {
+      grid-column: 1 / 3;
+      background: var(--swatch-c1, transparent);
+    }
+
+    /* 底部两块：primaryContainer 与 secondaryContainer */
+    .md-swatch-b1 {
+      background: var(--swatch-c2, transparent);
+    }
+
+    .md-swatch-b2 {
+      background: var(--swatch-c3, transparent);
     }
 
     /* 悬停：与选中态同构的双环，外环为半透明灰 */
     .md-swatch:hover {
       box-shadow: 0 0 0 2px var(--settings-card-bg), 0 0 0 4px rgba(128, 128, 128, 0.45);
-    }
-
-    /* 色块中央的圆角方块：该色调的强调色 */
-    .md-swatch::after {
-      content: '';
-      width: 38%;
-      aspect-ratio: 1 / 1;
-      border-radius: 30%;
-      background-color: var(--swatch-dot, transparent);
     }
 
     /* 选中：外圈描边（用主题强调色，与 MD 选区风格一致） */
@@ -1312,26 +1323,39 @@
 
     /* ===== 首位「默认」卡片 =====
        代表关闭 MD 取色时的原生黑白主题：
-       浅色为白底黑点，深色为黑底白点。*/
+       浅色为灰顶 + 白/黑两块，深色反转。*/
     .md-swatch-default {
-      background: #ffffff;
-    }
-
-    .md-swatch-default::after {
-      background-color: #262320;
+      --swatch-c1: #8a867f;
+      --swatch-c2: #f5f3f0;
+      --swatch-c3: #262320;
     }
 
     :root[data-theme="dark"] .md-swatch-default {
-      background: #262320;
+      --swatch-c1: #6f6a64;
+      --swatch-c2: #262320;
+      --swatch-c3: #f5f3f0;
     }
 
-    :root[data-theme="dark"] .md-swatch-default::after {
-      background-color: #f5f3f0;
-    }
+    /* ===== 四张预设卡的静态兜底色（浅色模式） =====
+       由 M3 角色色预计算写入，保证取色库未就绪时色卡也能显示；
+       JS 渲染后会以同值内联变量覆盖。*/
+    .md-swatch[data-seed="#5f6368"] { --swatch-c1: #2b638b; --swatch-c2: #cce5ff; --swatch-c3: #d4e4f6; }
+    .md-swatch[data-seed="#6750a4"] { --swatch-c1: #65558f; --swatch-c2: #e9ddff; --swatch-c3: #e8def8; }
+    .md-swatch[data-seed="#006c4c"] { --swatch-c1: #1f6a4e; --swatch-c2: #a8f2ce; --swatch-c3: #cfe9d9; }
+    .md-swatch[data-seed="#b3261e"] { --swatch-c1: #904a42; --swatch-c2: #ffdad5; --swatch-c3: #ffdad5; }
+
+    /* 深色模式兜底色 */
+    :root[data-theme="dark"] .md-swatch[data-seed="#5f6368"] { --swatch-c1: #98ccf9; --swatch-c2: #044b71; --swatch-c3: #394856; }
+    :root[data-theme="dark"] .md-swatch[data-seed="#6750a4"] { --swatch-c1: #cfbdfe; --swatch-c2: #4d3d75; --swatch-c3: #4a4458; }
+    :root[data-theme="dark"] .md-swatch[data-seed="#006c4c"] { --swatch-c1: #8dd5b3; --swatch-c2: #005138; --swatch-c3: #354b40; }
+    :root[data-theme="dark"] .md-swatch[data-seed="#b3261e"] { --swatch-c1: #ffb4aa; --swatch-c2: #73342c; --swatch-c3: #5d3f3b; }
 
     /* ===== 末位「自定义」卡片：虚线描边 + 加号，点击展开滑块 ===== */
     .md-swatch-custom {
-      /* 覆盖色块的上下分割底色 */
+      /* 覆盖色卡的 grid 布局与底色，恢复居中 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: none;
       border: 1.5px dashed var(--settings-card-border);
       color: var(--settings-text-secondary);
@@ -2415,7 +2439,7 @@
     }
 
     .btn {
-      height: 36px;
+      height: 34px;
       padding: 0 22px;
       border-radius: 6px;
       font-size: 14px;
@@ -3528,13 +3552,13 @@
                     <div class="settings-card-title" data-i18n="mdPresets">预设配色</div>
                     <!-- 色块底色与圆点色由 JS 按种子色生成 MD3 tonal 结果写入 -->
                     <div class="md-preset-grid">
-                      <button type="button" class="md-swatch md-swatch-default" data-mode="off" title="默认" data-i18n-title="mdPresetDefault"></button>
-                      <button type="button" class="md-swatch" data-seed="#5f6368" title="淡蓝" data-i18n-title="mdPresetBlue"></button>
-                      <button type="button" class="md-swatch" data-seed="#6750a4" title="丁香紫" data-i18n-title="mdPresetPurple"></button>
-                      <button type="button" class="md-swatch" data-seed="#006c4c" title="苔绿" data-i18n-title="mdPresetGreen"></button>
-                      <button type="button" class="md-swatch" data-seed="#b3261e" title="陶红" data-i18n-title="mdPresetRed"></button>
+                      <button type="button" class="md-swatch md-swatch-default" data-mode="off" title="默认" data-i18n-title="mdPresetDefault"><span class="md-swatch-top"></span><span class="md-swatch-b1"></span><span class="md-swatch-b2"></span></button>
+                      <button type="button" class="md-swatch" data-seed="#5f6368" title="淡蓝" data-i18n-title="mdPresetBlue"><span class="md-swatch-top"></span><span class="md-swatch-b1"></span><span class="md-swatch-b2"></span></button>
+                      <button type="button" class="md-swatch" data-seed="#6750a4" title="丁香紫" data-i18n-title="mdPresetPurple"><span class="md-swatch-top"></span><span class="md-swatch-b1"></span><span class="md-swatch-b2"></span></button>
+                      <button type="button" class="md-swatch" data-seed="#006c4c" title="苔绿" data-i18n-title="mdPresetGreen"><span class="md-swatch-top"></span><span class="md-swatch-b1"></span><span class="md-swatch-b2"></span></button>
+                      <button type="button" class="md-swatch" data-seed="#b3261e" title="陶红" data-i18n-title="mdPresetRed"><span class="md-swatch-top"></span><span class="md-swatch-b1"></span><span class="md-swatch-b2"></span></button>
                       <button type="button" class="md-swatch md-swatch-custom" data-custom="1" title="自定义" data-i18n-title="mdColorCustom" aria-expanded="false">
-                        <svg viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 32.5-156t88-127Q256-817 330-848.5T488-880q80 0 151 27.5t124.5 76q53.5 48.5 85 115T880-518q0 115-70 176.5T640-280h-74q-9 0-12.5 5t-3.5 11q0 12 15 34.5t15 51.5q0 50-27.5 74T480-80Zm0-400Zm-177 23q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17Zm120-160q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17Zm200 0q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17Zm120 160q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17ZM480-160q9 0 14.5-5t5.5-13q0-14-15-33t-15-57q0-42 29-67t71-25h70q66 0 113-38.5T800-518q0-121-92.5-201.5T488-800q-136 0-232 93t-96 227q0 133 93.5 226.5T480-160Z"/></svg>
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m2.53 19.65l1.34.56v-9.03l-2.43 5.86c-.41 1.02.08 2.19 1.09 2.61m19.5-3.7L17.07 3.98a2.01 2.01 0 0 0-1.81-1.23c-.26 0-.53.04-.79.15L7.1 5.95a2 2 0 0 0-1.08 2.6l4.96 11.97a2 2 0 0 0 2.6 1.08l7.36-3.05a1.994 1.994 0 0 0 1.09-2.6m-9.2 3.8L7.87 7.79l7.35-3.04h.01l4.95 11.95z"/><circle cx="11" cy="9" r="1" fill="currentColor"/><path d="M5.88 19.75c0 1.1.9 2 2 2h1.45l-3.45-8.34z"/></svg>
                       </button>
                     </div>
 
