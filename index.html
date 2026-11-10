@@ -2034,32 +2034,6 @@
       -webkit-user-drag: none;
     }
 
-    .quicklink-edit-btn {
-      position: absolute;
-      top: 2px;
-      right: 2px;
-      width: 18px;
-      height: 18px;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.08s ease-in-out, background-color 0.08s;
-      fill: var(--neutral-foreground-rest);
-      z-index: 2;
-    }
-
-    /* 编辑按钮随悬停出现；右键菜单展开期间同样保持可见 */
-    .quicklink-item:hover .quicklink-edit-btn,
-    .quicklink-item.menu-open .quicklink-edit-btn {
-      opacity: 1;
-    }
-
-    .quicklink-edit-btn:hover {
-      background-color: var(--neutral-fill-hover);
-    }
-
     .quicklink-add-btn {
       cursor: pointer;
     }

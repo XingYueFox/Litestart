@@ -5120,11 +5120,6 @@ inputOnlineUrl?.addEventListener('input', () => {
     linkElem.innerHTML = `
       <div class="quicklink-icon">${iconContent}</div>
       <span class="quicklink-title">${safeTitle}</span>
-      <button type="button" class="quicklink-edit-btn" title="${sanitizeInput(currentDict().editShortcut || '编辑快速链接')}" data-i18n-title="editShortcut">
-        <svg width="14" height="14" viewBox="0 -960 960 960" xmlns="http://www.w3.org/2000/svg">
-          <path fill="currentColor" d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/>
-        </svg>
-      </button>
     `;
 
     // 站点图标加载失败时回退为首字符
@@ -5141,14 +5136,77 @@ inputOnlineUrl?.addEventListener('input', () => {
     linkElem.addEventListener('dragenter', onDragEnter);
     linkElem.addEventListener('dragleave', onDragLeave);
     linkElem.addEventListener('drop', onDrop);
+    // 触屏：长按呼出菜单；长按后继续拖动则进入排序
+    let touchTimer = null;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchLongPress = false;
+    let touchDragging = false;
+    let touchTarget = null;
+    const LONG_PRESS_MS = 500;      // 长按判定时长
+    const MOVE_THRESHOLD = 10;      // 超过该位移视为移动，取消长按判定
 
-    const editBtn = linkElem.querySelector('.quicklink-edit-btn');
-    editBtn?.addEventListener('click', (e) => {
+    linkElem.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+      touchLongPress = false;
+      touchDragging = false;
+      touchTarget = null;
+      clearTimeout(touchTimer);
+      touchTimer = setTimeout(() => {
+        touchLongPress = true;
+        if (navigator.vibrate) navigator.vibrate(10);
+        showQuicklinkMenu(item, touchStartX, touchStartY, false, linkElem);
+      }, LONG_PRESS_MS);
+    }, { passive: true });
+
+    linkElem.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      if (!t) return;
+      const moved = Math.hypot(t.clientX - touchStartX, t.clientY - touchStartY);
+
+      if (!touchLongPress) {
+        // 长按判定前移动，视为滑动而非长按
+        if (moved > MOVE_THRESHOLD) clearTimeout(touchTimer);
+        return;
+      }
+      if (!touchDragging && moved > MOVE_THRESHOLD) {
+        // 长按后开始移动：收起菜单，改判为排序
+        touchDragging = true;
+        hideQuicklinkMenu();
+        draggedId = item.id;
+        linkElem.classList.add('dragging');
+      }
+      if (!touchDragging) return;
       e.preventDefault();
-      e.stopPropagation();          // 别让 document 上的关闭逻辑立刻把菜单收掉
-      const r = editBtn.getBoundingClientRect();
-      showQuicklinkMenu(item, r.left, r.bottom + 4, false, linkElem);
-    });
+      const hit = document.elementFromPoint(t.clientX, t.clientY);
+      const target = hit && hit.closest ? hit.closest('.quicklink-item') : null;
+      if (target && target.dataset.id && target.dataset.id !== item.id) {
+        touchTarget = target;
+        updateDropIndicator(target, t.clientX);
+      }
+    }, { passive: false });
+
+    const endTouch = () => {
+      clearTimeout(touchTimer);
+      if (touchDragging && touchTarget) {
+        const after = touchTarget.getAttribute('data-drop') === 'after';
+        touchTarget.classList.remove('drag-over');
+        touchTarget.removeAttribute('data-drop');
+        moveQuicklink(item.id, touchTarget.dataset.id, after);
+      }
+      linkElem.classList.remove('dragging');
+      draggedId = null;
+      touchLongPress = false;
+      touchDragging = false;
+      touchTarget = null;
+    };
+    linkElem.addEventListener('touchend', endTouch, { passive: true });
+    linkElem.addEventListener('touchcancel', endTouch, { passive: true });
+
+
 
     return linkElem;
   }
@@ -5324,40 +5382,30 @@ function onDragLeave(e) {
   target.removeAttribute('data-drop');
 }
 
+// 把一项移动到目标位置：桌面拖拽与触屏长按拖动共用
+function moveQuicklink(sourceId, targetId, after) {
+  if (!sourceId || !targetId || sourceId === targetId) return false;
+  const draggedIndex = quicklinksList.findIndex(item => item.id === sourceId);
+  let targetIndex = quicklinksList.findIndex(item => item.id === targetId);
+  if (draggedIndex === -1 || targetIndex === -1) return false;
+
+  const [draggedItem] = quicklinksList.splice(draggedIndex, 1);
+  if (draggedIndex < targetIndex) targetIndex -= 1;
+  if (after) targetIndex += 1;
+  quicklinksList.splice(targetIndex, 0, draggedItem);
+
+  Storage.set('ntp_quicklinks_list', quicklinksList);
+  renderQuicklinks();
+  return true;
+}
+
 function onDrop(e) {
   e.preventDefault();
   const target = e.currentTarget;
   const after = target.getAttribute('data-drop') === 'after';
   target.classList.remove('drag-over');
   target.removeAttribute('data-drop');
-
-  const targetId = target.dataset.id;
-  if (!targetId || !draggedId || targetId === draggedId) {
-    return;
-  }
-
-  // 查找两个元素在数组中的位置
-  const draggedIndex = quicklinksList.findIndex(item => item.id === draggedId);
-  let targetIndex = quicklinksList.findIndex(item => item.id === targetId);
-
-  if (draggedIndex === -1 || targetIndex === -1) {
-    return;
-  }
-
-  const [draggedItem] = quicklinksList.splice(draggedIndex, 1);
-  // 取走后，其后的目标整体前移一位
-  if (draggedIndex < targetIndex) {
-    targetIndex -= 1;
-  }
-  // 落在目标项右半 → 插到它后面
-  if (after) {
-    targetIndex += 1;
-  }
-  quicklinksList.splice(targetIndex, 0, draggedItem);
-
-  // 持久化并重新渲染
-  Storage.set('ntp_quicklinks_list', quicklinksList);
-  renderQuicklinks();
+  moveQuicklink(draggedId, target.dataset.id, after);
 }
 // ========== 拖拽事件处理函数结束 ==========
 
