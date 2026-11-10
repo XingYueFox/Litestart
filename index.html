@@ -2213,7 +2213,7 @@
       border-radius: 8px;
       width: 420px;
       max-width: 90vw;
-      padding: 24px;
+      padding: 20px 20px 14px;
       box-sizing: border-box;
       box-shadow: var(--shadow16);
       color: var(--neutral-foreground-rest);
@@ -2224,7 +2224,7 @@
     .modal-header {
       font-size: 18px;
       font-weight: 600;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -2232,7 +2232,7 @@
 
     /* 模态框正文段落 */
     .modal-text {
-      padding: 8px 0 16px 0;
+      padding: 4px 0 12px 0;
       color: var(--neutral-foreground-rest);
       font-size: 14px;
       line-height: 1.6;
@@ -2425,7 +2425,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 24px;
+      margin-top: 16px;
     }
 
     .modal-footer-right {
@@ -3084,11 +3084,6 @@
             <div style="padding: 12px;">
 
             <!-- 下方菜单项 -->
-             <!-- 添加快速链接（与快速链接区的"添加"按钮同功能，始终显示） -->
-            <div class="waffle-menu-item" id="btn-add-quicklink" style="margin-bottom: 4px;">
-              <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="128" height="128"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
-              <span data-i18n="addQuicklink">添加快速链接</span>
-            </div>
              <!-- 管理配置文件 -->
             <div class="waffle-menu-item" id="btn-manage-profiles" style="margin-bottom: 4px;">
               <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="128" height="128"><path d="M287-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM80-240v-32q0-33 17-62t47-44q58-29 120-45.5T391-440q17 0 28.5 12t11.5 29q0 17-11.5 28.5T391-359q-56 0-108.5 14T180-306q-10 5-15 14t-5 20v32h231q17 0 28.5 11.5T431-200q0 17-11.5 28.5T391-160H160q-33 0-56.5-23.5T80-240Zm554 88-6-28q-12-5-22.5-10.5T584-204l-29 9q-13 4-25.5-1T510-212l-8-14q-7-12-5-26t13-23l22-19q-2-14-2-26t2-26l-22-19q-11-9-13-22.5t5-25.5l9-15q7-11 19-16t25-1l29 9q11-8 21.5-13.5T628-460l6-29q3-14 13.5-22.5T672-520h16q14 0 24.5 9t13.5 23l6 28q12 5 22.5 11t21.5 15l27-9q14-5 27 0t20 17l8 14q7 12 5 26t-13 23l-22 19q2 12 2 25t-2 25l22 19q11 9 13 22.5t-5 25.5l-9 15q-7 11-19 16t-25 1l-29-9q-11 8-21.5 13.5T732-180l-6 29q-3 14-13.5 22.5T688-120h-16q-14 0-24.5-9T634-152Zm102.5-111.5Q760-287 760-320t-23.5-56.5Q713-400 680-400t-56.5 23.5Q600-353 600-320t23.5 56.5Q647-240 680-240t56.5-23.5Zm-280-320Q480-607 480-640t-23.5-56.5Q433-720 400-720t-56.5 23.5Q320-673 320-640t23.5 56.5Q367-560 400-560t56.5-23.5ZM400-640Zm12 400Z"/></svg>
@@ -3493,7 +3488,7 @@
                     </div>
                   </div>
                   <div class="setting-row" style="margin-top: 12px;">
-                    <div class="setting-label-group" data-i18n="showAddButton">在快速链接区域显示添加按钮</div>
+                    <div class="setting-label-group" data-i18n="showAddButton">显示添加按钮</div>
                     <div class="switch-container">
                       <label class="switch">
                         <input type="checkbox" id="toggle-add-button-switch" checked>
@@ -3711,13 +3706,13 @@
 
     <!-- 空白处右键菜单 -->
     <div class="context-menu" id="background-menu" role="menu">
+      <button type="button" class="context-menu-item" data-action="add-quicklink" role="menuitem">
+        <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
+        <span data-i18n="newQuicklink">新建快速链接</span>
+      </button>
       <button type="button" class="context-menu-item" data-action="edit-background" role="menuitem">
         <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-204l-80-80-60 60-160-160-260 260v124Zm120-320q25 0 42.5-17.5T380-580q0-25-17.5-42.5T320-640q-25 0-42.5 17.5T260-580q0 25 17.5 42.5T320-520Z"/></svg>
         <span data-i18n="editBackgroundEntry">编辑背景</span>
-      </button>
-      <button type="button" class="context-menu-item" data-action="add-quicklink" role="menuitem">
-        <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
-        <span data-i18n="addlink">添加</span>
       </button>
     </div>
 
@@ -3891,11 +3886,12 @@
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="addButtonHiddenTitle">添加按钮已隐藏</div>
         <div class="modal-text">
-          <p style="margin: 0;" data-i18n-html="addButtonHiddenDesc">添加按钮已隐藏，请在 页面左上角菜单 中添加快速链接。<br>也可在 设置 - 编辑页面布局 中重新开启此按钮。</p>
+          <p style="margin: 0;" data-i18n-html="addButtonHiddenDesc">添加按钮已隐藏，可右键空白处新建快速链接。<br>也可在 设置 - 编辑页面布局 中重新开启此按钮。</p>
         </div>
         <div class="modal-footer">
           <div class="modal-footer-right">
-            <button type="button" id="btn-add-button-hidden-ok" class="btn btn-primary" data-i18n="ok">确定</button>
+            <button type="button" id="btn-add-button-hidden-mute" class="btn" data-i18n="dontRemindAgain">不再提醒</button>
+            <button type="button" id="btn-add-button-hidden-ok" class="btn btn-primary" data-i18n="gotIt">好</button>
           </div>
         </div>
       </div>

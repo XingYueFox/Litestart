@@ -184,6 +184,9 @@ const i18nData = {
     enhancedBlur: '衬底启用模糊',
     bgVignette: '深色模式边角晕影',
     editBackgroundEntry: '编辑背景',
+    newQuicklink: '新建快速链接',
+    dontRemindAgain: '不再提醒',
+    gotIt: '好',
     enhancedBlurTip: '此选项可能会对设备功耗有轻微影响。',
     addlink: '添加',
     addQuicklink: '添加快速链接',
@@ -227,10 +230,10 @@ const i18nData = {
     layoutHanging: '悬挂',
     layoutCentered: '居中',
     showLogo: '显示 Logo',
-    showAddButton: '在快速链接区域显示添加按钮',
+    showAddButton: '显示添加按钮',
     hideAddButton: '隐藏此按钮',
     addButtonHiddenTitle: '添加按钮已隐藏',
-    addButtonHiddenDesc: '添加按钮已隐藏，请在 页面左上角菜单 中添加快速链接。<br>也可在 设置 - 编辑页面布局 中重新开启此按钮。',
+    addButtonHiddenDesc: '添加按钮已隐藏，可右键空白处新建快速链接。<br>也可在 设置 - 编辑页面布局 中重新开启此按钮。',
     ok: '确定',
 
     //自定义搜索引擎图片部分
@@ -386,6 +389,9 @@ const i18nData = {
     enhancedBlur: '襯底啟用模糊',
     bgVignette: '深色模式邊角暈影',
     editBackgroundEntry: '編輯背景',
+    newQuicklink: '新建快速連結',
+    dontRemindAgain: '不再提醒',
+    gotIt: '好',
     enhancedBlurTip: '此選項可能會對裝置耗電有輕微影響。',
     addlink: '新增',
     addQuicklink: '新增快速連結',
@@ -415,10 +421,10 @@ const i18nData = {
     layoutHanging: '懸掛',
     layoutCentered: '居中',
     showLogo: '顯示 Logo',
-    showAddButton: '在快速連結區域顯示新增按鈕',
+    showAddButton: '顯示新增按鈕',
     hideAddButton: '隱藏此按鈕',
     addButtonHiddenTitle: '新增按鈕已隱藏',
-    addButtonHiddenDesc: '新增按鈕已隱藏，請在 頁面左上角選單 中新增快速連結。<br>也可在 設定 - 編輯頁面佈局 中重新開啟此按鈕。',
+    addButtonHiddenDesc: '新增按鈕已隱藏，可右鍵空白處新增快速連結。<br>也可在 設定 - 編輯頁面佈局 中重新開啟此按鈕。',
     ok: '確定',
     customTitleImage: '自訂標題圖片',
     selectImageFile: '選擇圖片',
@@ -573,6 +579,9 @@ const i18nData = {
     enhancedBlur: 'Enable backdrop blur',
     bgVignette: 'Dark mode vignette',
     editBackgroundEntry: 'Edit background',
+    newQuicklink: 'New quicklink',
+    dontRemindAgain: "Don't remind again",
+    gotIt: 'OK',
     enhancedBlurTip: 'This option may slightly increase power consumption.',
     addlink: 'Add',
     addQuicklink: 'Add quicklink',
@@ -602,10 +611,10 @@ const i18nData = {
     layoutHanging: 'Hanging',
     layoutCentered: 'Centered',
     showLogo: 'Show logo',
-    showAddButton: 'Show add button in quicklinks area',
+    showAddButton: 'Show add button',
     hideAddButton: 'Hide this button',
     addButtonHiddenTitle: 'Add button hidden',
-    addButtonHiddenDesc: 'The add button is hidden. Create quicklinks from the menu at the top-left corner.<br>You can also re-enable it in Settings - Edit Layout.',
+    addButtonHiddenDesc: 'The add button is hidden. Right-click the background to create a quicklink.<br>You can also re-enable it in Settings - Edit Layout.',
     ok: 'OK',
     customTitleImage: 'Custom Title Image',
     selectImageFile: 'Select Image',
@@ -761,6 +770,9 @@ const i18nData = {
     enhancedBlur: '下地のぼかしを有効化',
     bgVignette: 'ダークモードのビネット',
     editBackgroundEntry: '背景を編集',
+    newQuicklink: 'クイックリンクを新規作成',
+    dontRemindAgain: '今後表示しない',
+    gotIt: 'OK',
     enhancedBlurTip: 'このオプションは消費電力にわずかな影響を与える可能性があります。',
     addlink: '追加',
     addQuicklink: 'クイックリンクを追加',
@@ -790,10 +802,10 @@ const i18nData = {
     layoutHanging: 'ハンギング',
     layoutCentered: '中央',
     showLogo: 'ロゴを表示',
-    showAddButton: 'クイックリンクに追加ボタンを表示',
+    showAddButton: '追加ボタンを表示',
     hideAddButton: 'このボタンを非表示',
     addButtonHiddenTitle: '追加ボタンを非表示にしました',
-    addButtonHiddenDesc: '追加ボタンは非表示です。左上のメニューからクイックリンクを作成してください。<br>「設定 - レイアウトを編集」で再度有効にできます。',
+    addButtonHiddenDesc: '追加ボタンは非表示です。背景を右クリックしてクイックリンクを作成できます。<br>「設定 - レイアウトを編集」で再度有効にできます。',
     ok: 'OK',
     customTitleImage: 'カスタムタイトル画像',
     selectImageFile: '画像を選択',
@@ -947,6 +959,9 @@ const i18nData = {
     enhancedBlur: 'Размытие подложки',
     bgVignette: 'Виньетка тёмной темы',
     editBackgroundEntry: 'Изменить фон',
+    newQuicklink: 'Создать быструю ссылку',
+    dontRemindAgain: 'Больше не напоминать',
+    gotIt: 'Хорошо',
     enhancedBlurTip: 'Эта опция может незначительно увеличить энергопотребление.',
     addlink: 'Добавить',
     addQuicklink: 'Добавить быструю ссылку',
@@ -976,10 +991,10 @@ const i18nData = {
     layoutHanging: 'Подвесной',
     layoutCentered: 'По центру',
     showLogo: 'Показывать логотип',
-    showAddButton: 'Кнопка добавления в быстрых ссылках',
+    showAddButton: 'Показать кнопку добавления',
     hideAddButton: 'Скрыть кнопку',
     addButtonHiddenTitle: 'Кнопка добавления скрыта',
-    addButtonHiddenDesc: 'Кнопка добавления скрыта. Создавайте быстрые ссылки через меню в левом верхнем углу.<br>Её можно снова включить в разделе «Настройки — Изменить макет».',
+    addButtonHiddenDesc: 'Кнопка добавления скрыта. Создайте быструю ссылку правым щелчком по фону.<br>Её можно снова включить в разделе «Настройки — Изменить макет».',
     ok: 'ОК',
     // ...
     bing: 'Bing',
@@ -5528,6 +5543,13 @@ function onDrop(e) {
     menuEl?.classList.remove('active');
   }
   // 空白处右键：屏蔽浏览器菜单，改为页面自己的菜单
+  // 右键与长按都不接管的交互区域
+  const contextMenuExclude = [
+    '#header', '#popover-settings', '#popover-waffle',
+    '#search-container', 'ntp-quicklinks', '.quicklink-item',
+    '.modal-overlay', '.modal-dialog', '.context-menu'
+  ].join(',');
+
   document.addEventListener('contextmenu', (e) => {
     if (e.defaultPrevented) return;                       // 快速链接已自行处理
     const target = e.target instanceof Element ? e.target : null;
@@ -5537,27 +5559,71 @@ function onDrop(e) {
     // 其余位置一律屏蔽浏览器菜单
     e.preventDefault();
     // 交互区域不弹出页面菜单，只有背景与空白处才弹
-    const interactive = [
-      '#header', '#popover-settings', '#popover-waffle',
-      '#search-container', 'ntp-quicklinks', '.quicklink-item',
-      '.modal-overlay', '.modal-dialog', '.context-menu'
-    ].join(',');
-    if (target.closest(interactive)) return;
+    if (target.closest(contextMenuExclude)) return;
     hideQuicklinkMenu();
     showContextMenu(backgroundMenu, e.clientX, e.clientY);
   });
+
+  // 空白处长按：触屏上与右键等价，呼出同一个菜单
+  const BACKGROUND_LONG_PRESS = 500;
+  const BACKGROUND_MOVE_THRESHOLD = 10;
+  let backgroundTouchTimer = 0;
+  let backgroundTouchX = 0;
+  let backgroundTouchY = 0;
+
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    const target = e.target instanceof Element ? e.target : null;
+    if (!target) return;
+    if (target.closest('input, textarea, select, [contenteditable="true"]')) return;
+    if (target.closest(contextMenuExclude)) return;
+    const t = e.touches[0];
+    backgroundTouchX = t.clientX;
+    backgroundTouchY = t.clientY;
+    clearTimeout(backgroundTouchTimer);
+    backgroundTouchTimer = setTimeout(() => {
+      if (navigator.vibrate) navigator.vibrate(10);
+      hideQuicklinkMenu();
+      showContextMenu(backgroundMenu, backgroundTouchX, backgroundTouchY);
+    }, BACKGROUND_LONG_PRESS);
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    if (!t) return;
+    if (Math.hypot(t.clientX - backgroundTouchX, t.clientY - backgroundTouchY) > BACKGROUND_MOVE_THRESHOLD) {
+      clearTimeout(backgroundTouchTimer);
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', () => {
+    clearTimeout(backgroundTouchTimer);
+  }, { passive: true });
+
+  document.addEventListener('touchcancel', () => {
+    clearTimeout(backgroundTouchTimer);
+  }, { passive: true });
+
   // 背景菜单的动作
   backgroundMenu?.addEventListener('click', (e) => {
     const btn = e.target instanceof Element ? e.target.closest('.context-menu-item') : null;
     if (!btn) return;
+    // 阻止冒泡到 document 的点击处理，否则刚打开的面板会被立刻收起
+    e.stopPropagation();
     const action = btn.dataset.action;
     hideContextMenu(backgroundMenu);
     if (action === 'edit-background') {
-      // 右键时设置面板可能没打开，先展开再切到背景页
-      if (!popoverSettings?.classList.contains('active')) btnSettings?.click();
-      showSettingsPage('bg');
-      renderWallpaper();
-      reapplyLanguage();
+      const wasOpen = !!popoverSettings?.classList.contains('active');
+      // 面板未展开时先触发打开，让展开过渡完整播放
+      if (!wasOpen) btnSettings?.click();
+      const applyBackgroundPage = () => {
+        showSettingsPage('bg');
+        renderWallpaper();
+        reapplyLanguage();
+      };
+      // 面板刚展开时延后切页，避免切页的高度处理打断展开动画
+      if (wasOpen) applyBackgroundPage();
+      else setTimeout(applyBackgroundPage, 120);
     } else if (action === 'add-quicklink') {
       openAddModal();
     }
@@ -5644,17 +5710,28 @@ function onDrop(e) {
   // 隐藏添加按钮：等同于关闭设置中的开关，并给出重新开启的入口说明
   const modalAddButtonHidden = document.getElementById('modal-add-button-hidden');
   const btnAddButtonHiddenOk = document.getElementById('btn-add-button-hidden-ok');
+  const btnAddButtonHiddenMute = document.getElementById('btn-add-button-hidden-mute');
 
+  // 隐藏添加按钮后的说明弹窗；用户选择"不再提醒"后不再弹出
+  const ADD_BUTTON_NOTICE_KEY = 'ntp_add_button_notice_muted';
   function hideQuicklinkAddButton() {
     showAddButton = false;
     Storage.set('ntp_show_add_button', false);
     if (toggleAddButtonSwitch) toggleAddButtonSwitch.checked = false;
     renderQuicklinks(true);
     reapplyLanguage();
-    modalAddButtonHidden?.classList.add('active');
+    if (!Storage.get(ADD_BUTTON_NOTICE_KEY, false)) {
+      modalAddButtonHidden?.classList.add('active');
+    }
   }
 
   btnAddButtonHiddenOk?.addEventListener('click', () => {
+    modalAddButtonHidden?.classList.remove('active');
+  });
+
+  btnAddButtonHiddenMute?.addEventListener('click', () => {
+    // 记住选择：此后隐藏添加按钮不再弹出说明
+    Storage.set(ADD_BUTTON_NOTICE_KEY, true);
     modalAddButtonHidden?.classList.remove('active');
   });
   modalAddButtonHidden?.addEventListener('click', (e) => {
@@ -5811,11 +5888,6 @@ function onDrop(e) {
     setTimeout(() => inputName?.focus(), 50);
   }
 
-  // 左上角菜单里的"添加快速链接"：与快速链接区的"添加"按钮同功能，始终可用
-  document.getElementById('btn-add-quicklink')?.addEventListener('click', () => {
-    popoverWaffle?.classList.remove('active');
-    openAddModal();
-  });
 
   // 打开"编辑快速链接"弹窗，填充当前数据并显示删除按钮
   function openEditModal(item) {
