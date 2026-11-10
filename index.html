@@ -283,6 +283,18 @@
       transition: background-color 0.08s ease;
     }
 
+    /* 悬停或菜单展开时恢复完整圆角，与相邻的时间显示分开 */
+    body.bg-enabled[data-enhanced-visibility="true"] #waffle:hover,
+    body.bg-enabled[data-enhanced-visibility="true"] #waffle.active {
+      border-radius: 8px;
+    }
+
+    /* 九点菜单与时间显示相邻：相接的一侧内角收小 */
+    body.bg-enabled[data-enhanced-visibility="true"] #waffle {
+      border-radius: 8px 3px 3px 8px;
+      transition: background-color 0.08s ease, border-radius 0.12s ease;
+    }
+
     body.bg-enabled[data-enhanced-visibility="true"] .header-button:hover {
       background-color: var(--enhanced-visibility-bg-hover);
     }
@@ -295,7 +307,7 @@
 
     body.bg-enabled[data-enhanced-visibility="true"] #time-display {
       background-color: var(--enhanced-visibility-bg);
-      border-radius: 8px;
+      border-radius: 3px 8px 8px 3px;
       padding: 4px 10px;
       transition: background-color 0.08s ease;
     }
@@ -443,7 +455,7 @@
 
     /* 设置弹窗样式 */
     #popover-settings {
-      right: 26px;
+      right: 0;
       width: 320px;
       padding: 0;
       background-color: var(--settings-panel-bg);
@@ -669,14 +681,9 @@
       text-overflow: ellipsis;
     }
 
-    /* 含下拉的整行：负外边距左右顶至卡片边框，保持整行可点击 */
+    /* 含下拉的整行：整行可点击，悬停背景与内容同宽 */
+    /* 可点击的下拉整行：盒模型由 .setting-row 提供 */
     .setting-row:has(> .custom-select-wrapper) {
-      width: calc(100% + 24px);
-      box-sizing: border-box;
-      margin: -4px -12px;
-      padding: 6px 12px;
-      min-height: 36px;
-      border-radius: 0;
       cursor: pointer;
       transition: background-color 0.08s ease;
     }
@@ -720,9 +727,8 @@
     .custom-select-dropdown {
       position: fixed;
       background-color: var(--fill-popup-color);
-      /* 纯平风格：无描边，1px 透明边框占位以维持尺寸（content-box） */
-      border: 1px solid transparent;
       border-radius: 6px;
+      padding: 6px 0;
       box-shadow: var(--dropdown-shadow);
       z-index: 2000;
       max-height: 260px;
@@ -784,11 +790,17 @@
     }
 
     /* 设置行 */
+    /* 设置行：容器基类，所有行共用同一套盒模型 */
     .setting-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      min-height: 28px;
+      box-sizing: border-box;
+      min-height: 40px;
+      padding: 0 12px;
+      margin: -4px;
+      width: calc(100% + 8px);
+      border-radius: 4px;
     }
 
     .setting-label-group {
@@ -930,6 +942,7 @@
       border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--input-bg);        /* 凹槽底色 */
+      margin: 0 -4px -4px;
     }
 
     /* 主题滑块若紧跟在同一卡片的颜色分块之后，留出 10px 空隙（与卡片间距一致）。
@@ -1039,7 +1052,7 @@
       border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--input-bg);
-      margin-top: 10px;
+      margin: 10px -4px -4px;
     }
 
     /* 预设的滑块：与主题模式同一套（容器 6px − padding 3px = 3px 圆角） */
@@ -1196,34 +1209,42 @@
     /* 可点击跳转的设置行：标题与二级页入口合并，右侧 chevron 指向子级。
        注意：button 即使 display:flex 也是收缩宽度，需显式 calc 撑满；
        负外边距抵消卡片 12px 内边距，hover 背景方形顶至卡片左右边框 */
+    /* setting-row 内嵌的跳转按钮：抵消父级内边距，悬停块左缘与独立行一致 */
+    /* 嵌套在设置行内的跳转按钮：撑满行高，盒模型与其它可点击行一致 */
+    .setting-row > .settings-nav-row {
+      flex: 1 1 auto;
+      width: auto;
+      align-self: stretch;
+      margin: 0 0 0 -12px;
+      padding: 0 12px;
+      border-radius: 4px;
+      background-color: transparent;
+    }
+
+    .setting-row > .settings-nav-row:hover {
+      background-color: var(--neutral-fill-rest);
+    }
+
+    /* 跳转按钮：独立成行时与设置行同盒模型 */
     .settings-nav-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: calc(100% + 24px);
       box-sizing: border-box;
       min-width: 0;
-      min-height: 36px;
-      padding: 6px 12px;
-      margin: -4px -12px;
+      min-height: 40px;
+      padding: 0 12px;
+      margin: -4px;
+      width: calc(100% + 8px);
       border: none;
       background-color: transparent;
-      /* 不用圆角：hover 背景方形顶格铺满整行宽度 */
-      border-radius: 0;
+      border-radius: 4px;
       color: var(--settings-text-primary);
       font-size: 13px;
       font-weight: 500;
       text-align: start;
       cursor: pointer;
       transition: background-color 0.08s ease;
-    }
-
-    /* 在 flex 设置行内（编辑背景）：宽度交给 flex 分配，
-       左侧负边距保持顶至卡片左缘，右侧止于分隔线 */
-    .setting-row .settings-nav-row {
-      width: auto;
-      flex: 1 1 auto;
-      margin-right: 0;
     }
 
     /* 整行悬停底色：负外边距让底色铺满卡片宽度 */
@@ -1463,13 +1484,28 @@
       margin-bottom: 12px;     /* 版本/署名行与链接行之间的间距 */
     }
 
+    /* 链接：默认无下划线，悬停显示小圆角衬底 */
+    a {
+      text-decoration: none;
+      border-radius: 4px;
+      padding: 1px 3px;
+      margin: -1px -3px;
+      transition: background-color 0.08s ease;
+    }
+
+    a:hover {
+      text-decoration: none;
+      background-color: var(--neutral-fill-hover);
+    }
+
     .settings-footer-links a {
       color: var(--settings-text-secondary);
       text-decoration: none;
     }
 
     .settings-footer-links a:hover {
-      text-decoration: underline;
+      text-decoration: none;
+      background-color: var(--neutral-fill-hover);
     }
 
     /* 页脚两行（链接行 + 免责声明）统一成次要色并调淡。
@@ -1634,8 +1670,7 @@
     }
 
     #fakebox #searchbutton {
-      fill: none;
-      stroke: var(--neutral-foreground-secondary);
+      fill: var(--neutral-foreground-secondary);
       opacity: 0.85;
       flex-shrink: 0;
     }
@@ -1749,6 +1784,8 @@
       display: flex;
       align-items: center;
       padding: 8px 16px;
+      margin: 0 6px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 15px;
       color: var(--neutral-foreground-rest);
@@ -1810,10 +1847,24 @@
       transition: opacity 0.12s ease, visibility 0s linear 0s;
     }
 
-    /* 覆盖全局 button:hover 的底色，按钮自身不提供任何悬停/按下反馈 */
+    /* 悬停与按下时显示圆形淡填充 */
     .suggestion-fill:hover,
     .suggestion-fill:active {
-      background-color: transparent;
+      background-color: var(--neutral-fill-hover);
+    }
+
+    /* 历史项的删除按钮：与填入按钮同尺寸同色，仅语义不同 */
+    .suggestion-delete {
+      margin-left: -6px;
+    }
+
+    /* 多个操作按钮并排时只有最后一个贴住右边缘 */
+    .suggestion-item .suggestion-fill {
+      margin-right: 0;
+    }
+
+    .suggestion-item .suggestion-fill:last-of-type {
+      margin-right: -8px;
     }
 
     /* 图标为单一路径填充绘制，避免描边接缝；此处清掉列表统一的 fill/opacity 覆盖 */
@@ -1842,10 +1893,15 @@
       cursor: pointer;
       user-select: none;
       font-weight: 500;
+      border-radius: 4px;
+      padding: 1px 3px;
+      margin: -1px -3px;
+      transition: background-color 0.08s ease;
     }
 
     .clear-history-btn:hover {
-      text-decoration: underline;
+      text-decoration: none;
+      background-color: var(--neutral-fill-hover);
     }
 
     /* 快速链接列表 */
@@ -1995,7 +2051,7 @@
       min-width: 184px;
       /* 容器不留内边距：项的底色可直接铺到菜单左右边缘，
          上下同样顶到菜单边（圆角由 overflow:hidden 裁切） */
-      padding: 0;
+      padding: 6px 0;
       border: none;
       border-radius: 6px;
       background-color: var(--fill-popup-color);
@@ -2014,8 +2070,8 @@
 
     /* 每项四边等宽：上下统一，左右加宽一档（内容离边缘更远、底色仍顶到菜单边缘） */
     .quicklink-menu-item {
-      --ql-menu-item-pad-y: 10px;
-      --ql-menu-item-pad-x: 18px;
+      --ql-menu-item-pad-y: 8px;
+      --ql-menu-item-pad-x: 12px;
       display: flex;
       align-items: center;
       justify-content: flex-start;   /* 图标与文字一律靠左 */
@@ -2478,7 +2534,7 @@
       align-items: flex-start;
       justify-content: center;
       gap: 2px;
-      margin-left: 6px;
+      margin-left: 3px;
       padding: 0 4px;
       color: var(--neutral-foreground-rest);
       user-select: none;
@@ -2578,7 +2634,7 @@
 
     /* 个人资料菜单配置 */
     #popover-waffle {
-    left: 22px;
+    left: 0;
     width: 340px;
     padding: 0;
     background-color: var(--settings-panel-bg);
@@ -2607,9 +2663,9 @@
 
     .waffle-menu-item svg {
     flex-shrink: 0;
-    color: var(--settings-text-secondary);
-    width: 20px;
-    height: 20px;
+    color: var(--settings-text-primary);
+    width: 22px;
+    height: 22px;
     }
 
     /* ===== 管理配置文件：操作选择列表 ===== */
@@ -2632,7 +2688,7 @@
       gap: 12px;
       padding: 11px 12px 11px 22px;
       border: 1px solid transparent;
-      border-radius: 6px;
+      border-radius: 4px;
       background-color: transparent;
       color: var(--settings-text-primary);
       font-size: 14px;
@@ -2817,7 +2873,7 @@
       position: fixed;
       z-index: 2100;                   /* 高于模态框（1000）与自定义下拉（2000） */
       min-width: 132px;
-      padding: 0;
+      padding: 6px 0;
       box-sizing: border-box;
       border: none;
       border-radius: 6px;
@@ -2994,10 +3050,7 @@
       <div id="header">
         <div>
           <button id="waffle" class="header-button" type="button" aria-label="Litestart~" title="Litestart~">
-            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 17a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 17a2 2 0 110 4 2 2 0 010-4zm7-7a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 10a2 2 0 110 4 2 2 0 010-4zm7-7a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 3a2 2 0 110 4 2 2 0 010-4z">
-              </path>
-            </svg>
+            <svg fill="currentColor" aria-hidden="true" width="24" height="24" viewBox="0 -960 960 960" xmlns="http://www.w3.org/2000/svg"><path d="M183.5-183.5Q160-207 160-240t23.5-56.5Q207-320 240-320t56.5 23.5Q320-273 320-240t-23.5 56.5Q273-160 240-160t-56.5-23.5Zm240 0Q400-207 400-240t23.5-56.5Q447-320 480-320t56.5 23.5Q560-273 560-240t-23.5 56.5Q513-160 480-160t-56.5-23.5Zm240 0Q640-207 640-240t23.5-56.5Q687-320 720-320t56.5 23.5Q800-273 800-240t-23.5 56.5Q753-160 720-160t-56.5-23.5Zm-480-240Q160-447 160-480t23.5-56.5Q207-560 240-560t56.5 23.5Q320-513 320-480t-23.5 56.5Q273-400 240-400t-56.5-23.5Zm240 0Q400-447 400-480t23.5-56.5Q447-560 480-560t56.5 23.5Q560-513 560-480t-23.5 56.5Q513-400 480-400t-56.5-23.5Zm240 0Q640-447 640-480t23.5-56.5Q687-560 720-560t56.5 23.5Q800-513 800-480t-23.5 56.5Q753-400 720-400t-56.5-23.5Zm-480-240Q160-687 160-720t23.5-56.5Q207-800 240-800t56.5 23.5Q320-753 320-720t-23.5 56.5Q273-640 240-640t-56.5-23.5Zm240 0Q400-687 400-720t23.5-56.5Q447-800 480-800t56.5 23.5Q560-753 560-720t-23.5 56.5Q513-640 480-640t-56.5-23.5Zm240 0Q640-687 640-720t23.5-56.5Q687-800 720-800t56.5 23.5Q800-753 800-720t-23.5 56.5Q753-640 720-640t-56.5-23.5Z"/></svg>
           </button>
 
           <!-- 时间显示：与菜单按钮同一行 -->
@@ -3015,20 +3068,17 @@
             <!-- 下方菜单项 -->
              <!-- 添加快速链接（与快速链接区的"添加"按钮同功能，始终显示） -->
             <div class="waffle-menu-item" id="btn-add-quicklink" style="margin-bottom: 4px;">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="128" height="128">
-                <path d="M9.25 5a.75.75 0 0 1 .11 1.492l-.11.008H7a3.5 3.5 0 0 0-.206 6.994L7 13.5h2.25a.75.75 0 0 1 .11 1.492L9.25 15H7a5 5 0 0 1-.25-9.994L7 5zM17 5a5 5 0 0 1 4.43 7.322a6.5 6.5 0 0 0-1.294-.765a3.5 3.5 0 0 0-2.93-5.05L17 6.499h-2.25a.75.75 0 0 1-.11-1.492L14.75 5zM7 9.25h10a.75.75 0 0 1 .102 1.493L17 10.75H7a.75.75 0 0 1-.102-1.493zm16 8.25a5.5 5.5 0 1 0-11 0a5.5 5.5 0 0 0 11 0m-5 .5l.001 2.503a.5.5 0 1 1-1 0V18h-2.505a.5.5 0 0 1 0-1H17v-2.5a.5.5 0 1 1 1 0V17h2.497a.5.5 0 0 1 0 1z"/></svg>
+              <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="128" height="128"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
               <span data-i18n="addQuicklink">添加快速链接</span>
             </div>
              <!-- 管理配置文件 -->
             <div class="waffle-menu-item" id="btn-manage-profiles" style="margin-bottom: 4px;">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="128" height="128">
-                <path d="M1 3.25C1 2.56 1.56 2 2.249 2h.5c.69 0 1.248.56 1.248 1.25v9.495c0 .69-.559 1.25-1.248 1.25h-.5A1.25 1.25 0 0 1 1 12.744zM2.249 3a.25.25 0 0 0-.25.25v9.495c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25V3.249a.25.25 0 0 0-.25-.25zm2.748.25c0-.69.559-1.25 1.249-1.25h.5c.689 0 1.248.56 1.248 1.25v9.495c0 .69-.56 1.25-1.249 1.25h-.5a1.25 1.25 0 0 1-1.248-1.25zM6.246 3a.25.25 0 0 0-.25.25v9.495c0 .138.112.25.25.25h.5a.25.25 0 0 0 .249-.25V3.249a.25.25 0 0 0-.25-.25zm5.726 1.777a1.25 1.25 0 0 0-1.57-.713l-.583.204a1.25 1.25 0 0 0-.746 1.645l2.937 7.304c.249.62.94.933 1.571.713l.582-.204a1.25 1.25 0 0 0 .746-1.646zm-1.24.23a.25.25 0 0 1 .313.143l2.937 7.303a.25.25 0 0 1-.149.33l-.582.203a.25.25 0 0 1-.314-.142L10 5.54a.25.25 0 0 1 .149-.329z"/></svg>
+              <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="128" height="128"><path d="M287-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM80-240v-32q0-33 17-62t47-44q58-29 120-45.5T391-440q17 0 28.5 12t11.5 29q0 17-11.5 28.5T391-359q-56 0-108.5 14T180-306q-10 5-15 14t-5 20v32h231q17 0 28.5 11.5T431-200q0 17-11.5 28.5T391-160H160q-33 0-56.5-23.5T80-240Zm554 88-6-28q-12-5-22.5-10.5T584-204l-29 9q-13 4-25.5-1T510-212l-8-14q-7-12-5-26t13-23l22-19q-2-14-2-26t2-26l-22-19q-11-9-13-22.5t5-25.5l9-15q7-11 19-16t25-1l29 9q11-8 21.5-13.5T628-460l6-29q3-14 13.5-22.5T672-520h16q14 0 24.5 9t13.5 23l6 28q12 5 22.5 11t21.5 15l27-9q14-5 27 0t20 17l8 14q7 12 5 26t-13 23l-22 19q2 12 2 25t-2 25l22 19q11 9 13 22.5t-5 25.5l-9 15q-7 11-19 16t-25 1l-29-9q-11 8-21.5 13.5T732-180l-6 29q-3 14-13.5 22.5T688-120h-16q-14 0-24.5-9T634-152Zm102.5-111.5Q760-287 760-320t-23.5-56.5Q713-400 680-400t-56.5 23.5Q600-353 600-320t23.5 56.5Q647-240 680-240t56.5-23.5Zm-280-320Q480-607 480-640t-23.5-56.5Q433-720 400-720t-56.5 23.5Q320-673 320-640t23.5 56.5Q367-560 400-560t56.5-23.5ZM400-640Zm12 400Z"/></svg>
               <span data-i18n="manageProfiles">管理配置文件</span>
             </div>
              <!-- 关于 -->
             <div class="waffle-menu-item" id="btn-about">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="128" height="128">
-                <path d="M8.499 7.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm.25-2a.749.749 0 1 1-1.499 0a.749.749 0 0 1 1.498 0M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1M2 8a6 6 0 1 1 12 0A6 6 0 0 1 2 8"/></svg>
+              <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="128" height="128"><path d="M508.5-291.5Q520-303 520-320v-160q0-17-11.5-28.5T480-520q-17 0-28.5 11.5T440-480v160q0 17 11.5 28.5T480-280q17 0 28.5-11.5Zm0-320Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
               <span data-i18n="aboutTitle">关于 Litestart</span>
             </div>
             </div>
@@ -3037,10 +3087,7 @@
 
         <div id="header-right">
           <button id="settings" class="header-button" type="button" aria-label="设置" title="设置" data-i18n-title="settingsTitle">
-            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12.01 2.25c.74 0 1.47.1 2.18.25.32.07.55.33.59.65l.17 1.53a1.38 1.38 0 001.92 1.11l1.4-.61c.3-.13.64-.06.85.17a9.8 9.8 0 012.2 3.8c.1.3 0 .63-.26.82l-1.24.92a1.38 1.38 0 000 2.22l1.24.92c.26.19.36.52.27.82a9.8 9.8 0 01-2.2 3.8.75.75 0 01-.85.17l-1.4-.62a1.38 1.38 0 00-1.93 1.12l-.17 1.52a.75.75 0 01-.58.65 9.52 9.52 0 01-4.4 0 .75.75 0 01-.57-.65l-.17-1.52a1.38 1.38 0 00-1.93-1.11l-1.4.62a.75.75 0 01-.85-.18 9.8 9.8 0 01-2.2-3.8c-.1-.3 0-.63.27-.82l1.24-.92a1.38 1.38 0 000-2.22l-1.24-.92a.75.75 0 01-.28-.82 9.8 9.8 0 012.2-3.8c.23-.23.57-.3.86-.17l1.4.62c.4.17.86.15 1.25-.08.38-.22.63-.6.68-1.04l.17-1.53a.75.75 0 01.58-.65c.72-.16 1.45-.24 2.2-.25zm0 1.5c-.45 0-.9.04-1.35.12l-.11.97a2.89 2.89 0 01-4.02 2.33l-.9-.4A8.3 8.3 0 004.28 9.1l.8.59a2.88 2.88 0 010 4.64l-.8.59a8.3 8.3 0 001.35 2.32l.9-.4a2.88 2.88 0 014.02 2.32l.1.99c.9.15 1.8.15 2.7 0l.1-.99a2.88 2.88 0 014.02-2.32l.9.4a8.3 8.3 0 001.36-2.32l-.8-.59a2.88 2.88 0 010-4.64l.8-.59a8.3 8.3 0 00-1.35-2.32l-.9.4a2.88 2.88 0 01-4.02-2.32l-.11-.98c-.45-.08-.9-.11-1.34-.12zM12 8.25a3.75 3.75 0 110 7.5 3.75 3.75 0 010-7.5zm0 1.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z">
-              </path>
-            </svg>
+            <svg fill="currentColor" aria-hidden="true" width="24" height="24" viewBox="0 -960 960 960" xmlns="http://www.w3.org/2000/svg"><path d="M433-80q-27 0-46.5-18T363-142l-9-66q-13-5-24.5-12T307-235l-62 26q-25 11-50 2t-39-32l-47-82q-14-23-8-49t27-43l53-40q-1-7-1-13.5v-27q0-6.5 1-13.5l-53-40q-21-17-27-43t8-49l47-82q14-23 39-32t50 2l62 26q11-8 23-15t24-12l9-66q4-26 23.5-44t46.5-18h94q27 0 46.5 18t23.5 44l9 66q13 5 24.5 12t22.5 15l62-26q25-11 50-2t39 32l47 82q14 23 8 49t-27 43l-53 40q1 7 1 13.5v27q0 6.5-2 13.5l53 40q21 17 27 43t-8 49l-48 82q-14 23-39 32t-50-2l-60-26q-11 8-23 15t-24 12l-9 66q-4 26-23.5 44T527-80h-94Zm7-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
           </button>
           
           <!-- 设置弹窗面板 -->
@@ -3112,17 +3159,14 @@
                   </div>
                 </div>
                 <button id="btn-edit-engine" class="icon-btn-text" style="display:none;" type="button">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M20.952 3.048a3.58 3.58 0 0 0-5.06 0L3.94 15a3.1 3.1 0 0 0-.825 1.476L2.02 21.078a.75.75 0 0 0 .904.903l4.601-1.096a3.1 3.1 0 0 0 1.477-.825l11.95-11.95a3.58 3.58 0 0 0 0-5.06m-4 1.06a2.078 2.078 0 1 1 2.94 2.94L19 7.939L16.06 5zM15 6.062L17.94 9l-10 10c-.21.21-.474.357-.763.426l-3.416.814l.813-3.416c.069-.29.217-.554.427-.764z"/></svg>
+                  <svg width="18" height="18" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M200-200h57l391-391-57-57-391 391v57Zm-40 80q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm600-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
                   <span data-i18n="editCustomEngine">编辑自定义搜索引擎</span>
                 </button>
                 <div id="force-bing-cn-row" class="setting-row" style="display:none; margin-top: 8px;">
                   <div class="setting-label-group">
                     <span data-i18n="forceBingCN">强制使用必应中国版</span>
                     <span class="tooltip-icon" tabindex="0">
-                      <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
-                        <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
-                      </svg>
+                      <svg width="15" height="15" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;"><path d="M508.5-291.5Q520-303 520-320v-160q0-17-11.5-28.5T480-520q-17 0-28.5 11.5T440-480v160q0 17 11.5 28.5T480-280q17 0 28.5-11.5Zm0-320Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
                       <span class="tooltip-content" data-i18n-html="forceBingCNDesc"><b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。</span>
                     </span>
                   </div>
@@ -3182,15 +3226,15 @@
 
                 <div class="theme-switch" id="theme-switch" role="radiogroup" aria-label="主题模式">
                     <button type="button" class="theme-option" data-theme-val="auto" role="radio" aria-checked="true">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="1.9" y="2.6" width="12.2" height="8.2" rx="1.4"/><path d="M5.4 13.4h5.2" stroke-linecap="round"/></svg>
+                      <svg width="16" height="16" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M408-412h146l25 73q3 8 10.5 13.5T606-320q15 0 23.5-12.5T633-359L519-661q-3-9-11-14t-17-5h-22q-9 0-17 5t-11 14L327-360q-5 14 3.5 27t24.5 13q10 0 17.5-5.5T383-340l25-72Zm18-52 52-150h4l52 150H426Zm-80 304H240q-33 0-56.5-23.5T160-240v-106l-77-78q-11-12-17-26.5T60-480q0-15 6-29.5T83-536l77-78v-106q0-33 23.5-56.5T240-800h106l78-77q12-11 26.5-17t29.5-6q15 0 29.5 6t26.5 17l78 77h106q33 0 56.5 23.5T800-720v106l77 78q11 12 17 26.5t6 29.5q0 15-6 29.5T877-424l-77 78v106q0 33-23.5 56.5T720-160H614l-78 77q-12 11-26.5 17T480-60q-15 0-29.5-6T424-83l-78-77Zm34-80 100 100 100-100h140v-140l100-100-100-100v-140H580L480-820 380-720H240v140L140-480l100 100v140h140Zm100-240Z"/></svg>
                       <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeAuto">系统</span></span>
                     </button>
                     <button type="button" class="theme-option" data-theme-val="light" role="radio" aria-checked="false">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3.1" fill="currentColor" stroke="none"/><path d="M8 1.4v1.4M8 13.2v1.4M14.6 8h-1.4M2.8 8H1.4M12.7 3.3l-1 1M4.3 11.7l-1 1M12.7 12.7l-1-1M4.3 4.3l-1-1"/></svg>
+                      <svg width="16" height="16" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M565-395q35-35 35-85t-35-85q-35-35-85-35t-85 35q-35 35-35 85t35 85q35 35 85 35t85-35Zm-226.5 56.5Q280-397 280-480t58.5-141.5Q397-680 480-680t141.5 58.5Q680-563 680-480t-58.5 141.5Q563-280 480-280t-141.5-58.5ZM80-440q-17 0-28.5-11.5T40-480q0-17 11.5-28.5T80-520h80q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440H80Zm720 0q-17 0-28.5-11.5T760-480q0-17 11.5-28.5T800-520h80q17 0 28.5 11.5T920-480q0 17-11.5 28.5T880-440h-80ZM451.5-771.5Q440-783 440-800v-80q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v80q0 17-11.5 28.5T480-760q-17 0-28.5-11.5Zm0 720Q440-63 440-80v-80q0-17 11.5-28.5T480-200q17 0 28.5 11.5T520-160v80q0 17-11.5 28.5T480-40q-17 0-28.5-11.5ZM226-678l-43-42q-12-11-11.5-28t11.5-29q12-12 29-12t28 12l42 43q11 12 11 28t-11 28q-11 12-27.5 11.5T226-678Zm494 495-42-43q-11-12-11-28.5t11-27.5q11-12 27.5-11.5T734-282l43 42q12 11 11.5 28T777-183q-12 12-29 12t-28-12Zm-42-495q-12-11-11.5-27.5T678-734l42-43q11-12 28-11.5t29 11.5q12 12 12 29t-12 28l-43 42q-12 11-28 11t-28-11ZM183-183q-12-12-12-29t12-28l43-42q12-11 28.5-11t27.5 11q12 11 11.5 27.5T282-226l-42 43q-11 12-28 11.5T183-183Zm297-297Z"/></svg>
                       <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeLight">浅色</span></span>
                     </button>
                     <button type="button" class="theme-option" data-theme-val="dark" role="radio" aria-checked="false">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.6 9.8A5.8 5.8 0 0 1 6.2 2.4a5.9 5.9 0 1 0 7.4 7.4Z"/></svg>
+                      <svg width="16" height="16" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M480-120q-151 0-255.5-104.5T120-480q0-138 90-239.5T440-838q13-2 23 3.5t16 14.5q6 9 6.5 21t-7.5 23q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q11-7 22.5-6.5T819-479q10 5 15.5 15t3.5 24q-14 138-117.5 229T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"/></svg>
                       <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeDark">深色</span></span>
                     </button>
                   </div>
@@ -3243,7 +3287,7 @@
             <div id="settings-page-bg" class="settings-page">
               <div class="settings-header">
                 <button class="settings-back-btn" id="btn-close-wallpaper-modal" type="button" title="返回" data-i18n-title="back">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10.53 3.22a.75.75 0 0 1 0 1.06L6.81 8l3.72 3.72a.75.75 0 1 1-1.06 1.06L5.75 8.53a.75.75 0 0 1 0-1.06l3.72-3.72a.75.75 0 0 1 1.06 0z"/></svg>
+                  <svg width="16" height="16" viewBox="0 -960 960 960" fill="currentColor"><path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/></svg>
                 </button>
                 <h2 class="settings-title" data-i18n="background">背景</h2>
               </div>
@@ -3311,9 +3355,7 @@
                       <div class="setting-label-group">
                         <span data-i18n="enhancedBlur">衬底启用模糊</span>
                         <span class="tooltip-icon" tabindex="0">
-                          <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
-                            <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
-                          </svg>
+                          <svg width="15" height="15" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;"><path d="M508.5-291.5Q520-303 520-320v-160q0-17-11.5-28.5T480-520q-17 0-28.5 11.5T440-480v160q0 17 11.5 28.5T480-280q17 0 28.5-11.5Zm0-320Q520-623 520-640t-11.5-28.5Q497-680 480-680t-28.5 11.5Q440-657 440-640t11.5 28.5Q463-600 480-600t28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
                           <span class="tooltip-content" data-i18n="enhancedBlurTip">此选项可能会对设备功耗有轻微影响。</span>
                         </span>
                       </div>
@@ -3347,7 +3389,7 @@
             <div id="settings-page-layout" class="settings-page">
               <div class="settings-header">
                 <button class="settings-back-btn" id="btn-close-layout-modal" type="button" title="返回" data-i18n-title="back">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10.53 3.22a.75.75 0 0 1 0 1.06L6.81 8l3.72 3.72a.75.75 0 1 1-1.06 1.06L5.75 8.53a.75.75 0 0 1 0-1.06l3.72-3.72a.75.75 0 0 1 1.06 0z"/></svg>
+                  <svg width="16" height="16" viewBox="0 -960 960 960" fill="currentColor"><path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/></svg>
                 </button>
                 <h2 class="settings-title" data-i18n="editLayout">编辑页面布局</h2>
               </div>
@@ -3469,7 +3511,7 @@
             <div id="settings-page-color" class="settings-page">
               <div class="settings-header">
                 <button class="settings-back-btn" id="btn-close-color-modal" type="button" title="返回" data-i18n-title="back">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10.53 3.22a.75.75 0 0 1 0 1.06L6.81 8l3.72 3.72a.75.75 0 1 1-1.06 1.06L5.75 8.53a.75.75 0 0 1 0-1.06l3.72-3.72a.75.75 0 0 1 1.06 0z"/></svg>
+                  <svg width="16" height="16" viewBox="0 -960 960 960" fill="currentColor"><path d="m313-440 196 196q12 12 11.5 28T508-188q-12 11-28 11.5T452-188L188-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l264-264q11-11 27.5-11t28.5 11q12 12 12 28.5T508-715L313-520h447q17 0 28.5 11.5T800-480q0 17-11.5 28.5T760-440H313Z"/></svg>
                 </button>
                 <h2 class="settings-title" data-i18n="color">颜色</h2>
               </div>
@@ -3499,9 +3541,7 @@
                       <button type="button" class="md-swatch" data-seed="#006c4c" title="苔绿" data-i18n-title="mdPresetGreen"></button>
                       <button type="button" class="md-swatch" data-seed="#b3261e" title="陶红" data-i18n-title="mdPresetRed"></button>
                       <button type="button" class="md-swatch md-swatch-custom" data-custom="1" title="自定义" data-i18n-title="mdColorCustom" aria-expanded="false">
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
+                        <svg viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 32.5-156t88-127Q256-817 330-848.5T488-880q80 0 151 27.5t124.5 76q53.5 48.5 85 115T880-518q0 115-70 176.5T640-280h-74q-9 0-12.5 5t-3.5 11q0 12 15 34.5t15 51.5q0 50-27.5 74T480-80Zm0-400Zm-177 23q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17Zm120-160q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17Zm200 0q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17Zm120 160q17-17 17-43t-17-43q-17-17-43-17t-43 17q-17 17-17 43t17 43q17 17 43 17t43-17ZM480-160q9 0 14.5-5t5.5-13q0-14-15-33t-15-57q0-42 29-67t71-25h70q66 0 113-38.5T800-518q0-121-92.5-201.5T488-800q-136 0-232 93t-96 227q0 133 93.5 226.5T480-160Z"/></svg>
                       </button>
                     </div>
 
@@ -3529,10 +3569,7 @@
         <!-- 搜索框容器 -->
         <div id="search-container">
           <div id="fakebox" role="searchbox" tabindex="0" aria-label="今天想用 Bing 搜索什么？" data-i18n-aria="searchPlaceholder">
-            <svg aria-hidden="true" id="searchbutton" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="10.5" cy="10.5" r="6.6"></circle>
-              <path d="M15.6 15.6 20.2 20.2"></path>
-            </svg>
+            <svg aria-hidden="true" id="searchbutton" width="22" height="22" viewBox="0 -960 960 960" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M380-320q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l224 224q11 11 11 28t-11 28q-11 11-28 11t-28-11L532-372q-30 24-69 38t-83 14Zm0-80q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
             <div id="placeholder" aria-hidden="true" data-i18n="searchPlaceholder">
               今天想用 Bing 搜索什么？
             </div>
@@ -3564,9 +3601,7 @@
               <input aria-labelledby="label-input-online-url" type="text" id="input-online-url" class="input" placeholder="https://example.com/image.jpg" autocomplete="off" data-i18n-ph="enterUrl">
             </div>
             <div class="error-tip" id="tip-online-url">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-              </svg>
+              <svg width="12" height="12" viewBox="0 -960 960 960" fill="currentColor"><path d="M508.5-291.5Q520-303 520-320t-11.5-28.5Q497-360 480-360t-28.5 11.5Q440-337 440-320t11.5 28.5Q463-280 480-280t28.5-11.5Zm0-160Q520-463 520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440q17 0 28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
               <span data-i18n="errorUrlReq">请输入有效URL</span>
             </div>
           </div>
@@ -3608,9 +3643,7 @@
                 <input aria-labelledby="label-input-name" type="text" id="input-name" class="input" placeholder="名称" autocomplete="off" data-i18n-ph="inputNamePh">
               </div>
               <div class="error-tip" id="tip-name">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-                </svg>
+                <svg width="12" height="12" viewBox="0 -960 960 960" fill="currentColor"><path d="M508.5-291.5Q520-303 520-320t-11.5-28.5Q497-360 480-360t-28.5 11.5Q440-337 440-320t11.5 28.5Q463-280 480-280t28.5-11.5Zm0-160Q520-463 520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440q17 0 28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
                 <span data-i18n="errorNameReq">请输入快速链接名称</span>
               </div>
             </div>
@@ -3622,9 +3655,7 @@
               <input aria-labelledby="label-input-url" type="text" id="input-url" class="input" placeholder="https://example.com" autocomplete="off">
             </div>
             <div class="error-tip" id="tip-url">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-              </svg>
+              <svg width="12" height="12" viewBox="0 -960 960 960" fill="currentColor"><path d="M508.5-291.5Q520-303 520-320t-11.5-28.5Q497-360 480-360t-28.5 11.5Q440-337 440-320t11.5 28.5Q463-280 480-280t28.5-11.5Zm0-160Q520-463 520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440q17 0 28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
               <span data-i18n="errorUrlReq">请输入网址</span>
             </div>
           </div>
@@ -3643,19 +3674,19 @@
     <!-- 快速链接的右键菜单 -->
     <div class="quicklink-menu" id="quicklink-menu" role="menu">
       <button type="button" class="quicklink-menu-item" data-action="open" role="menuitem">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.25 4.5A1.75 1.75 0 0 0 4.5 6.25v11.5c0 .966.783 1.75 1.75 1.75h11.5a1.75 1.75 0 0 0 1.75-1.75v-4a.75.75 0 0 1 1.5 0v4A3.25 3.25 0 0 1 17.75 21H6.25A3.25 3.25 0 0 1 3 17.75V6.25A3.25 3.25 0 0 1 6.25 3h4a.75.75 0 0 1 0 1.5zM13 3.75a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-1.5 0V5.56l-5.22 5.22a.75.75 0 0 1-1.06-1.06l5.22-5.22h-4.69a.75.75 0 0 1-.75-.75"/></svg>
+        <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h240q17 0 28.5 11.5T480-800q0 17-11.5 28.5T440-760H200v560h560v-240q0-17 11.5-28.5T800-480q17 0 28.5 11.5T840-440v240q0 33-23.5 56.5T760-120H200Zm560-584L416-360q-11 11-28 11t-28-11q-11-11-11-28t11-28l344-344H600q-17 0-28.5-11.5T560-800q0-17 11.5-28.5T600-840h200q17 0 28.5 11.5T840-800v200q0 17-11.5 28.5T800-560q-17 0-28.5-11.5T760-600v-104Z"/></svg>
         <span data-i18n="openInNewTab">在新标签页打开</span>
       </button>
       <button type="button" class="quicklink-menu-item" data-action="copy" role="menuitem">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M13.753 2c1.158 0 2.11.875 2.234 2h1.763a2.25 2.25 0 0 1 2.245 2.096L20 6.25v6a.75.75 0 0 1-1.493.102l-.007-.102v-6a.75.75 0 0 0-.648-.743L17.75 5.5h-2.132c-.403.6-1.088.993-1.865.993h-3.506A2.244 2.244 0 0 1 8.382 5.5H6.25a.75.75 0 0 0-.743.648L5.5 6.25v13.505c0 .38.282.693.648.743l.204.013a.75.75 0 0 1-.102 1.494a2.25 2.25 0 0 1-2.245-2.096L4 19.755V6.25a2.25 2.25 0 0 1 2.096-2.245L6.25 4h1.763a2.247 2.247 0 0 1 2.234-2h3.506zm3.497 12.5h1a3.75 3.75 0 0 1 .202 7.495l-.199.005l-1 .005a.75.75 0 0 1-.108-1.493l.102-.007l1.003-.005a2.25 2.25 0 0 0 .154-4.495L18.25 16h-1a.75.75 0 0 1-.102-1.493l.102-.007h1h-1zm-5 0h1a.75.75 0 0 1 .102 1.493L13.25 16h-1a2.25 2.25 0 0 0-.154 4.495l.154.005h1a.75.75 0 0 1 .102 1.493L13.25 22h-1a3.75 3.75 0 0 1-.2-7.495l.2-.005h1h-1zm0 3h6a.75.75 0 0 1 .102 1.493L18.25 19h-6a.75.75 0 0 1-.102-1.493l.102-.007h6h-6zm1.503-14h-3.506a.747.747 0 0 0 0 1.493h3.506a.747.747 0 1 0 0-1.493z"/></svg>
+        <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z"/></svg>
         <span data-i18n="copyAddress">复制地址</span>
       </button>
       <button type="button" class="quicklink-menu-item" data-action="edit" role="menuitem">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.952 3.048a3.58 3.58 0 0 0-5.06 0L3.94 15a3.1 3.1 0 0 0-.825 1.476L2.02 21.078a.75.75 0 0 0 .904.903l4.601-1.096a3.1 3.1 0 0 0 1.477-.825l11.95-11.95a3.58 3.58 0 0 0 0-5.06m-4 1.06a2.078 2.078 0 1 1 2.94 2.94L19 7.939L16.06 5zM15 6.062L17.94 9l-10 10c-.21.21-.474.357-.763.426l-3.416.814l.813-3.416c.069-.29.217-.554.427-.764z"/></svg>
+        <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M200-200h57l391-391-57-57-391 391v57Zm-40 80q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm600-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
         <span data-i18n="edit">编辑</span>
       </button>
       <button type="button" class="quicklink-menu-item" data-action="hide-add" role="menuitem" hidden>
-        <svg viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M2.854 2.146a.5.5 0 1 0-.708.708l3.5 3.498a8.1 8.1 0 0 0-3.366 5.046a.5.5 0 1 0 .98.204a7.1 7.1 0 0 1 3.107-4.528L7.953 8.66a3.5 3.5 0 1 0 4.886 4.886l4.307 4.308a.5.5 0 0 0 .708-.708zm9.265 10.68A2.5 2.5 0 1 1 8.673 9.38zm-1.995-4.824l3.374 3.374a3.5 3.5 0 0 0-3.374-3.374M10 6c-.57 0-1.129.074-1.666.213l-.803-.803A7.7 7.7 0 0 1 10 5c3.693 0 6.942 2.673 7.72 6.398a.5.5 0 0 1-.98.204C16.058 8.327 13.207 6 10 6"/></svg>
+        <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M607-627q29 29 42.5 66t9.5 76q0 15-11 25.5T622-449q-15 0-25.5-10.5T586-485q5-26-3-50t-25-41q-17-17-41-26t-51-4q-15 0-25.5-11T430-643q0-15 10.5-25.5T466-679q38-4 75 9.5t66 42.5Zm-127-93q-19 0-37 1.5t-36 5.5q-17 3-30.5-5T358-742q-5-16 3.5-31t24.5-18q23-5 46.5-7t47.5-2q137 0 250.5 72T904-534q4 8 6 16.5t2 17.5q0 9-1.5 17.5T905-466q-18 40-44.5 75T802-327q-12 11-28 9t-26-16q-10-14-8.5-30.5T753-392q24-23 44-50t35-58q-50-101-144.5-160.5T480-720Zm0 520q-134 0-245-72.5T60-463q-5-8-7.5-17.5T50-500q0-10 2-19t7-18q20-40 46.5-76.5T166-680l-83-84q-11-12-10.5-28.5T84-820q11-11 28-11t28 11l680 680q11 11 11.5 27.5T820-84q-11 11-28 11t-28-11L624-222q-35 11-71 16.5t-73 5.5ZM222-624q-29 26-53 57t-41 67q50 101 144.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"/></svg>
         <span data-i18n="hideAddButton">隐藏此按钮</span>
       </button>
     </div>
@@ -3687,9 +3718,7 @@
               <input aria-labelledby="label-input-engine-name" type="text" id="input-engine-name" class="input" placeholder="例如: DuckDuckGo" autocomplete="off" data-i18n-ph="engineNamePh">
             </div>
             <div class="error-tip" id="tip-engine-name">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-              </svg>
+              <svg width="12" height="12" viewBox="0 -960 960 960" fill="currentColor"><path d="M508.5-291.5Q520-303 520-320t-11.5-28.5Q497-360 480-360t-28.5 11.5Q440-337 440-320t11.5 28.5Q463-280 480-280t28.5-11.5Zm0-160Q520-463 520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440q17 0 28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
               <span data-i18n="errorEngineNameReq">请输入搜索引擎名称</span>
             </div>
           </div>
@@ -3700,9 +3729,7 @@
               <input aria-labelledby="label-input-engine-url" type="text" id="input-engine-url" class="input" placeholder="https://duckduckgo.com/?q=%s" autocomplete="off">
             </div>
             <div class="error-tip" id="tip-engine-url">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-              </svg>
+              <svg width="12" height="12" viewBox="0 -960 960 960" fill="currentColor"><path d="M508.5-291.5Q520-303 520-320t-11.5-28.5Q497-360 480-360t-28.5 11.5Q440-337 440-320t11.5 28.5Q463-280 480-280t28.5-11.5Zm0-160Q520-463 520-480v-160q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v160q0 17 11.5 28.5T480-440q17 0 28.5-11.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
               <span data-i18n="errorEngineUrlFormat">请输入搜索 URL，必须包含 %s</span>
             </div>
           </div>
@@ -3745,9 +3772,8 @@
             <span class="update-split-sep" aria-hidden="true"></span>
             <button type="button" id="update-split-toggle" class="update-split-toggle"
                     aria-haspopup="true" aria-expanded="false" aria-controls="update-skip-menu">
-              <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z"
-                      fill="currentColor"/>
+                            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
               </svg>
             </button>
           </div>
@@ -3787,23 +3813,17 @@
         <div class="manage-list" id="manage-profile-options" role="listbox" aria-label="管理配置文件" data-i18n-aria="manageProfilesTitle">
           <!-- 导出配置 -->
           <div class="manage-option" role="option" tabindex="0" data-action="export" aria-selected="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-              <path d="M1.5 3a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V3.5a.5.5 0 0 1 .5-.5m9.146.646a.5.5 0 0 1 .708 0l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8H4.5a.5.5 0 0 1 0-1h8.793l-2.647-2.646a.5.5 0 0 1 0-.708"/>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Zm200-486-75 75q-12 12-28.5 11.5T308-572q-11-12-11.5-28t11.5-28l144-144q6-6 13-8.5t15-2.5q8 0 15 2.5t13 8.5l144 144q12 12 11.5 28T652-572q-12 12-28.5 12.5T595-571l-75-75v286q0 17-11.5 28.5T480-320q-17 0-28.5-11.5T440-360v-286Z"/></svg>
             <span class="manage-option-label" data-i18n="exportConfig">导出配置</span>
           </div>
           <!-- 恢复配置 -->
           <div class="manage-option" role="option" tabindex="-1" data-action="import" aria-selected="false">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-              <path d="M13 12.5v-9a.5.5 0 0 1 .992-.09L14 3.5v9a.5.5 0 0 1-.992.09zM1.008 8.09L1 8a.5.5 0 0 1 .41-.492L1.5 7.5h8.792L7.611 4.818a.5.5 0 0 1-.058-.638l.058-.069a.5.5 0 0 1 .638-.058l.069.058l3.536 3.535a.5.5 0 0 1 .057.638l-.057.07l-3.536 3.535a.5.5 0 0 1-.765-.638l.058-.069L10.292 8.5H1.5a.5.5 0 0 1-.492-.41L1 8z"/>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M465-339.5q-7-2.5-13-8.5L308-492q-12-12-11.5-28t11.5-28q12-12 28.5-12.5T365-549l75 75v-286q0-17 11.5-28.5T480-800q17 0 28.5 11.5T520-760v286l75-75q12-12 28.5-11.5T652-548q11 12 11.5 28T652-492L508-348q-6 6-13 8.5t-15 2.5q-8 0-15-2.5ZM240-160q-33 0-56.5-23.5T160-240v-80q0-17 11.5-28.5T200-360q17 0 28.5 11.5T240-320v80h480v-80q0-17 11.5-28.5T760-360q17 0 28.5 11.5T800-320v80q0 33-23.5 56.5T720-160H240Z"/></svg>
             <span class="manage-option-label" data-i18n="importConfig">恢复配置</span>
           </div>
           <!-- 初始化 -->
           <div class="manage-option" role="option" tabindex="-1" data-action="init" aria-selected="false">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-             <path fill="currentColor" d="M13 8a5 5 0 0 0-9.001-3h2a.5.5 0 1 1 0 1H3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 1 0v1.531a6 6 0 1 1-1.476 4.513a.5.5 0 0 1 .997-.089A5 5 0 0 0 13 8"/>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M393-132q-103-29-168-113.5T160-440q0-57 19-108.5t54-94.5q11-12 27-12.5t29 12.5q11 11 11.5 27T290-586q-24 31-37 68t-13 78q0 81 47.5 144.5T410-209q13 4 21.5 15t8.5 24q0 20-14 31.5t-33 6.5Zm174 0q-19 5-33-7t-14-32q0-12 8.5-23t21.5-15q75-24 122.5-87T720-440q0-100-70-170t-170-70h-3l16 16q11 11 11 28t-11 28q-11 11-28 11t-28-11l-84-84q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l84-84q11-11 28-11t28 11q11 11 11 28t-11 28l-16 16h3q134 0 227 93t93 227q0 109-65 194T567-132Z"/></svg>
             <span class="manage-option-label" data-i18n="initConfigOption">初始化</span>
           </div>
         </div>
