@@ -980,7 +980,7 @@ const i18nData = {
     refreshNow: 'Обновить сейчас',
     restoreDoneTitle: 'Восстановление завершено',
     restoreDoneDesc: 'Настройки восстановлены. Страница будет обновлена для применения всех параметров.',
-        layout: 'Макет',
+    layout: 'Макет',
     editLayout: 'Изменить макет',
     searchBoxPosition: 'Положение поисковой строки',
     showSearchBox: 'Показывать поисковую строку',
@@ -2538,7 +2538,6 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
   const mdCustomSettings = document.getElementById('md-custom-settings');
   const mdHueSlider = document.getElementById('md-hue-slider');
   const mdCustomPanel = document.getElementById('md-custom-panel');
-  const mdHueHandle = document.getElementById('md-hue-handle');
   const mdSwatches = document.querySelectorAll('.md-swatch');
   const mdSwatchCustom = document.querySelector('.md-swatch-custom');
   const btnOpenColorModal = document.getElementById('btn-open-color-modal');
@@ -3020,21 +3019,11 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
     renderMdSwatches();
   }
 
-  // 自绘手柄位置：与原生 thumb 的几何一致（M3 手柄宽 8px，沿轨道两端内缩 4px）
-  const MD_HANDLE_W = 8;
-  function updateMdHueHandle() {
-    if (!mdHueSlider || !mdHueHandle || mdCustomPanel?.hidden) return;
-    const w = mdHueSlider.clientWidth;
-    if (!w) return;
-    const ratio = Number(mdHueSlider.value) / Number(mdHueSlider.max || 360);
-    mdHueHandle.style.left = (ratio * (w - MD_HANDLE_W) + MD_HANDLE_W / 2) + 'px';
-  }
 
   // 滑块拖动：实时重着色（rAF 合帧），松手才落盘
   if (mdHueSlider) {
     let raf = null;
     mdHueSlider.addEventListener('input', () => {
-      updateMdHueHandle();
       if (raf) cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const seed = mdHueToSeed(Number(mdHueSlider.value));
@@ -3049,11 +3038,9 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       // mdHueToSeed 用 HSL 生成颜色，而 mdSeedToHue 读的是 HCT 色相，
       // 两者在黄绿/青色区可差 40°+，松手后滑块会突然跳走（用户感知为「回弹」）。
       // 滑块值本身就是用户的真实选择，保持不动。
-      updateMdHueHandle();
       applyMdColor();
     });
   }
-  window.addEventListener('resize', updateMdHueHandle);
 
   // 末位「自定义」卡片：点击展开/收起色相滑块
   function setCustomPanelOpen(open) {
@@ -3062,14 +3049,12 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
     mdSwatchCustom.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (open) {
       // 展开后才有布局尺寸，先同步手柄位置（等一帧再量宽）
-      requestAnimationFrame(updateMdHueHandle);
     }
   }
   mdSwatchCustom?.addEventListener('click', (e) => {
     e.stopPropagation();
     const open = mdSwatchCustom.getAttribute('aria-expanded') !== 'true';
     if (open && mdHueSlider) mdHueSlider.value = mdSeedToHue(getMdSeed());
-    updateMdHueHandle();
     setCustomPanelOpen(open);
   });
 
@@ -3086,7 +3071,6 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       Storage.set(MD_SEED_KEY, sw.getAttribute('data-seed'));
       Storage.set(MD_MODE_KEY, 'custom');
       if (mdHueSlider) mdHueSlider.value = mdSeedToHue(sw.getAttribute('data-seed'));
-      updateMdHueHandle();
       setCustomPanelOpen(false);
       applyMdColor();
     });
@@ -3131,7 +3115,6 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
   btnOpenColorModal?.addEventListener('click', () => {
     // 打开时把滑块回显为当前种子色的色相
     if (mdHueSlider) mdHueSlider.value = mdSeedToHue(getMdSeed());
-    updateMdHueHandle();
     showSettingsPage('color');
   });
   btnCloseColorModal?.addEventListener('click', () => showSettingsPage('main'));
@@ -3173,10 +3156,6 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       themeSwitchEl.classList.add('idx-' + idx);
     }
 
-    const link = document.getElementById('favicon');
-    if (link) {
-      link.href = (resolved === 'dark' ? 'img/icon_d.svg' : 'img/icon_l.svg') + '?r=' + Math.random();
-    }
 
     // 选中项会加粗，文字宽度随之变化，重新量一次
     setupThemeOptionScroll();
