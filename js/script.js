@@ -2611,7 +2611,7 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       '--fill-color': c('surface'),
       '--fill-popup-color': c('surfaceContainerLow'),
       '--neutral-layer-floating': c('surfaceContainerLow'),
-      '--neutral-layer-floating-hover': c('surfaceContainerHigh'),
+      '--neutral-layer-floating-hover': c('surfaceContainerHighest'),
       '--modal-bg': c('surfaceContainerLow'),
       '--settings-card-bg': c('surfaceContainerLow'),
       '--settings-card-hover': c('surfaceContainerHigh'),
@@ -2802,7 +2802,6 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
   // 上次已应用的配色标识，避免重复重建样式表
   let lastMdAppliedKey = '';
   // 背景进入动画计时器：控制搜索框阴影的出现时机
-  let bgRevealTimer = null;
 
   // 取色：先把图片缩到小画布再量化，避免对全尺寸位图生成百万级像素数组
   function sampleImageColor(img) {
@@ -3506,7 +3505,6 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
     } else {
       document.body.classList.remove('bg-enabled');
       // 无背景时不播放进入动画，立即结束阴影延迟期
-      document.body.classList.remove('bg-revealing');
       if (bgVideo) {
         bgVideo.style.display = 'none';
       }
@@ -3727,12 +3725,6 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
     el.classList.add('revealing', 'paused');
     el.classList.remove('pending');
     void el.offsetWidth;
-    // 背景动画期间隐藏搜索框阴影，播完后再出现
-    document.body.classList.add('bg-revealing');
-    clearTimeout(bgRevealTimer);
-    bgRevealTimer = setTimeout(() => {
-      document.body.classList.remove('bg-revealing');
-    }, 500);
     // 等两帧让图片完成绘制，再解除暂停，动画从起点开始
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {

@@ -21,7 +21,7 @@
       --fill-color: #f5f5f5;   /* 页面主背景色 */
       --fill-popup-color: #ffffff;   /* 下拉菜单/弹窗主背景色；※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --neutral-layer-floating: #ffffff;   /* 浮动层背景色 (搜索框/图标) */
-      --neutral-layer-floating-hover: #f3f3f3;   /* 浮动层悬停底色 */
+      --neutral-layer-floating-hover: #e8e8e8;   /* 浮动层悬停底色 */
       /* 无背景时浮动层（搜索框、快速链接图标）的固定底色，不参与动态取色 */
       --plain-floating-bg: #ffffff;
       --plain-floating-bg-hover: #f3f3f3;
@@ -94,7 +94,7 @@
         --fill-color: #232323;
         --fill-popup-color: #2b2b2b;
         --neutral-layer-floating: #2b2b2b;
-        --neutral-layer-floating-hover: #333333;
+        --neutral-layer-floating-hover: #3f3f3f;
         --plain-floating-bg: #2b2b2b;
         --plain-floating-bg-hover: #333333;
         
@@ -1728,11 +1728,6 @@
       box-shadow: var(--search-box-shadow-enhanced);
     }
 
-    /* 背景进入动画期间不显示搜索框阴影，动画结束后淡入。
-       用同结构的透明阴影而非 none，保证 box-shadow 可插值 */
-    body.bg-revealing #search-container #fakebox {
-      box-shadow: 0 0 14px transparent;
-    }
 
     /* 无背景时纯色底上需要更实的阴影；选中态由上方规则覆盖 */
     body:not(.bg-enabled) #fakebox {
@@ -3043,7 +3038,7 @@
     </style>
 </head>
 
-<body data-layout="focused" class="bg-revealing">
+<body data-layout="focused">
     <!-- 视频/图片背景容器 -->
     <div id="background-container">
       <video id="bg-video" autoplay loop muted playsinline></video>
