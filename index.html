@@ -1963,6 +1963,7 @@
       text-decoration: none;
       color: var(--neutral-foreground-rest);
       font-size: 12px;
+      transition: transform 0.08s ease, background-color 0.1s;
       gap: 6px;
       /* 只禁"选中文字"，不动拖拽：触屏长按拖拽（HTML5 drag）依赖原生手势，
          一旦加 -webkit-touch-callout: none / -webkit-user-drag: none 就会失效 */
@@ -1975,6 +1976,11 @@
     .quicklink-icon * {
       user-select: none;
       -webkit-user-select: none;
+    }
+
+    /* 按下时轻微缩小，给出触感反馈 */
+    .quicklink-item:active {
+      transform: scale(0.96);
     }
 
     /* 悬停与菜单展开：图标块和文字块一起加深 */
@@ -2578,11 +2584,11 @@
     }
 
     .quicklink-item.drag-over[data-drop="before"]::before {
-      left: -5px;                       /* 落在两项之间的空隙里 */
+      left: calc(var(--quicklink-gap, 18px) / -2);
     }
 
     .quicklink-item.drag-over[data-drop="after"]::before {
-      right: -5px;
+      right: calc(var(--quicklink-gap, 18px) / -2);
     }
 
     /* ===== 工具提示(Tooltip)样式 ===== */

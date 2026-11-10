@@ -2491,6 +2491,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentEditingId = null;
   let draggedId = null;//拖拽实现
+let previewDropKey = null;//实时预览的落点键，避免同一位置重复移动
   let selectedSuggestionIndex = -1;
 
   // ===== 主题模式（跟随系统 / 浅色 / 深色）=====
@@ -5196,20 +5197,18 @@ inputOnlineUrl?.addEventListener('input', () => {
       const target = hit && hit.closest ? hit.closest('.quicklink-item') : null;
       if (target && target.dataset.id && target.dataset.id !== item.id) {
         touchTarget = target;
-        updateDropIndicator(target, t.clientX);
+        previewDropPosition(target, t.clientX);
       }
     }, { passive: false });
 
     const endTouch = () => {
       clearTimeout(touchTimer);
-      if (touchDragging && touchTarget) {
-        const after = touchTarget.getAttribute('data-drop') === 'after';
-        touchTarget.classList.remove('drag-over');
-        touchTarget.removeAttribute('data-drop');
-        moveQuicklink(item.id, touchTarget.dataset.id, after);
+      if (touchDragging) {
+        commitDropOrder();
       }
       linkElem.classList.remove('dragging');
       draggedId = null;
+      previewDropKey = null;
       touchLongPress = false;
       touchDragging = false;
       touchTarget = null;
@@ -5340,7 +5339,7 @@ function onDragEnd(e) {
   const item = e.currentTarget;
   item.classList.remove('dragging');
   // 清理所有高亮
-  document.querySelectorAll('.quicklink-item.drag-over').forEach(el => {
+  document.querySelectorAll('.quicklink-item').forEach(el => {
     el.classList.remove('drag-over');
     el.removeAttribute('data-drop');
   });
@@ -5348,17 +5347,59 @@ function onDragEnd(e) {
 }
 
 // 按鼠标落在目标项的左半/右半，决定"插到前面"还是"插到后面"
-function updateDropIndicator(target, clientX) {
+// 拖动中把被拖拽项实时插到目标位置，形成半透明预览
+function previewDropPosition(target, clientX) {
   const rect = target.getBoundingClientRect();
   const after = clientX > rect.left + rect.width / 2;
-  document.querySelectorAll('.quicklink-item.drag-over').forEach(el => {
-    if (el !== target) {
-      el.classList.remove('drag-over');
-      el.removeAttribute('data-drop');
-    }
+  const draggedEl = document.querySelector('.quicklink-item.dragging');
+  if (!draggedEl || draggedEl === target) return false;
+
+  const key = target.dataset.id + (after ? ':after' : ':before');
+  if (key === previewDropKey) return false;
+  previewDropKey = key;
+
+  // 记录移动前的布局，供 FLIP 动画计算位移
+  const moving = Array.from(quicklinksElem.querySelectorAll('.quicklink-item'));
+  const beforeRects = new Map();
+  moving.forEach(el => beforeRects.set(el, el.getBoundingClientRect()));
+
+  if (after) {
+    target.after(draggedEl);
+  } else {
+    target.before(draggedEl);
+  }
+
+  // FLIP：其余项从旧位置滑到新位置，形成让位动画
+  moving.forEach(el => {
+    if (el === draggedEl) return;
+    const first = beforeRects.get(el);
+    const last = el.getBoundingClientRect();
+    const dx = first.left - last.left;
+    const dy = first.top - last.top;
+    if (!dx && !dy) return;
+    el.animate(
+      [
+        { transform: 'translate(' + dx + 'px, ' + dy + 'px)' },
+        { transform: 'translate(0, 0)' }
+      ],
+      { duration: 160, easing: 'ease-out' }
+    );
   });
-  target.classList.add('drag-over');
-  target.setAttribute('data-drop', after ? 'after' : 'before');
+  return true;
+}
+
+// 松手时按 DOM 当前顺序回写数组，完成排序
+function commitDropOrder() {
+  if (!quicklinksElem) return;
+  const ids = Array.from(quicklinksElem.querySelectorAll('.quicklink-item[data-id]'))
+    .map(el => el.dataset.id);
+  if (!ids.length || ids.length !== quicklinksList.length) return;
+  const byId = new Map(quicklinksList.map(item => [item.id, item]));
+  const reordered = ids.map(id => byId.get(id)).filter(Boolean);
+  if (reordered.length !== quicklinksList.length) return;
+  quicklinksList = reordered;
+  Storage.set('ntp_quicklinks_list', quicklinksList);
+  renderQuicklinks(true);
 }
 
 function onDragOver(e) {
@@ -5368,7 +5409,7 @@ function onDragOver(e) {
   const target = e.currentTarget;
   const targetId = target.dataset.id;
   if (targetId && targetId !== draggedId) {
-    updateDropIndicator(target, e.clientX);
+    previewDropPosition(target, e.clientX);
   }
 }
 
@@ -5378,7 +5419,7 @@ function onDragEnter(e) {
   const targetId = target.dataset.id;
   // 只有快速链接（有 data-id）且不是被拖拽自身时，才显示落点
   if (targetId && targetId !== draggedId) {
-    updateDropIndicator(target, e.clientX);
+    previewDropPosition(target, e.clientX);
   }
 }
 
@@ -5393,22 +5434,6 @@ function onDragLeave(e) {
   target.removeAttribute('data-drop');
 }
 
-// 把一项移动到目标位置：桌面拖拽与触屏长按拖动共用
-function moveQuicklink(sourceId, targetId, after) {
-  if (!sourceId || !targetId || sourceId === targetId) return false;
-  const draggedIndex = quicklinksList.findIndex(item => item.id === sourceId);
-  let targetIndex = quicklinksList.findIndex(item => item.id === targetId);
-  if (draggedIndex === -1 || targetIndex === -1) return false;
-
-  const [draggedItem] = quicklinksList.splice(draggedIndex, 1);
-  if (draggedIndex < targetIndex) targetIndex -= 1;
-  if (after) targetIndex += 1;
-  quicklinksList.splice(targetIndex, 0, draggedItem);
-
-  Storage.set('ntp_quicklinks_list', quicklinksList);
-  renderQuicklinks();
-  return true;
-}
 
 function onDrop(e) {
   e.preventDefault();
@@ -5416,7 +5441,7 @@ function onDrop(e) {
   const after = target.getAttribute('data-drop') === 'after';
   target.classList.remove('drag-over');
   target.removeAttribute('data-drop');
-  moveQuicklink(draggedId, target.dataset.id, after);
+  commitDropOrder();
 }
 // ========== 拖拽事件处理函数结束 ==========
 
