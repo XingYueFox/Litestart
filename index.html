@@ -2049,7 +2049,7 @@
     .quicklink-menu {
       position: fixed;
       z-index: 2200;                   /* 高于自定义下拉浮层与图标面板 */
-      display: none;
+      display: block;
       min-width: 184px;
       /* 容器不留内边距：项的底色可直接铺到菜单左右边缘，
          上下同样顶到菜单边（圆角由 overflow:hidden 裁切） */
@@ -2059,10 +2059,18 @@
       background-color: var(--fill-popup-color);
       box-shadow: var(--dropdown-shadow);
       overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: none;
     }
 
     .quicklink-menu.active {
-      display: block;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      /* 出现时淡入；消失由基础态的 transition: none 立即完成 */
+      transition: opacity 0.1s ease-out;
     }
 
     /* 菜单按目标只显示适用的项 */

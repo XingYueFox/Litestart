@@ -5525,6 +5525,8 @@ function onDrop(e) {
   // sourceEl 为触发菜单的元素，菜单展开期间保持它的悬停态
   function showQuicklinkMenu(link, left, top, forAddButton, sourceEl) {
     if (!quicklinkMenu) return;
+    // 先撤掉显示状态：菜单已开着时右键别处，也要先消失再重新淡入
+    quicklinkMenu.classList.remove('active');
     // 连续右键不同项时先撤掉上一次的高亮
     if (quicklinkMenu._sourceEl && quicklinkMenu._sourceEl !== sourceEl) {
       quicklinkMenu._sourceEl.classList.remove('menu-open');
@@ -5537,12 +5539,12 @@ function onDrop(e) {
       item.classList.remove('selected');
       item.removeAttribute('aria-current');
     });
-    quicklinkMenu.classList.add('active');
     const rect = quicklinkMenu.getBoundingClientRect();
     if (left + rect.width > window.innerWidth - 8) left = window.innerWidth - rect.width - 8;
     if (top + rect.height > window.innerHeight - 8) top = window.innerHeight - rect.height - 8;
     quicklinkMenu.style.left = Math.max(8, left) + 'px';
     quicklinkMenu.style.top = Math.max(8, top) + 'px';
+    requestAnimationFrame(() => quicklinkMenu.classList.add('active'));
   }
 
   quicklinksElem?.addEventListener('contextmenu', (e) => {
