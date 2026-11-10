@@ -943,11 +943,10 @@
       margin: 0 -4px -4px;
     }
 
-    /* 主题滑块若紧跟在同一卡片的颜色分块之后，留出 10px 空隙（与卡片间距一致）。
-       颜色按钮带 -4px 的负 margin（用于 hover 顶到卡片边缘），会吃掉一半间距，
-       所以这里用 10px + 4px 补偿，实测视觉空隙正好 10px。 */
+    /* 主题滑块紧跟颜色分块时留出 6px 空隙。颜色按钮带 -4px 负 margin（用于 hover 顶到卡片边缘），
+       这里用 10px + 4px 补偿。 */
     .settings-card > .settings-subblock + .theme-switch {
-      margin-top: 14px;
+      margin-top: 10px;
     }
 
     /* 滑块：由 idx-N 类驱动位移，切换时平滑滑动
@@ -1050,7 +1049,7 @@
       border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--input-bg);
-      margin: 10px -4px -4px;
+      margin: -3px -4px 8px;
     }
 
     /* 预设的滑块：与主题模式同一套（容器 6px − padding 3px = 3px 圆角） */
@@ -2198,7 +2197,7 @@
       border-radius: 8px;
       width: 420px;
       max-width: 90vw;
-      padding: 20px 20px 14px;
+      padding: 20px 20px 17px;
       box-sizing: border-box;
       box-shadow: var(--shadow16);
       color: var(--neutral-foreground-rest);
@@ -3100,12 +3099,6 @@
               <!-- 页面布局视图选择 -->
               <div class="settings-card">
                 <!-- 标题与跳转合并：整行可点，进入布局设置二级页 -->
-                <button id="btn-open-layout-modal" class="settings-nav-row" type="button">
-                  <span data-i18n="editLayout">编辑页面布局</span>
-                  <svg class="settings-nav-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
-                  </svg>
-                </button>
                 <div class="layout-presets">
                   <div class="preset-card" data-layout-val="inspirational" id="preset-inspirational">
                     <div class="preset-thumb">
@@ -3135,6 +3128,12 @@
                     <span class="preset-card-label" data-i18n="appreciate">窗台</span>
                   </div>
                 </div>
+                <button id="btn-open-layout-modal" class="settings-nav-row" type="button">
+                  <span data-i18n="editLayout">编辑页面布局</span>
+                  <svg class="settings-nav-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                  </svg>
+                </button>
               </div>
 
               <div class="settings-card">
