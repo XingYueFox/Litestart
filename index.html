@@ -1409,41 +1409,31 @@
         center / 100% 24px no-repeat;
     }
 
-    /* 原生 thumb 隐形，仅保留几何占位（真实手柄用覆盖层绘制） */
+    /* 手柄由原生 thumb 绘制，位置与轨道天然对齐 */
     .md-hue-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 4px;
-      height: 44px;
-      background: transparent;
+      width: 8px;
+      height: 32px;
+      border-radius: 4px;
       border: none;
+      background-color: var(--md-hue-thumb, var(--accent-foreground-rest));
       cursor: grab;
     }
 
     .md-hue-slider:active::-webkit-slider-thumb { cursor: grabbing; }
 
     .md-hue-slider::-moz-range-thumb {
-      width: 4px;
-      height: 44px;
-      background: transparent;
+      width: 8px;
+      height: 32px;
+      border-radius: 4px;
       border: none;
+      background-color: var(--md-hue-thumb, var(--accent-foreground-rest));
     }
 
-    /* M3 handle：4×44dp 细竖条，primary 主题色，圆角 2dp，上下各留 6dp 间隙
-       （间隙通过不铺满轨道区域实现：手柄虽高 44，但轨道只占中间 16，天然形成缝） */
+    /* 手柄由原生 thumb 绘制，此处仅保留占位，避免依赖脚本计算位置 */
     .md-hue-handle {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 44px;
-      border-radius: 2px;
-      background-color: var(--md-hue-thumb, var(--accent-foreground-rest));
-      border: none;
-      box-sizing: border-box;
-      pointer-events: none;      /* 拖拽事件全部交给原生 input */
-      transform: translateX(-50%);
-      will-change: left;
+      display: none;
     }
 
     /* 悬停时箭头只做颜色加深，底色反馈由整行承担 */

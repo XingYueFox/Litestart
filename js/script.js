@@ -3021,8 +3021,8 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
     renderMdSwatches();
   }
 
-  // 自绘手柄位置：与原生 thumb 的几何一致（M3 手柄宽 4px，沿轨道两端内缩 2px）
-  const MD_HANDLE_W = 4;
+  // 自绘手柄位置：与原生 thumb 的几何一致（M3 手柄宽 8px，沿轨道两端内缩 4px）
+  const MD_HANDLE_W = 8;
   function updateMdHueHandle() {
     if (!mdHueSlider || !mdHueHandle || mdCustomPanel?.hidden) return;
     const w = mdHueSlider.clientWidth;
