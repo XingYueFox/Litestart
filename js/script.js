@@ -183,6 +183,7 @@ const i18nData = {
     enhancedVisibility: '增强元素可见性',
     enhancedBlur: '衬底启用模糊',
     bgVignette: '深色模式边角晕影',
+    editBackgroundEntry: '编辑背景',
     enhancedBlurTip: '此选项可能会对设备功耗有轻微影响。',
     addlink: '添加',
     addQuicklink: '添加快速链接',
@@ -384,6 +385,7 @@ const i18nData = {
     enhancedVisibility: '增強元素可見性',
     enhancedBlur: '襯底啟用模糊',
     bgVignette: '深色模式邊角暈影',
+    editBackgroundEntry: '編輯背景',
     enhancedBlurTip: '此選項可能會對裝置耗電有輕微影響。',
     addlink: '新增',
     addQuicklink: '新增快速連結',
@@ -570,6 +572,7 @@ const i18nData = {
     enhancedVisibility: 'Enhance Element Visibility',
     enhancedBlur: 'Enable backdrop blur',
     bgVignette: 'Dark mode vignette',
+    editBackgroundEntry: 'Edit background',
     enhancedBlurTip: 'This option may slightly increase power consumption.',
     addlink: 'Add',
     addQuicklink: 'Add quicklink',
@@ -757,6 +760,7 @@ const i18nData = {
     enhancedVisibility: '要素の視認性を向上',
     enhancedBlur: '下地のぼかしを有効化',
     bgVignette: 'ダークモードのビネット',
+    editBackgroundEntry: '背景を編集',
     enhancedBlurTip: 'このオプションは消費電力にわずかな影響を与える可能性があります。',
     addlink: '追加',
     addQuicklink: 'クイックリンクを追加',
@@ -942,6 +946,7 @@ const i18nData = {
     enhancedVisibility: 'Повысить видимость элементов',
     enhancedBlur: 'Размытие подложки',
     bgVignette: 'Виньетка тёмной темы',
+    editBackgroundEntry: 'Изменить фон',
     enhancedBlurTip: 'Эта опция может незначительно увеличить энергопотребление.',
     addlink: 'Добавить',
     addQuicklink: 'Добавить быструю ссылку',
@@ -5505,12 +5510,66 @@ function onDrop(e) {
 
   // ===== 快速链接的右键菜单：在新标签页打开 / 复制链接 / 编辑 =====
   const quicklinkMenu = document.getElementById('quicklink-menu');
+  const backgroundMenu = document.getElementById('background-menu');
+
+  // 通用右键菜单：先定位，下一帧再显示，保证淡入有起点
+  function showContextMenu(menuEl, x, y) {
+    if (!menuEl) return;
+    menuEl.classList.remove('active');
+    const rect = menuEl.getBoundingClientRect();
+    if (x + rect.width > window.innerWidth - 8) x = window.innerWidth - rect.width - 8;
+    if (y + rect.height > window.innerHeight - 8) y = window.innerHeight - rect.height - 8;
+    menuEl.style.left = Math.max(8, x) + 'px';
+    menuEl.style.top = Math.max(8, y) + 'px';
+    requestAnimationFrame(() => menuEl.classList.add('active'));
+  }
+
+  function hideContextMenu(menuEl) {
+    menuEl?.classList.remove('active');
+  }
+  // 空白处右键：屏蔽浏览器菜单，改为页面自己的菜单
+  document.addEventListener('contextmenu', (e) => {
+    if (e.defaultPrevented) return;                       // 快速链接已自行处理
+    const target = e.target instanceof Element ? e.target : null;
+    if (!target) return;
+    // 输入控件保留浏览器原生菜单
+    if (target.closest('input, textarea, select, [contenteditable="true"]')) return;
+    // 其余位置一律屏蔽浏览器菜单
+    e.preventDefault();
+    // 交互区域不弹出页面菜单，只有背景与空白处才弹
+    const interactive = [
+      '#header', '#popover-settings', '#popover-waffle',
+      '#search-container', 'ntp-quicklinks', '.quicklink-item',
+      '.modal-overlay', '.modal-dialog', '.context-menu'
+    ].join(',');
+    if (target.closest(interactive)) return;
+    hideQuicklinkMenu();
+    showContextMenu(backgroundMenu, e.clientX, e.clientY);
+  });
+  // 背景菜单的动作
+  backgroundMenu?.addEventListener('click', (e) => {
+    const btn = e.target instanceof Element ? e.target.closest('.context-menu-item') : null;
+    if (!btn) return;
+    const action = btn.dataset.action;
+    hideContextMenu(backgroundMenu);
+    if (action === 'edit-background') {
+      // 右键时设置面板可能没打开，先展开再切到背景页
+      if (!popoverSettings?.classList.contains('active')) btnSettings?.click();
+      showSettingsPage('bg');
+      renderWallpaper();
+      reapplyLanguage();
+    } else if (action === 'add-quicklink') {
+      openAddModal();
+    }
+  });
+
+
   let quicklinkMenuTarget = null;
 
   function hideQuicklinkMenu() {
     quicklinkMenu?.classList.remove('active');
     // 收起时清掉选中态，下次弹出不会残留高亮
-    quicklinkMenu?.querySelectorAll('.quicklink-menu-item').forEach(item => {
+    quicklinkMenu?.querySelectorAll('.context-menu-item').forEach(item => {
       item.classList.remove('selected');
       item.removeAttribute('aria-current');
     });
@@ -5534,7 +5593,7 @@ function onDrop(e) {
     quicklinkMenu._sourceEl = sourceEl || null;
     sourceEl?.classList.add('menu-open');
     quicklinkMenuTarget = link;
-    quicklinkMenu.querySelectorAll('.quicklink-menu-item').forEach(item => {
+    quicklinkMenu.querySelectorAll('.context-menu-item').forEach(item => {
       item.hidden = forAddButton ? item.dataset.action !== 'hide-add' : item.dataset.action === 'hide-add';
       item.classList.remove('selected');
       item.removeAttribute('aria-current');
@@ -5561,7 +5620,7 @@ function onDrop(e) {
   });
 
   quicklinkMenu?.addEventListener('click', (e) => {
-    const btn = e.target instanceof Element ? e.target.closest('.quicklink-menu-item') : null;
+    const btn = e.target instanceof Element ? e.target.closest('.context-menu-item') : null;
     if (!btn) return;
     // 点击时先落到该项上（视觉与键盘导航一致），再执行动作并收起
     setQuicklinkMenuItemSelected(btn);
@@ -5604,15 +5663,15 @@ function onDrop(e) {
 
   // 点空白处、按 Esc、失焦、改变窗口大小都收起
   document.addEventListener('click', (e) => {
-    if (!quicklinkMenu?.classList.contains('active')) return;
-    if (e.target instanceof Element && e.target.closest('.quicklink-menu')) return;
+    if (e.target instanceof Element && e.target.closest('.context-menu')) return;
     hideQuicklinkMenu();
+    hideContextMenu(backgroundMenu);
   });
   // 选中项按选项菜单的规则：单选、铺满整项、加粗强调色。
   // 菜单内的当前选中项以 aria-current 标记，供样式与键盘导航共用。
   function setQuicklinkMenuItemSelected(item) {
     if (!quicklinkMenu) return;
-    quicklinkMenu.querySelectorAll('.quicklink-menu-item').forEach(el => {
+    quicklinkMenu.querySelectorAll('.context-menu-item').forEach(el => {
       const on = el === item;
       el.classList.toggle('selected', on);
       if (on) el.setAttribute('aria-current', 'true');
@@ -5624,7 +5683,7 @@ function onDrop(e) {
   quicklinkMenu?.addEventListener('keydown', (e) => {
     if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
     e.preventDefault();
-    const items = Array.from(quicklinkMenu.querySelectorAll('.quicklink-menu-item'))
+    const items = Array.from(quicklinkMenu.querySelectorAll('.context-menu-item'))
       .filter(el => !el.hidden);
     if (!items.length) return;
     const cur = items.findIndex(el => el.getAttribute('aria-current') === 'true');
@@ -5639,6 +5698,7 @@ function onDrop(e) {
   // 关闭所有临时浮层（右键菜单 + 预置宫格）
   function hideQuicklinkPopups() {
     hideQuicklinkMenu();
+    hideContextMenu(backgroundMenu);
     hideIconPresetPanel();
   }
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideQuicklinkPopups(); });

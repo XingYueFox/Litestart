@@ -2046,7 +2046,7 @@
     }
 
     /* ===== 快速链接的右键菜单 ===== */
-    .quicklink-menu {
+    .context-menu {
       position: fixed;
       z-index: 2200;                   /* 高于自定义下拉浮层与图标面板 */
       display: block;
@@ -2065,7 +2065,7 @@
       transition: none;
     }
 
-    .quicklink-menu.active {
+    .context-menu.active {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
@@ -2074,12 +2074,12 @@
     }
 
     /* 菜单按目标只显示适用的项 */
-    .quicklink-menu-item[hidden] {
+    .context-menu-item[hidden] {
       display: none;
     }
 
     /* 每项四边等宽：上下统一，左右加宽一档（内容离边缘更远、底色仍顶到菜单边缘） */
-    .quicklink-menu-item {
+    .context-menu-item {
       --ql-menu-item-pad-y: 8px;
       --ql-menu-item-pad-x: 12px;
       display: flex;
@@ -2105,11 +2105,11 @@
     }
 
     /* 文字右侧保留与左右内边距相同的距离，避免长文字顶到菜单右边缘 */
-    .quicklink-menu-item > span {
+    .context-menu-item > span {
       padding-right: var(--ql-menu-item-pad-x);
     }
 
-    .quicklink-menu-item svg {
+    .context-menu-item svg {
       width: 18px;
       height: 18px;                  /* 定宽，保证各项文字左边缘对齐 */
       flex-shrink: 0;
@@ -2118,26 +2118,26 @@
     }
 
     /* 铅笔图标占位更满，尺寸略收敛以平衡视觉重量 */
-    .quicklink-menu-item[data-action="edit"] svg {
+    .context-menu-item[data-action="edit"] svg {
       transform: scale(0.9);
     }
 
     /* 悬停：与选项菜单（下拉项 / 管理操作列表）一致，浅一档 */
-    .quicklink-menu-item:hover,
-    .quicklink-menu-item:focus-visible {
+    .context-menu-item:hover,
+    .context-menu-item:focus-visible {
       background-color: var(--neutral-fill-rest);
     }
 
     /* 选中（键盘聚焦 / 当前项）：与选项菜单同一档更深的颜色 + 文字与图标用强调色 */
-    .quicklink-menu-item.selected,
-    .quicklink-menu-item[aria-current="true"] {
+    .context-menu-item.selected,
+    .context-menu-item[aria-current="true"] {
       background-color: var(--neutral-fill-hover);
       color: var(--accent-foreground-rest);
       font-weight: 600;
     }
 
-    .quicklink-menu-item.selected svg,
-    .quicklink-menu-item[aria-current="true"] svg {
+    .context-menu-item.selected svg,
+    .context-menu-item[aria-current="true"] svg {
       color: var(--accent-foreground-rest);
     }
 
@@ -3690,22 +3690,34 @@
     </div>
 
     <!-- 快速链接的右键菜单 -->
-    <div class="quicklink-menu" id="quicklink-menu" role="menu">
-      <button type="button" class="quicklink-menu-item" data-action="open" role="menuitem">
+    <div class="context-menu" id="quicklink-menu" role="menu">
+      <button type="button" class="context-menu-item" data-action="open" role="menuitem">
         <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h240q17 0 28.5 11.5T480-800q0 17-11.5 28.5T440-760H200v560h560v-240q0-17 11.5-28.5T800-480q17 0 28.5 11.5T840-440v240q0 33-23.5 56.5T760-120H200Zm560-584L416-360q-11 11-28 11t-28-11q-11-11-11-28t11-28l344-344H600q-17 0-28.5-11.5T560-800q0-17 11.5-28.5T600-840h200q17 0 28.5 11.5T840-800v200q0 17-11.5 28.5T800-560q-17 0-28.5-11.5T760-600v-104Z"/></svg>
         <span data-i18n="openInNewTab">在新标签页打开</span>
       </button>
-      <button type="button" class="quicklink-menu-item" data-action="copy" role="menuitem">
+      <button type="button" class="context-menu-item" data-action="copy" role="menuitem">
         <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-520q0-17 11.5-28.5T160-720q17 0 28.5 11.5T200-680v520h400q17 0 28.5 11.5T640-120q0 17-11.5 28.5T600-80H200Zm160-240v-480 480Z"/></svg>
         <span data-i18n="copyAddress">复制地址</span>
       </button>
-      <button type="button" class="quicklink-menu-item" data-action="edit" role="menuitem">
+      <button type="button" class="context-menu-item" data-action="edit" role="menuitem">
         <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M200-200h57l391-391-57-57-391 391v57Zm-40 80q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm600-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
         <span data-i18n="edit">编辑</span>
       </button>
-      <button type="button" class="quicklink-menu-item" data-action="hide-add" role="menuitem" hidden>
+      <button type="button" class="context-menu-item" data-action="hide-add" role="menuitem" hidden>
         <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M607-627q29 29 42.5 66t9.5 76q0 15-11 25.5T622-449q-15 0-25.5-10.5T586-485q5-26-3-50t-25-41q-17-17-41-26t-51-4q-15 0-25.5-11T430-643q0-15 10.5-25.5T466-679q38-4 75 9.5t66 42.5Zm-127-93q-19 0-37 1.5t-36 5.5q-17 3-30.5-5T358-742q-5-16 3.5-31t24.5-18q23-5 46.5-7t47.5-2q137 0 250.5 72T904-534q4 8 6 16.5t2 17.5q0 9-1.5 17.5T905-466q-18 40-44.5 75T802-327q-12 11-28 9t-26-16q-10-14-8.5-30.5T753-392q24-23 44-50t35-58q-50-101-144.5-160.5T480-720Zm0 520q-134 0-245-72.5T60-463q-5-8-7.5-17.5T50-500q0-10 2-19t7-18q20-40 46.5-76.5T166-680l-83-84q-11-12-10.5-28.5T84-820q11-11 28-11t28 11l680 680q11 11 11.5 27.5T820-84q-11 11-28 11t-28-11L624-222q-35 11-71 16.5t-73 5.5ZM222-624q-29 26-53 57t-41 67q50 101 144.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"/></svg>
         <span data-i18n="hideAddButton">隐藏此按钮</span>
+      </button>
+    </div>
+
+    <!-- 空白处右键菜单 -->
+    <div class="context-menu" id="background-menu" role="menu">
+      <button type="button" class="context-menu-item" data-action="edit-background" role="menuitem">
+        <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-204l-80-80-60 60-160-160-260 260v124Zm120-320q25 0 42.5-17.5T380-580q0-25-17.5-42.5T320-640q-25 0-42.5 17.5T260-580q0 25 17.5 42.5T320-520Z"/></svg>
+        <span data-i18n="editBackgroundEntry">编辑背景</span>
+      </button>
+      <button type="button" class="context-menu-item" data-action="add-quicklink" role="menuitem">
+        <svg fill="currentColor" viewBox="0 -960 960 960" aria-hidden="true"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>
+        <span data-i18n="addlink">添加</span>
       </button>
     </div>
 
