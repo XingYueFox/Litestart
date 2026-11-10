@@ -61,7 +61,6 @@
       --neutral-fill-hover: rgba(0, 0, 0, 0.11);   /* 按钮 Hover 填充 */
 
       /* ===== 建议列表语义色 ===== */
-      --suggestion-history-color: #5c2d91;
       --suggestion-footer-color: #0078d4;
 
       /* ===== 阴影与遮罩 ===== */
@@ -136,7 +135,6 @@
 
         --suggestion-bg: #2b2b2b;
         --suggestion-hover: #454545;
-        --suggestion-history-color: #b182e6;
         --suggestion-footer-color: #4f8cf6;
 
         --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.09);
@@ -1769,12 +1767,11 @@
     }
 
     .suggestion-item.history {
-      color: var(--suggestion-history-color);
       font-weight: 600;
     }
 
     .suggestion-item.history svg {
-      fill: var(--suggestion-history-color);
+      fill: currentColor;
       opacity: 1;
     }
 

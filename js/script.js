@@ -2649,7 +2649,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // ===== 语义色 =====
       '--btn-danger-color': c('error'),
       '--btn-danger-hover': c('errorContainer'),
-      '--suggestion-history-color': c('secondary'),
       '--suggestion-footer-color': c('tertiary')
     };
     return ':root[data-theme="' + (dark ? 'dark' : 'light') + '"]{' +
@@ -5819,6 +5818,10 @@ function onDrop(e) {
     selectedSuggestionIndex = -1;
   }
 
+  // 单条建议高度下限（面板至少保留一行）、距视口底部的留白
+  const SUGGEST_ITEM_H = 40;
+  const SUGGEST_EDGE = 8;
+
   // 渲染搜索联想下拉列表，合并历史记录与在线建议词条
   function renderSuggestions(historyItems, suggestionItems) {
     if (!suggestionList) return;
@@ -5885,6 +5888,21 @@ function onDrop(e) {
 
     if (suggestionsFooter) {
       suggestionsFooter.style.display = historyItems.length > 0 ? 'block' : 'none';
+    }
+
+    // 面板高度不超过视口：按实际渲染高度从末尾裁掉多余条目，不出现滚动条
+    const box = document.getElementById('suggestions-box');
+    if (box) {
+      const top = box.getBoundingClientRect().top;
+      const maxHeight = Math.max(SUGGEST_ITEM_H, window.innerHeight - top - SUGGEST_EDGE);
+      box.style.maxHeight = maxHeight + 'px';
+      box.style.overflowY = 'hidden';
+      let guard = 0;
+      while (box.scrollHeight > maxHeight &&
+             suggestionList.children.length > 1 &&
+             guard++ < 100) {
+        suggestionList.removeChild(suggestionList.lastElementChild);
+      }
     }
 
     searchContainer?.classList.add('suggestions-open');
@@ -6045,6 +6063,13 @@ function onDrop(e) {
   }
 
   const debouncedFetchSuggestions = debounce(fetchAndShowSuggestions, 150);
+
+  // 视口尺寸变化后按新的剩余空间重排条数；面板未展开时不处理
+  window.addEventListener('resize', () => {
+    if (searchContainer?.classList.contains('suggestions-open')) {
+      debouncedFetchSuggestions();
+    }
+  });
 
   fakebox?.addEventListener('click', () => {
     searchInput?.focus();
