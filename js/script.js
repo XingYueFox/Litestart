@@ -160,6 +160,7 @@ const i18nData = {
     errorNameReq: '请输入快速链接名称',
     errorUrlReq: '请输入网址',
     delete: '删除',
+    downloadImage: '下载图像',
     cancel: '取消',
     restoreWarnTitle: '请谨慎导入陌生来源的配置文件',
     restoreWarnDesc: '陌生来源的配置文件可能会在 快速链接、搜索引擎、壁纸链接 中包含危险的脚本。',
@@ -366,6 +367,7 @@ const i18nData = {
     errorNameReq: '請輸入快速連結名稱',
     errorUrlReq: '請輸入網址',
     delete: '刪除',
+    downloadImage: '下載圖片',
     cancel: '取消',
     restoreWarnTitle: '請謹慎匯入陌生來源的設定檔',
     restoreWarnDesc: '陌生來源的設定檔可能會在 快速連結、搜尋引擎、桌布連結 中包含危險的指令碼。',
@@ -556,6 +558,7 @@ const i18nData = {
     errorNameReq: 'Please enter quick link name',
     errorUrlReq: 'Please enter URL',
     delete: 'Delete',
+    downloadImage: 'Download image',
     cancel: 'Cancel',
     restoreWarnTitle: 'Be careful with configuration files from unknown sources',
     restoreWarnDesc: 'Configuration files from unknown sources may contain dangerous scripts in Quick Links, Search Engines, or Wallpaper URLs.',
@@ -748,6 +751,7 @@ const i18nData = {
     errorNameReq: 'クイックリンク名を入力してください',
     errorUrlReq: 'URLを入力してください',
     delete: '削除',
+    downloadImage: '画像をダウンロード',
     cancel: 'キャンセル',
     restoreWarnTitle: '不明な提供元の設定ファイルにはご注意ください',
     restoreWarnDesc: '不明な提供元の設定ファイルには、クイックリンク、検索エンジン、壁紙リンクに危険なスクリプトが含まれている可能性があります。',
@@ -939,6 +943,7 @@ const i18nData = {
     errorNameReq: 'Введите название быстрой ссылки',
     errorUrlReq: 'Введите URL',
     delete: 'Удалить',
+    downloadImage: 'Скачать изображение',
     cancel: 'Отмена',
     restoreWarnTitle: 'Будьте осторожны с файлами конфигурации из неизвестных источников',
     restoreWarnDesc: 'Файлы конфигурации из неизвестных источников могут содержать опасные скрипты в быстрых ссылках, поисковых системах или ссылках на обои.',
@@ -5550,6 +5555,7 @@ function onDrop(e) {
     // 交互区域不弹出页面菜单，只有背景与空白处才弹
     if (target.closest(contextMenuExclude)) return;
     hideQuicklinkMenu();
+    syncBackgroundMenuItems();
     showContextMenu(backgroundMenu, e.clientX, e.clientY);
   });
 
@@ -5573,6 +5579,7 @@ function onDrop(e) {
     backgroundTouchTimer = setTimeout(() => {
       if (navigator.vibrate) navigator.vibrate(10);
       hideQuicklinkMenu();
+      syncBackgroundMenuItems();
       showContextMenu(backgroundMenu, backgroundTouchX, backgroundTouchY);
     }, BACKGROUND_LONG_PRESS);
   }, { passive: true });
@@ -5592,6 +5599,44 @@ function onDrop(e) {
   document.addEventListener('touchcancel', () => {
     clearTimeout(backgroundTouchTimer);
   }, { passive: true });
+
+  // 视频壁纸没有可下载的图像，弹出背景菜单前同步该项显隐
+  function syncBackgroundMenuItems() {
+    const item = backgroundMenu?.querySelector('[data-action="download-image"]');
+    if (item) item.hidden = !!customWallpaperData && customWallpaperData.type === 'video';
+  }
+
+  // 从壁纸地址推断保存文件名；blob/data 地址或取不到名字时用 wallpaper + 扩展名兜底
+  function wallpaperFilename(url, mime) {
+    let name = '';
+    if (/^https?:/i.test(url)) {
+      try { name = decodeURIComponent(new URL(url).pathname.split('/').pop() || ''); } catch (e) {}
+    }
+    const extFromMime = (mime || '').split('/')[1];
+    const ext = extFromMime ? '.' + extFromMime.replace(/^jpeg$/i, 'jpg') : '';
+    if (!name || !/\.[a-z0-9]{2,5}$/i.test(name)) name = 'wallpaper' + (ext || '.jpg');
+    return name;
+  }
+
+  // 下载壁纸图像：fetch 转 blob 以指定文件名保存；跨域等导致 fetch 失败时退回新标签页另存
+  async function downloadWallpaperImage() {
+    const url = customWallpaperData ? customWallpaperData.url : 'img/background.webp';
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const blob = await res.blob();
+      const objUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objUrl;
+      a.download = wallpaperFilename(url, blob.type);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(objUrl), 5000);
+    } catch (e) {
+      window.open(url, '_blank', 'noopener');
+    }
+  }
 
   // 背景菜单的动作
   backgroundMenu?.addEventListener('click', (e) => {
@@ -5615,6 +5660,8 @@ function onDrop(e) {
       else setTimeout(applyBackgroundPage, 120);
     } else if (action === 'add-quicklink') {
       openAddModal();
+    } else if (action === 'download-image') {
+      downloadWallpaperImage();
     }
   });
 
@@ -5693,6 +5740,11 @@ function onDrop(e) {
       copyTextToClipboard(link.url);
     } else if (action === 'edit') {
       openEditModal(link);            // 与三个点按钮同一个入口
+    } else if (action === 'delete') {
+      // 与编辑弹窗的删除按钮同一套数据操作：移除后立即持久化并重渲染
+      quicklinksList = quicklinksList.filter(item => item.id !== link.id);
+      Storage.set('ntp_quicklinks_list', quicklinksList);
+      renderQuicklinks();
     }
   });
 
