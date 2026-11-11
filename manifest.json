@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extName__",
-  "version": "27.0.92",
-  "version_name": "DEV 27.0.92",
+  "version": "27.0.97",
+  "version_name": "DEV 27.0.97",
   "minimum_chrome_version": "109",
   "description": "__MSG_extDescription__",
   "default_locale": "zh_CN",

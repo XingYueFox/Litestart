@@ -1292,8 +1292,8 @@
       gap: 0;
       background: transparent;
       overflow: hidden;
-      /* Chrome 风格 T 形三色块：上为横贯主色块，下为两个并排辅色块，
-         三个变量由 JS 按 data-seed 生成 M3 角色色写入（见 script.js 色板渲染） */
+      /* 三色块：上格横贯整行，下两格并排；
+         --swatch-c1/c2/c3 由 JS 按种子色生成后写入 */
     }
 
     /* 顶部横贯色块：主题强调色 */
@@ -1476,10 +1476,8 @@
 
     /* 底部链接样式 */
     .settings-footer {
-      /* 上内边距 0：上方留白由 .settings-content 的 padding-bottom(12px) 提供，
-         与版本行下方间距一致 */
       padding: 0 16px 16px 16px;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--settings-text-secondary);
       line-height: 1.6;
     }
@@ -1488,7 +1486,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 4px 6px;
-      margin-bottom: 12px;     /* 版本/署名行与链接行之间的间距 */
+      margin-bottom: 12px;
     }
 
     /* 链接：默认无下划线，悬停显示小圆角衬底 */
@@ -1515,19 +1513,25 @@
       background-color: var(--neutral-fill-hover);
     }
 
-    /* 页脚两行（链接行 + 免责声明）统一成次要色并调淡。
-       相邻兄弟选择器只命中第二个 .settings-footer-links，即链接行 */
-    .settings-footer-links + .settings-footer-links {
-      color: var(--settings-text-secondary);
-      opacity: 0.7;
-      margin-bottom: 2px;
+    /* 页脚单行居中 */
+    .settings-footer-center {
+      justify-content: center;
+      margin-bottom: 0;
     }
 
-    .settings-footer-text {
-      color: var(--settings-text-secondary);
-      opacity: 0.7;
-      /* 上边距与链接行的下边距一起决定折叠结果（取较大值），所以必须同步收到 2px */
-      margin: 2px 0;
+    /* 关于弹窗中的分组卡片：与设置页卡片同底色、同圆角，卡内每项占一行 */
+    .about-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 4px;
+      /* 用比弹窗底色深一档的填充，让卡片在白色弹窗上可见 */
+      background-color: var(--settings-card-hover);
+      line-height: 1.6;
+    }
+
+    .about-card .about-row a {
+      color: var(--accent-foreground-rest);
     }
 
     #inner {
@@ -1831,7 +1835,7 @@
     }
 
     /* 词条右侧「填入搜索框」按钮：平时隐形但保留占位，悬停/键盘选中时淡入。
-       颜色取当前主题强调色（随壁纸动态取色），按钮自身无 hover/active 反馈 */
+       颜色取当前主题强调色（随壁纸动态取色），悬停与按下的反馈由所在词条承担 */
     .suggestion-fill {
       display: flex;
       align-items: center;
@@ -2814,7 +2818,7 @@
       overflow: hidden;
     }
 
-    /* 左侧「下载」：尺寸与改造前单独按钮完全一致（高 28 / 内边距 0 16 / 字号 13） */
+    /* 左侧「下载」按钮：高 28px、左右内边距 16px、字号 13px */
     .update-split-main {
       flex: 0 0 auto;
       display: inline-flex;
@@ -3286,21 +3290,11 @@
 
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
-              <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 27.0.92</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
-              </div>
-              <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart/blob/main/docs/legal/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
-                <a href="https://github.com/XingYueFox/Litestart/blob/main/LICENSE" data-i18n="license">开源协议</a> ·  
-                <a href="https://github.com/XingYueFox/Litestart/graphs/contributors?from=2026%2F5%2F23" data-i18n="contributor">贡献名单</a> · 
-                <a href="https://github.com/XingYueFox/Litestart/issues" data-i18n="helpFeedback">帮助&反馈</a>
-                
-              </div>
-              <div class="settings-footer-text" data-i18n="disclaimer">
-                此扩展与 Microsoft 无关。
+              <div class="settings-footer-links settings-footer-center">
+                <a href="#" id="btn-footer-about">· Litestart 27.0 ·</a>
               </div>
             </div>
-            <!-- ===== 二级页：背景设置（内联在设置面板内，不再弹窗） ===== -->
+            <!-- ===== 二级页：背景设置（内联在设置面板内） ===== -->
             <div id="settings-page-bg" class="settings-page">
               <div class="settings-header">
                 <button class="settings-back-btn" id="btn-close-wallpaper-modal" type="button" title="返回" data-i18n-title="back">
@@ -3441,7 +3435,7 @@
                     <div class="setting-label-group" data-i18n="showLogo">显示 Logo</div>
                     <div class="switch-container">
                       <label class="switch">
-                        <input type="checkbox" id="toggle-logo-switch" checked>
+                        <input type="checkbox" id="toggle-logo-switch">
                         <span class="slider"></span>
                       </label>
                     </div>
@@ -3781,7 +3775,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 27.0.92 | 更新时间：2026-11-09</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 27.0.97 | 更新时间：2026-11-11</p><br>
 
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
@@ -3812,20 +3806,26 @@
         </div>
 
         <div class="modal-text" style="line-height: 1.8;">
-          <p style="margin: 0 0 8px 0;" data-i18n="aboutDesc">一个简洁、快速的浏览器起始页。</p>
-            <p style="margin: 0 0 4px 0;">
-            <span data-i18n="presentedBy">由</span> 
-            <a href="https://xingyuefox.pages.dev" target="_blank" style="color: var(--accent-foreground-rest); " data-i18n="xingyuefox">XingYue_Fox</a>
-            <span data-i18n="and">和</span> 
-            <a href="https://raku404.com/" target="_blank" style="color: var(--accent-foreground-rest); " data-i18n="AomiRaku">AomiRaku</a>
-            <span data-i18n="forYou">为您呈现</span>
-          </p>
+          <p style="margin: 0 0 4px 0;" data-i18n="aboutDesc">一个简洁、快速的浏览器起始页。</p>
 
-
+          <!-- 开发者卡片：一位开发者一行 -->
+          <div class="settings-card-title" data-i18n="developers">开发者</div>
+          <div class="settings-card about-card">
+            <div class="about-row"><a href="https://xingyuefox.pages.dev" target="_blank" rel="noopener" data-i18n="xingyuefox">星月_Fox</a></div>
+            <div class="about-row"><a href="https://raku404.com/" target="_blank" rel="noopener" data-i18n="AomiRaku">羽梦千景</a></div>
           </div>
+
+          <!-- 相关链接卡片 -->
+          <div class="settings-card-title" style="margin-top: 12px;" data-i18n="relatedLinks">相关链接</div>
+          <div class="settings-card about-card">
+            <div class="about-row"><a href="https://github.com/XingYueFox/Litestart/blob/main/docs/legal/PRIVACY_POLICY.md" target="_blank" rel="noopener" data-i18n="cookieNotice">隐私政策</a></div>
+            <div class="about-row"><a href="https://github.com/XingYueFox/Litestart/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="license">开源协议</a></div>
+            <div class="about-row"><a href="https://github.com/XingYueFox/Litestart/graphs/contributors?from=2026%2F5%2F23" target="_blank" rel="noopener" data-i18n="contributor">贡献名单</a></div>
+            <div class="about-row"><a href="https://github.com/XingYueFox/Litestart/issues" target="_blank" rel="noopener" data-i18n="helpFeedback">帮助&反馈</a></div>
+          </div>
+        </div>
         <div class="modal-footer">
           <div class="modal-footer-right">
-              <button type="button" id="btn-versioninfo" class="btn btn-secondary" data-i18n="versionInfo">版本信息</button>
             <button type="button" id="btn-about-close" class="btn btn-secondary" data-i18n="close">关闭</button>
           </div>
         </div>
