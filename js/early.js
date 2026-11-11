@@ -90,7 +90,7 @@
   // 6) Logo 显隐：提前写到 <html>。
   //    Logo 占据网格第 2 行，隐藏后该行会塌陷，首帧不预置会让居中布局的搜索框先偏下再上移。
   try {
-    if (JSON.parse(localStorage.getItem('ntp_show_logo') || 'true') === false) {
+    if (JSON.parse(localStorage.getItem('ntp_show_logo') || 'false') === false) {
       document.documentElement.setAttribute('data-logo-hidden', 'true');
     }
   } catch (e) {

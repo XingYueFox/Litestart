@@ -1,4 +1,4 @@
-const APP_VERSION = '27.0.92';      // 发行版本
+const APP_VERSION = '27.0.97';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -78,8 +78,9 @@ const i18nData = {
     skipRestore: '恢复提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 27.0.92 | 更新时间：2026-11-09',
-    versionInfo: '版本信息',
+    developers: '开发者',
+    relatedLinks: '相关链接',
+    litever: '版本 27.0.97 | 更新时间：2026-11-11',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
     searchPlaceholderNight: '今晚想用 {name} 搜索什么？',
@@ -283,8 +284,9 @@ const i18nData = {
     skipRestore: '恢復提醒',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 27.0.92 | 更新時間：2026-11-09',
-    versionInfo: '版本資訊',
+    developers: '開發者',
+    relatedLinks: '相關連結',
+    litever: '版本 27.0.97 | 更新時間：2026-11-11',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
     searchPlaceholderNight: '今晚想用 {name} 搜尋什麼？',
@@ -473,8 +475,9 @@ const i18nData = {
     skipRestore: 'Resume reminders',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 27.0.92 | Updated: 2026-11-09',
-    versionInfo: 'Version Info',
+    developers: 'Developers',
+    relatedLinks: 'Related Links',
+    litever: 'Version 27.0.97 | Updated: 2026-11-11',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
     searchPlaceholderNight: 'What do you want to search with {name} tonight?',
@@ -664,8 +667,9 @@ const i18nData = {
     skipRestore: '通知を再開',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 27.0.92 | 更新日: 2026-11-09',
-    versionInfo: 'バージョン情報',
+    developers: '開発者',
+    relatedLinks: '関連リンク',
+    litever: 'バージョン 27.0.97 | 更新日: 2026-11-11',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
     searchPlaceholderNight: '今夜は {name} で何を検索しますか？',
@@ -854,8 +858,9 @@ const i18nData = {
     skipRestore: 'Возобновить напоминания',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 27.0.92 | Обновлено: 2026-11-09',
-    versionInfo: 'Информация о версии',
+    developers: 'Разработчики',
+    relatedLinks: 'Полезные ссылки',
+    litever: 'Версия 27.0.97 | Обновлено: 2026-11-11',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
     searchPlaceholderNight: 'Что поищем вечером через {name}?',
@@ -2480,13 +2485,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.getElementById('btn-about')?.addEventListener('click', openAboutModal);
-  document.getElementById('btn-footer-version')?.addEventListener('click', (e) => {
+  document.getElementById('btn-footer-about')?.addEventListener('click', (e) => {
     e.preventDefault();
     openAboutModal();
-  });
-
-  document.getElementById('btn-versioninfo')?.addEventListener('click', () => {
-    window.open(`https://github.com/${GITHUB_REPO}/releases`, '_blank', 'noopener');
   });
 
   document.getElementById('btn-about-close')?.addEventListener('click', () => {
@@ -2564,7 +2565,7 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       try {
         const seedArgb = api.argbFromHex(seed);
         const scheme = mdScheme(seedArgb, dark);
-        // Chrome 风格 T 形三色块：顶块为强调色，下两块为 primary/secondaryContainer
+        // 色块三色：顶块为强调色，下两块为 primary / secondaryContainer
         sw.style.setProperty('--swatch-c1', api.hexFromArgb(scheme.primary));
         sw.style.setProperty('--swatch-c2', api.hexFromArgb(scheme.primaryContainer));
         sw.style.setProperty('--swatch-c3', api.hexFromArgb(scheme.secondaryContainer));
@@ -2648,7 +2649,7 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       '--logo-color': c('onSurfaceVariant'),
       // ===== 强调 =====
       '--accent-foreground-rest': c('primary'),
-      // 强调色 hover：M3 下同样用 8% onPrimary 状态层，保持同一色相（原来是跳到 tertiary）
+      // 强调色 hover：M3 下用 8% onPrimary 状态层，色相保持不变
       '--accent-foreground-hover': layer('primary', 'onPrimary', 0.08),
       '--accent-foreground-invert': c('onPrimary'),
       // ===== 按钮 =====
@@ -3394,7 +3395,8 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
   // 深色模式边角晕影默认开启，所以缺省值是 true
   let bgVignette = Storage.get('ntp_bg_vignette', true);
   let searchVisible = Storage.get('ntp_search_visible', true);
-  let showLogo = Storage.get('ntp_show_logo', true);
+  // 默认关闭
+  let showLogo = Storage.get('ntp_show_logo', false);
   // 快速链接区"添加"按钮的显隐（默认关闭）
   let showAddButton = Storage.get('ntp_show_add_button', true);
 
@@ -4131,7 +4133,7 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
     applyBgVignette();
   });
 
-  // 背景设置：在设置面板内切换到二级页（不再弹窗）
+  // 背景设置：在设置面板内切换到二级页
   btnOpenBgModal?.addEventListener('click', () => {
     showSettingsPage('bg');
     renderWallpaper();
@@ -4715,7 +4717,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     closeLayoutDropdowns();
   }
 
-  // 布局设置：在设置面板内切换到二级页（不再弹窗）
+  // 布局设置：在设置面板内切换到二级页
   btnOpenLayoutModal?.addEventListener('click', () => {
     closeLayoutDropdowns();
     // 同步为当前实际布局
