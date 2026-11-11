@@ -2130,6 +2130,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }, SETTINGS_PAGE_ANIM_MS + 30);
   }
 
+  // ESC 键：设置面板在二级页（背景/布局/颜色）时返回主设置页。
+  // 已展开的下拉优先由通用 ESC 逻辑关闭；已在主页时交回给其它处理（关闭面板等）
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (!popoverSettings?.classList.contains('active')) return;
+    if (document.querySelector('.custom-select-dropdown.active')) return;
+    if (!popoverSettings.classList.contains('in-subpage')) return;
+    e.preventDefault();
+    showSettingsPage('main');
+  });
+
   // ===== 设置面板的悬浮滚动条 =====
   // 原生滚动条在 Windows 上会占据内容宽度，这里隐藏它并自绘一条覆盖在内容上的滑块
   const settingsScrollbar = document.getElementById('settings-scrollbar');
@@ -2591,6 +2602,7 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
 
   // MD3 角色 → 现有 CSS 变量的映射。
   // 按「层级由低到高」取值：页面底色 < 卡片 < 输入框，保证浅/深两套都有层次、不糊成一片
+  // 深色模式遵循 M3 海拔规范（海拔越高越亮）：面板比卡片暗一档；浅色模式保持卡片比面板更浅
   function mdBuildVarText(scheme, dark) {
     const c = (role) => MCU_API.hexFromArgb(scheme[role]);
     // M3 状态层：把 on-color 以指定不透明度叠在基色上，而不是换成另一个颜色角色。
@@ -2610,12 +2622,14 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       '--neutral-layer-floating': c('surfaceContainerLow'),
       '--neutral-layer-floating-hover': c('surfaceContainerHighest'),
       '--modal-bg': c('surfaceContainerLow'),
-      '--settings-card-bg': c('surfaceContainerLow'),
-      '--settings-card-hover': c('surfaceContainerHigh'),
+      '--settings-card-bg': c(dark ? 'surfaceContainerHigh' : 'surfaceContainerLow'),
+      '--settings-card-hover': c(dark ? 'surfaceContainerHighest' : 'surfaceContainerHigh'),
       // 按钮/选项的悬停填充：onSurface 带透明度叠在任意底色上，色相跟随当前配色
       '--neutral-fill-hover': c('onSurface') + '1C',
       '--neutral-fill-rest': c('onSurface') + '0D',
-      '--settings-panel-bg': c('surfaceContainerHigh'),
+      // 面板底色：与卡片反向取值，保证「卡片浮于面板之上」——
+      // 深色下面板比卡片暗一档（符合 M3 海拔越高越亮的规范），浅色下保持卡片更浅的现有观感
+      '--settings-panel-bg': c(dark ? 'surfaceContainerLow' : 'surfaceContainerHigh'),
       '--suggestion-bg': c('surfaceContainerLow'),
       '--suggestion-hover': c('surfaceContainerHighest'),
       '--input-bg': c('surfaceContainerHighest'),
