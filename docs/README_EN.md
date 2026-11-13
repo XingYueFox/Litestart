@@ -1,6 +1,6 @@
 # Litestart
 
-<img src="pics/1112B.webp" alt="main_banner" height="300px" />
+<img src="pics/1113.webp" alt="main_banner" height="300px" />
 
 <strong>A customizable, Native-like new tab page for desktop browsers</strong>
 

@@ -1,10 +1,10 @@
 # Litestart 
 
-<img src="docs/pics/1112B.webp" alt="main_banner" height="300px" />
+<img src="docs/pics/1113.webp" alt="main_banner" height="300px" />
 
-<strong>面向桌面浏览器可定制的类原生浏览器起始页</strong>
+<strong>删繁就简。这次就由 Litestart 带来顺滑、迅捷、轻盈的体验。</strong>
 
-去除繁杂，Litestart旨在为您提供无缝，快速，轻便的体验
+面向桌面浏览器可定制的类原生浏览器起始页
 
 [<u>简体中文</u>] | <a href="docs/README_EN.md">English</a>
 
