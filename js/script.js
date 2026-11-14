@@ -1,4 +1,4 @@
-const APP_VERSION = '27.0.97';      // 发行版本
+const APP_VERSION = '27.0.100';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -80,7 +80,7 @@ const i18nData = {
     aboutDesc: '一个简洁、快速的浏览器起始页。',
     developers: '开发者',
     relatedLinks: '相关链接',
-    litever: '版本 27.0.97 | 更新时间：2026-11-11',
+    litever: '版本 27.0.100 | 更新时间：2026-11-14',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
     searchPlaceholderNight: '今晚想用 {name} 搜索什么？',
@@ -287,7 +287,7 @@ const i18nData = {
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
     developers: '開發者',
     relatedLinks: '相關連結',
-    litever: '版本 27.0.97 | 更新時間：2026-11-11',
+    litever: '版本 27.0.100 | 更新時間：2026-11-14',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
     searchPlaceholderNight: '今晚想用 {name} 搜尋什麼？',
@@ -479,7 +479,7 @@ const i18nData = {
     aboutDesc: 'A simple and fast browser start page.',
     developers: 'Developers',
     relatedLinks: 'Related Links',
-    litever: 'Version 27.0.97 | Updated: 2026-11-11',
+    litever: 'Version 27.0.100 | Updated: 2026-11-14',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
     searchPlaceholderNight: 'What do you want to search with {name} tonight?',
@@ -672,7 +672,7 @@ const i18nData = {
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
     developers: '開発者',
     relatedLinks: '関連リンク',
-    litever: 'バージョン 27.0.97 | 更新日: 2026-11-11',
+    litever: 'バージョン 27.0.100 | 更新日: 2026-11-14',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
     searchPlaceholderNight: '今夜は {name} で何を検索しますか？',
@@ -864,7 +864,7 @@ const i18nData = {
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
     developers: 'Разработчики',
     relatedLinks: 'Полезные ссылки',
-    litever: 'Версия 27.0.97 | Обновлено: 2026-11-11',
+    litever: 'Версия 27.0.100 | Обновлено: 2026-11-14',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
     searchPlaceholderNight: 'Что поищем вечером через {name}?',
