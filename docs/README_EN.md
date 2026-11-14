@@ -1,6 +1,6 @@
 # Litestart
 
-<img src="pics/1113.webp" alt="main_banner" height="350px" />
+<img src="pics/1113.webp" alt="main_banner" style="max-width: 600px; width: 100%; height: auto;" />
 
 <strong>Cut the clutter. This time, Litestart brings you a smooth, fast, and light experience.</strong>
 
@@ -29,7 +29,7 @@ Or use file import
 
 ## About Litestart
 
-<img alt="215014" src="pics/2002.webp" />
+<img alt="215014" style="max-width: 600px; width: 100%; height: auto;" src="pics/2002.webp" />
 
 - A customizable, native-like start page for desktop browsers.
 - Unlike typical new tabs, there’s no extraneous online content — so it loads faster, and feels native.
@@ -42,7 +42,9 @@ Or use file import
 - Customize the background, search engine, and layout.
 - Pin the sites you use most, right where you want them.
 - Or any wallpaper you like.
-<img alt="Function Preview" src="pics/2010.webp" />
+
+<img alt="Function Preview" style="max-width: 600px; width: 100%; height: auto;" src="pics/2003.webp" />
+<img alt="Function Preview" style="max-width: 600px; width: 100%; height: auto;" src="pics/2004.webp" />
 
 
 ## System & Browser Compatibility

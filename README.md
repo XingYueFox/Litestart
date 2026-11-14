@@ -1,6 +1,6 @@
 # Litestart 
 
-<img src="docs/pics/1113.webp" alt="main_banner" height="350px" />
+<img src="docs/pics/1113.webp" alt="main_banner" style="max-width: 650px; width: 100%; height: auto;" />
 
 <strong>删繁就简。这次就由 Litestart 带来顺滑、迅捷、轻盈的体验。</strong>
 
@@ -30,7 +30,7 @@
 
 ## 关于Litestart
 
-<img alt="215014" src="docs/pics/2002.webp" />
+<img alt="215014" style="max-width: 600px; width: 100%; height: auto;" src="docs/pics/2002.webp" />
 
 - 面向桌面浏览器可定制的类原生浏览器起始页
 - 相比之下，这个页面没有无关紧要的在线内容，以更快的速度带来预置级体验
@@ -43,7 +43,10 @@
 - 自定义背景、搜索引擎以及布局
 - 把常用的网站，固定在你想要的位置
 - 或者，任何一张你喜欢的壁纸
-<img alt="Function Preview" src="docs/pics/2010.webp" />
+
+<img alt="Function Preview" style="max-width: 600px; width: 100%; height: auto;" src="docs/pics/2003.webp" />
+<img alt="Function Preview" style="max-width: 600px; width: 100%; height: auto;" src="docs/pics/2004.webp" />
+
 
 
 ## 适用范围
