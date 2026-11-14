@@ -1,6 +1,6 @@
 # Litestart 
 
-<img src="docs/pics/1113.webp" alt="main_banner" height="300px" />
+<img src="docs/pics/1113.webp" alt="main_banner" height="350px" />
 
 <strong>删繁就简。这次就由 Litestart 带来顺滑、迅捷、轻盈的体验。</strong>
 
@@ -11,7 +11,7 @@
 
 ## 快速开始
 
-建议从插件商店获取和更新 Litestart 
+从插件商店获取或是更新 Litestart 
 
 <a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc"><img src="docs/get/edge-addon.webp" alt="Get it from Microsoft Edge" height="48"></a>&nbsp;&nbsp;<a href="https://addons.mozilla.org/firefox/addon/litestart/"><img src="docs/get/ff-addon.webp" alt="Get it from Firefox ADD-ON" height="48"></a>
 
@@ -22,9 +22,9 @@
 1. 从 [Releases](https://github.com/XingYueFox/Litestart/releases) 下载最新的.zip文件（Firefox请使用.xpi）
 2. 打开浏览器的扩展或者插件管理界面，然后启用开发人员模式
 3. 将你下载的.crx或者.zip文件托入插件界面导入
-4. 在插件列表找到LiteStart启用
+4. 在插件列表找到Litestart启用
 - ***请注意，如果无法启用请使用.zip导入***
-- 遇到麻烦？加入QQ群949401995
+- 需要帮助？在这里找到我们：949401995
 ***
 
 
@@ -33,24 +33,24 @@
 <img alt="215014" src="docs/pics/2002.webp" />
 
 - 面向桌面浏览器可定制的类原生浏览器起始页
-- 相比之下，这个页面没有无关紧要的在线内容，提升了新标签页的加载速度
-- 在相对更多个性化的同时也可以享受到极致的速度
+- 相比之下，这个页面没有无关紧要的在线内容，以更快的速度带来预置级体验
+- 个性化，不牺牲速度。更多自定义，一样快
 
 
 ## 特色功能
 
-- 你可以随意更改搜索引擎，并且拥有logo标题，网站导航，搜索历史亦或者是搜索框的位置将由您决定
+- 搜索引擎、Logo、网站导航、搜索历史，乃至搜索框的位置，全都由你决定
 - 自定义背景、搜索引擎以及布局
-- 固定你所想放在此处的网站
-- 亦或是任何一个壁纸
+- 把常用的网站，固定在你想要的位置
+- 或者，任何一张你喜欢的壁纸
 <img alt="Function Preview" src="docs/pics/2010.webp" />
 
 
 ## 适用范围
 
-- **系统**：Windows7以上 / MacOS10.15以上 / Linux至少支持现代 GTK 3 的发行版
+- **系统**：Windows 7以上 / macOS 10.15以上 / Linux 至少支持现代 GTK 3 的发行版
 - **浏览器**：
-  - Chrome/edge：109及以上
+  - Chrome / Edge：109及以上
   - Firefox：145以上
 - **支持语言**：简体中文 / 繁體中文 / English / Русский / 日本語
 

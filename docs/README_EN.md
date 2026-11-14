@@ -1,29 +1,29 @@
 # Litestart
 
-<img src="pics/1113.webp" alt="main_banner" height="300px" />
+<img src="pics/1113.webp" alt="main_banner" height="350px" />
 
-<strong>A customizable, Native-like new tab page for desktop browsers</strong>
+<strong>Cut the clutter. This time, Litestart brings you a smooth, fast, and light experience.</strong>
 
-Cutting out the clutter, Litestart aims to provide you with a seamless, fast, and lightweight experience.
+A customizable, native-like start page for desktop browsers.
 
 <a href="../README.md">简体中文</a> | [<u>English</u>]
-⚠The translation might not be 100% accurate!
+⚠ This translation may not be 100% accurate.
 
 
 
 ## Quick Start
 
-It is recommended to obtain and update Litestart from the plugin store
+Get or update Litestart from your browser’s extension store.
 
 <a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc"><img src="get/edge-addon.webp" alt="Get it from Microsoft Edge" height="48"></a>&nbsp;&nbsp;<a href="https://addons.mozilla.org/firefox/addon/litestart/"><img src="get/ff-addon.webp" alt="Get it from Firefox ADD-ON" height="48"></a>
 
 ***
 Or use file import
-1. Download the .CRX or .ZIP file from [Releases](https://github.com/XingYueFox/Litestart/releases).
-2. Open your browser's extension management page and enable Developer Mode.
-3. Drag the downloaded .CRX or .ZIP file into the extensions page to install.
+1. Download the `.crx` or `.zip` file from [Releases](https://github.com/XingYueFox/Litestart/releases).(use `.xpi` for Firefox).
+2. Open your browser’s extension management page and enable Developer Mode.
+3. Drag the downloaded `.crx` or `.zip` file into the extensions page to import it.
 4. Find Litestart in the extension list and enable it.
-- ***If the .CRX file fails to install, try using the .ZIP archive instead.***
+- ***If the `.crx` file won’t install, try the `.zip` archive instead.***
 ***
 
 
@@ -31,17 +31,17 @@ Or use file import
 
 <img alt="215014" src="pics/2002.webp" />
 
-- A customizable, native-like browser start page designed for desktop browsers.
-- In contrast to typical pages, this one contains no extraneous online content, which improves the loading speed of new tabs.
-- While offering relatively more personalization, it also delivers an ultimate fast experience.
+- A customizable, native-like start page for desktop browsers.
+- Unlike typical new tabs, there’s no extraneous online content — so it loads faster, and feels native.
+- Personalization, without the speed penalty. More control, same speed.
 
 
 ## Features
 
-- You can freely switch search engines, and the placement of the logo, site navigation, search history, or even the search box is entirely up to you.
+- Search engine, logo, site navigation, search history — even where the search box sits. All up to you.
 - Customize the background, search engine, and layout.
-- Pin any websites you want to keep on this page.
-- Or set any wallpaper you like.
+- Pin the sites you use most, right where you want them.
+- Or any wallpaper you like.
 <img alt="Function Preview" src="pics/2010.webp" />
 
 
@@ -49,9 +49,9 @@ Or use file import
 
 - **OS**: Windows 7+ / macOS 10.15+ / Linux distributions with modern GTK 3 support.
 - **Browsers**:
-  - Chrome/Edge: 109+
+  - Chrome / Edge: 109+
   - Firefox: 145+
-- **Supported Languages**: Simplified Chinese / Traditional Chinese / English / Русский / 日本語
+- **Supported Languages**: 简体中文 / 繁体中文 / English / Русский / 日本語
 
 
 ## Important Notice
