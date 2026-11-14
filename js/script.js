@@ -6240,20 +6240,35 @@ function onDrop(e) {
     const runtime = (typeof chrome !== 'undefined' && chrome.runtime &&
       typeof chrome.runtime.sendMessage === 'function') ? chrome.runtime : null;
     if (!runtime) return null;
+
+    // 加超时避免调用方永久停在 await
+    const PROXY_TIMEOUT = 3000;
     const reply = await new Promise(resolve => {
+      let settled = false;
+      let timer = null;
+      const finish = (value) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        resolve(value);
+      };
+      timer = setTimeout(() => {
+        console.warn('联想词代理超时，回退到直连');
+        finish(null);
+      }, PROXY_TIMEOUT);
       try {
         runtime.sendMessage({ type: 'liteSuggest', engine, query }, res => {
           // 没有接收方时 lastError 会被置位，此处按失败处理并回退
           if (runtime.lastError) {
             console.warn('联想词代理不可用:', runtime.lastError.message);
-            resolve(null);
+            finish(null);
           } else {
-            resolve(res || null);
+            finish(res || null);
           }
         });
       } catch (e) {
         console.warn('联想词代理调用异常:', e);
-        resolve(null);
+        finish(null);
       }
     });
     if (reply && reply.ok) return reply.items;
@@ -6309,9 +6324,13 @@ function onDrop(e) {
     return [];
   }
 
+  // 只渲染最后一次请求的结果，避免慢响应覆盖新输入
+  let suggestRequestSeq = 0;
+
   // 获取搜索联想建议：匹配历史记录 + 异步请求搜索引擎建议
   async function fetchAndShowSuggestions() {
     if (!searchInput) return;
+    const seq = ++suggestRequestSeq;
     const query = searchInput.value.trim();
 
     let matchedHistory = [];
@@ -6338,6 +6357,9 @@ function onDrop(e) {
     if (engine !== 'custom') {
       fetchedSuggestions = await fetchSearchSuggestions(engine, query);
     }
+
+    // 丢弃已过期输入结果
+    if (seq !== suggestRequestSeq) return;
 
     renderSuggestions(matchedHistory, fetchedSuggestions.slice(0, 8));
   }
