@@ -21,15 +21,16 @@
       --fill-color: #f5f5f5;   /* 页面主背景色 */
       --fill-popup-color: #ffffff;   /* 下拉菜单/弹窗主背景色；※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --neutral-layer-floating: #ffffff;   /* 浮动层背景色 (搜索框/图标) */
-      --neutral-layer-floating-hover: #e8e8e8;   /* 浮动层悬停底色 */
+      --neutral-layer-floating-hover: #f5f5f5;   /* 浮动层悬停底色：浅色略深 */
       /* 无背景时浮动层（搜索框、快速链接图标）的固定底色，不参与动态取色 */
       --plain-floating-bg: #ffffff;
-      --plain-floating-bg-hover: #f3f3f3;
+      --search-box-hover-bg: #fbfbfb;   /* 搜索框悬停底色：比浮动层更弱 */
       --modal-bg: #ffffff;   /* ※ 深色下比卡片更暗一档，与上面几个不同值 */
       --settings-panel-bg: #EEEEEE;   /* ※ 与 --btn-secondary-bg 同值（浅色 #EEEEEE / 深色不同） */
       --settings-card-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --settings-card-hover: #f0f0f0;
       --suggestion-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
+      --suggestion-text-color: var(--neutral-foreground-rest);   /* 建议项文字色 */
       --suggestion-hover: #ebebeb;   /* ※ 与 --accent-foreground-invert 同值（仅浅色） */
       --input-bg: #F2F2F2;
       --settings-thumb-bg: #d5d9de;
@@ -68,6 +69,10 @@
       --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 0 16px rgba(0, 0, 0, 0.14);
       --dropdown-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
       --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.04);
+      /* 搜索框悬停光晕：浅色底用深色光 */
+      --search-box-glow: rgba(0, 0, 0, 0.13);
+      /* 快速链接悬停光晕：与搜索框同源配色 */
+      --quicklink-glow: rgba(0, 0, 0, 0.13);
       /* 快速链接胶囊：与搜索框同系阴影，半径略小 */
       --quicklink-shadow: 0 0 8px rgba(0, 0, 0, 0.03);
       --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.10);
@@ -77,7 +82,6 @@
       --search-box-shadow-plain: 0 0 14px rgba(0, 0, 0, 0.09);
       --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
       /* 搜索框悬停底色：浅色略深，深色略浅 */
-      --search-box-bg-hover: #f3f3f3;
       /* 搜索框基准宽度，窄屏媒体查询中覆盖此值 */
       --search-width: 720px;
       --modal-mask: rgba(0, 0, 0, 0.52);
@@ -94,9 +98,9 @@
         --fill-color: #232323;
         --fill-popup-color: #2b2b2b;
         --neutral-layer-floating: #2b2b2b;
-        --neutral-layer-floating-hover: #3f3f3f;
+        --neutral-layer-floating-hover: #333333;   /* 深色略浅 */
         --plain-floating-bg: #2b2b2b;
-        --plain-floating-bg-hover: #333333;
+        --search-box-hover-bg: #2f2f2f;
         
         --neutral-foreground-rest: #f5f5f5;
         --neutral-foreground-secondary: #adadad;
@@ -138,16 +142,18 @@
         --enhanced-visibility-logo-bg: rgba(0, 0, 0, 0.6);
 
         --suggestion-bg: #2b2b2b;
+        --suggestion-text-color: var(--neutral-foreground-rest);
         --suggestion-hover: #454545;
         --suggestion-footer-color: #4f8cf6;
 
         --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.09);
+        --search-box-glow: rgba(255, 255, 255, 0.13);
+        --quicklink-glow: rgba(255, 255, 255, 0.13);
         --quicklink-shadow: 0 0 8px rgba(0, 0, 0, 0.07);
         --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.20);
         --search-box-shadow-enhanced: 0 0 14px rgba(0, 0, 0, 0.34);
         --search-box-shadow-plain: 0 0 14px rgba(0, 0, 0, 0.18);
         --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.13);
-        --search-box-bg-hover: #333333;
     }
 
     html {
@@ -285,7 +291,7 @@
     body.bg-enabled[data-enhanced-visibility="true"] .header-button {
       background-color: var(--enhanced-visibility-bg);
       border-radius: 8px;
-      transition: background-color 0.08s ease;
+      transition: background-color 0.08s ease, transform 0.12s ease;
     }
 
     /* 悬停或菜单展开时恢复完整圆角，与相邻的时间显示分开 */
@@ -297,7 +303,7 @@
     /* 九点菜单与时间显示相邻：相接的一侧内角收小 */
     body.bg-enabled[data-enhanced-visibility="true"] #waffle {
       border-radius: 8px 3px 3px 8px;
-      transition: background-color 0.08s ease, border-radius 0.12s ease;
+      transition: background-color 0.08s ease, border-radius 0.12s ease, transform 0.12s ease;
     }
 
     body.bg-enabled[data-enhanced-visibility="true"] .header-button:hover {
@@ -411,8 +417,20 @@
     .header-button {
       width: 40px;
       height: 40px;
+      /* 图标精确居中：避免基线对齐让缩放中心偏离按钮中心 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: var(--neutral-foreground-rest);
-      transition: background-color 0.08s ease;
+      transition: background-color 0.08s ease, transform 0.12s ease;
+      /* 提前提升为合成层，缩放的插值和栅格化更稳定 */
+      will-change: transform;
+    }
+
+    /* 按下时轻微缩小；面板展开期间保持该状态 */
+    .header-button:active,
+    .header-button.active {
+      transform: scale(0.94);
     }
 
     /* 面板展开期间，触发按钮保持"悬停"高亮，直到面板关闭（由脚本同步 active 类） */
@@ -439,7 +457,7 @@
       visibility: hidden;
       pointer-events: none;
       transform: translateY(-4px);
-      transition: opacity 0.06s ease-out, transform 0.06s ease-out, visibility 0s linear 0.06s;
+      transition: opacity 0.1s ease-out, transform 0.1s ease-out, visibility 0s linear 0.1s;
     }
 
     .popover-panel.active {
@@ -447,7 +465,7 @@
       visibility: visible;
       pointer-events: auto;
       transform: translateY(0);
-      transition: opacity 0.06s ease-out, transform 0.06s ease-out, visibility 0s linear 0s;
+      transition: opacity 0.1s ease-out, transform 0.1s ease-out, visibility 0s linear 0s;
     }
 
     /* 设置弹窗样式 */
@@ -511,7 +529,7 @@
       align-items: center;
       justify-content: space-between;
       line-height: 1;
-      padding: 16px 16px 12px 16px;
+      padding: 16px 16px 12px 12px;
     }
 
     .settings-title {
@@ -1628,14 +1646,10 @@
       position: relative;
       width: var(--search-width);
       z-index: 5;
-      /* 悬停与选中时按基准宽度加长，高度始终保持不变 */
+      /* 选中时按基准宽度加长，高度始终保持不变 */
       transition: width 0.15s ease;
     }
 
-    /* 悬停轻微变长，选中时更长 */
-    #search-container:hover {
-      width: calc(var(--search-width) + 11px);
-    }
 
     #search-container:focus-within {
       width: calc(var(--search-width) + 36px);
@@ -1662,22 +1676,70 @@
       cursor: text;
       position: relative;
       padding: 0 10px 0 15px;
-      transition: border-radius 0.15s ease, box-shadow 0.5s ease, background-color 0.15s ease, border-color 0.15s ease, outline 0.15s ease;
+      /* 内部光晕需要裁到圆角内 */
+      overflow: hidden;
+      transition: border-radius 0.15s ease, box-shadow 0.5s ease, background-color 0.42s ease, border-color 0.15s ease, outline 0.15s ease;
     }
+
+    /* 悬停时以指针位置为中心的弱光晕，裁在圆角内 */
+    #fakebox::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.42s ease;
+      transform-origin: var(--pointer-x, 50%) var(--pointer-y, 50%);
+      background: radial-gradient(
+        140px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+        var(--search-box-glow),
+        transparent 65%
+      );
+    }
+
+    /* 聚焦时从指针位置放大并渐隐，作为选中反馈 */
+    #fakebox:focus-within::before {
+      animation: search-glow-burst 0.8s ease-out forwards;
+    }
+
+    @keyframes search-glow-burst {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(13);
+      }
+    }
+    /* 悬停时底色做极轻微的深浅偏移 */
+    #fakebox:hover:not(:focus-within) {
+      background-color: var(--search-box-hover-bg);
+    }
+
+    /* 无背景时改用固定色的对应档 */
+    :root[data-theme="light"] body:not(.bg-enabled) #fakebox:hover:not(:focus-within) {
+      background-color: var(--search-box-hover-bg);
+    }
+
+
+    #fakebox:hover:not(:focus-within)::before {
+      opacity: 1;
+    }
+
 
     /* 浅色模式下无背景时，浮动层使用固定底色，不跟随动态取色；文字仍按配色渲染 */
     :root[data-theme="light"] body:not(.bg-enabled) #fakebox {
       background-color: var(--plain-floating-bg);
     }
 
-    :root[data-theme="light"] body:not(.bg-enabled) #fakebox:hover:not(:focus-within) {
-      background-color: var(--plain-floating-bg-hover);
+    /* 关闭背景时，建议列表与搜索框同底色 */
+    :root[data-theme="light"] body:not(.bg-enabled) #suggestions-box {
+      background-color: var(--plain-floating-bg);
     }
 
-    /* 悬停时底色微调：浅色略深，深色略浅；选中后不再变化 */
-    #fakebox:hover:not(:focus-within) {
-      background-color: var(--search-box-bg-hover);
-    }
+
 
     #fakebox #searchbutton {
       fill: var(--neutral-foreground-secondary);
@@ -1803,7 +1865,7 @@
       border-radius: 6px;
       cursor: pointer;
       font-size: 15px;
-      color: var(--neutral-foreground-rest);
+      color: var(--suggestion-text-color);
       gap: 12px;
       transition: background-color 0.08s;
     }
@@ -1813,7 +1875,7 @@
     }
 
     .suggestion-item svg {
-      fill: var(--neutral-foreground-rest);
+      fill: var(--suggestion-text-color);
       opacity: 0.6;
       flex-shrink: 0;
     }
@@ -1956,6 +2018,8 @@
 
     .quicklink-item {
       position: relative;
+      /* 内部光晕需要裁在胶囊圆角内 */
+      overflow: hidden;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -1971,12 +2035,63 @@
       text-decoration: none;
       color: var(--neutral-foreground-rest);
       font-size: 12px;
-      transition: transform 0.08s ease, background-color 0.1s;
+      transition: transform 0.08s ease, background-color 0.42s ease;
+      /* 提前提升为合成层：按下缩放的插值与文字栅格化更稳定 */
+      will-change: transform;
       gap: 6px;
       /* 只禁"选中文字"，不动拖拽：触屏长按拖拽（HTML5 drag）依赖原生手势，
          一旦加 -webkit-touch-callout: none / -webkit-user-drag: none 就会失效 */
       user-select: none;
       -webkit-user-select: none;
+    }
+
+    /* 点击爆发用的光晕层：由脚本写入渐变与动画，便于控制扩散原点 */
+    .quicklink-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    /* 悬停时以指针位置为中心的弱光晕，裁在胶囊内 */
+    .quicklink-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.42s ease;
+      transform-origin: var(--pointer-x, 50%) var(--pointer-y, 50%);
+      background: radial-gradient(
+        70px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+        var(--quicklink-glow),
+        transparent 70%
+      );
+    }
+
+    .quicklink-item:hover::before,
+    .quicklink-item.menu-open::before {
+      opacity: 1;
+    }
+
+    /* 悬停与菜单展开：底色做极轻微的深浅偏移，反馈主要由光晕承担 */
+    .quicklink-item:hover,
+    .quicklink-item.menu-open {
+      background-color: var(--neutral-layer-floating-hover);
+    }
+
+    /* 点击后短暂冷却：按下动画播完不立刻回到指针光晕 */
+    .quicklink-item.glow-cooldown:not(:active)::before {
+      opacity: 0;
+    }
+
+
+      to {
+        opacity: 0;
+        transform: scale(4);
+      }
     }
 
     /* 图标内部元素同样不参与文字选中 */
@@ -1991,11 +2106,7 @@
       transform: scale(0.96);
     }
 
-    /* 悬停与菜单展开：图标块和文字块一起加深 */
-    .quicklink-item:hover,
-    .quicklink-item.menu-open {
-      background-color: var(--neutral-layer-floating-hover);
-    }
+
 
     .quicklink-icon {
       width: 28px;
@@ -2136,6 +2247,11 @@
       background-color: var(--neutral-fill-rest);
     }
 
+    /* 删除项：文字与图标用危险色，悬停底色与其它项一致 */
+    .context-menu-item[data-action="delete"] {
+      color: var(--btn-danger-color);
+    }
+
     /* 选中（键盘聚焦 / 当前项）：与选项菜单同一档更深的颜色 + 文字与图标用强调色 */
     .context-menu-item.selected,
     .context-menu-item[aria-current="true"] {
@@ -2149,23 +2265,8 @@
       color: var(--accent-foreground-rest);
     }
 
-    /* 删除项：文字与图标用危险色，悬停/选中沿用危险色系而非强调色 */
-    .context-menu-item[data-action="delete"] {
-      color: var(--btn-danger-color);
-    }
 
-    .context-menu-item[data-action="delete"]:hover,
-    .context-menu-item[data-action="delete"]:focus-visible,
-    .context-menu-item[data-action="delete"].selected,
-    .context-menu-item[data-action="delete"][aria-current="true"] {
-      background-color: var(--btn-danger-hover);
-      color: var(--btn-danger-color);
-    }
 
-    .context-menu-item[data-action="delete"].selected svg,
-    .context-menu-item[data-action="delete"][aria-current="true"] svg {
-      color: var(--btn-danger-color);
-    }
 
     .quicklink-add-icon {
       background: none;
@@ -2193,14 +2294,48 @@
     body[data-quicklink-position="bottom"] ntp-quicklinks {
       position: absolute;
       /* 脱离网格定位，包含块回到 #inner，bottom 指向整页底部 */
-      left: 20px;
-      right: 20px;
+      left: 0;
+      right: 0;
       bottom: 20px;
+      /* 宽度按列数换算并与普通模式一致，靠 margin 居中；窄视口保留左右边距 */
       width: auto;
-      max-width: none;
+      max-width: min(var(--quicklinks-content-width, 752px), calc(100% - 40px));
+      margin: 0 auto;
       min-height: 0;
       z-index: 3;
     }
+
+    /* 底部多行：改用网格按显式行列放置，让靠下的行优先排满，
+       顶部行留出不足一行的那部分（脚本写入每项的 grid-row / grid-column） */
+    /* 底部多行：按行分组，每行独立居中，靠下的行优先排满（行由脚本生成） */
+    /* 底部多行：纵向堆叠行容器，行内容自然宽度并水平居中
+       （左右定位沿用上方规则，不额外改变盒子尺寸） */
+    body[data-quicklink-position="bottom"] ntp-quicklinks[rows="2"] {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--quicklink-gap, 18px);
+    }
+
+    /* 单行容器：内部与普通多行完全相同的项排列方式 */
+    /* 行内允许换行：窗口变窄时项自动折到下一行，避免撑出滚动条 */
+    /* 测量阶段：临时改回行排布，量出每项的自然宽度 */
+    ntp-quicklinks.quicklink-measuring {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .quicklink-row {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      align-self: center;
+      justify-content: center;
+      gap: var(--quicklink-gap, 18px);
+    }
+
 
     /* 快速链接在搜索框下方的剩余空间内垂直居中（仅悬挂布局提供该选项） */
     body[data-quicklink-position="middle"] ntp-quicklinks {
@@ -2222,14 +2357,14 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.08s ease-out, visibility 0s linear 0.08s;
+      transition: opacity 0.1s ease-out, visibility 0s linear 0.1s;
     }
 
     .modal-overlay.active {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-      transition: opacity 0.08s ease-out, visibility 0s linear 0s;
+      transition: opacity 0.1s ease-out, visibility 0s linear 0s;
     }
 
     .modal-dialog {
@@ -2663,7 +2798,7 @@
       white-space: normal;
       word-break: normal;
       z-index: 10000;
-      transition: opacity 0.08s ease, visibility 0.08s ease;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
       pointer-events: none;
     }
 
@@ -2694,7 +2829,7 @@
     align-items: center;
     gap: 10px;
     padding: 8px 8px;
-    border-radius: 8px;
+    border-radius: 4px;
     color: var(--settings-text-primary);
     font-size: 14px;
     cursor: pointer;
@@ -2989,12 +3124,20 @@
       align-items: center;
       justify-content: flex-start;
       gap: 8px;
-      min-height: 24px;
+      /* 与二级页一致：容纳 32px 返回按钮，一级页标题同高居中 */
+      min-height: 60px;
+      box-sizing: border-box;
+    }
+
+    /* 一级页头部只有标题：水平居中 */
+    #popover-settings > .settings-header {
+      justify-content: center;
     }
 
     #popover-settings .settings-title {
       text-align: left;
     }
+
 
     /* 页面切换时的内容淡入（0.2s，与面板高度过渡同时进行） */
     #popover-settings > .settings-header,
@@ -3013,8 +3156,16 @@
 
     /* 二级页标题栏里的返回按钮 */
     .settings-back-btn svg {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
+    }
+
+    /* 路径本身是细线条，叠加同色描边加粗 */
+    .settings-back-btn svg path {
+      stroke: currentColor;
+      stroke-width: 40;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .settings-back-btn {
@@ -3022,9 +3173,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 4px;
+      /* 图标已居中，用负外边距压缩与标题的视觉间距 */
+      margin-right: -4px;
       color: var(--settings-text-secondary);
       cursor: pointer;
       transition: background-color 0.08s ease;
@@ -3138,7 +3291,7 @@
 
         <div id="header-right">
           <button id="settings" class="header-button" type="button" aria-label="设置" title="设置" data-i18n-title="settingsTitle">
-            <svg fill="currentColor" aria-hidden="true" width="24" height="24" viewBox="0 -960 960 960" xmlns="http://www.w3.org/2000/svg"><path d="M433-80q-27 0-46.5-18T363-142l-9-66q-13-5-24.5-12T307-235l-62 26q-25 11-50 2t-39-32l-47-82q-14-23-8-49t27-43l53-40q-1-7-1-13.5v-27q0-6.5 1-13.5l-53-40q-21-17-27-43t8-49l47-82q14-23 39-32t50 2l62 26q11-8 23-15t24-12l9-66q4-26 23.5-44t46.5-18h94q27 0 46.5 18t23.5 44l9 66q13 5 24.5 12t22.5 15l62-26q25-11 50-2t39 32l47 82q14 23 8 49t-27 43l-53 40q1 7 1 13.5v27q0 6.5-2 13.5l53 40q21 17 27 43t-8 49l-48 82q-14 23-39 32t-50-2l-60-26q-11 8-23 15t-24 12l-9 66q-4 26-23.5 44T527-80h-94Zm7-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
+            <svg fill="currentColor" aria-hidden="true" width="24" height="24" viewBox="0 -960 960 960" xmlns="http://www.w3.org/2000/svg"><path d="M433-80q-27 0-46.5-18T363-142l-9-66q-13-5-24.5-12T307-235l-62 26q-25 11-50 2t-39-32l-47-82q-14-23-8-49t27-43l53-40q-1-7-1-13.5v-27q0-6.5 1-13.5l-53-40q-21-17-27-43t8-49l47-82q14-23 39-32t50 2l62 26q11-8 23-15t24-12l9-66q4-26 23.5-44t46.5-18h94q27 0 46.5 18t23.5 44l9 66q13 5 24.5 12t22.5 15l62-26q25-11 50-2t39 32l47 82q14 23 8 49t-27 43l-53 40q1 7 1 13.5v27q0 6.5-2 13.5l53 40q21 17 27 43t-8 49l-48 82q-14 23-39 32t-50-2l-60-26q-11 8-23 15t-24 12l-9 66q-4 26-23.5 44T527-80h-94Zm7-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-196q23 0 39.5 16.5T536-480q0 23-16.5 39.5T480-424q-23 0-39.5-16.5T424-480q0-23 16.5-39.5T480-536Z"/></svg>
           </button>
           
           <!-- 设置弹窗面板 -->
@@ -3747,7 +3900,7 @@
       </button>
       <button type="button" class="context-menu-item" data-action="download-image" role="menuitem">
         <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="m17 17.2l-.9-.9q-.275-.275-.7-.275t-.7.275t-.275.7t.275.7l2.6 2.6q.3.3.7.3t.7-.3l2.6-2.6q.275-.275.275-.7t-.275-.7t-.7-.275t-.7.275l-.9.9v-3.175q0-.425-.288-.712T18 13.025t-.712.288t-.288.712zM15 22h6q.425 0 .713.288T22 23t-.288.713T21 24h-6q-.425 0-.712-.288T14 23t.288-.712T15 22m-9-2q-.825 0-1.412-.587T4 18V4q0-.825.588-1.412T6 2h6.175q.4 0 .763.15t.637.425l4.85 4.85q.275.275.425.638t.15.762v1.2q0 .425-.288.712t-.712.288t-.712-.288t-.288-.712V9h-3.5q-.625 0-1.062-.437T12 7.5V4H6v14h5q.425 0 .713.288T12 19t-.288.713T11 20zm0-2V4z"/></svg>
-        <span data-i18n="downloadImage">下载图像</span>
+        <span data-i18n="downloadImage">下载背景图像</span>
       </button>
     </div>
 
