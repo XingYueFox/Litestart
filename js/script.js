@@ -1172,7 +1172,10 @@ function applyLanguage(langConfig) {
         }
       };
 
-      const show = () => {
+      // 指针停留 200ms 后才显示，快速划过时不弹出
+      let showTimer = 0;
+
+      const showNow = () => {
         measureTooltip();
         position();
         tooltip.style.visibility = 'visible';
@@ -1180,15 +1183,26 @@ function applyLanguage(langConfig) {
         activeTooltipIcons.add(position);
       };
 
+      const show = () => {
+        clearTimeout(showTimer);
+        showTimer = setTimeout(showNow, 200);
+      };
+
+      const showImmediately = () => {
+        clearTimeout(showTimer);
+        showNow();
+      };
+
       const hide = () => {
+        clearTimeout(showTimer);
         tooltip.style.visibility = 'hidden';
         tooltip.style.opacity = '0';
         activeTooltipIcons.delete(position);
       };
 
       icon.addEventListener('mouseenter', show);
-      icon.addEventListener('focus', show);
-      icon.addEventListener('click', show);
+      icon.addEventListener('focus', showImmediately);
+      icon.addEventListener('click', showImmediately);
       icon.addEventListener('mouseleave', hide);
       icon.addEventListener('blur', hide);
     });
