@@ -2625,7 +2625,10 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       '--fill-color': c('surface'),
       '--fill-popup-color': c('surfaceContainerLow'),
       '--neutral-layer-floating': c('surfaceContainerLow'),
-      '--neutral-layer-floating-hover': c('surfaceContainerHighest'),
+      '--neutral-layer-floating-hover': c('surfaceContainerHigh'),
+      // 取色后光晕用主色：浅色下是深色饱和色，深色下是浅色饱和色
+      '--search-box-glow': c('primary') + (dark ? '24' : '38'),
+      '--quicklink-glow': c('primary') + (dark ? '24' : '38'),
       '--modal-bg': c('surfaceContainerLow'),
       '--settings-card-bg': c(dark ? 'surfaceContainerHigh' : 'surfaceContainerLow'),
       '--settings-card-hover': c(dark ? 'surfaceContainerHighest' : 'surfaceContainerHigh'),
@@ -2639,7 +2642,6 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       '--suggestion-hover': c('surfaceContainerHighest'),
       '--input-bg': c('surfaceContainerHighest'),
       // 搜索框悬停底色：surfaceContainer 比常态的 surfaceContainerLow 深一档（深色模式则浅一档）
-      '--search-box-bg-hover': c('surfaceContainer'),
       // 增强可见性衬底：surfaceContainerLowest 为浅色模式最亮、深色模式最暗的一档
       // 浅色模式下透明度更高，让衬底更接近纯白
       '--enhanced-visibility-bg': c('surfaceContainerLowest') + (dark ? '73' : '99'),
@@ -3397,7 +3399,7 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
     }
     Storage.set(QUICKLINK_ROWS_MIGRATION_KEY, true);
   }
-  // 快速链接位置：'auto' 跟随布局；'bottom' 固定在页面底部（该模式强制一行）
+  // 快速链接位置：'auto' 跟随布局；'bottom' 固定在页面底部
   let quicklinkPosition = Storage.get('ntp_quicklink_position', 'auto');
   let historyEnabled = Storage.get('ntp_history_enabled', true);
   let searchHistory = Storage.get('ntp_search_history', []);
@@ -4523,8 +4525,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (addButtonRow) addButtonRow.classList.toggle('disabled', !showQuicklinks);
   }
 
-  // 快速链接位置：'bottom' 时固定到页面底部。该模式不支持多行，
-  // 因此只把"多行"这一项禁掉，仍允许在一行与关闭之间切换
+  // 快速链接位置：'bottom' 时固定到页面底部，行数与其他布局共用同一设置
   // 'middle'（垂直居中）在悬挂布局下生效：其它布局按默认处理，
   // 存储值保留，切回悬挂时还原
   function applyQuicklinkPosition() {
@@ -4536,11 +4537,9 @@ inputOnlineUrl?.addEventListener('input', () => {
     let savedRow = Storage.get('ntp_quicklinks', '2');
     // 旧数据里 '0' 曾表示"关闭"，现在关闭由显示开关承担
     if (savedRow === '0') savedRow = '2';
-    // 底部模式下若之前存的是"多行"，按一行处理（存储值保留，切回默认时还原）
-    const effectiveRow = (effective === 'bottom' && savedRow === '2') ? '1' : savedRow;
+    // 底部模式与其它布局共用同一个行数设置
+    const effectiveRow = savedRow;
 
-    const multiRowOption = selectQuicklinks ? selectQuicklinks.querySelector('option[value="2"]') : null;
-    if (multiRowOption) multiRowOption.disabled = effective === 'bottom';
 
     // 不显示时用 rows="0" 表达（复用既有的隐藏逻辑）
     if (quicklinksElem) {
@@ -4790,11 +4789,6 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   selectQuicklinks?.addEventListener('change', (e) => {
     let val = e.target.value;
-    // "底部"模式下不支持多行（该选项本身已禁用，这里再兜一层）
-    if (quicklinkPosition === 'bottom' && val === '2') {
-      val = '1';
-      selectQuicklinks.value = val;
-    }
     Storage.set('ntp_quicklinks', val);
     quicklinksElem?.setAttribute('rows', val);
     // 行数变化会改变每行/总数上限，强制重建一次
@@ -5259,6 +5253,29 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   // 渲染快速链接列表
   // 仅在「列数 / 行数设置 / 数据」变化时重建 DOM，窗口缩放不会引发无谓的重排
+
+
+
+  let quicklinkRefitQueued = false;
+  let quicklinkRefitAttempts = 0;
+  // 布局就绪后校验一次分组：溢出则重测，最多补两次避免反复重建
+  function scheduleQuicklinkRefit() {
+    if (quicklinkRefitQueued || quicklinkRefitAttempts >= 2) return;
+    quicklinkRefitQueued = true;
+    requestAnimationFrame(() => {
+      quicklinkRefitQueued = false;
+      if (!quicklinksElem) return;
+      const rows = Array.from(quicklinksElem.querySelectorAll('.quicklink-row'));
+      const overflow = rows.some(row => row.scrollWidth > row.clientWidth + 2);
+      if (overflow) {
+        quicklinkRefitAttempts += 1;
+        renderQuicklinks(true);
+      } else {
+        quicklinkRefitAttempts = 0;
+      }
+    });
+  }
+
   function renderQuicklinks(force) {
     if (!quicklinksElem) return;
 
@@ -5296,21 +5313,72 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (!force && renderKey === quicklinksLastRenderKey && !widthChanged) return;
     quicklinksLastRenderKey = renderKey;
     quicklinksElem.style.setProperty('--quicklinks-content-width', contentWidth + 'px');
+    quicklinksElem.style.setProperty('--quicklink-cols', String(perRow));
+    quicklinksElem.style.setProperty('--quicklink-item-width', QUICKLINK_ITEM_WIDTH + 'px');
 
     // 整体重建：链接项在前，"添加"按钮在末尾
-    const fragment = document.createDocumentFragment();
-    shownLinks.forEach(item => {
-      fragment.appendChild(createQuicklinkNode(item));
-    });
-    // 单行模式未超出显示上限时才显示"添加"按钮；多行模式始终显示在末尾
-    if (hasAddButton) {
-      fragment.appendChild(createQuicklinkAddNode());
-    }
+    const allNodes = [];
+    shownLinks.forEach(item => { allNodes.push(createQuicklinkNode(item)); });
+    if (hasAddButton) allNodes.push(createQuicklinkAddNode());
+
+    const isBottomMulti = multiRow && document.body.getAttribute('data-quicklink-position') === 'bottom';
+
 
     quicklinksElem.textContent = '';
-    quicklinksElem.appendChild(fragment);
+    if (isBottomMulti && allNodes.length) {
+      // 先切到行排布再平铺插入：纵向布局下每项独占一行，量出的宽度不可用
+      quicklinksElem.classList.add('quicklink-measuring');
+      allNodes.forEach(node => quicklinksElem.appendChild(node));
+      const rowLimit = quicklinksElem.clientWidth;
+      const gap = QUICKLINK_GAP;
+      const widths = allNodes.map(node => node.offsetWidth);
+      quicklinksElem.classList.remove('quicklink-measuring');
+
+      if (rowLimit > 0) {
+        // 从最后一项往前贪心收行：每行尽量排满，剩余的自然留在最上面
+        const rows = [];
+        let cursor = allNodes.length - 1;
+        while (cursor >= 0) {
+          const rowNodes = [];
+          let rowWidth = 0;
+          while (cursor >= 0) {
+            const addWidth = widths[cursor] + (rowNodes.length ? gap : 0);
+            if (rowNodes.length && rowWidth + addWidth > rowLimit) break;
+            rowNodes.unshift(allNodes[cursor]);
+            rowWidth += addWidth;
+            cursor -= 1;
+          }
+          rows.unshift(rowNodes);
+        }
+
+        // 按行重新挂载
+        quicklinksElem.textContent = '';
+        rows.forEach(rowNodes => {
+          const rowEl = document.createElement('div');
+          rowEl.className = 'quicklink-row';
+          rowNodes.forEach(node => rowEl.appendChild(node));
+          quicklinksElem.appendChild(rowEl);
+        });
+      }
+    } else {
+      allNodes.forEach(node => quicklinksElem.appendChild(node));
+    }
+
     syncQuicklinksLanguage();
 
+
+    // 布局尚未就绪时分组可能偏空，下一帧校验一次并在溢出时重测
+    if (isBottomMulti) scheduleQuicklinkRefit();
+
+  }
+
+  // 字体加载完成后重新分组：首次渲染时字体可能尚未就绪，量出的项宽偏小
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      if (!quicklinksElem || quicklinksElem.getAttribute('rows') !== '2') return;
+      if (document.body.getAttribute('data-quicklink-position') !== 'bottom') return;
+      renderQuicklinks(true);
+    });
   }
 
   // 窗口尺寸变化：合并到下一帧处理，并且只在列数真正变化时才重建 DOM
@@ -5323,9 +5391,19 @@ inputOnlineUrl?.addEventListener('input', () => {
       if (!quicklinksElem) return;
       const rows = quicklinksElem.getAttribute('rows');
       if (rows === '0') return;
-      if (quicklinksColumnsPerRow(rows) !== quicklinksColumns) renderQuicklinks();
+      const isBottomMulti = rows === '2'
+        && document.body.getAttribute('data-quicklink-position') === 'bottom';
+      if (isBottomMulti) {
+        // 行分组依赖容器实际宽度，窗口变化后必须强制重建
+        renderQuicklinks(true);
+      } else if (quicklinksColumnsPerRow(rows) !== quicklinksColumns) {
+        renderQuicklinks();
+      }
     });
+
+
   });
+
 
 
   // ========== 拖拽事件处理函数 ==========
@@ -6380,6 +6458,35 @@ function onDrop(e) {
     if (searchContainer?.classList.contains('suggestions-open')) {
       debouncedFetchSuggestions();
     }
+  });
+
+  // 悬停光晕跟随指针：把相对坐标写进 CSS 变量，供 radial-gradient 定位
+  fakebox?.addEventListener('pointermove', (e) => {
+    const rect = fakebox.getBoundingClientRect();
+    fakebox.style.setProperty('--pointer-x', (e.clientX - rect.left) + 'px');
+    fakebox.style.setProperty('--pointer-y', (e.clientY - rect.top) + 'px');
+  });
+
+  // 快速链接悬停光晕：事件委托 + 每帧合并，任意时刻只有被指向的那一项在更新
+  let quicklinkGlowFrame = 0;
+  let quicklinkGlowTarget = null;
+  let quicklinkGlowX = 0;
+  let quicklinkGlowY = 0;
+
+  quicklinksElem?.addEventListener('pointermove', (e) => {
+    const item = e.target instanceof Element ? e.target.closest('.quicklink-item') : null;
+    if (!item) return;
+    quicklinkGlowTarget = item;
+    quicklinkGlowX = e.clientX;
+    quicklinkGlowY = e.clientY;
+    if (quicklinkGlowFrame) return;
+    quicklinkGlowFrame = requestAnimationFrame(() => {
+      quicklinkGlowFrame = 0;
+      if (!quicklinkGlowTarget) return;
+      const rect = quicklinkGlowTarget.getBoundingClientRect();
+      quicklinkGlowTarget.style.setProperty('--pointer-x', (quicklinkGlowX - rect.left) + 'px');
+      quicklinkGlowTarget.style.setProperty('--pointer-y', (quicklinkGlowY - rect.top) + 'px');
+    });
   });
 
   fakebox?.addEventListener('click', () => {

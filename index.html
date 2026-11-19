@@ -21,10 +21,9 @@
       --fill-color: #f5f5f5;   /* 页面主背景色 */
       --fill-popup-color: #ffffff;   /* 下拉菜单/弹窗主背景色；※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --neutral-layer-floating: #ffffff;   /* 浮动层背景色 (搜索框/图标) */
-      --neutral-layer-floating-hover: #e8e8e8;   /* 浮动层悬停底色 */
+      --neutral-layer-floating-hover: #f5f5f5;   /* 浮动层悬停底色：浅色略深 */
       /* 无背景时浮动层（搜索框、快速链接图标）的固定底色，不参与动态取色 */
       --plain-floating-bg: #ffffff;
-      --plain-floating-bg-hover: #f3f3f3;
       --modal-bg: #ffffff;   /* ※ 深色下比卡片更暗一档，与上面几个不同值 */
       --settings-panel-bg: #EEEEEE;   /* ※ 与 --btn-secondary-bg 同值（浅色 #EEEEEE / 深色不同） */
       --settings-card-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
@@ -68,6 +67,10 @@
       --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 0 16px rgba(0, 0, 0, 0.14);
       --dropdown-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
       --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.04);
+      /* 搜索框悬停光晕：浅色底用深色光 */
+      --search-box-glow: rgba(0, 0, 0, 0.13);
+      /* 快速链接悬停光晕：与搜索框同源配色 */
+      --quicklink-glow: rgba(0, 0, 0, 0.13);
       /* 快速链接胶囊：与搜索框同系阴影，半径略小 */
       --quicklink-shadow: 0 0 8px rgba(0, 0, 0, 0.03);
       --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.10);
@@ -77,7 +80,6 @@
       --search-box-shadow-plain: 0 0 14px rgba(0, 0, 0, 0.09);
       --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
       /* 搜索框悬停底色：浅色略深，深色略浅 */
-      --search-box-bg-hover: #f3f3f3;
       /* 搜索框基准宽度，窄屏媒体查询中覆盖此值 */
       --search-width: 720px;
       --modal-mask: rgba(0, 0, 0, 0.52);
@@ -94,9 +96,8 @@
         --fill-color: #232323;
         --fill-popup-color: #2b2b2b;
         --neutral-layer-floating: #2b2b2b;
-        --neutral-layer-floating-hover: #3f3f3f;
+        --neutral-layer-floating-hover: #333333;   /* 深色略浅 */
         --plain-floating-bg: #2b2b2b;
-        --plain-floating-bg-hover: #333333;
         
         --neutral-foreground-rest: #f5f5f5;
         --neutral-foreground-secondary: #adadad;
@@ -142,12 +143,13 @@
         --suggestion-footer-color: #4f8cf6;
 
         --search-box-shadow: 0 0 14px rgba(0, 0, 0, 0.09);
+        --search-box-glow: rgba(255, 255, 255, 0.13);
+        --quicklink-glow: rgba(255, 255, 255, 0.13);
         --quicklink-shadow: 0 0 8px rgba(0, 0, 0, 0.07);
         --search-box-shadow-active: 0 0 14px rgba(0, 0, 0, 0.20);
         --search-box-shadow-enhanced: 0 0 14px rgba(0, 0, 0, 0.34);
         --search-box-shadow-plain: 0 0 14px rgba(0, 0, 0, 0.18);
         --suggestions-shadow: 0 8px 22px rgba(0, 0, 0, 0.13);
-        --search-box-bg-hover: #333333;
     }
 
     html {
@@ -1628,14 +1630,10 @@
       position: relative;
       width: var(--search-width);
       z-index: 5;
-      /* 悬停与选中时按基准宽度加长，高度始终保持不变 */
+      /* 选中时按基准宽度加长，高度始终保持不变 */
       transition: width 0.15s ease;
     }
 
-    /* 悬停轻微变长，选中时更长 */
-    #search-container:hover {
-      width: calc(var(--search-width) + 11px);
-    }
 
     #search-container:focus-within {
       width: calc(var(--search-width) + 36px);
@@ -1662,22 +1660,55 @@
       cursor: text;
       position: relative;
       padding: 0 10px 0 15px;
+      /* 内部光晕需要裁到圆角内 */
+      overflow: hidden;
       transition: border-radius 0.15s ease, box-shadow 0.5s ease, background-color 0.15s ease, border-color 0.15s ease, outline 0.15s ease;
     }
+
+    /* 悬停时以指针位置为中心的弱光晕，裁在圆角内 */
+    #fakebox::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      transform-origin: var(--pointer-x, 50%) var(--pointer-y, 50%);
+      background: radial-gradient(
+        140px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+        var(--search-box-glow),
+        transparent 65%
+      );
+    }
+
+    /* 聚焦时从指针位置放大并渐隐，作为选中反馈 */
+    #fakebox:focus-within::before {
+      animation: search-glow-burst 0.45s ease-out forwards;
+    }
+
+    @keyframes search-glow-burst {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(7);
+      }
+    }
+
+    #fakebox:hover:not(:focus-within)::before {
+      opacity: 1;
+    }
+
 
     /* 浅色模式下无背景时，浮动层使用固定底色，不跟随动态取色；文字仍按配色渲染 */
     :root[data-theme="light"] body:not(.bg-enabled) #fakebox {
       background-color: var(--plain-floating-bg);
     }
 
-    :root[data-theme="light"] body:not(.bg-enabled) #fakebox:hover:not(:focus-within) {
-      background-color: var(--plain-floating-bg-hover);
-    }
 
-    /* 悬停时底色微调：浅色略深，深色略浅；选中后不再变化 */
-    #fakebox:hover:not(:focus-within) {
-      background-color: var(--search-box-bg-hover);
-    }
 
     #fakebox #searchbutton {
       fill: var(--neutral-foreground-secondary);
@@ -1956,6 +1987,8 @@
 
     .quicklink-item {
       position: relative;
+      /* 内部光晕需要裁在胶囊圆角内 */
+      overflow: hidden;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -1979,6 +2012,33 @@
       -webkit-user-select: none;
     }
 
+    /* 悬停时以指针位置为中心的弱光晕，裁在胶囊内 */
+    .quicklink-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.42s ease;
+      background: radial-gradient(
+        70px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+        var(--quicklink-glow),
+        transparent 70%
+      );
+    }
+
+    .quicklink-item:hover::before,
+    .quicklink-item.menu-open::before {
+      opacity: 1;
+    }
+
+    /* 悬停与菜单展开：底色做极轻微的深浅偏移，反馈主要由光晕承担 */
+    .quicklink-item:hover,
+    .quicklink-item.menu-open {
+      background-color: var(--neutral-layer-floating-hover);
+    }
+
     /* 图标内部元素同样不参与文字选中 */
     .quicklink-icon,
     .quicklink-icon * {
@@ -1991,11 +2051,7 @@
       transform: scale(0.96);
     }
 
-    /* 悬停与菜单展开：图标块和文字块一起加深 */
-    .quicklink-item:hover,
-    .quicklink-item.menu-open {
-      background-color: var(--neutral-layer-floating-hover);
-    }
+
 
     .quicklink-icon {
       width: 28px;
@@ -2193,14 +2249,48 @@
     body[data-quicklink-position="bottom"] ntp-quicklinks {
       position: absolute;
       /* 脱离网格定位，包含块回到 #inner，bottom 指向整页底部 */
-      left: 20px;
-      right: 20px;
+      left: 0;
+      right: 0;
       bottom: 20px;
+      /* 宽度按列数换算并与普通模式一致，靠 margin 居中；窄视口保留左右边距 */
       width: auto;
-      max-width: none;
+      max-width: min(var(--quicklinks-content-width, 752px), calc(100% - 40px));
+      margin: 0 auto;
       min-height: 0;
       z-index: 3;
     }
+
+    /* 底部多行：改用网格按显式行列放置，让靠下的行优先排满，
+       顶部行留出不足一行的那部分（脚本写入每项的 grid-row / grid-column） */
+    /* 底部多行：按行分组，每行独立居中，靠下的行优先排满（行由脚本生成） */
+    /* 底部多行：纵向堆叠行容器，行内容自然宽度并水平居中
+       （左右定位沿用上方规则，不额外改变盒子尺寸） */
+    body[data-quicklink-position="bottom"] ntp-quicklinks[rows="2"] {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--quicklink-gap, 18px);
+    }
+
+    /* 单行容器：内部与普通多行完全相同的项排列方式 */
+    /* 行内允许换行：窗口变窄时项自动折到下一行，避免撑出滚动条 */
+    /* 测量阶段：临时改回行排布，量出每项的自然宽度 */
+    ntp-quicklinks.quicklink-measuring {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .quicklink-row {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      align-self: center;
+      justify-content: center;
+      gap: var(--quicklink-gap, 18px);
+    }
+
 
     /* 快速链接在搜索框下方的剩余空间内垂直居中（仅悬挂布局提供该选项） */
     body[data-quicklink-position="middle"] ntp-quicklinks {
