@@ -160,7 +160,7 @@ const i18nData = {
     errorNameReq: '请输入快速链接名称',
     errorUrlReq: '请输入网址',
     delete: '删除',
-    downloadImage: '下载图像',
+    downloadImage: '下载背景图像',
     cancel: '取消',
     restoreWarnTitle: '请谨慎导入陌生来源的配置文件',
     restoreWarnDesc: '陌生来源的配置文件可能会在 快速链接、搜索引擎、壁纸链接 中包含危险的脚本。',
@@ -367,7 +367,7 @@ const i18nData = {
     errorNameReq: '請輸入快速連結名稱',
     errorUrlReq: '請輸入網址',
     delete: '刪除',
-    downloadImage: '下載圖片',
+    downloadImage: '下載背景圖片',
     cancel: '取消',
     restoreWarnTitle: '請謹慎匯入陌生來源的設定檔',
     restoreWarnDesc: '陌生來源的設定檔可能會在 快速連結、搜尋引擎、桌布連結 中包含危險的指令碼。',
@@ -558,7 +558,7 @@ const i18nData = {
     errorNameReq: 'Please enter quick link name',
     errorUrlReq: 'Please enter URL',
     delete: 'Delete',
-    downloadImage: 'Download image',
+    downloadImage: 'Download background image',
     cancel: 'Cancel',
     restoreWarnTitle: 'Be careful with configuration files from unknown sources',
     restoreWarnDesc: 'Configuration files from unknown sources may contain dangerous scripts in Quick Links, Search Engines, or Wallpaper URLs.',
@@ -751,7 +751,7 @@ const i18nData = {
     errorNameReq: 'クイックリンク名を入力してください',
     errorUrlReq: 'URLを入力してください',
     delete: '削除',
-    downloadImage: '画像をダウンロード',
+    downloadImage: '背景画像をダウンロード',
     cancel: 'キャンセル',
     restoreWarnTitle: '不明な提供元の設定ファイルにはご注意ください',
     restoreWarnDesc: '不明な提供元の設定ファイルには、クイックリンク、検索エンジン、壁紙リンクに危険なスクリプトが含まれている可能性があります。',
@@ -943,7 +943,7 @@ const i18nData = {
     errorNameReq: 'Введите название быстрой ссылки',
     errorUrlReq: 'Введите URL',
     delete: 'Удалить',
-    downloadImage: 'Скачать изображение',
+    downloadImage: 'Скачать фоновое изображение',
     cancel: 'Отмена',
     restoreWarnTitle: 'Будьте осторожны с файлами конфигурации из неизвестных источников',
     restoreWarnDesc: 'Файлы конфигурации из неизвестных источников могут содержать опасные скрипты в быстрых ссылках, поисковых системах или ссылках на обои.',
@@ -1377,6 +1377,7 @@ async function saveWallpaperData(data) {
     return true;
   }
 
+
   let blob;
   if (data.blob instanceof Blob) {
     blob = data.blob;
@@ -1413,6 +1414,7 @@ async function loadWallpaperData() {
   const meta = Storage.get('ntp_custom_wallpaper', null);
   if (!meta) return null;
 
+
   if (isRemoteWallpaper(meta)) {
     return meta;
   }
@@ -1423,14 +1425,14 @@ async function loadWallpaperData() {
     return {
       type: meta.type,
       url: URL.createObjectURL(blob),
-      source: meta.source
+      source: meta.source,
+      blob: blob
     };
   } catch (e) {
     console.error('壁纸读取失败:', e);
     return meta;
   }
 }
-
 // 保留的本地壁纸：切到其它来源后仍可原样切回。
 // 与「当前壁纸」分开存放，当前壁纸被替换或清除时不受影响
 const LOCAL_WALLPAPER_KEY = 'local';
@@ -4348,6 +4350,7 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
     await saveWallpaperData(customWallpaperData);
   }
 
+
   const modalOnlineWallpaper = document.getElementById('modal-online-wallpaper');
   const onlineWallpaperForm = document.getElementById('online-wallpaper-form');
   const inputOnlineUrl = document.getElementById('input-online-url');
@@ -5635,6 +5638,14 @@ function onDrop(e) {
     if (target.closest(contextMenuExclude)) return;
     hideQuicklinkMenu();
     syncBackgroundMenuItems();
+    // 下载项只在壁纸来自网络时提供：在线链接或必应每日壁纸
+    const wallpaperType = customWallpaperData?.type;
+    const wallpaperUrl = customWallpaperData?.url || '';
+    const canDownloadWallpaper = wallpaperType === 'bing_daily'
+      || (wallpaperType === 'image' && /^https?:/i.test(wallpaperUrl));
+    const downloadItem = backgroundMenu?.querySelector('[data-action="download-image"]');
+    if (downloadItem) downloadItem.hidden = !canDownloadWallpaper;
+
     showContextMenu(backgroundMenu, e.clientX, e.clientY);
   });
 
@@ -5713,10 +5724,17 @@ function onDrop(e) {
       a.remove();
       setTimeout(() => URL.revokeObjectURL(objUrl), 5000);
     } catch (e) {
-      window.open(url, '_blank', 'noopener');
+      // 跨域图片无 CORS 时取不到数据，退化为直链下载：
+      // 同源可直接触发下载，跨域则由浏览器按自身策略处理
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = wallpaperFilename(url, 'image/jpeg');
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
     }
   }
-
   // 背景菜单的动作
   backgroundMenu?.addEventListener('click', (e) => {
     const btn = e.target instanceof Element ? e.target.closest('.context-menu-item') : null;

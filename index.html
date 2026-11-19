@@ -453,7 +453,7 @@
       visibility: hidden;
       pointer-events: none;
       transform: translateY(-4px);
-      transition: opacity 0.06s ease-out, transform 0.06s ease-out, visibility 0s linear 0.06s;
+      transition: opacity 0.1s ease-out, transform 0.1s ease-out, visibility 0s linear 0.1s;
     }
 
     .popover-panel.active {
@@ -461,7 +461,7 @@
       visibility: visible;
       pointer-events: auto;
       transform: translateY(0);
-      transition: opacity 0.06s ease-out, transform 0.06s ease-out, visibility 0s linear 0s;
+      transition: opacity 0.1s ease-out, transform 0.1s ease-out, visibility 0s linear 0s;
     }
 
     /* 设置弹窗样式 */
@@ -2228,6 +2228,11 @@
       background-color: var(--neutral-fill-rest);
     }
 
+    /* 删除项：文字与图标用危险色，悬停底色与其它项一致 */
+    .context-menu-item[data-action="delete"] {
+      color: var(--btn-danger-color);
+    }
+
     /* 选中（键盘聚焦 / 当前项）：与选项菜单同一档更深的颜色 + 文字与图标用强调色 */
     .context-menu-item.selected,
     .context-menu-item[aria-current="true"] {
@@ -2241,23 +2246,8 @@
       color: var(--accent-foreground-rest);
     }
 
-    /* 删除项：文字与图标用危险色，悬停/选中沿用危险色系而非强调色 */
-    .context-menu-item[data-action="delete"] {
-      color: var(--btn-danger-color);
-    }
 
-    .context-menu-item[data-action="delete"]:hover,
-    .context-menu-item[data-action="delete"]:focus-visible,
-    .context-menu-item[data-action="delete"].selected,
-    .context-menu-item[data-action="delete"][aria-current="true"] {
-      background-color: var(--btn-danger-hover);
-      color: var(--btn-danger-color);
-    }
 
-    .context-menu-item[data-action="delete"].selected svg,
-    .context-menu-item[data-action="delete"][aria-current="true"] svg {
-      color: var(--btn-danger-color);
-    }
 
     .quicklink-add-icon {
       background: none;
@@ -2348,14 +2338,14 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.08s ease-out, visibility 0s linear 0.08s;
+      transition: opacity 0.1s ease-out, visibility 0s linear 0.1s;
     }
 
     .modal-overlay.active {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-      transition: opacity 0.08s ease-out, visibility 0s linear 0s;
+      transition: opacity 0.1s ease-out, visibility 0s linear 0s;
     }
 
     .modal-dialog {
@@ -3873,7 +3863,7 @@
       </button>
       <button type="button" class="context-menu-item" data-action="download-image" role="menuitem">
         <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="m17 17.2l-.9-.9q-.275-.275-.7-.275t-.7.275t-.275.7t.275.7l2.6 2.6q.3.3.7.3t.7-.3l2.6-2.6q.275-.275.275-.7t-.275-.7t-.7-.275t-.7.275l-.9.9v-3.175q0-.425-.288-.712T18 13.025t-.712.288t-.288.712zM15 22h6q.425 0 .713.288T22 23t-.288.713T21 24h-6q-.425 0-.712-.288T14 23t.288-.712T15 22m-9-2q-.825 0-1.412-.587T4 18V4q0-.825.588-1.412T6 2h6.175q.4 0 .763.15t.637.425l4.85 4.85q.275.275.425.638t.15.762v1.2q0 .425-.288.712t-.712.288t-.712-.288t-.288-.712V9h-3.5q-.625 0-1.062-.437T12 7.5V4H6v14h5q.425 0 .713.288T12 19t-.288.713T11 20zm0-2V4z"/></svg>
-        <span data-i18n="downloadImage">下载图像</span>
+        <span data-i18n="downloadImage">下载背景图像</span>
       </button>
     </div>
 
