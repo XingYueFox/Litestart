@@ -29,6 +29,7 @@
       --settings-card-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --settings-card-hover: #f0f0f0;
       --suggestion-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
+      --suggestion-text-color: var(--neutral-foreground-rest);   /* 建议项文字色 */
       --suggestion-hover: #ebebeb;   /* ※ 与 --accent-foreground-invert 同值（仅浅色） */
       --input-bg: #F2F2F2;
       --settings-thumb-bg: #d5d9de;
@@ -139,6 +140,7 @@
         --enhanced-visibility-logo-bg: rgba(0, 0, 0, 0.6);
 
         --suggestion-bg: #2b2b2b;
+        --suggestion-text-color: var(--neutral-foreground-rest);
         --suggestion-hover: #454545;
         --suggestion-footer-color: #4f8cf6;
 
@@ -1720,6 +1722,11 @@
       background-color: var(--plain-floating-bg);
     }
 
+    /* 关闭背景时，建议列表与搜索框同底色 */
+    :root[data-theme="light"] body:not(.bg-enabled) #suggestions-box {
+      background-color: var(--plain-floating-bg);
+    }
+
 
 
     #fakebox #searchbutton {
@@ -1846,7 +1853,7 @@
       border-radius: 6px;
       cursor: pointer;
       font-size: 15px;
-      color: var(--neutral-foreground-rest);
+      color: var(--suggestion-text-color);
       gap: 12px;
       transition: background-color 0.08s;
     }

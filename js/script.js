@@ -2655,6 +2655,8 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       // 深色下面板比卡片暗一档（符合 M3 海拔越高越亮的规范），浅色下保持卡片更浅的现有观感
       '--settings-panel-bg': c(dark ? 'surfaceContainerLow' : 'surfaceContainerHigh'),
       '--suggestion-bg': c('surfaceContainerLow'),
+      // 浅色用 onPrimaryContainer（更深），深色用 primaryFixed（更亮）
+      '--suggestion-text-color': c(dark ? 'primaryFixed' : 'onPrimaryContainer'),
       '--suggestion-hover': c('surfaceContainerHighest'),
       '--input-bg': c('surfaceContainerHighest'),
       // 搜索框悬停底色：surfaceContainer 比常态的 surfaceContainerLow 深一档（深色模式则浅一档）
