@@ -6487,6 +6487,26 @@ function onDrop(e) {
       quicklinkGlowTarget.style.setProperty('--pointer-x', (quicklinkGlowX - rect.left) + 'px');
       quicklinkGlowTarget.style.setProperty('--pointer-y', (quicklinkGlowY - rect.top) + 'px');
     });
+
+  // 点击后光晕进入 2s 冷却：避免按下动画刚结束就立刻回到指针位置
+  let quicklinkGlowCooldownTimer = 0;
+
+  quicklinksElem?.addEventListener('pointerdown', (e) => {
+    const item = e.target instanceof Element ? e.target.closest('.quicklink-item') : null;
+    if (!item) return;
+    item.classList.add('glow-cooldown');
+    clearTimeout(quicklinkGlowCooldownTimer);
+    quicklinkGlowCooldownTimer = setTimeout(() => item.classList.remove('glow-cooldown'), 2000);
+  });
+
+  quicklinksElem?.addEventListener('pointerout', (e) => {
+    const item = e.target instanceof Element ? e.target.closest('.quicklink-item') : null;
+    if (!item) return;
+    if (e.relatedTarget instanceof Node && item.contains(e.relatedTarget)) return;
+    // 指针离开该项就解除冷却，下次移入立刻恢复
+    clearTimeout(quicklinkGlowCooldownTimer);
+    item.classList.remove('glow-cooldown');
+  });
   });
 
   fakebox?.addEventListener('click', () => {

@@ -2021,6 +2021,7 @@
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.42s ease;
+      transform-origin: var(--pointer-x, 50%) var(--pointer-y, 50%);
       background: radial-gradient(
         70px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
         var(--quicklink-glow),
@@ -2037,6 +2038,28 @@
     .quicklink-item:hover,
     .quicklink-item.menu-open {
       background-color: var(--neutral-layer-floating-hover);
+    }
+
+    /* 点击后短暂冷却：按下动画播完不立刻回到指针光晕 */
+    .quicklink-item.glow-cooldown:not(:active)::before {
+      opacity: 0;
+    }
+
+    /* 按下时从指针位置扩散并淡出 */
+    .quicklink-item:active::before {
+      opacity: 1;
+      animation: quicklink-glow-burst 0.35s ease-out forwards;
+    }
+
+    @keyframes quicklink-glow-burst {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(4);
+      }
     }
 
     /* 图标内部元素同样不参与文字选中 */
