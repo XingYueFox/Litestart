@@ -2026,6 +2026,15 @@
       -webkit-user-select: none;
     }
 
+    /* 点击爆发用的光晕层：由脚本写入渐变与动画，便于控制扩散原点 */
+    .quicklink-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+    }
+
     /* 悬停时以指针位置为中心的弱光晕，裁在胶囊内 */
     .quicklink-item::before {
       content: '';
@@ -2059,17 +2068,7 @@
       opacity: 0;
     }
 
-    /* 按下时从指针位置扩散并淡出 */
-    .quicklink-item:active::before {
-      opacity: 1;
-      animation: quicklink-glow-burst 0.35s ease-out forwards;
-    }
 
-    @keyframes quicklink-glow-burst {
-      from {
-        opacity: 1;
-        transform: scale(1);
-      }
       to {
         opacity: 0;
         transform: scale(4);

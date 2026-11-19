@@ -5133,6 +5133,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     }
 
     linkElem.innerHTML = `
+      <span class="quicklink-glow" aria-hidden="true"></span>
       <div class="quicklink-icon">${iconContent}</div>
       <span class="quicklink-title">${safeTitle}</span>
     `;
@@ -6463,8 +6464,8 @@ function onDrop(e) {
   // 悬停光晕跟随指针：把相对坐标写进 CSS 变量，供 radial-gradient 定位
   fakebox?.addEventListener('pointermove', (e) => {
     const rect = fakebox.getBoundingClientRect();
-    fakebox.style.setProperty('--pointer-x', (e.clientX - rect.left) + 'px');
-    fakebox.style.setProperty('--pointer-y', (e.clientY - rect.top) + 'px');
+    fakebox.style.setProperty('--pointer-x', ((e.clientX - rect.left) / rect.width * 100).toFixed(2) + '%');
+    fakebox.style.setProperty('--pointer-y', ((e.clientY - rect.top) / rect.height * 100).toFixed(2) + '%');
   });
 
   // 快速链接悬停光晕：事件委托 + 每帧合并，任意时刻只有被指向的那一项在更新
@@ -6484,9 +6485,10 @@ function onDrop(e) {
       quicklinkGlowFrame = 0;
       if (!quicklinkGlowTarget) return;
       const rect = quicklinkGlowTarget.getBoundingClientRect();
-      quicklinkGlowTarget.style.setProperty('--pointer-x', (quicklinkGlowX - rect.left) + 'px');
-      quicklinkGlowTarget.style.setProperty('--pointer-y', (quicklinkGlowY - rect.top) + 'px');
+      quicklinkGlowTarget.style.setProperty('--pointer-x', ((quicklinkGlowX - rect.left) / rect.width * 100).toFixed(2) + '%');
+      quicklinkGlowTarget.style.setProperty('--pointer-y', ((quicklinkGlowY - rect.top) / rect.height * 100).toFixed(2) + '%');
     });
+
 
   // 点击后光晕进入 2s 冷却：避免按下动画刚结束就立刻回到指针位置
   let quicklinkGlowCooldownTimer = 0;
@@ -6494,6 +6496,29 @@ function onDrop(e) {
   quicklinksElem?.addEventListener('pointerdown', (e) => {
     const item = e.target instanceof Element ? e.target.closest('.quicklink-item') : null;
     if (!item) return;
+    const rect = item.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    // 以按下点为原点，在光晕层上直接写渐变与动画：
+    // 真实元素可以用 transform-origin 精确控制扩散中心，无需依赖伪元素的属性解析
+    const percentX = ((e.clientX - rect.left) / rect.width * 100).toFixed(2) + '%';
+    const percentY = ((e.clientY - rect.top) / rect.height * 100).toFixed(2) + '%';
+    const glowEl = item.querySelector('.quicklink-glow');
+    if (glowEl) {
+      const glowColor = getComputedStyle(item).getPropertyValue('--quicklink-glow').trim()
+        || 'rgba(255, 255, 255, 0.13)';
+      glowEl.style.background = 'radial-gradient(70px circle at ' + percentX + ' ' + percentY + ', ' + glowColor + ', transparent 70%)';
+      glowEl.style.transformOrigin = percentX + ' ' + percentY;
+      glowEl.getAnimations().forEach(anim => anim.cancel());
+      glowEl.animate(
+        [
+          { opacity: 1, transform: 'scale(1)' },
+          { opacity: 0, transform: 'scale(4)' }
+        ],
+        { duration: 350, easing: 'ease-out', fill: 'forwards' }
+      );
+    }
+
     item.classList.add('glow-cooldown');
     clearTimeout(quicklinkGlowCooldownTimer);
     quicklinkGlowCooldownTimer = setTimeout(() => item.classList.remove('glow-cooldown'), 2000);
