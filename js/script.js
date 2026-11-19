@@ -2644,6 +2644,8 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       '--neutral-layer-floating-hover': c('surfaceContainerHigh'),
       // 取色后光晕用主色：浅色下是深色饱和色，深色下是浅色饱和色
       '--search-box-glow': c('primary') + (dark ? '24' : '38'),
+      // 悬停底色取同色相的容器层级，避免彩色模式下跳到中性色
+      '--search-box-hover-bg': c('surfaceContainer'),
       '--quicklink-glow': c('primary') + (dark ? '24' : '38'),
       '--modal-bg': c('surfaceContainerLow'),
       '--settings-card-bg': c(dark ? 'surfaceContainerHigh' : 'surfaceContainerLow'),
@@ -6547,9 +6549,9 @@ function onDrop(e) {
       glowEl.animate(
         [
           { opacity: 1, transform: 'scale(1)' },
-          { opacity: 0, transform: 'scale(4)' }
+          { opacity: 0, transform: 'scale(8)' }
         ],
-        { duration: 350, easing: 'ease-out', fill: 'forwards' }
+        { duration: 700, easing: 'ease-out', fill: 'forwards' }
       );
     }
 

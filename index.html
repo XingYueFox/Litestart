@@ -24,6 +24,7 @@
       --neutral-layer-floating-hover: #f5f5f5;   /* 浮动层悬停底色：浅色略深 */
       /* 无背景时浮动层（搜索框、快速链接图标）的固定底色，不参与动态取色 */
       --plain-floating-bg: #ffffff;
+      --search-box-hover-bg: #fbfbfb;   /* 搜索框悬停底色：比浮动层更弱 */
       --modal-bg: #ffffff;   /* ※ 深色下比卡片更暗一档，与上面几个不同值 */
       --settings-panel-bg: #EEEEEE;   /* ※ 与 --btn-secondary-bg 同值（浅色 #EEEEEE / 深色不同） */
       --settings-card-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
@@ -99,6 +100,7 @@
         --neutral-layer-floating: #2b2b2b;
         --neutral-layer-floating-hover: #333333;   /* 深色略浅 */
         --plain-floating-bg: #2b2b2b;
+        --search-box-hover-bg: #2f2f2f;
         
         --neutral-foreground-rest: #f5f5f5;
         --neutral-foreground-secondary: #adadad;
@@ -1676,7 +1678,7 @@
       padding: 0 10px 0 15px;
       /* 内部光晕需要裁到圆角内 */
       overflow: hidden;
-      transition: border-radius 0.15s ease, box-shadow 0.5s ease, background-color 0.15s ease, border-color 0.15s ease, outline 0.15s ease;
+      transition: border-radius 0.15s ease, box-shadow 0.5s ease, background-color 0.42s ease, border-color 0.15s ease, outline 0.15s ease;
     }
 
     /* 悬停时以指针位置为中心的弱光晕，裁在圆角内 */
@@ -1687,7 +1689,7 @@
       border-radius: inherit;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.18s ease;
+      transition: opacity 0.42s ease;
       transform-origin: var(--pointer-x, 50%) var(--pointer-y, 50%);
       background: radial-gradient(
         140px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
@@ -1698,7 +1700,7 @@
 
     /* 聚焦时从指针位置放大并渐隐，作为选中反馈 */
     #fakebox:focus-within::before {
-      animation: search-glow-burst 0.45s ease-out forwards;
+      animation: search-glow-burst 0.8s ease-out forwards;
     }
 
     @keyframes search-glow-burst {
@@ -1708,9 +1710,19 @@
       }
       to {
         opacity: 0;
-        transform: scale(7);
+        transform: scale(13);
       }
     }
+    /* 悬停时底色做极轻微的深浅偏移 */
+    #fakebox:hover:not(:focus-within) {
+      background-color: var(--search-box-hover-bg);
+    }
+
+    /* 无背景时改用固定色的对应档 */
+    :root[data-theme="light"] body:not(.bg-enabled) #fakebox:hover:not(:focus-within) {
+      background-color: var(--search-box-hover-bg);
+    }
+
 
     #fakebox:hover:not(:focus-within)::before {
       opacity: 1;
