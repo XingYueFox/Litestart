@@ -544,6 +544,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      box-sizing: border-box;
     }
 
     /* 同一卡片内部的上下分块：块与块之间留出与卡片间距一致的 10px。
@@ -552,10 +553,11 @@
     /* 设置卡片样式 */
     .settings-card {
       background-color: var(--settings-card-bg);
-      /* 纯平风格：去掉描边，靠卡片底色与面板底色的差异区分 */
       border: none;
       border-radius: 8px;
-      padding: 12px;
+      /* 左右由子元素统一提供 12px，行可铺满整宽 */
+      padding: 12px 0;
+      overflow: hidden;
       box-sizing: border-box;
     }
 
@@ -812,11 +814,11 @@
       align-items: center;
       justify-content: space-between;
       box-sizing: border-box;
+      width: 100%;
       min-height: 40px;
+      margin: 0;
       padding: 0 12px;
-      margin: -4px;
-      width: calc(100% + 8px);
-      border-radius: 4px;
+      border-radius: 0;
     }
 
     .setting-label-group {
@@ -958,7 +960,7 @@
       border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--input-bg);        /* 凹槽底色 */
-      margin: 0 -4px -4px;
+      margin: 0 12px 0;
     }
 
     /* 主题滑块紧跟颜色分块时留出 6px 空隙。颜色按钮带 -4px 负 margin（用于 hover 顶到卡片边缘），
@@ -1067,7 +1069,7 @@
       border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--input-bg);
-      margin: -3px -4px 8px;
+      margin: 0 12px 8px;
     }
 
     /* 预设的滑块：与主题模式同一套（容器 6px − padding 3px = 3px 圆角） */
@@ -1226,13 +1228,17 @@
        负外边距抵消卡片 12px 内边距，hover 背景方形顶至卡片左右边框 */
     /* setting-row 内嵌的跳转按钮：抵消父级内边距，悬停块左缘与独立行一致 */
     /* 嵌套在设置行内的跳转按钮：撑满行高，盒模型与其它可点击行一致 */
+    /* 行内的跳转按钮：占据分隔线左侧的全部空间 */
+    /* 行内的跳转按钮：占据分隔线左侧的全部空间 */
+    /* 行内的跳转按钮：占据分隔线左侧全部空间 */
     .setting-row > .settings-nav-row {
-      flex: 1 1 auto;
-      width: auto;
-      align-self: stretch;
-      margin: 0 0 0 -12px;
-      padding: 0 12px;
-      border-radius: 4px;
+      flex: 1 1 0%;
+      min-width: 0;
+      min-height: 40px;
+      margin: 0;
+      padding: 0;
+      border: none;
+      border-radius: 0;
       background-color: transparent;
     }
 
@@ -1241,19 +1247,21 @@
     }
 
     /* 跳转按钮：独立成行时与设置行同盒模型 */
+    /* 可点击行：悬停背景铺满面板宽度，内容缩进 24px */
+    /* 可点击行：悬停背景铺满卡片宽度，内容缩进 12px */
     .settings-nav-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       box-sizing: border-box;
+      width: 100%;
       min-width: 0;
       min-height: 40px;
+      margin: 0;
       padding: 0 12px;
-      margin: -4px;
-      width: calc(100% + 8px);
       border: none;
+      border-radius: 0;
       background-color: transparent;
-      border-radius: 4px;
       color: var(--settings-text-primary);
       font-size: 13px;
       font-weight: 500;
@@ -1482,7 +1490,7 @@
     .settings-nav-divider {
       width: 1px;
       align-self: stretch;
-      margin: 2px 10px;
+      margin: 2px 12px;
       background-color: var(--modal-border);
     }
 
@@ -3163,7 +3171,7 @@
     /* 路径本身是细线条，叠加同色描边加粗 */
     .settings-back-btn svg path {
       stroke: currentColor;
-      stroke-width: 40;
+      stroke-width: 18;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
