@@ -57,6 +57,7 @@
 
       /* ===== 按钮与交互填充 ===== */
       --btn-secondary-bg: #EEEEEE;   /* 次级按钮背景 */
+      --switch-knob-bg: #ffffff;   /* 开关手柄底色（= 卡片底色） */
       --btn-danger-color: #d13438;   /* 危险/删除操作文字色 */
       --btn-danger-hover: #fde8e8;   /* 危险按钮 Hover 背景 */
       --neutral-fill-rest: rgba(0, 0, 0, 0.04);   /* 按钮常规浅灰填充 */
@@ -125,6 +126,7 @@
         --accent-foreground-hover: #E0E0E0;      /* 第二强调色 */
         --accent-foreground-invert: #000000;   /* 反色强调色！！！ */
         --btn-secondary-bg: #3a3a3a;             /* 次级按钮背景 */
+        --switch-knob-bg: #2b2b2b;
 
         --settings-panel-bg: #242424;
         --settings-card-bg: #2b2b2b;
@@ -907,8 +909,8 @@
       /* 过渡悬停系数 */
       transition: --hover-factor 0.2s ease;
       border-radius: 50%;
-      /* 卡片底色，浅色 #ffffff / 深色 #2b2b2b */
-      background-color: var(--settings-card-bg);
+      /* 深色取色时固定用暗档，不随卡片提亮，保证与轨道的明暗差 */
+      background-color: var(--switch-knob-bg);
       /* 不拦截指针：拖拽由 .slider 接收 */
       pointer-events: none;
     }
@@ -1206,7 +1208,8 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      width: 100%;
+      /* 左右各缩进 12px：宽度需扣除两侧 margin，否则会溢出卡片右缘 */
+      width: calc(100% - 24px);
       height: 36px;
       /* 纯平风格：与"选择文件""恢复默认"等次级按钮同款灰底，无描边 */
       border: 1px solid transparent;
@@ -1215,7 +1218,8 @@
       border-radius: 6px;
       font-size: 13px;
       cursor: pointer;
-      margin-top: 8px;
+      /* 左右各缩进 12px，与卡内行内容的对齐一致，不顶到卡片边缘 */
+      margin: 8px 12px 0;
       transition: background-color 0.08s ease;
     }
 
@@ -1294,6 +1298,11 @@
        而是按 M3 的做法用「 tonal 容器色 + 同色系圆点」表达：
        容器 = 该色相的 primaryContainer（tone 90/30），
        圆点 = onPrimaryContainer（tone 10/90），保证明暗对比且色调柔和。*/
+    /* 卡片左右留白由子元素提供，此处与 .setting-row 同宽 */
+    #md-custom-settings {
+      padding: 0 12px;
+    }
+
     .md-preset-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -1545,19 +1554,48 @@
       margin-bottom: 0;
     }
 
+    /* 关于弹窗：底色仿照设置面板（面板层），卡片改用卡片层浮于其上——
+       浅色下面板更深、卡片更浅，深色下相反（M3 海拔规范），与设置页观感一致 */
+    .modal-dialog.about-dialog {
+      background-color: var(--settings-panel-bg);
+    }
+
     /* 关于弹窗中的分组卡片：与设置页卡片同底色、同圆角，卡内每项占一行 */
     .about-card {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 2px;
       margin-bottom: 4px;
-      /* 用比弹窗底色深一档的填充，让卡片在白色弹窗上可见 */
-      background-color: var(--settings-card-hover);
+      /* 覆盖 settings-card 的左右零内边距：给行留出缩进，hover 衬底不顶卡片边缘 */
+      padding: 12px 8px;
+      background-color: var(--settings-card-bg);
       line-height: 1.6;
     }
 
+    /* 关于弹窗行：整行可点，hover 衬底左右通到卡片边缘（负边距抵消卡片 8px 内边距），
+       内容位置通过加宽内边距保持 16px 缩进不变 */
+    .about-card .about-row {
+      display: flex;
+      align-items: center;
+      height: 30px;
+      margin: 0 -8px;
+      padding: 0 16px;
+    }
+
+    .about-card .about-row:hover {
+      background-color: var(--neutral-fill-hover);
+    }
+
     .about-card .about-row a {
+      flex: 1;
       color: var(--accent-foreground-rest);
+      text-decoration: none;
+      /* 行的 hover 衬底已由 .about-row 提供，去掉链接自身的 hover 底色，避免双层 */
+      background-color: transparent;
+    }
+
+    .about-card .about-row a:hover {
+      background-color: transparent;
     }
 
     #inner {
@@ -1868,12 +1906,14 @@
     .suggestion-item {
       display: flex;
       align-items: center;
-      padding: 8px 16px;
-      margin: 0 6px;
-      border-radius: 6px;
+      /* hover/选中底色左右通到弹层边缘（顶格），文字位置通过加宽内边距保持不变 */
+      margin: 0;
+      padding: 8px 22px;
+      border-radius: 0;
       cursor: pointer;
       font-size: 15px;
-      color: var(--suggestion-text-color);
+      /* 联想词条不用主题色：固定中性前景（浅色黑 / 深色白） */
+      color: var(--neutral-foreground-rest);
       gap: 12px;
       transition: background-color 0.08s;
     }
@@ -1883,13 +1923,15 @@
     }
 
     .suggestion-item svg {
-      fill: var(--suggestion-text-color);
+      fill: var(--neutral-foreground-rest);
       opacity: 0.6;
       flex-shrink: 0;
     }
 
     .suggestion-item.history {
       font-weight: 600;
+      /* 搜索历史词条保留主题色 */
+      color: var(--suggestion-text-color);
     }
 
     .suggestion-item.history svg {
@@ -2630,14 +2672,28 @@
       filter: none;
     }
 
-    /* 次级按钮样式（MD 下为 tonal button：secondaryContainer 底） */
+    /* 次级按钮样式：常态无底色，hover 时才显示底色 */
     .btn-secondary {
-      background-color: var(--btn-secondary-bg);
+      background-color: transparent;
       color: var(--btn-secondary-text, var(--neutral-foreground-rest));
     }
 
     .btn-secondary:hover {
       background-color: var(--btn-secondary-hover, var(--modal-border));
+    }
+
+    /* 背景设置的「选择文件 / 编辑自定义链接」：与「编辑自定义搜索引擎」同款样式
+       （36px 高、13px 字号、灰底、同 hover），仅尺寸随弹性行收缩 */
+    #wallpaper-file-row .btn {
+      height: 36px;
+      padding: 0 12px;
+      font-size: 13px;
+      background-color: var(--btn-secondary-bg);
+      color: var(--settings-text-primary);
+    }
+
+    #wallpaper-file-row .btn:hover {
+      background-color: var(--modal-border);
     }
 
     :root[data-theme="dark"] .btn-secondary {
@@ -2829,6 +2885,8 @@
       gap: 2px;
       padding: 4px;
       border-radius: 8px;
+      /* 悬停底色左右顶格，圆角由裁切保证不越出 */
+      overflow: hidden;
       background-color: var(--settings-card-bg);
     }
 
@@ -2836,8 +2894,10 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 8px 8px;
-    border-radius: 4px;
+    /* 负外边距抵消分组内边距：底色左右通到分组边缘，内容位置不变 */
+    margin: 0 -4px;
+    padding: 8px 12px;
+    border-radius: 0;
     color: var(--settings-text-primary);
     font-size: 14px;
     cursor: pointer;
@@ -3196,10 +3256,13 @@
     }
 
     /* 背景设置二级页 */
+    /* 预览图上、左、右三边通铺到卡片边缘，负上外边距抵消卡片顶部内边距 */
     #settings-page-bg .wallpaper-preview-box {
-      width: 100%;
+      width: auto;
       height: 150px;
-      margin-top: 2px;
+      margin: -12px 0 0;
+      border: none;
+      border-radius: 0;
     }
 
     /* 预览图：与提示层叠放，透明度变化做渐入渐出 */
@@ -3532,7 +3595,7 @@
                   </div>
                   <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
                   <!-- 「本地文件」显示选择文件；「自定义在线链接」显示编辑链接；恢复默认由下拉选「默认」完成 -->
-                  <div id="wallpaper-file-row" style="display: flex; gap: 8px; margin-top: 10px;">
+                  <div id="wallpaper-file-row" style="display: flex; gap: 8px; margin-top: 10px; padding: 0 12px;">
                     <button type="button" class="btn btn-secondary" id="btn-upload-wallpaper" style="flex: 1;" data-i18n="uploadFile">选择文件</button>
                     <button type="button" class="btn btn-secondary" id="btn-edit-online-wallpaper" style="flex: 1; display: none;" data-i18n="editCustomLink">编辑自定义链接</button>
                   </div>
@@ -3972,9 +4035,9 @@
 
     <!-- 关于弹窗 -->
     <div id="modal-about" class="modal-overlay">
-      <div class="modal-dialog">
+      <div class="modal-dialog about-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 27.0.100 | 更新时间：2026-11-14</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 27.0.156 | 更新时间：2026-11-20</p><br>
 
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
@@ -3993,8 +4056,8 @@
             <span class="update-split-sep" aria-hidden="true"></span>
             <button type="button" id="update-split-toggle" class="update-split-toggle"
                     aria-haspopup="true" aria-expanded="false" aria-controls="update-skip-menu">
-                            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z"/>
               </svg>
             </button>
           </div>
@@ -4017,9 +4080,9 @@
           <!-- 相关链接卡片 -->
           <div class="settings-card-title" style="margin-top: 12px;" data-i18n="relatedLinks">相关链接</div>
           <div class="settings-card about-card">
+            <div class="about-row"><a href="https://github.com/XingYueFox/Litestart" target="_blank" rel="noopener" data-i18n="repoAddress">在 GitHub 中查看</a></div>
             <div class="about-row"><a href="https://github.com/XingYueFox/Litestart/blob/main/docs/legal/PRIVACY_POLICY.md" target="_blank" rel="noopener" data-i18n="cookieNotice">隐私政策</a></div>
             <div class="about-row"><a href="https://github.com/XingYueFox/Litestart/blob/main/LICENSE" target="_blank" rel="noopener" data-i18n="license">开源协议</a></div>
-            <div class="about-row"><a href="https://github.com/XingYueFox/Litestart/graphs/contributors?from=2026%2F5%2F23" target="_blank" rel="noopener" data-i18n="contributor">贡献名单</a></div>
             <div class="about-row"><a href="https://github.com/XingYueFox/Litestart/issues" target="_blank" rel="noopener" data-i18n="helpFeedback">帮助&反馈</a></div>
           </div>
         </div>
@@ -4092,7 +4155,7 @@
         </div>
         <div class="modal-footer">
           <div class="modal-footer-right">
-            <button type="button" id="btn-add-button-hidden-mute" class="btn" data-i18n="dontRemindAgain">不再提醒</button>
+            <button type="button" id="btn-add-button-hidden-mute" class="btn btn-secondary" data-i18n="dontRemindAgain">不再提醒</button>
             <button type="button" id="btn-add-button-hidden-ok" class="btn btn-primary" data-i18n="gotIt">好</button>
           </div>
         </div>

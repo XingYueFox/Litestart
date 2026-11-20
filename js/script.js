@@ -1,4 +1,4 @@
-const APP_VERSION = '27.0.100';      // 发行版本
+const APP_VERSION = '27.0.156';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -64,7 +64,7 @@ const i18nData = {
     langAuto: '默认（跟随设备）',
     cookieNotice: '隐私政策',
     license: '开源协议',
-    contributor: '贡献名单',
+    repoAddress: '在 GitHub 中查看',
     helpFeedback: '帮助&反馈',
     presentedBy: '由',
     xingyuefox: '星月_Fox',
@@ -80,7 +80,7 @@ const i18nData = {
     aboutDesc: '一个简洁、快速的浏览器起始页。',
     developers: '开发者',
     relatedLinks: '相关链接',
-    litever: '版本 27.0.100 | 更新时间：2026-11-14',
+    litever: '版本 27.0.156 | 更新时间：2026-11-20',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
     searchPlaceholderNight: '今晚想用 {name} 搜索什么？',
@@ -271,7 +271,7 @@ const i18nData = {
     langAuto: '預設（隨設備設定）',
     cookieNotice: '隱私政策',
     license: '開源協議',
-    contributor: '貢獻名單',
+    repoAddress: '在 GitHub 中檢視',
     helpFeedback: '說明與意見回饋',
     presentedBy: '由',
     xingyuefox: '星月_Fox',
@@ -287,7 +287,7 @@ const i18nData = {
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
     developers: '開發者',
     relatedLinks: '相關連結',
-    litever: '版本 27.0.100 | 更新時間：2026-11-14',
+    litever: '版本 27.0.156 | 更新時間：2026-11-20',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
     searchPlaceholderNight: '今晚想用 {name} 搜尋什麼？',
@@ -463,7 +463,7 @@ const i18nData = {
     langAuto: 'Default (System)',
     cookieNotice: 'Privacy Policy',
     license: 'License',
-    contributor: 'Contributor',
+    repoAddress: 'View on GitHub',
     helpFeedback: 'Help & Feedback',
     presentedBy: 'Presented by',
     xingyuefox: 'XingYue_Fox',
@@ -479,7 +479,7 @@ const i18nData = {
     aboutDesc: 'A simple and fast browser start page.',
     developers: 'Developers',
     relatedLinks: 'Related Links',
-    litever: 'Version 27.0.100 | Updated: 2026-11-14',
+    litever: 'Version 27.0.156 | Updated: 2026-11-20',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
     searchPlaceholderNight: 'What do you want to search with {name} tonight?',
@@ -656,7 +656,7 @@ const i18nData = {
     langAuto: 'デフォルト（システムに従う）',
     cookieNotice: 'プライバシーポリシー',
     license: 'License',
-    contributor: '貢献者',
+    repoAddress: 'GitHub で表示',
     helpFeedback: 'ヘルプとフィードバック',
     presentedBy: '提供:',
     xingyuefox: 'XingYue_Fox',
@@ -672,7 +672,7 @@ const i18nData = {
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
     developers: '開発者',
     relatedLinks: '関連リンク',
-    litever: 'バージョン 27.0.100 | 更新日: 2026-11-14',
+    litever: 'バージョン 27.0.156 | 更新日: 2026-11-20',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
     searchPlaceholderNight: '今夜は {name} で何を検索しますか？',
@@ -848,7 +848,7 @@ const i18nData = {
     langAuto: 'По умолчанию (системный)',
     cookieNotice: 'Политика конфиденциальности',
     license: 'Лицензия',
-    contributor: 'Вкладчики',
+    repoAddress: 'Открыть на GitHub',
     helpFeedback: 'Справка и отзывы',
     presentedBy: 'Создатель:',
     xingyuefox: 'XingYue_Fox',
@@ -864,7 +864,7 @@ const i18nData = {
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
     developers: 'Разработчики',
     relatedLinks: 'Полезные ссылки',
-    litever: 'Версия 27.0.100 | Обновлено: 2026-11-14',
+    litever: 'Версия 27.0.156 | Обновлено: 2026-11-20',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
     searchPlaceholderNight: 'Что поищем вечером через {name}?',
@@ -1861,17 +1861,6 @@ function compareVersions(a, b) {
   return 0;
 }
 
-// ISO 日期 → yymmdd，如 "2026-10-03T..." → "261003"
-function formatReleaseDateCode(isoStr) {
-  if (!isoStr) return '';
-  const d = new Date(isoStr);
-  if (isNaN(d.getTime())) return '';
-  const yy = String(d.getFullYear()).slice(-2);
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  return yy + mm + dd;
-}
-
 // 拉取最新 release；若仓库只有 tag 没建 release，回退到 /tags
 async function fetchLatestRelease() {
   const headers = { 'Accept': 'application/vnd.github+json' };
@@ -1939,7 +1928,6 @@ async function checkForUpdate({ force = false } = {}) {
   return {
     tag: remote.tag,
     latest,                                        // "版本号"
-    dateCode: formatReleaseDateCode(remote.publishedAt),  // "发布号" 或 ""
     hasUpdate: compareVersions(latest, APP_VERSION) > 0,
     url: remote.url                                // release 页面
   };
@@ -2473,7 +2461,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    updateVersionText.textContent = result.latest + (result.dateCode ? ` (${result.dateCode})` : '');
+    updateVersionText.textContent = result.latest;
     updateDownloadBtn.href = result.url;
     updateNotice.style.display = 'flex';
   }
@@ -2626,6 +2614,20 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
   // 深色模式遵循 M3 海拔规范（海拔越高越亮）：面板比卡片暗一档；浅色模式保持卡片比面板更浅
   function mdBuildVarText(scheme, dark) {
     const c = (role) => MCU_API.hexFromArgb(scheme[role]);
+    // 深色取色的表面层：以种子色相生成低饱和底色，各档 tone 高于规范 surface，
+    // 避免深色页面近黑无色感；层级关系保持「页面 < 弹层 < 卡片 < 输入框」
+    const darkT = (tone) => {
+      const h = MCU_API.Hct.fromInt(scheme.primary).hue;
+      return MCU_API.hexFromArgb(MCU_API.Hct.from(h, 8, tone).toInt());
+    };
+    // 浅色取色的表面层：M3 TonalSpot 中性色板 chroma 只有 6，浅色下色调几乎不可见，
+    // 观感就是「灰白一片」；对齐 Chrome 动态配色的观感，把表面层 chroma 抬到 minChroma
+    // （hue/tone 保持不变，HCT 会自动收敛到该 tone 的色度上限）。深色模式不走此路径
+    const tintC = (role, minChroma) => {
+      const hct = MCU_API.Hct.fromInt(scheme[role]);
+      const chroma = dark ? hct.chroma : Math.max(hct.chroma, minChroma);
+      return MCU_API.hexFromArgb(MCU_API.Hct.from(hct.hue, chroma, hct.tone).toInt());
+    };
     // M3 状态层：把 on-color 以指定不透明度叠在基色上，而不是换成另一个颜色角色。
     // hover 8%、focus 10%、pressed 12%（Material 3 state layer 规范值）。
     const layer = (baseRole, onRole, alpha) => {
@@ -2638,29 +2640,33 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
     };
     const vars = {
       // ===== 表面层 =====
-      '--fill-color': c('surface'),
-      '--fill-popup-color': c('surfaceContainerLow'),
-      '--neutral-layer-floating': c('surfaceContainerLow'),
-      '--neutral-layer-floating-hover': c('surfaceContainerHigh'),
+      '--fill-color': dark ? darkT(12) : tintC('surface', 10),
+      '--fill-popup-color': dark ? darkT(16) : tintC('surfaceContainerLow', 10),
+      '--neutral-layer-floating': dark ? darkT(16) : tintC('surfaceContainerLow', 10),
+      '--neutral-layer-floating-hover': dark ? darkT(20) : tintC('surfaceContainerHigh', 10),
       // 取色后光晕用主色：浅色下是深色饱和色，深色下是浅色饱和色
       '--search-box-glow': c('primary') + (dark ? '24' : '38'),
       // 悬停底色取同色相的容器层级，避免彩色模式下跳到中性色
-      '--search-box-hover-bg': c('surfaceContainer'),
+      '--search-box-hover-bg': dark ? darkT(20) : tintC('surfaceContainer', 10),
       '--quicklink-glow': c('primary') + (dark ? '24' : '38'),
-      '--modal-bg': c('surfaceContainerLow'),
-      '--settings-card-bg': c(dark ? 'surfaceContainerHigh' : 'surfaceContainerLow'),
-      '--settings-card-hover': c(dark ? 'surfaceContainerHighest' : 'surfaceContainerHigh'),
+      '--modal-bg': dark ? darkT(16) : tintC('surfaceContainerLow', 10),
+      '--settings-card-bg': dark ? darkT(21) : tintC('surfaceContainerLow', 8),
+      '--settings-card-hover': dark ? darkT(24) : tintC('surfaceContainerHigh', 8),
+      // 开关手柄：深色取色时固定用暗档，不随卡片提亮，保持与轨道的明暗差
+      '--switch-knob-bg': dark ? darkT(13) : c('surfaceContainerLow'),
       // 按钮/选项的悬停填充：onSurface 带透明度叠在任意底色上，色相跟随当前配色
       '--neutral-fill-hover': c('onSurface') + '1C',
       '--neutral-fill-rest': c('onSurface') + '0D',
       // 面板底色：与卡片反向取值，保证「卡片浮于面板之上」——
       // 深色下面板比卡片暗一档（符合 M3 海拔越高越亮的规范），浅色下保持卡片更浅的现有观感
-      '--settings-panel-bg': c(dark ? 'surfaceContainerLow' : 'surfaceContainerHigh'),
-      '--suggestion-bg': c('surfaceContainerLow'),
+      '--settings-panel-bg': dark ? darkT(16) : tintC('surfaceContainerHigh', 10),
+      '--suggestion-bg': dark ? darkT(16) : tintC('surfaceContainerLow', 10),
       // 浅色用 onPrimaryContainer（更深），深色用 primaryFixed（更亮）
       '--suggestion-text-color': c(dark ? 'primaryFixed' : 'onPrimaryContainer'),
       '--suggestion-hover': c('surfaceContainerHighest'),
-      '--input-bg': c('surfaceContainerHighest'),
+      // 深色下抬到卡片之上两档：分段控件（主题/布局滑块）以 --settings-card-bg 作滑块，
+      // 凹槽必须明显高于滑块才能看出选中位置
+      '--input-bg': dark ? darkT(26) : tintC('surfaceContainerHighest', 10),
       // 搜索框悬停底色：surfaceContainer 比常态的 surfaceContainerLow 深一档（深色模式则浅一档）
       // 增强可见性衬底：surfaceContainerLowest 为浅色模式最亮、深色模式最暗的一档
       // 浅色模式下透明度更高，让衬底更接近纯白
@@ -2668,11 +2674,12 @@ let previewDropKey = null;//实时预览的落点键，避免同一位置重复�
       '--enhanced-visibility-bg-hover': c('surfaceContainerLowest') + (dark ? 'A6' : 'C7'),
       '--enhanced-visibility-logo-bg': c('surfaceContainerLowest') + (dark ? '99' : 'B8'),
       // 输入框（仅 MD 开启时生效）：
-      //   常规态与卡片同层（surfaceContainerLow），hover 抬到 surfaceContainerHighest，
-      //   聚焦保持最高档并用 primary 描边。这样深色模式下不再落到旧的 #282828 纯灰。
-      '--input-rest-bg': c('surfaceContainerLow'),
-      '--input-hover-bg': c('surfaceContainerHighest'),
-      '--input-focus-bg': c('surfaceContainerHighest'),
+      //   常规态与弹窗底同层（surfaceContainerLow，随浅色提色），hover/聚焦抬到最高档，
+      //   聚焦用 primary 描边。深色下与弹层同档（darkT(16)）、hover/聚焦抬到 darkT(26)，
+      //   不再落到旧的 #282828 纯灰。
+      '--input-rest-bg': dark ? darkT(16) : tintC('surfaceContainerLow', 10),
+      '--input-hover-bg': dark ? darkT(26) : tintC('surfaceContainerHighest', 10),
+      '--input-focus-bg': dark ? darkT(26) : tintC('surfaceContainerHighest', 10),
       '--input-focus-border': c('primary'),
       '--settings-thumb-bg': c('surfaceContainer'),
       // ===== 描边 =====
@@ -5633,9 +5640,11 @@ function onDrop(e) {
   }
   // 空白处右键：屏蔽浏览器菜单，改为页面自己的菜单
   // 右键与长按都不接管的交互区域
+  // 注意：不排除 ntp-quicklinks 容器本身——展望布局下它被拉伸铺满搜索框
+  // 以下的整片区域，排除容器会导致该片空白右键无响应；空白处应弹出页面菜单
   const contextMenuExclude = [
     '#header', '#popover-settings', '#popover-waffle',
-    '#search-container', 'ntp-quicklinks', '.quicklink-item',
+    '#search-container', '.quicklink-item',
     '.modal-overlay', '.modal-dialog', '.context-menu'
   ].join(',');
 
