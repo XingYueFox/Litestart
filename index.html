@@ -1239,8 +1239,10 @@
       flex: 1 1 0%;
       min-width: 0;
       min-height: 40px;
-      margin: 0;
-      padding: 0;
+      /* 负外边距抵消行 12px 内边距与分隔线 12px 间距：
+         hover 底色左顶卡片边缘、右顶分隔线，内容位置由内边距保持 */
+      margin: 0 -12px;
+      padding: 0 12px;
       border: none;
       border-radius: 0;
       background-color: transparent;
@@ -4037,7 +4039,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog about-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 27.0.156 | 更新时间：2026-11-20</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 27.0.160 | 更新时间：2026-11-21</p><br>
 
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
